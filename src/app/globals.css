@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --background-secondary: #f5f5f5;
+  --background-card: #fafafa;
+  --foreground: #171717;
+  --foreground-secondary: #525252;
+  --foreground-tertiary: #a3a3a3;
+  --accent: #3B7A2A;
+  --accent-hover: #2D6120;
+  --accent-light: #E8F5E1;
+  --secondary: #2563eb;
+  --secondary-hover: #1d4ed8;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --warning: #eab308;
+  --error: #ef4444;
+  --border: #e5e5e5;
+  --border-medium: #d4d4d4;
+  --ring: #3B7A2A;
+  --background-dark: #0a0f0a;
+  --accent-gradient: linear-gradient(135deg, #3B7A2A, #2ecc71);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glow-green: 0 0 20px rgba(59, 122, 42, 0.3);
+  --background-warm: #f7f7f5;
+  --accent-bold: #2d6b1f;
+  --text-editorial: #1a1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-card: var(--background-card);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-border: var(--border);
+  --color-border-medium: var(--border-medium);
+  --color-ring: var(--ring);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-elevated: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --color-background-dark: var(--background-dark);
+  --shadow-glow: var(--glow-green);
+  --color-background-warm: var(--background-warm);
+  --color-accent-bold: var(--accent-bold);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes scroll-indicator {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 122, 42, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(59, 122, 42, 0.4); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes energy-flow {
+  0% { stroke-dashoffset: 100; opacity: 0; }
+  50% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.97); opacity: 0.7; }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.text-editorial-hero {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  font-size: clamp(2.25rem, 6vw, 7rem);
+  overflow-wrap: break-word;
+}
+
+.text-editorial-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(1.875rem, 4vw, 4.5rem);
+  overflow-wrap: break-word;
+}
+
+.text-editorial-heading {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-size: clamp(1.875rem, 3.5vw, 3.5rem);
+  overflow-wrap: break-word;
+}
+
+.text-editorial-overline {
+  font-size: clamp(0.625rem, 1vw, 0.875rem);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.text-editorial-pull-quote {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.text-editorial-stat {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+}
+
+.grain {
+  position: relative;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background-color: var(--accent-light);
+  color: var(--foreground);
+}
+
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
