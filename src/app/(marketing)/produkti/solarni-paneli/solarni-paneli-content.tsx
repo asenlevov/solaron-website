@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { type MotionValue, motion, useInView, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -11,6 +11,7 @@ import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { SceneCanvasDynamic } from "@/components/3d/scene-container";
 import { SolarPanel } from "@/components/3d/solar-panel";
 import { REAL_IMAGES, PRODUCT_IMAGES } from "@/data/images";
@@ -242,6 +243,7 @@ export function SolarniPaneliContent() {
   const quoteInView = useInView(quoteRef, { once: true, margin: "0px 0px -10% 0px" });
   const conditionsRef = useRef<HTMLDivElement>(null);
   const conditionsInView = useInView(conditionsRef, { once: true, margin: "0px 0px -10% 0px" });
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="overflow-hidden">
@@ -260,7 +262,10 @@ export function SolarniPaneliContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
-          <TextReveal as="h1" className="text-editorial-hero text-white max-w-4xl">
+          <motion.div variants={blurIn} initial="hidden" animate="visible">
+            <BadgeChip variant="accent">MWT Технология</BadgeChip>
+          </motion.div>
+          <TextReveal as="h1" className="text-editorial-hero text-white max-w-4xl mt-2">
             Соларни Панели
           </TextReveal>
           <motion.p
@@ -277,6 +282,11 @@ export function SolarniPaneliContent() {
             <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60" duration={1500} />
             <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60" duration={1800} />
           </div>
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+            <MagneticButton href="/konfigurator" variant="primary">
+              Безплатна оферта <ArrowRight className="ml-2 h-5 w-5" />
+            </MagneticButton>
+          </motion.div>
         </div>
 
         {/* Bouncing scroll indicator */}
@@ -641,7 +651,49 @@ export function SolarniPaneliContent() {
         </div>
       </section>
 
-      {/* ── 11 · Related Products ─────────────────────────── */}
+      {/* ── 11 · FAQ ──────────────────────────────────────── */}
+      <section className="py-24 md:py-32 bg-[#f8faf6]">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+            Често задавани въпроси
+          </TextReveal>
+          <div className="space-y-4">
+            {[
+              { q: "Колко години издържат соларните панели?", a: "MWT панелите имат 30-годишна гаранция за производителност. След 30 години произвеждат минимум 84.3% от номиналната мощност — значително над индустриалния стандарт от 80%." },
+              { q: "Как се почистват панелите?", a: "Обикновено дъждът е достатъчен. При силно замърсяване — измийте с мек маркуч и вода. Избягвайте абразивни материали. Препоръчваме почистване 1-2 пъти годишно." },
+              { q: "Какво се случва при частично засенчване?", a: "С оптимизаторите P950 на SolarEdge, всеки панел работи независимо. Засенчването на един панел не влияе на останалите — за разлика от стринговите системи, където целият стринг губи ефективност." },
+              { q: "Какво покрива гаранцията?", a: "Гаранцията покрива производствени дефекти (12 години) и производителност (30 години). При спад под гарантираните стойности, панелите се подменят безплатно." },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                variants={staggerItem}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="border border-border rounded-xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left"
+                >
+                  <span className="font-display font-bold text-sm md:text-base pr-4">{item.q}</span>
+                  <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform duration-300 shrink-0", openFaq === i && "rotate-180")} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openFaq === i ? "auto" : 0, opacity: openFaq === i ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-6 pb-5 text-muted-foreground font-body text-sm leading-relaxed">{item.a}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 12 · Related Products ─────────────────────────── */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
           <TextReveal as="h2" className="text-editorial-display mb-12">

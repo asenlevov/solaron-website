@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -26,7 +26,7 @@ import {
   revealFromLeft,
   revealFromRight,
 } from "@/lib/animations";
-import { ArrowRight, Sun, Moon, Sparkles, Car, Zap, Battery, Home, Plug } from "lucide-react";
+import { ArrowRight, Sun, Moon, Sparkles, Car, Zap, Battery, Home, Plug, ChevronDown, Leaf, Fuel } from "lucide-react";
 
 const chargingModes = [
   {
@@ -63,6 +63,13 @@ const vehicles = [
   { brand: "Mercedes", models: "EQA, EQB, EQS", speed: "11 kW AC / 200 kW DC", time: "~5 ч. (AC)" },
 ];
 
+const evFaqs = [
+  { q: "Колко време отнема зареждането?", a: "Зависи от мощността на зарядната станция и капацитета на батерията. При 11 kW AC зареждане, типичен EV (60 kWh) се зарежда напълно за ~5.5 часа. При нощно зареждане от соларна батерия, автомобилът е готов сутринта." },
+  { q: "Кои автомобили са съвместими?", a: "Нашите зарядни станции поддържат всички EV марки с Type 2 конектор — Tesla, BMW, VW, Hyundai, Kia, Mercedes, Audi, Porsche и др. Мощността се адаптира автоматично към всеки модел." },
+  { q: "Нужна ли е специална инсталация?", a: "Да, зарядната станция изисква отделна електрическа линия и автоматичен прекъсвач. Нашият екип извършва пълната инсталация, включително проектиране и пускане в експлоатация." },
+  { q: "Колко струва зареждането вкъщи?", a: "При зареждане от соларни панели цената е ~0.15 лв/kWh, или ~3.00 лв за 100 km. Това е 4-5 пъти по-евтино от бензинов автомобил и 4 пъти по-евтино от обществена зарядна станция." },
+];
+
 export function EvZaryadniContent() {
   const compRef = useRef<HTMLDivElement>(null);
   const compInView = useInView(compRef, { once: true, margin: "0px 0px -15% 0px" });
@@ -70,11 +77,13 @@ export function EvZaryadniContent() {
   const integInView = useInView(integRef, { once: true, margin: "0px 0px -15% 0px" });
   const vehicleRef = useRef<HTMLDivElement>(null);
   const vehicleInView = useInView(vehicleRef, { once: true, margin: "0px 0px -10% 0px" });
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [monthlyKm, setMonthlyKm] = useState(1500);
 
   return (
     <div className="overflow-hidden">
       {/* 1 — Hero */}
-      <section className="relative min-h-[85vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.evCharging}
           alt="Соларен карпорт с EV зарядни станции"
@@ -86,7 +95,7 @@ export function EvZaryadniContent() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="accent">E-мобилност</BadgeChip>
           </motion.div>
@@ -99,8 +108,21 @@ export function EvZaryadniContent() {
           <div className="mt-10 flex flex-wrap gap-12">
             <StatNumber value={22} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/50" />
             <StatNumber value={77} suffix="%" context="Спестяване" className="text-accent" contextClassName="text-white/50" />
+            <StatNumber value={0.15} suffix=" лв/kWh" context="Цена от слънце" className="text-white" contextClassName="text-white/50" duration={1500} />
           </div>
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+            <MagneticButton href="/konfigurator" variant="primary">
+              Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+            </MagneticButton>
+          </motion.div>
         </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
       </section>
 
       {/* 2 — Smart Charging Modes */}
@@ -279,6 +301,156 @@ export function EvZaryadniContent() {
           >
             Соларните панели захранват батерията и зарядната станция. При нужда мрежата допълва, но приоритетът винаги е чиста енергия.
           </motion.p>
+        </div>
+      </section>
+
+      {/* 6 — Cost Savings Calculator */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+            Калкулатор за спестявания
+          </TextReveal>
+          <p className="text-center text-muted-foreground font-body mb-12 max-w-lg mx-auto">
+            Изчислете колко спестявате като зареждате от слънцето вместо от бензиностанцията.
+          </p>
+          <motion.div variants={slideUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-[#f8faf6] rounded-3xl p-8 md:p-12">
+            <div className="flex items-center justify-between mb-4">
+              <label className="font-display font-semibold">Месечни километри</label>
+              <span className="text-2xl font-display font-bold text-accent">{monthlyKm} km</span>
+            </div>
+            <input
+              type="range"
+              min={500}
+              max={5000}
+              step={100}
+              value={monthlyKm}
+              onChange={(e) => setMonthlyKm(Number(e.target.value))}
+              className="w-full h-2 rounded-full bg-accent/20 appearance-none cursor-pointer accent-accent"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground mt-2 font-body">
+              <span>500 km</span>
+              <span>5 000 km</span>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-6">
+              <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6 text-center">
+                <Fuel className="h-6 w-6 mx-auto mb-2 text-red-500" />
+                <p className="text-xs text-red-600 font-body mb-1">Бензин (8л/100km)</p>
+                <p className="text-3xl font-display font-black text-red-600">{Math.round(monthlyKm * 0.08 * 2.8)} лв</p>
+                <p className="text-xs text-red-500 mt-1 font-body">/ месец</p>
+              </div>
+              <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-6 text-center">
+                <Zap className="h-6 w-6 mx-auto mb-2 text-green-600" />
+                <p className="text-xs text-green-600 font-body mb-1">EV от соларни панели</p>
+                <p className="text-3xl font-display font-black text-green-600">{Math.round(monthlyKm * 0.2 * 0.15)} лв</p>
+                <p className="text-xs text-green-500 mt-1 font-body">/ месец</p>
+              </div>
+            </div>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground font-body">Годишно спестявате</p>
+              <p className="text-4xl font-display font-black text-accent mt-1">
+                {Math.round((monthlyKm * 0.08 * 2.8 - monthlyKm * 0.2 * 0.15) * 12)} лв
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 7 — Environmental Impact */}
+      <section className="py-24 md:py-32 bg-[#f7f9f4]">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="text-editorial-overline text-accent">Екология</p>
+          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+            Пътуване с нулеви емисии
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.1, 0.15)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+          >
+            {[
+              { val: 2.4, sfx: " т.", ctx: "CO₂ спестени годишно" },
+              { val: 120, sfx: "", ctx: "Засадени дървета еквивалент" },
+              { val: 77, sfx: "%", ctx: "По-евтино от бензин" },
+              { val: 0, sfx: "", ctx: "Вредни емисии" },
+            ].map((s) => (
+              <motion.div key={s.ctx} variants={staggerItem} className="text-center p-6 rounded-2xl bg-white border border-border/50">
+                <StatNumber value={s.val} suffix={s.sfx} context={s.ctx} className="text-3xl" contextClassName="text-muted-foreground" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 8 — Testimonial */}
+      <section className="py-28 md:py-36 bg-white">
+        <div className="mx-auto max-w-5xl px-6 relative">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 0.06, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="absolute -top-16 -left-8 text-[16rem] leading-none font-display text-foreground select-none pointer-events-none"
+          >
+            &ldquo;
+          </motion.span>
+          <motion.blockquote
+            variants={blurIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-editorial-pull-quote text-foreground relative z-10"
+          >
+            Зареждам колата от покрива всяка нощ. Сметката за гориво падна от 400 лв на под 50 лв месечно.
+          </motion.blockquote>
+          <motion.p
+            variants={blurIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="mt-6 text-muted-foreground font-body text-sm"
+          >
+            — Георги К., Tesla Model 3, София
+          </motion.p>
+        </div>
+      </section>
+
+      {/* 9 — FAQ */}
+      <section className="py-24 md:py-32 bg-foreground text-white">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="text-editorial-display text-white mb-12">
+            Често задавани въпроси
+          </TextReveal>
+          <div className="space-y-3">
+            {evFaqs.map((f, i) => (
+              <motion.div
+                key={i}
+                variants={staggerItem}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="border border-white/10 rounded-xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left"
+                >
+                  <span className="font-display font-semibold">{f.q}</span>
+                  <ChevronDown className={cn("h-5 w-5 transition-transform duration-300 shrink-0 ml-4", openFaq === i && "rotate-180")} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openFaq === i ? "auto" : 0, opacity: openFaq === i ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-white/70 font-body leading-relaxed">{f.a}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

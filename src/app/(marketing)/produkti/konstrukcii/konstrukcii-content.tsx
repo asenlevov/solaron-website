@@ -25,7 +25,7 @@ import {
   scaleSpring,
   revealFromLeft,
 } from "@/lib/animations";
-import { ArrowRight, Home, Mountain, Car, Building2, Wind, Snowflake, Timer, Award } from "lucide-react";
+import { ArrowRight, Home, Mountain, Car, Building2, Wind, Snowflake, Timer, Award, ChevronDown, Shield, Layers, Scale } from "lucide-react";
 
 const mountTypes = [
   {
@@ -85,8 +85,16 @@ const installSteps = [
   { src: REAL_IMAGES.installations.stepOperation, title: "Експлоатация", desc: "Пускане в действие и мониторинг" },
 ];
 
+const konstrukciiFaqs = [
+  { q: "Колко тежи конструкцията върху покрива?", a: "Алуминиевата конструкция за скатен покрив тежи ~2.5 kg/m², а с панелите общо ~12 kg/m². Това е значително под допустимото натоварване на стандартен покрив (>100 kg/m²)." },
+  { q: "Какъв е гаранционният срок на конструкцията?", a: "Конструкциите Van Der Valk имат 25-годишна гаранция. Анодираният алуминий серия 6000 не корозира и запазва структурната си цялост десетилетия." },
+  { q: "Колко време отнема монтажът?", a: "За стандартна покривна система от 10-12 панела, монтажът на конструкцията и панелите отнема 1 работен ден. По-големи търговски проекти — 2-5 дни." },
+  { q: "Може ли да се монтира на плосък покрив?", a: "Да. Имаме специализирани системи за плосък покрив с баластна фиксация (без пробиване на покривната мембрана) и оптимален наклон от 15° за максимално производство." },
+];
+
 export function KonstrukciiContent() {
   const [activeType, setActiveType] = useState("roof");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const engRef = useRef<HTMLDivElement>(null);
   const engInView = useInView(engRef, { once: true, margin: "0px 0px -15% 0px" });
   const partnerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +105,7 @@ export function KonstrukciiContent() {
   return (
     <div className="overflow-hidden">
       {/* 1 — Hero */}
-      <section className="relative min-h-[80vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.constructions}
           alt="Премиум конструкция за соларни панели"
@@ -109,7 +117,7 @@ export function KonstrukciiContent() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="accent">Монтажни системи</BadgeChip>
           </motion.div>
@@ -119,7 +127,24 @@ export function KonstrukciiContent() {
           <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-lg text-lg text-white/70 font-body">
             Алуминиеви конструкции за всеки тип инсталация — от скатен покрив до соларен карпорт. Проектирани за българския климат.
           </motion.p>
+          <div className="mt-10 flex flex-wrap gap-12">
+            <StatNumber value={180} suffix=" km/h" context="Вятърно натоварване" className="text-white" contextClassName="text-white/50" />
+            <StatNumber value={250} suffix=" kg/m²" context="Снежно натоварване" className="text-white" contextClassName="text-white/50" />
+            <StatNumber value={25} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/50" />
+          </div>
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+            <MagneticButton href="/kontakti" variant="primary">
+              Безплатна консултация <ArrowRight className="ml-2 h-5 w-5" />
+            </MagneticButton>
+          </motion.div>
         </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
       </section>
 
       {/* 2 — Type Selector */}
@@ -254,6 +279,150 @@ export function KonstrukciiContent() {
               <StatNumber value={3} suffix=" GW" context="Инсталиран капацитет" />
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* 6 — Material Comparison */}
+      <section className="py-24 md:py-32 bg-foreground text-white">
+        <div className="mx-auto max-w-5xl px-6">
+          <p className="text-editorial-overline text-accent">Материали</p>
+          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-12">
+            Защо алуминий?
+          </TextReveal>
+          <motion.div variants={slideUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-white/20">
+                  <th className="py-3 px-4 font-display font-semibold text-white/60">Характеристика</th>
+                  <th className="py-3 px-4 font-display font-semibold text-accent">Алуминий 6000</th>
+                  <th className="py-3 px-4 font-display font-semibold text-white/60">Стомана</th>
+                  <th className="py-3 px-4 font-display font-semibold text-white/60">Поцинкована</th>
+                </tr>
+              </thead>
+              <tbody className="text-white/80">
+                {[
+                  { feat: "Тегло", al: "Леко (2.7 g/cm³)", steel: "Тежко (7.8 g/cm³)", galv: "Тежко (7.8 g/cm³)" },
+                  { feat: "Корозия", al: "Имунен", steel: "Ръждясва", galv: "Частична защита" },
+                  { feat: "Живот", al: "50+ години", steel: "15-20 години", galv: "25-30 години" },
+                  { feat: "Поддръжка", al: "Нулева", steel: "Периодична", galv: "Минимална" },
+                  { feat: "Рециклируемост", al: "100%", steel: "Частична", galv: "Частична" },
+                ].map((r, i) => (
+                  <tr key={r.feat} className={cn("border-b border-white/10", i % 2 === 0 && "bg-white/[0.02]")}>
+                    <td className="py-3 px-4 font-display font-bold text-white">{r.feat}</td>
+                    <td className="py-3 px-4 font-body text-accent font-semibold">{r.al}</td>
+                    <td className="py-3 px-4 font-body">{r.steel}</td>
+                    <td className="py-3 px-4 font-body">{r.galv}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 7 — Certifications */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="text-editorial-overline text-accent">Сертификати</p>
+          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+            Тествани и сертифицирани
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.1, 0.15)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+          >
+            {[
+              { icon: Shield, label: "EN 1090", desc: "Европейски стандарт за стоманени и алуминиеви конструкции" },
+              { icon: Wind, label: "180 km/h", desc: "Тествани за устойчивост на вятърно натоварване" },
+              { icon: Snowflake, label: "250 kg/m²", desc: "Издържат на екстремно снежно натоварване" },
+              { icon: Award, label: "ISO 9001", desc: "Международен стандарт за качество" },
+            ].map((cert) => (
+              <motion.div key={cert.label} variants={staggerItem} className="rounded-2xl border border-border/50 p-6 text-center">
+                <cert.icon className="h-8 w-8 mx-auto mb-3 text-accent" strokeWidth={1.5} />
+                <p className="font-display font-bold text-lg">{cert.label}</p>
+                <p className="mt-2 text-xs text-muted-foreground font-body">{cert.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 8 — Project Gallery */}
+      <section className="py-24 md:py-32 bg-[#f8faf6]">
+        <div className="mx-auto max-w-7xl px-6">
+          <TextReveal as="h2" className="text-editorial-display mb-16">
+            Реализирани конструкции
+          </TextReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { src: REAL_IMAGES.projects.varna39_hero, alt: "39 kWp покривна конструкция — Варна" },
+              { src: REAL_IMAGES.projects.carport270_hero, alt: "270 kWp соларен карпорт — Казанлък" },
+              { src: REAL_IMAGES.installations.adoreenergyC1, alt: "Покривна инсталация" },
+            ].map((img, i) => (
+              <motion.div
+                key={img.alt}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="relative group overflow-hidden rounded-lg"
+              >
+                <ImageEditorial
+                  src={img.src}
+                  alt={img.alt}
+                  width={600}
+                  height={450}
+                  grain
+                  containerClassName="aspect-[4/3] rounded-lg"
+                  className="rounded-lg transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 rounded-lg">
+                  <p className="text-white text-sm font-body">{img.alt}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9 — FAQ */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+            Често задавани въпроси
+          </TextReveal>
+          <div className="space-y-3">
+            {konstrukciiFaqs.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="border border-border rounded-xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
+                >
+                  <span className="font-display font-semibold">{f.q}</span>
+                  <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform duration-300 shrink-0 ml-4", openFaq === i && "rotate-180")} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openFaq === i ? "auto" : 0, opacity: openFaq === i ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-muted-foreground font-body leading-relaxed">{f.a}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

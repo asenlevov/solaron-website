@@ -48,6 +48,8 @@ const faqs = [
   { q: "Какво е предимството на оптимизатори?", a: "Оптимизаторите P950 позволяват на всеки панел да работи независимо. Ако един панел е засенчен, останалите не губят ефективност — за разлика от стринговите инвертори." },
   { q: "Мога ли да добавя батерия по-късно?", a: "Да. SolarEdge инверторите са battery-ready. Можете да свържете батерия за съхранение по всяко време без подмяна на инвертора." },
   { q: "Какъв е гаранционният срок?", a: "Стандартната гаранция е 12 години, с опция за удължаване до 25 години. Оптимизаторите P950 имат 25 години гаранция включена." },
+  { q: "Какво е SafeDC™?", a: "SafeDC™ е технология на SolarEdge, която автоматично понижава напрежението на всеки панел до 1V при изключване на инвертора или аварийна ситуация. Това елиминира риска от токов удар при работа по системата." },
+  { q: "Работи ли инверторът при спиране на тока?", a: "Стандартният инвертор спира при прекъсване на мрежата (grid-tied). С добавяне на батерия и backup интерфейс, системата автоматично превключва и захранва дома ви." },
 ];
 
 export function InvertoriContent() {
@@ -60,7 +62,7 @@ export function InvertoriContent() {
   return (
     <div className="overflow-hidden">
       {/* 1 — Hero: Full-bleed image */}
-      <section className="relative min-h-[85vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.inverter}
           alt="Соларна система с инвертор"
@@ -72,7 +74,7 @@ export function InvertoriContent() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="accent">SolarEdge HD-Wave</BadgeChip>
           </motion.div>
@@ -87,7 +89,19 @@ export function InvertoriContent() {
             <StatNumber value={10} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/50" />
             <StatNumber value={12} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/50" />
           </div>
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+            <MagneticButton href="/konfigurator" variant="primary">
+              Безплатна оферта <ArrowRight className="ml-2 h-5 w-5" />
+            </MagneticButton>
+          </motion.div>
         </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
       </section>
 
       {/* 2 — DC→AC Flow */}
@@ -239,8 +253,15 @@ export function InvertoriContent() {
               </thead>
               <tbody>
                 {models.map((m, i) => (
-                  <tr key={m.model} className={cn("border-b border-border/50", i % 2 === 0 && "bg-white/60")}>
-                    <td className="py-3 px-4 font-display font-bold">{m.model}</td>
+                  <tr key={m.model} className={cn("border-b border-border/50", i % 2 === 0 && "bg-white/60", m.model === "SE5000H" && "bg-accent/5 ring-1 ring-accent/20")}>
+                    <td className="py-3 px-4 font-display font-bold">
+                      {m.model}
+                      {m.model === "SE5000H" && (
+                        <span className="ml-2 inline-block rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                          Най-популярен
+                        </span>
+                      )}
+                    </td>
                     <td className="py-3 px-4 font-body">{m.power}</td>
                     <td className="py-3 px-4 font-body text-accent font-semibold">{m.efficiency}</td>
                     <td className="py-3 px-4 font-body">{m.weight}</td>
@@ -321,6 +342,70 @@ export function InvertoriContent() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 8 — Project Gallery */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <TextReveal as="h2" className="text-editorial-display mb-16">
+            Реализирани инсталации
+          </TextReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { src: REAL_IMAGES.installations.nlProjectInstall2, alt: "SolarEdge инвертор — монтаж" },
+              { src: REAL_IMAGES.installations.adoreenergyC1, alt: "Покривна система с инвертор" },
+              { src: REAL_IMAGES.projects.varna39_1, alt: "39 kWp инсталация — Варна" },
+            ].map((img, i) => (
+              <motion.div
+                key={img.alt}
+                variants={i % 2 === 0 ? revealFromBottom : scaleSpring}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-10%" }}
+                className="relative group overflow-hidden rounded-lg"
+              >
+                <ImageEditorial
+                  src={img.src}
+                  alt={img.alt}
+                  width={600}
+                  height={450}
+                  grain
+                  containerClassName="aspect-[4/3] rounded-lg"
+                  className="rounded-lg transition-transform duration-500 group-hover:scale-105"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9 — Environmental Impact */}
+      <section className="py-24 md:py-32 bg-[#f7f9f4]">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="text-editorial-overline text-accent">Въздействие</p>
+          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+            Екологичен принос
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.1, 0.15)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+          >
+            {[
+              { val: 4.2, sfx: " т.", ctx: "CO₂ спестени годишно", icon: "🌱" },
+              { val: 210, sfx: "", ctx: "Засадени дървета еквивалент", icon: "🌳" },
+              { val: 8750, sfx: " kWh", ctx: "Чиста енергия годишно", icon: "⚡" },
+              { val: 99.2, sfx: "%", ctx: "Преобразуване DC→AC", icon: "🔄" },
+            ].map((s) => (
+              <motion.div key={s.ctx} variants={staggerItem} className="text-center">
+                <span className="text-3xl mb-3 block">{s.icon}</span>
+                <StatNumber value={s.val} suffix={s.sfx} context={s.ctx} className="text-3xl" contextClassName="text-muted-foreground" />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 

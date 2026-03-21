@@ -64,7 +64,7 @@ export function BateriiContent() {
   return (
     <div className="overflow-hidden">
       {/* 1 — Hero: Full-bleed image */}
-      <section className="relative min-h-[85vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.battery}
           alt="Модерен дом с батерийна система"
@@ -76,7 +76,7 @@ export function BateriiContent() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="accent">Съхранение</BadgeChip>
           </motion.div>
@@ -91,7 +91,19 @@ export function BateriiContent() {
             <StatNumber value={15} suffix=" г." context="Живот" className="text-white" contextClassName="text-white/50" />
             <StatNumber value={10} suffix=" kWh" context="Капацитет" className="text-white" contextClassName="text-white/50" />
           </div>
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+            <MagneticButton href="/konfigurator" variant="primary">
+              Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+            </MagneticButton>
+          </motion.div>
         </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
       </section>
 
       {/* 2 — Sizing Calculator */}
@@ -147,6 +159,19 @@ export function BateriiContent() {
 
               <div className="text-center">
                 <p className="text-sm text-muted-foreground font-body mb-2">Препоръчителен капацитет</p>
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-20 h-32 rounded-lg border-2 border-accent/30 overflow-hidden">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-2 rounded-full bg-accent/30" />
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-accent to-accent/60"
+                      animate={{ height: `${Math.min(nightCoveragePercent, 100)}%` }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-display font-bold text-white drop-shadow-sm">{nightCoveragePercent}%</span>
+                    </div>
+                  </div>
+                </div>
                 <p className="text-5xl font-display font-black text-accent">{recommendedCapacity} kWh</p>
                 <p className="mt-3 text-sm font-body text-muted-foreground">
                   С тази батерия покривате <span className="font-semibold text-accent">{nightCoveragePercent}%</span> от нощното потребление
@@ -346,7 +371,71 @@ export function BateriiContent() {
         </div>
       </section>
 
-      {/* 7 — FAQ */}
+      {/* 7 — Environmental Impact */}
+      <section className="py-24 md:py-32 bg-[#f7f9f4]">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="text-editorial-overline text-accent">Екологичен принос</p>
+          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+            Вашето въздействие
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.1, 0.15)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+          >
+            {[
+              { val: 4.2, sfx: " т.", ctx: "CO₂ спестени годишно" },
+              { val: 210, sfx: "", ctx: "Еквивалент засадени дървета" },
+              { val: 12500, sfx: " kWh", ctx: "Чиста енергия годишно" },
+              { val: 95, sfx: "%", ctx: "Енергийна независимост" },
+            ].map((s) => (
+              <motion.div key={s.ctx} variants={staggerItem} className="text-center p-6 rounded-2xl bg-white border border-border/50">
+                <StatNumber value={s.val} suffix={s.sfx} context={s.ctx} className="text-3xl" contextClassName="text-muted-foreground" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 8 — Project Gallery */}
+      <section className="py-24 md:py-32 bg-foreground">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="text-editorial-overline text-accent">Инсталации</p>
+          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-16">
+            Реализирани проекти
+          </TextReveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { src: REAL_IMAGES.projects.kran5_2, alt: "Батерийна система — Кран" },
+              { src: REAL_IMAGES.projects.vratsa15_1, alt: "15 kW система — Враца" },
+              { src: REAL_IMAGES.installations.adoreenergyC1, alt: "Търговска инсталация с батерия" },
+            ].map((img, i) => (
+              <motion.div
+                key={img.alt}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="relative group overflow-hidden rounded-lg"
+              >
+                <ImageEditorial
+                  src={img.src}
+                  alt={img.alt}
+                  width={600}
+                  height={450}
+                  grain
+                  containerClassName="aspect-[4/3] rounded-lg"
+                  className="rounded-lg transition-transform duration-500 group-hover:scale-105"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9 — FAQ */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
           <TextReveal as="h2" className="text-editorial-display mb-12">

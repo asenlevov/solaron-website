@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -38,6 +38,10 @@ import {
   Zap,
   TrendingUp,
   Sun,
+  ChevronDown,
+  Leaf,
+  Clock,
+  Eye,
 } from "lucide-react";
 
 const features = [
@@ -64,16 +68,24 @@ const mobileFeatures = [
   "Тъмен режим",
 ];
 
+const monitoringFaqs = [
+  { q: "На кои устройства работи приложението?", a: "MySolarEdge приложението е достъпно за iOS (iPhone, iPad) и Android. Уеб платформата работи във всеки модерен браузър — Chrome, Safari, Firefox, Edge." },
+  { q: "Колко дълго се съхраняват данните?", a: "SolarEdge съхранява пълна историческа информация за 25 години — дневни, месечни и годишни данни. Можете да експортирате в CSV/Excel по всяко време." },
+  { q: "Мога ли да наблюдавам няколко системи?", a: "Да. Една акаунт може да управлява неограничен брой инсталации. Идеално за бизнеси с множество обекти или за инсталатори, управляващи портфолио от клиенти." },
+  { q: "Има ли API за интеграция?", a: "Да. SolarEdge предлага REST API за интеграция с ERP, BMS и други системи. Данните за производство, потребление и статус са достъпни в реално време." },
+];
+
 export function MonitoringContent() {
   const featRef = useRef<HTMLDivElement>(null);
   const featInView = useInView(featRef, { once: true, margin: "0px 0px -10% 0px" });
   const mobileRef = useRef<HTMLDivElement>(null);
   const mobileInView = useInView(mobileRef, { once: true, margin: "0px 0px -10% 0px" });
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="overflow-hidden">
       {/* 1 — Hero: Full-bleed image with dashboard overlay */}
-      <section className="relative min-h-[85vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.monitoring}
           alt="Модерен дом със соларна система"
@@ -100,7 +112,13 @@ export function MonitoringContent() {
               <div className="mt-10 flex flex-wrap gap-12">
                 <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/50" />
                 <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/50" />
+                <StatNumber value={99.9} suffix="%" context="Uptime" className="text-white" contextClassName="text-white/50" duration={1500} />
               </div>
+              <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+                <MagneticButton href="/konfigurator" variant="primary">
+                  Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+                </MagneticButton>
+              </motion.div>
             </div>
             <motion.div
               variants={scaleSpring}
@@ -142,6 +160,13 @@ export function MonitoringContent() {
             </motion.div>
           </div>
         </div>
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
       </section>
 
       {/* 2 — Features Grid */}
@@ -289,6 +314,75 @@ export function MonitoringContent() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* 6 — ROI of Monitoring */}
+      <section className="py-24 md:py-32 bg-[#f7f9f4]">
+        <div className="mx-auto max-w-5xl px-6">
+          <p className="text-editorial-overline text-accent">Възвращаемост</p>
+          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+            Мониторингът спестява пари
+          </TextReveal>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: "Ранно откриване", desc: "Идентифицирайте проблеми в рамките на минути, преди да загубите седмици производство. Средно 15% по-малко загуби спрямо системи без мониторинг.", stat: "15%", statCtx: "По-малко загуби" },
+              { title: "Оптимизация", desc: "Данните за отделни панели показват кои се нуждаят от почистване или са засенчени — насочвайте усилията точно.", stat: "8%", statCtx: "Повече производство" },
+              { title: "Гаранционни казуси", desc: "Детайлните логове доказват проблеми пред производители и дистрибутори — ускорявайки гаранционни замени.", stat: "3×", statCtx: "По-бърза реакция" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="bg-white rounded-2xl border border-border/50 p-8"
+              >
+                <p className="text-4xl font-display font-black text-accent mb-2">{item.stat}</p>
+                <p className="text-xs text-muted-foreground font-body mb-4">{item.statCtx}</p>
+                <h3 className="font-display font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7 — FAQ */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+            Често задавани въпроси
+          </TextReveal>
+          <div className="space-y-3">
+            {monitoringFaqs.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="border border-border rounded-xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
+                >
+                  <span className="font-display font-semibold">{f.q}</span>
+                  <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform duration-300 shrink-0 ml-4", openFaq === i && "rotate-180")} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openFaq === i ? "auto" : 0, opacity: openFaq === i ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-muted-foreground font-body leading-relaxed">{f.a}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
