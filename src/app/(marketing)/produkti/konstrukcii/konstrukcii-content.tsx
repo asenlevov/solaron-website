@@ -258,19 +258,19 @@ export function KonstrukciiContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">Монтажни системи</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
+          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
             Конструкции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
-            Алуминиеви конструкции за всеки тип инсталация — от скатен покрив до соларен карпорт. Проектирани за българския климат.
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
+            Алуминиеви системи. 180 km/h вятър. 25 години гаранция.
           </motion.p>
-          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+          <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
             <StatNumber value={180} suffix=" km/h" context="Вятърно натоварване" className="text-white" contextClassName="text-white/60" />
             <StatNumber value={250} suffix=" kg/m²" context="Снежно натоварване" className="text-white" contextClassName="text-white/60" />
             <StatNumber value={25} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/60" />
           </div>
-          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
-            <MagneticButton href="/kontakti" variant="primary">
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
+            <MagneticButton href="/kontakti" variant="primary" size="xl">
               Безплатна консултация
             </MagneticButton>
           </motion.div>

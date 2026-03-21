@@ -81,19 +81,19 @@ export function BateriiContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">Съхранение</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
+          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
             Батерии
           </TextReveal>
-          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
-            LiFePO₄ батерии за енергийна независимост — зареждайте от слънцето, използвайте денонощно.
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
+            LiFePO4 съхранение. 6000+ цикъла. Денонощна енергия.
           </motion.p>
-          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+          <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
             <StatNumber value={6000} suffix="+" context="Цикъла" className="text-white" contextClassName="text-white/60" />
             <StatNumber value={15} suffix=" г." context="Живот" className="text-white" contextClassName="text-white/60" />
             <StatNumber value={10} suffix=" kWh" context="Капацитет" className="text-white" contextClassName="text-white/60" />
           </div>
-          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
-            <MagneticButton href="/konfigurator" variant="primary">
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
+            <MagneticButton href="/konfigurator" variant="primary" size="xl">
               Конфигурирай система
             </MagneticButton>
           </motion.div>

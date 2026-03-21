@@ -6,13 +6,11 @@ import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { TextReveal } from "@/components/ui/text-reveal";
-import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { ProductPageProjects, RelatedProducts } from "@/components/marketing/product-page-shared";
-import { PRODUCT_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
   blurIn,
@@ -85,82 +83,87 @@ export function MonitoringContent() {
 
   return (
     <div className="overflow-hidden">
-      {/* 1 — Hero: Full-bleed image with dashboard overlay */}
-      <section className="relative min-h-[100vh] flex items-end">
-        <ImageEditorial
-          src={PRODUCT_IMAGES.monitoring}
-          alt="Модерен дом със соларна система"
-          fill
-          reveal
-          grain
-          parallax
-          containerClassName="absolute inset-0"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
-          <div className="grid md:grid-cols-2 gap-12 items-end">
+      {/* 1 — Hero: Dark gradient with dashboard UI */}
+      <section className="relative min-h-[100vh] flex items-center bg-gradient-to-br from-[#0a0f1a] via-[#0f1a2e] to-[#0a1520] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 md:py-40">
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-16 items-center">
             <div>
               <motion.div variants={blurIn} initial="hidden" animate="visible">
                 <BadgeChip variant="hero">SolarEdge</BadgeChip>
               </motion.div>
-              <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
+              <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
                 Мониторинг
               </TextReveal>
-              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
-                Пълен контрол над вашата соларна система — от телефона, таблета или компютъра. 24/7 данни в реално време.
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
+                Реално време. Панел по панел. 24/7 контрол.
               </motion.p>
-              <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+              <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
                 <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/60" />
                 <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/60" />
                 <StatNumber value={99.9} suffix="%" context="Uptime" className="text-white" contextClassName="text-white/60" duration={1500} />
               </div>
-              <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
-                <MagneticButton href="/konfigurator" variant="primary">
+              <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
+                <MagneticButton href="/konfigurator" variant="primary" size="xl">
                   Конфигурирай система
                 </MagneticButton>
               </motion.div>
             </div>
+
             <motion.div
               variants={scaleSpring}
               initial="hidden"
               animate="visible"
-              className="hidden md:block bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-5"
+              className="bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/10 p-6 md:p-8 shadow-2xl"
             >
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="h-3 w-3 rounded-full bg-accent animate-pulse" />
+                <span className="text-xs text-white/50 font-body tracking-wide uppercase">Live Dashboard</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 {[
                   { icon: Zap, label: "Текуща мощност", val: "6.2 kW", accent: true },
                   { icon: Sun, label: "Днес", val: "32.5 kWh", accent: false },
                   { icon: TrendingUp, label: "Този месец", val: "847 kWh", accent: false },
                   { icon: Wifi, label: "Статус", val: "Онлайн", accent: true },
                 ].map((card) => (
-                  <div key={card.label} className="bg-white/5 rounded-lg p-3 border border-white/5">
-                    <card.icon className={cn("h-4 w-4 mb-1", card.accent ? "text-accent" : "text-white/40")} />
-                    <p className="text-[10px] text-white/40 font-body">{card.label}</p>
-                    <p className={cn("text-base font-display font-bold mt-0.5", card.accent ? "text-accent" : "text-white")}>{card.val}</p>
+                  <div key={card.label} className="bg-white/[0.04] rounded-xl p-4 border border-white/[0.06]">
+                    <card.icon className={cn("h-5 w-5 mb-2", card.accent ? "text-accent" : "text-white/30")} />
+                    <p className="text-xs text-white/40 font-body">{card.label}</p>
+                    <p className={cn("text-xl font-display font-bold mt-1", card.accent ? "text-accent" : "text-white")}>{card.val}</p>
                   </div>
                 ))}
               </div>
-              <div className="flex items-end gap-1 h-16">
-                {[35, 48, 65, 72, 80, 88, 92, 85, 78, 62, 45, 30].map((h, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scaleY: 0 }}
-                    animate={{ scaleY: 1 }}
-                    transition={{ delay: 0.5 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ originY: 1, height: `${h}%` }}
-                    className="flex-1 rounded-t-sm bg-gradient-to-t from-accent/40 to-accent"
-                  />
-                ))}
-              </div>
-              <div className="flex justify-between mt-1.5 text-[9px] text-white/40 font-body">
-                <span>06:00</span>
-                <span>12:00</span>
-                <span>18:00</span>
+              <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs text-white/40 font-body">Производство днес</span>
+                  <span className="text-xs text-accent font-display font-bold">32.5 kWh</span>
+                </div>
+                <div className="flex items-end gap-1.5 h-24">
+                  {[15, 25, 45, 65, 80, 92, 100, 95, 85, 70, 50, 25].map((h, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ delay: 0.5 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ originY: 1, height: `${h}%` }}
+                      className="flex-1 rounded-t bg-gradient-to-t from-accent/30 to-accent"
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between mt-2 text-[10px] text-white/30 font-body">
+                  <span>06:00</span>
+                  <span>09:00</span>
+                  <span>12:00</span>
+                  <span>15:00</span>
+                  <span>18:00</span>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
+
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
           animate={{ y: [0, 10, 0] }}

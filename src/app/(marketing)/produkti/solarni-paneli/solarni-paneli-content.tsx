@@ -266,25 +266,24 @@ export function SolarniPaneliContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">MWT Технология</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white max-w-4xl mt-2">
+          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
             Соларни Панели
           </TextReveal>
           <motion.p
             variants={blurIn}
             initial="hidden"
             animate="visible"
-            className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed"
+            className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body"
           >
-            MWT монокристални модули от ново поколение — максимална ефективност,
-            минимална деградация, 30 години гарантирана производителност.
+            21.5% ефективност. 30 години гаранция. Без компромиси.
           </motion.p>
-          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
-            <StatNumber value={450} suffix="W" context="Пикова мощност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" />
-            <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1500} />
-            <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1800} />
+          <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
+            <StatNumber value={450} suffix="W" context="Пикова мощност" className="text-white" contextClassName="text-white/60" />
+            <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60" duration={1500} />
+            <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60" duration={1800} />
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
-            <MagneticButton href="/konfigurator" variant="primary">
+            <MagneticButton href="/konfigurator" variant="primary" size="xl">
               Безплатна оферта
             </MagneticButton>
           </motion.div>
