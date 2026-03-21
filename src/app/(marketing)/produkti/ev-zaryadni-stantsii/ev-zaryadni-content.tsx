@@ -97,12 +97,12 @@ export function EvZaryadniContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
-            <BadgeChip variant="accent">E-мобилност</BadgeChip>
+            <BadgeChip variant="hero">E-мобилност</BadgeChip>
           </motion.div>
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             EV Зарядни Станции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
             Заредете автомобила си от слънцето. Интелигентни зарядни станции, интегрирани с вашата соларна система и батерия.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">
@@ -112,7 +112,7 @@ export function EvZaryadniContent() {
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/konfigurator" variant="primary">
-              Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+              Конфигурирай система
             </MagneticButton>
           </motion.div>
         </div>

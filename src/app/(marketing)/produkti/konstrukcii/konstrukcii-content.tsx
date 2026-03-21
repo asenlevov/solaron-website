@@ -32,7 +32,6 @@ const mountTypes = [
     id: "roof",
     label: "Покрив",
     icon: Home,
-    image: REAL_IMAGES.projects.varna39_hero,
     description: "Системи за скатен и плосък покрив. Лесна инсталация, минимално натоварване, максимална издръжливост.",
     specs: [
       { label: "Наклон", value: "5°–60°" },
@@ -44,7 +43,6 @@ const mountTypes = [
     id: "ground",
     label: "Земя",
     icon: Mountain,
-    image: REAL_IMAGES.projects.saedinenie651_hero,
     description: "Наземни конструкции за големи инсталации. Регулируем ъгъл, здрави фундаменти, дълъг живот.",
     specs: [
       { label: "Наклон", value: "15°–35° регулируем" },
@@ -56,7 +54,6 @@ const mountTypes = [
     id: "carport",
     label: "Карпорт",
     icon: Car,
-    image: REAL_IMAGES.projects.carport270_hero,
     description: "Соларни навеси за паркинги. Двойна функция — енергия и защита на автомобилите.",
     specs: [
       { label: "Височина", value: "2.5–4.5 m" },
@@ -68,7 +65,6 @@ const mountTypes = [
     id: "facade",
     label: "Фасада",
     icon: Building2,
-    image: REAL_IMAGES.projects.sedemBg108_hero,
     description: "Фасадни системи за вертикален монтаж. Архитектурна интеграция с енергийна функция.",
     specs: [
       { label: "Ъгъл", value: "70°–90°" },
@@ -77,6 +73,146 @@ const mountTypes = [
     ],
   },
 ];
+
+function MountDiagram({ type }: { type: string }) {
+  const stroke = "var(--accent)";
+  const strokeLight = "var(--accent-light)";
+  const gray = "#d4d4d4";
+  const grayDark = "#a3a3a3";
+
+  if (type === "roof") return (
+    <svg viewBox="0 0 400 300" fill="none" className="w-full h-full">
+      {/* House outline */}
+      <path d="M60 180 L200 80 L340 180" stroke={grayDark} strokeWidth="2" fill="none" />
+      <rect x="60" y="180" width="280" height="80" stroke={grayDark} strokeWidth="2" fill="none" rx="2" />
+      <rect x="150" y="210" width="50" height="50" stroke={gray} strokeWidth="1.5" fill="none" rx="1" />
+      <rect x="230" y="200" width="30" height="30" stroke={gray} strokeWidth="1.5" fill="none" rx="1" />
+      {/* Roof rails */}
+      <line x1="110" y1="155" x2="200" y2="100" stroke={stroke} strokeWidth="2.5" />
+      <line x1="200" y1="100" x2="290" y2="155" stroke={stroke} strokeWidth="2.5" />
+      {/* Solar panels on left slope */}
+      <rect x="120" y="138" width="35" height="12" rx="1" fill={stroke} opacity="0.8" transform="rotate(-30 137 144)" />
+      <rect x="150" y="124" width="35" height="12" rx="1" fill={stroke} opacity="0.6" transform="rotate(-30 167 130)" />
+      <rect x="180" y="110" width="35" height="12" rx="1" fill={stroke} opacity="0.4" transform="rotate(-30 197 116)" />
+      {/* Solar panels on right slope */}
+      <rect x="215" y="110" width="35" height="12" rx="1" fill={stroke} opacity="0.4" transform="rotate(30 232 116)" />
+      <rect x="245" y="124" width="35" height="12" rx="1" fill={stroke} opacity="0.6" transform="rotate(30 262 130)" />
+      <rect x="275" y="138" width="35" height="12" rx="1" fill={stroke} opacity="0.8" transform="rotate(30 292 144)" />
+      {/* Dimension lines */}
+      <line x1="340" y1="180" x2="365" y2="180" stroke={gray} strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="340" y1="130" x2="365" y2="130" stroke={gray} strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="360" y1="130" x2="360" y2="180" stroke={grayDark} strokeWidth="1" markerEnd="url(#arrow)" markerStart="url(#arrowUp)" />
+      <text x="370" y="158" fontSize="10" fill={grayDark} fontFamily="var(--font-display)">30°</text>
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill={grayDark} /></marker>
+        <marker id="arrowUp" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6" fill={grayDark} /></marker>
+      </defs>
+    </svg>
+  );
+
+  if (type === "ground") return (
+    <svg viewBox="0 0 400 300" fill="none" className="w-full h-full">
+      {/* Ground line */}
+      <line x1="30" y1="260" x2="370" y2="260" stroke={gray} strokeWidth="1.5" strokeDasharray="6 4" />
+      {/* Support posts */}
+      <rect x="80" y="160" width="6" height="100" fill={grayDark} rx="1" />
+      <rect x="160" y="160" width="6" height="100" fill={grayDark} rx="1" />
+      <rect x="240" y="140" width="6" height="120" fill={grayDark} rx="1" />
+      <rect x="320" y="140" width="6" height="120" fill={grayDark} rx="1" />
+      {/* Cross bracing */}
+      <line x1="83" y1="240" x2="163" y2="200" stroke={gray} strokeWidth="1" />
+      <line x1="243" y1="240" x2="323" y2="200" stroke={gray} strokeWidth="1" />
+      {/* Top rails */}
+      <line x1="70" y1="158" x2="250" y2="138" stroke={stroke} strokeWidth="3" />
+      <line x1="150" y1="148" x2="330" y2="128" stroke={stroke} strokeWidth="3" />
+      {/* Solar panels */}
+      <rect x="75" y="132" width="55" height="24" rx="2" fill={stroke} opacity="0.3" transform="rotate(-7 102 144)" />
+      <rect x="140" y="126" width="55" height="24" rx="2" fill={stroke} opacity="0.5" transform="rotate(-7 167 138)" />
+      <rect x="205" y="120" width="55" height="24" rx="2" fill={stroke} opacity="0.7" transform="rotate(-7 232 132)" />
+      <rect x="270" y="114" width="55" height="24" rx="2" fill={stroke} opacity="0.9" transform="rotate(-7 297 126)" />
+      {/* Angle indicator */}
+      <path d="M80 260 L80 170 L100 165" stroke={grayDark} strokeWidth="1" fill="none" strokeDasharray="3 3" />
+      <text x="40" y="218" fontSize="10" fill={grayDark} fontFamily="var(--font-display)">15°–35°</text>
+      {/* Foundation markers */}
+      <circle cx="83" cy="260" r="8" fill="none" stroke={grayDark} strokeWidth="1" strokeDasharray="2 2" />
+      <circle cx="163" cy="260" r="8" fill="none" stroke={grayDark} strokeWidth="1" strokeDasharray="2 2" />
+      <circle cx="243" cy="260" r="8" fill="none" stroke={grayDark} strokeWidth="1" strokeDasharray="2 2" />
+      <circle cx="323" cy="260" r="8" fill="none" stroke={grayDark} strokeWidth="1" strokeDasharray="2 2" />
+    </svg>
+  );
+
+  if (type === "carport") return (
+    <svg viewBox="0 0 400 300" fill="none" className="w-full h-full">
+      {/* Ground */}
+      <line x1="20" y1="270" x2="380" y2="270" stroke={gray} strokeWidth="1.5" strokeDasharray="6 4" />
+      {/* Support columns */}
+      <rect x="60" y="100" width="8" height="170" fill={grayDark} rx="2" />
+      <rect x="180" y="100" width="8" height="170" fill={grayDark} rx="2" />
+      <rect x="300" y="100" width="8" height="170" fill={grayDark} rx="2" />
+      {/* Top beam */}
+      <rect x="55" y="94" width="260" height="8" fill={stroke} rx="2" />
+      {/* Panels on top */}
+      <rect x="62" y="72" width="60" height="22" rx="2" fill={stroke} opacity="0.7" />
+      <rect x="128" y="72" width="60" height="22" rx="2" fill={stroke} opacity="0.5" />
+      <rect x="194" y="72" width="60" height="22" rx="2" fill={stroke} opacity="0.7" />
+      <rect x="260" y="72" width="50" height="22" rx="2" fill={stroke} opacity="0.5" />
+      {/* Panel grid lines */}
+      <line x1="82" y1="72" x2="82" y2="94" stroke="white" strokeWidth="0.5" opacity="0.4" />
+      <line x1="102" y1="72" x2="102" y2="94" stroke="white" strokeWidth="0.5" opacity="0.4" />
+      <line x1="148" y1="72" x2="148" y2="94" stroke="white" strokeWidth="0.5" opacity="0.4" />
+      <line x1="168" y1="72" x2="168" y2="94" stroke="white" strokeWidth="0.5" opacity="0.4" />
+      {/* Car silhouettes */}
+      <ellipse cx="125" cy="258" rx="45" ry="10" fill={gray} opacity="0.3" />
+      <path d="M90 250 Q90 230 110 228 L140 228 Q160 230 160 250 Z" fill={gray} opacity="0.4" />
+      <path d="M95 250 Q100 240 115 238 L135 238 Q150 240 155 250 Z" fill="none" stroke={grayDark} strokeWidth="1" />
+      <circle cx="105" cy="252" r="6" fill="none" stroke={grayDark} strokeWidth="1.5" />
+      <circle cx="145" cy="252" r="6" fill="none" stroke={grayDark} strokeWidth="1.5" />
+      <ellipse cx="260" cy="258" rx="45" ry="10" fill={gray} opacity="0.3" />
+      <path d="M225 250 Q225 230 245 228 L275 228 Q295 230 295 250 Z" fill={gray} opacity="0.4" />
+      <path d="M230 250 Q235 240 250 238 L270 238 Q285 240 290 250 Z" fill="none" stroke={grayDark} strokeWidth="1" />
+      <circle cx="240" cy="252" r="6" fill="none" stroke={grayDark} strokeWidth="1.5" />
+      <circle cx="280" cy="252" r="6" fill="none" stroke={grayDark} strokeWidth="1.5" />
+      {/* Height dimension */}
+      <line x1="330" y1="94" x2="350" y2="94" stroke={gray} strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="330" y1="270" x2="350" y2="270" stroke={gray} strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="345" y1="94" x2="345" y2="270" stroke={grayDark} strokeWidth="1" />
+      <text x="350" y="185" fontSize="10" fill={grayDark} fontFamily="var(--font-display)">3.5 m</text>
+    </svg>
+  );
+
+  return (
+    <svg viewBox="0 0 400 300" fill="none" className="w-full h-full">
+      {/* Building wall */}
+      <rect x="40" y="30" width="180" height="250" fill="none" stroke={grayDark} strokeWidth="2" rx="2" />
+      {/* Windows */}
+      <rect x="60" y="50" width="40" height="50" fill="none" stroke={gray} strokeWidth="1" rx="1" />
+      <rect x="120" y="50" width="40" height="50" fill="none" stroke={gray} strokeWidth="1" rx="1" />
+      <rect x="60" y="120" width="40" height="50" fill="none" stroke={gray} strokeWidth="1" rx="1" />
+      <rect x="120" y="120" width="40" height="50" fill="none" stroke={gray} strokeWidth="1" rx="1" />
+      {/* Door */}
+      <rect x="85" y="215" width="50" height="65" fill="none" stroke={gray} strokeWidth="1.5" rx="1" />
+      {/* Vertical panels on facade */}
+      <rect x="230" y="40" width="24" height="60" rx="2" fill={stroke} opacity="0.8" />
+      <rect x="260" y="40" width="24" height="60" rx="2" fill={stroke} opacity="0.6" />
+      <rect x="290" y="40" width="24" height="60" rx="2" fill={stroke} opacity="0.8" />
+      <rect x="230" y="110" width="24" height="60" rx="2" fill={stroke} opacity="0.6" />
+      <rect x="260" y="110" width="24" height="60" rx="2" fill={stroke} opacity="0.8" />
+      <rect x="290" y="110" width="24" height="60" rx="2" fill={stroke} opacity="0.6" />
+      <rect x="230" y="180" width="24" height="60" rx="2" fill={stroke} opacity="0.8" />
+      <rect x="260" y="180" width="24" height="60" rx="2" fill={stroke} opacity="0.6" />
+      <rect x="290" y="180" width="24" height="60" rx="2" fill={stroke} opacity="0.8" />
+      {/* Mounting brackets */}
+      <line x1="220" y1="60" x2="230" y2="60" stroke={stroke} strokeWidth="2" />
+      <line x1="220" y1="130" x2="230" y2="130" stroke={stroke} strokeWidth="2" />
+      <line x1="220" y1="200" x2="230" y2="200" stroke={stroke} strokeWidth="2" />
+      {/* Vertical rail */}
+      <line x1="222" y1="40" x2="222" y2="250" stroke={stroke} strokeWidth="2.5" />
+      {/* Angle indicator */}
+      <text x="330" y="160" fontSize="10" fill={grayDark} fontFamily="var(--font-display)">90°</text>
+      <line x1="320" y1="100" x2="320" y2="220" stroke={grayDark} strokeWidth="1" strokeDasharray="3 3" />
+    </svg>
+  );
+}
 
 const installSteps = [
   { src: REAL_IMAGES.installations.stepSurvey, title: "Оглед", desc: "Технически оглед на покрива и околната среда" },
@@ -119,12 +255,12 @@ export function KonstrukciiContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
-            <BadgeChip variant="accent">Монтажни системи</BadgeChip>
+            <BadgeChip variant="hero">Монтажни системи</BadgeChip>
           </motion.div>
           <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
             Конструкции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-lg text-lg text-white/70 font-body">
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-lg text-lg md:text-2xl text-white/70 font-body leading-relaxed">
             Алуминиеви конструкции за всеки тип инсталация — от скатен покрив до соларен карпорт. Проектирани за българския климат.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">
@@ -134,7 +270,7 @@ export function KonstrukciiContent() {
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/kontakti" variant="primary">
-              Безплатна консултация <ArrowRight className="ml-2 h-5 w-5" />
+              Безплатна консултация
             </MagneticButton>
           </motion.div>
         </div>
@@ -180,8 +316,8 @@ export function KonstrukciiContent() {
               transition={{ duration: 0.4 }}
               className="grid md:grid-cols-2 gap-12 items-center"
             >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
-                <Image src={current.image} alt={current.label} fill className="object-cover" />
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#f8faf6] border border-border/50 flex items-center justify-center p-8">
+                <MountDiagram type={current.id} />
               </div>
               <div>
                 <h3 className="text-editorial-heading">{current.label}</h3>
@@ -459,7 +595,7 @@ export function KonstrukciiContent() {
             Нашите инженери ще проектират оптималната монтажна система за вашия обект.
           </motion.p>
           <MagneticButton href="/konfigurator" variant="primary" size="xl">
-            Безплатна консултация <ArrowRight className="ml-2 h-5 w-5" />
+            Безплатна консултация
           </MagneticButton>
         </div>
       </section>

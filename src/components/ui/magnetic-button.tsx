@@ -83,7 +83,7 @@ export function MagneticButton({
         )}
       />
       
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 whitespace-nowrap">{children}</span>
       
       {showArrow && (
         <ArrowRight className={cn(

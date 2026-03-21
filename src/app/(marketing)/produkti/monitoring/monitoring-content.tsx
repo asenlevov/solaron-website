@@ -101,12 +101,12 @@ export function MonitoringContent() {
           <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
               <motion.div variants={blurIn} initial="hidden" animate="visible">
-                <BadgeChip variant="accent">SolarEdge</BadgeChip>
+                <BadgeChip variant="hero">SolarEdge</BadgeChip>
               </motion.div>
               <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
                 Мониторинг
               </TextReveal>
-              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
                 Пълен контрол над вашата соларна система — от телефона, таблета или компютъра. 24/7 данни в реално време.
               </motion.p>
               <div className="mt-10 flex flex-wrap gap-12">
@@ -116,7 +116,7 @@ export function MonitoringContent() {
               </div>
               <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
                 <MagneticButton href="/konfigurator" variant="primary">
-                  Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+                  Конфигурирай система
                 </MagneticButton>
               </motion.div>
             </div>

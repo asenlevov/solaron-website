@@ -6,11 +6,12 @@ const variantStyles = {
   accent: "bg-accent/15 text-accent border border-accent/30",
   success: "bg-success/15 text-success border border-success/30",
   new: "bg-accent/15 text-accent border border-accent/30",
+  hero: "bg-white/15 text-white border border-white/20 backdrop-blur-sm",
 } as const;
 
 export interface BadgeChipProps
   extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "accent" | "success" | "new";
+  variant?: "default" | "accent" | "success" | "new" | "hero";
 }
 
 const BadgeChip = React.forwardRef<HTMLSpanElement, BadgeChipProps>(
@@ -19,7 +20,7 @@ const BadgeChip = React.forwardRef<HTMLSpanElement, BadgeChipProps>(
       <span
         ref={ref}
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
+          "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium",
           variantStyles[variant],
           className,
         )}

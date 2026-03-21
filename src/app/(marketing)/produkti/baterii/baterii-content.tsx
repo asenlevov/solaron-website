@@ -78,12 +78,12 @@ export function BateriiContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
-            <BadgeChip variant="accent">Съхранение</BadgeChip>
+            <BadgeChip variant="hero">Съхранение</BadgeChip>
           </motion.div>
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             Батерии
           </TextReveal>
-          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
             LiFePO₄ батерии за енергийна независимост — зареждайте от слънцето, използвайте денонощно.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">
@@ -93,7 +93,7 @@ export function BateriiContent() {
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/konfigurator" variant="primary">
-              Конфигурирай система <ArrowRight className="ml-2 h-5 w-5" />
+              Конфигурирай система
             </MagneticButton>
           </motion.div>
         </div>

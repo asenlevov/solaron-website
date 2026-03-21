@@ -263,7 +263,7 @@ export function SolarniPaneliContent() {
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
           <motion.div variants={blurIn} initial="hidden" animate="visible">
-            <BadgeChip variant="accent">MWT Технология</BadgeChip>
+            <BadgeChip variant="hero">MWT Технология</BadgeChip>
           </motion.div>
           <TextReveal as="h1" className="text-editorial-hero text-white max-w-4xl mt-2">
             Соларни Панели
@@ -272,7 +272,7 @@ export function SolarniPaneliContent() {
             variants={blurIn}
             initial="hidden"
             animate="visible"
-            className="mt-6 max-w-xl text-lg md:text-xl text-white/80 font-body leading-relaxed"
+            className="mt-6 max-w-xl text-lg md:text-2xl text-white/80 font-body leading-relaxed"
           >
             MWT монокристални модули от ново поколение — максимална ефективност,
             минимална деградация, 30 години гарантирана производителност.
@@ -284,7 +284,7 @@ export function SolarniPaneliContent() {
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/konfigurator" variant="primary">
-              Безплатна оферта <ArrowRight className="ml-2 h-5 w-5" />
+              Безплатна оферта
             </MagneticButton>
           </motion.div>
         </div>
