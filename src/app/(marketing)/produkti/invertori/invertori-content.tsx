@@ -10,6 +10,8 @@ import { TextReveal } from "@/components/ui/text-reveal";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { PRODUCT_IMAGES, REAL_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
@@ -61,9 +63,9 @@ export function InvertoriContent() {
       <section className="relative py-24 md:py-36 bg-white overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="text-editorial-overline text-accent">
-              SolarEdge
-            </motion.p>
+            <motion.div variants={slideFromLeft} initial="hidden" animate="visible">
+              <BadgeChip variant="accent">SolarEdge HD-Wave</BadgeChip>
+            </motion.div>
             <TextReveal as="h1" className="text-editorial-hero max-w-4xl mt-2">
               Инвертори
             </TextReveal>
@@ -272,15 +274,17 @@ export function InvertoriContent() {
           >
             {bentoCards.map((c) => (
               <motion.div key={c.title} variants={staggerItem} className={c.span}>
-                <TiltCard className="h-full">
-                  <div className="rounded-2xl border border-border bg-[#f7f9f4] p-8 h-full flex items-center gap-5">
-                    <c.icon className="h-7 w-7 text-accent shrink-0 mt-1" strokeWidth={1.5} />
+                <GlowCard className="h-full">
+                  <div className="p-8 h-full flex items-center gap-5">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                      <c.icon className="h-5 w-5" strokeWidth={1.5} />
+                    </div>
                     <div>
                       <h3 className="font-display font-bold text-lg">{c.title}</h3>
-                      <p className="mt-2 text-muted-foreground font-body">{c.desc}</p>
+                      <p className="mt-2 text-foreground-secondary font-body">{c.desc}</p>
                     </div>
                   </div>
-                </TiltCard>
+                </GlowCard>
               </motion.div>
             ))}
           </motion.div>
@@ -334,13 +338,15 @@ export function InvertoriContent() {
               { title: "Соларни Панели", desc: "MWT модули с 21.5% ефективност за максимално производство от всеки квадратен метър.", href: "/produkti/solarni-paneli" },
               { title: "Батерии", desc: "LFP съхранение с 6000+ цикъла за енергийна независимост денонощно.", href: "/produkti/baterii" },
             ].map((p) => (
-              <Link key={p.href} href={p.href} className="group rounded-2xl border border-border bg-white p-8 transition-shadow hover:shadow-lg">
-                <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                  Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
+              <GlowCard key={p.href}>
+                <Link href={p.href} className="group block p-8">
+                  <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
+                  <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </GlowCard>
             ))}
           </div>
         </div>

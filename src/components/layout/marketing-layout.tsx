@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { FloatingCTA } from "@/components/ui/floating-cta";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { SocialProofToast } from "@/components/marketing/social-proof-toast";
+import { CookieConsent } from "@/components/marketing/cookie-consent";
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
 
@@ -18,6 +20,8 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
         <Footer />
       </div>
       <BackToTop />
+      <SocialProofToast />
+      <CookieConsent />
     </>
   );
 }

@@ -2,20 +2,23 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { MapPin, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight, Zap, Calendar, TrendingUp } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import { ImageEditorial } from "@/components/ui/image-editorial";
-import { StatNumber } from "@/components/ui/stat-number";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { REAL_IMAGES } from "@/data/images";
-import { revealFromBottom, createStagger, slideUp } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
 const heroProject = {
+  slug: "651-kwp-saedinenie",
   title: "Соларен Парк Съединение",
   kWp: 651,
   location: "Съединение, България",
   category: "Индустриален",
+  year: 2023,
+  savingsPercent: 82,
   description:
     "Най-големият ни проект — 651 kWp наземна фотоволтаична централа. Захранва местното производство с чиста енергия и спестява над 300 тона CO₂ годишно.",
   image: REAL_IMAGES.projects.saedinenie651_hero,
@@ -23,6 +26,7 @@ const heroProject = {
 
 const gridProjects = [
   {
+    slug: "270-kwp-carport-kazanlak",
     title: "Соларен Карпорт Казанлък",
     kWp: 270,
     location: "Казанлък",
@@ -32,6 +36,7 @@ const gridProjects = [
     aspect: "aspect-[16/9]",
   },
   {
+    slug: "108-kwp-sedem-bg",
     title: "Търговски Обект София",
     kWp: 108,
     location: "София",
@@ -41,6 +46,7 @@ const gridProjects = [
     aspect: "aspect-[4/5]",
   },
   {
+    slug: "39-kwp-varna",
     title: "Покривна Система Варна",
     kWp: 39,
     location: "Варна",
@@ -58,115 +64,144 @@ export function FeaturedProjects() {
   const gridInView = useInView(gridRef, { once: true, margin: "0px 0px -10% 0px" });
 
   return (
-    <section className="overflow-hidden bg-[#0a0f0a] px-6 py-20 md:px-8 md:py-28 lg:py-32">
+    <section className="overflow-hidden bg-background px-6 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        {/* Stats bar */}
-        <div className="mb-14 flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-white/10 pb-6 text-editorial-overline text-white/50">
-          <span>
-            <strong className="text-accent">651 kWp</strong> най-голям проект
-          </span>
-          <span aria-hidden className="hidden text-white/40 sm:inline">·</span>
-          <span>
-            <strong className="text-white/80">14</strong> завършени
-          </span>
-          <span aria-hidden className="hidden text-white/40 sm:inline">·</span>
-          <span>
-            <strong className="text-white/80">4</strong> държави
-          </span>
+        {/* Section header */}
+        <div className="mb-12 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
+          <div>
+            <BadgeChip variant="accent" className="mb-4">Реализирани Проекти</BadgeChip>
+            <h2 className="text-editorial-heading">Проекти, Които Говорят</h2>
+            <p className="mt-3 max-w-xl text-lg text-foreground-secondary">
+              Всеки проект е индивидуално проектиран за максимална ефективност и възвръщаемост.
+            </p>
+          </div>
+          <div className="flex gap-6 text-sm text-foreground-tertiary">
+            <span><strong className="text-accent font-semibold">651 kWp</strong> най-голям проект</span>
+            <span><strong className="text-foreground font-semibold">14</strong> завършени</span>
+            <span><strong className="text-foreground font-semibold">4</strong> държави</span>
+          </div>
         </div>
 
         {/* Hero project */}
         <motion.div
           ref={heroRef}
           className="relative mb-10 md:mb-14"
-          variants={revealFromBottom}
-          initial="hidden"
-          animate={heroInView ? "visible" : "hidden"}
+          initial={{ opacity: 0, y: 30 }}
+          animate={heroInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
         >
-          <div className="grid grid-cols-1 items-end lg:grid-cols-[1fr_380px]">
-            {/* Image — fills ~70% width on desktop */}
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl lg:aspect-[2/1]">
-              <ImageEditorial
-                src={heroProject.image}
-                alt={heroProject.title}
-                fill
-                grain
-                parallax
-                containerClassName="absolute inset-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0a0f0a]/80 max-lg:hidden" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a]/70 to-transparent lg:hidden" />
-            </div>
+          <GlowCard className="overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]">
+              <div className="relative aspect-[16/9] overflow-hidden lg:aspect-auto lg:min-h-[400px]">
+                <ImageEditorial
+                  src={heroProject.image}
+                  alt={heroProject.title}
+                  fill
+                  grain
+                  parallax
+                  containerClassName="absolute inset-0"
+                />
+              </div>
 
-            {/* Details card — overlaps on desktop */}
-            <div className="relative rounded-2xl border border-white/10 bg-[#0a0f0a]/90 p-6 backdrop-blur-md max-lg:-mt-24 lg:absolute lg:bottom-6 lg:right-0 lg:w-[380px] lg:p-8">
-              <span className="mb-3 inline-flex rounded-full bg-accent/15 px-3 py-1 font-body text-xs font-semibold text-accent">
-                {heroProject.category}
-              </span>
+              <div className="flex flex-col justify-center p-8 lg:p-10">
+                <div className="flex gap-2 mb-4">
+                  <BadgeChip variant="success">{heroProject.category}</BadgeChip>
+                  <BadgeChip>{heroProject.year}</BadgeChip>
+                </div>
 
-              <StatNumber
-                value={heroProject.kWp}
-                suffix=" kWp"
-                className="text-accent"
-                contextClassName="text-white/50"
-              />
+                <h3 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                  {heroProject.title}
+                </h3>
 
-              <h3 className="mt-3 font-display text-xl font-bold text-white md:text-2xl">
-                {heroProject.title}
-              </h3>
+                <p className="mt-3 text-base leading-relaxed text-foreground-secondary">
+                  {heroProject.description}
+                </p>
 
-              <p className="mt-2 font-body text-sm leading-relaxed text-white/60">
-                {heroProject.description}
-              </p>
+                <div className="mt-6 grid grid-cols-3 gap-4">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
+                      <Zap className="size-3.5" />
+                      Мощност
+                    </div>
+                    <p className="text-xl font-bold text-accent">{heroProject.kWp} kWp</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
+                      <TrendingUp className="size-3.5" />
+                      Спестяване
+                    </div>
+                    <p className="text-xl font-bold text-foreground">{heroProject.savingsPercent}%</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
+                      <MapPin className="size-3.5" />
+                      Локация
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{heroProject.location}</p>
+                  </div>
+                </div>
 
-              <div className="mt-4 flex items-center gap-1.5 font-body text-sm text-white/50">
-                <MapPin className="h-4 w-4" />
-                {heroProject.location}
+                <Link
+                  href={`/proekti/${heroProject.slug}`}
+                  className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
+                >
+                  Виж проекта
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
               </div>
             </div>
-          </div>
+          </GlowCard>
         </motion.div>
 
         {/* Grid projects */}
         <motion.div
           ref={gridRef}
           className="grid grid-cols-1 gap-5 md:grid-cols-4"
-          variants={createStagger(0.12, 0.1)}
           initial="hidden"
           animate={gridInView ? "visible" : "hidden"}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1 } },
+          }}
         >
           {gridProjects.map((project) => (
             <motion.div
               key={project.title}
-              variants={slideUp}
-              className={cn("group relative overflow-hidden rounded-2xl", project.span)}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              }}
+              className={cn("group", project.span)}
             >
-              <div className={cn("relative w-full", project.aspect)}>
-                <ImageEditorial
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  grain
-                  className="transition-all duration-700 ease-out [clip-path:inset(4%)] group-hover:[clip-path:inset(0%)]"
-                  containerClassName="absolute inset-0"
-                />
+              <Link href={`/proekti/${project.slug}`}>
+                <GlowCard className="overflow-hidden">
+                  <div className={cn("relative w-full", project.aspect)}>
+                    <ImageEditorial
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      grain
+                      className="transition-transform duration-700 ease-out group-hover:scale-105"
+                      containerClassName="absolute inset-0"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-                  <span className="mb-2 inline-flex rounded-full bg-accent/90 px-2.5 py-0.5 font-display text-xs font-bold text-white">
-                    {project.kWp} kWp
-                  </span>
-                  <h3 className="font-display text-lg font-bold text-white">
-                    {project.title}
-                  </h3>
-                  <div className="mt-1 flex items-center gap-1 font-body text-xs text-white/60">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {project.location}
-                    <span className="ml-2 text-white/40">{project.category}</span>
+                    <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                      <BadgeChip variant="success" className="mb-2 bg-accent/90 text-white border-none">
+                        {project.kWp} kWp
+                      </BadgeChip>
+                      <h3 className="font-display text-lg font-bold text-white">
+                        {project.title}
+                      </h3>
+                      <div className="mt-1 flex items-center gap-1 text-xs text-white/70">
+                        <MapPin className="h-3.5 w-3.5" />
+                        {project.location}
+                        <span className="ml-2 text-white/50">{project.category}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </GlowCard>
+              </Link>
             </motion.div>
           ))}
         </motion.div>
@@ -174,8 +209,8 @@ export function FeaturedProjects() {
         {/* CTA */}
         <div className="mt-14 flex justify-center md:mt-16">
           <MagneticButton href="/proekti" variant="outline" size="lg">
-            <span className="text-white">Всички Проекти</span>
-            <ArrowRight className="ml-2 h-4 w-4 text-white" />
+            Всички Проекти
+            <ArrowRight className="ml-2 h-4 w-4" />
           </MagneticButton>
         </div>
       </div>

@@ -10,6 +10,7 @@ import { TextReveal } from "@/components/ui/text-reveal";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
 import { SceneCanvasDynamic } from "@/components/3d/scene-container";
 import { SolarPanel } from "@/components/3d/solar-panel";
 import { REAL_IMAGES, PRODUCT_IMAGES } from "@/data/images";
@@ -658,15 +659,17 @@ export function SolarniPaneliContent() {
               { title: "Конструкции за монтаж", href: "/produkti/konstrukcii", img: REAL_IMAGES.projects.varna39_1 },
             ].map((p) => (
               <motion.div key={p.title} variants={staggerItem}>
-                <Link href={p.href} className="group block rounded-2xl overflow-hidden border border-border hover:border-accent/30 transition-colors">
-                  <div className="relative aspect-[16/9]">
-                    <Image src={p.img} alt={p.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  </div>
-                  <div className="p-6 flex items-center justify-between">
-                    <h3 className="font-display font-bold">{p.title}</h3>
-                    <ArrowRight className="h-5 w-5 text-accent transition-transform group-hover:translate-x-1" />
-                  </div>
-                </Link>
+                <GlowCard className="rounded-2xl h-full">
+                  <Link href={p.href} className="group block overflow-hidden rounded-2xl">
+                    <div className="relative aspect-[16/9]">
+                      <Image src={p.img} alt={p.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    </div>
+                    <div className="p-6 flex items-center justify-between">
+                      <h3 className="font-display font-bold">{p.title}</h3>
+                      <ArrowRight className="h-5 w-5 text-accent transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Link>
+                </GlowCard>
               </motion.div>
             ))}
           </motion.div>

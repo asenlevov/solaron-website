@@ -8,6 +8,8 @@ import { MagneticButton } from "@/components/ui/magnetic-button";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import {
   revealFromBottom,
   blurIn,
@@ -74,9 +76,9 @@ export function MonitoringContent() {
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <motion.p variants={blurIn} initial="hidden" animate="visible" className="text-editorial-overline text-accent">
-                SolarEdge
-              </motion.p>
+              <motion.div variants={blurIn} initial="hidden" animate="visible">
+                <BadgeChip variant="accent">SolarEdge</BadgeChip>
+              </motion.div>
               <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
                 Мониторинг
               </TextReveal>
@@ -283,13 +285,15 @@ export function MonitoringContent() {
               { title: "Инвертори SolarEdge", desc: "HD-Wave технология с 99.5% ефективност за интелигентно преобразуване на енергията.", href: "/produkti/invertori" },
               { title: "Батерии", desc: "LFP съхранение с 6000+ цикъла за енергийна независимост денонощно.", href: "/produkti/baterii" },
             ].map((p) => (
-              <Link key={p.href} href={p.href} className="group rounded-2xl border border-border bg-white p-8 transition-shadow hover:shadow-lg">
-                <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                  Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
+              <GlowCard key={p.href}>
+                <Link href={p.href} className="group block p-8">
+                  <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
+                  <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </GlowCard>
             ))}
           </div>
         </div>

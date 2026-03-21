@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const products = [
@@ -19,16 +20,18 @@ const solutions = [
   { href: "/resheniya/za-doma", label: "За Дома" },
   { href: "/resheniya/za-biznesa", label: "За Бизнеса" },
   { href: "/resheniya/za-industriyata", label: "За Индустрията" },
+  { href: "/resheniya/za-zemedelieto", label: "За Земеделието" },
+  { href: "/resheniya/solaren-karport", label: "Соларен Карпорт" },
+  { href: "/resheniya/avtonomni-sistemi", label: "Автономни Системи" },
 ] as const;
 
 const resources = [
   { href: "/kak-raboti/slancheva-energiya", label: "Как Работи" },
   { href: "/kak-raboti/protsesa-na-montazh", label: "Процес на Монтаж" },
   { href: "/kak-raboti/finansirane", label: "Финансиране" },
+  { href: "/konfigurator", label: "Конфигуратор" },
+  { href: "/proekti", label: "Проекти" },
   { href: "/instrumenti/roi-kalkulator", label: "ROI Калкулатор" },
-  { href: "/instrumenti/spestqvania", label: "Спестявания" },
-  { href: "/instrumenti/sravnenie", label: "Сравнение" },
-  { href: "/instrumenti/rechnik", label: "Речник" },
   { href: "/blog", label: "Блог" },
 ] as const;
 
@@ -46,6 +49,7 @@ const companyLegal = [
   { href: "/pravna-informatsiya/poveritelnost", label: "Поверителност" },
   { href: "/pravna-informatsiya/usloviya", label: "Условия" },
   { href: "/pravna-informatsiya/garantsiya", label: "Гаранция" },
+  { href: "/pravna-informatsiya/biskvitki", label: "Бисквитки" },
 ] as const;
 
 const social = [
@@ -67,17 +71,72 @@ function FooterLink({ href, children }: { href: string; children: ReactNode }) {
 
 function ColumnTitle({ children }: { children: ReactNode }) {
   return (
-    <h3 className="font-display text-xs font-semibold uppercase tracking-wider text-foreground">{children}</h3>
+    <h3 className="font-display text-xs font-semibold uppercase tracking-wider text-foreground">
+      {children}
+    </h3>
+  );
+}
+
+function NewsletterForm() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (email) setSubmitted(true);
+      }}
+      className="mt-4"
+    >
+      {submitted ? (
+        <p className="text-sm text-accent font-medium">
+          Благодарим ви! Ще получите първия бюлетин скоро.
+        </p>
+      ) : (
+        <div className="flex gap-2">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Вашият имейл"
+            className="h-10 flex-1 rounded-lg border border-border-medium bg-background px-3 text-sm text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+          />
+          <button
+            type="submit"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-3 text-white transition-colors hover:bg-accent-hover"
+          >
+            <ArrowRight className="size-4" />
+          </button>
+        </div>
+      )}
+    </form>
   );
 }
 
 export function Footer({ className }: { className?: string }) {
   return (
     <footer className={cn("bg-[#F5F5F5] text-foreground", className)}>
+      {/* Social proof bar */}
+      <div className="border-b border-border bg-background-secondary/80">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-foreground-secondary">
+            <span className="font-semibold text-foreground">20+ години опит</span>
+            <span className="hidden sm:inline text-border-medium">|</span>
+            <span>384+ доволни клиенти</span>
+            <span className="hidden sm:inline text-border-medium">|</span>
+            <span>EUPD Research Award 2024</span>
+            <span className="hidden sm:inline text-border-medium">|</span>
+            <span>SolarEdge Certified Partner</span>
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
-          {/* Column 1 */}
-          <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">
+          {/* Column 1: Brand + Contact */}
+          <div className="flex flex-col gap-4 lg:col-span-2">
             <Link href="/" className="inline-block">
               <Image
                 src="/logo-solaron.png"
@@ -90,7 +149,34 @@ export function Footer({ className }: { className?: string }) {
             <p className="max-w-xs font-body text-sm leading-relaxed text-foreground-secondary">
               Европейско качество. Българска надеждност.
             </p>
-            <div className="flex items-center gap-2 pt-1">
+
+            <div className="space-y-2 mt-2">
+              <a
+                href="https://maps.google.com/?q=бул.+Черни+Връх+59Б,+ет.+3,+1407+София"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
+              >
+                <MapPin className="size-4 shrink-0 mt-0.5 text-accent" />
+                бул. Черни Връх 59Б, ет. 3, 1407 София
+              </a>
+              <a
+                href="tel:+35988432156"
+                className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
+              >
+                <Phone className="size-4 shrink-0 text-accent" />
+                +359 88 432 1560
+              </a>
+              <a
+                href="mailto:info@solaron.pro"
+                className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
+              >
+                <Mail className="size-4 shrink-0 text-accent" />
+                info@solaron.pro
+              </a>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
               {social.map(({ href, label, Icon }) => (
                 <Link
                   key={label}
@@ -107,11 +193,21 @@ export function Footer({ className }: { className?: string }) {
                 </Link>
               ))}
             </div>
+
+            <div className="mt-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-foreground mb-1">
+                Бюлетин
+              </p>
+              <p className="text-xs text-foreground-secondary">
+                Получавайте съвети за спестявания и новини за соларната индустрия.
+              </p>
+              <NewsletterForm />
+            </div>
           </div>
 
-          {/* Column 2 */}
+          {/* Column 2: Products & Solutions */}
           <div className="flex flex-col gap-4">
-            <ColumnTitle>Продукти & Решения</ColumnTitle>
+            <ColumnTitle>Продукти</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {products.map((item) => (
                 <li key={item.href}>
@@ -120,6 +216,7 @@ export function Footer({ className }: { className?: string }) {
               ))}
             </ul>
             <div className="my-1 h-px bg-border" role="separator" />
+            <ColumnTitle>Решения</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {solutions.map((item) => (
                 <li key={item.href}>
@@ -129,7 +226,7 @@ export function Footer({ className }: { className?: string }) {
             </ul>
           </div>
 
-          {/* Column 3 */}
+          {/* Column 3: Resources */}
           <div className="flex flex-col gap-4">
             <ColumnTitle>Ресурси</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
@@ -141,7 +238,7 @@ export function Footer({ className }: { className?: string }) {
             </ul>
           </div>
 
-          {/* Column 4 */}
+          {/* Column 4: Company */}
           <div className="flex flex-col gap-4">
             <ColumnTitle>Компания</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
@@ -165,7 +262,7 @@ export function Footer({ className }: { className?: string }) {
         <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="font-body text-sm text-foreground-secondary">
-              © 2026 Solaron. Всички права запазени.
+              &copy; 2026 Solaron. Всички права запазени.
             </p>
             <p className="font-body text-xs text-foreground-secondary sm:text-right">
               EUPD Research Award 2024 | SolarEdge Certified

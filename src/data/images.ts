@@ -130,6 +130,9 @@ export const REAL_IMAGES = {
     volta: "/real/partners/volta-logo.png",
     carportRender: "/real/partners/carport-render.png",
   },
+  hero: {
+    solarHome: "/real/hero/hero-solar-home.png",
+  },
 } as const;
 
 export const HERO_IMAGES = {

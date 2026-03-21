@@ -4,11 +4,10 @@ import { useRef } from "react";
 import Link from "next/link";
 import * as Accordion from "@radix-ui/react-accordion";
 import { motion, useInView } from "motion/react";
-import { ChevronDown, ArrowRight } from "lucide-react";
-
-import { TextReveal } from "@/components/ui/text-reveal";
+import { ChevronDown, ArrowRight, HelpCircle } from "lucide-react";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { cn } from "@/lib/utils";
-import { createStagger, staggerItem } from "@/lib/animations";
 
 const FAQ_ITEMS = [
   {
@@ -43,68 +42,84 @@ const faqJsonLd = {
   mainEntity: FAQ_ITEMS.map((item) => ({
     "@type": "Question",
     name: item.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.a,
-    },
+    acceptedAnswer: { "@type": "Answer", text: item.a },
   })),
 };
-
-function formatNum(n: number): string {
-  return String(n).padStart(2, "0");
-}
-
-const containerVariants = createStagger(0.06, 0.15);
 
 export function FAQSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
 
   return (
-    <section className="bg-white px-6 py-24 md:px-8 md:py-32 lg:py-40">
+    <section className="bg-background px-6 py-24 md:px-8 md:py-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <div ref={ref} className="mx-auto max-w-7xl">
-        <div className="mb-16 text-center md:mb-20">
-          <p className="text-editorial-overline mb-4">ВЪПРОСИ</p>
-          <TextReveal as="h2" className="text-editorial-heading justify-center">
-            Често Задавани Въпроси
-          </TextReveal>
-        </div>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+          {/* Left column — header + CTA */}
+          <motion.div
+            className="lg:sticky lg:top-32 lg:self-start"
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5 }}
+          >
+            <BadgeChip variant="accent" className="mb-4">
+              <HelpCircle className="mr-1.5 size-3.5" />
+              Въпроси
+            </BadgeChip>
+            <h2 className="text-editorial-heading">
+              Често Задавани Въпроси
+            </h2>
+            <p className="mt-4 text-lg text-foreground-secondary">
+              Всичко, което трябва да знаете за соларните системи и процеса на инсталация.
+            </p>
 
-        <motion.div
-          className="mx-auto max-w-3xl"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <Accordion.Root type="single" collapsible className="w-full">
-            {FAQ_ITEMS.map((item, i) => (
-              <motion.div key={item.q} variants={staggerItem}>
+            <div className="mt-8 rounded-xl border border-accent/20 bg-accent/5 p-6">
+              <p className="text-sm font-medium text-foreground">
+                Не намирате отговор на вашия въпрос?
+              </p>
+              <p className="mt-1 text-sm text-foreground-secondary">
+                Свържете се с нас за безплатна консултация.
+              </p>
+              <Link
+                href="/kontakti"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
+              >
+                Свържете се с нас
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Right column — accordion */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <Accordion.Root type="single" collapsible className="w-full space-y-3">
+              {FAQ_ITEMS.map((item, i) => (
                 <Accordion.Item
+                  key={item.q}
                   value={`faq-${i}`}
-                  className={cn(
-                    "group border-b border-border/50",
-                    "transition-all duration-300",
-                    "data-[state=open]:border-l-2 data-[state=open]:border-l-accent data-[state=open]:pl-6",
-                  )}
+                  className="group rounded-xl border border-border bg-background transition-all duration-200 data-[state=open]:border-accent/30 data-[state=open]:shadow-sm"
                 >
                   <Accordion.Header>
                     <Accordion.Trigger
                       className={cn(
-                        "flex w-full items-center gap-5 py-6 text-left outline-none",
+                        "flex w-full items-center gap-4 px-6 py-5 text-left outline-none",
                         "transition-colors hover:text-accent",
                         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         "[&[data-state=open]>svg]:rotate-180",
                       )}
                     >
-                      <span className="shrink-0 font-display text-3xl font-black leading-none text-accent/20 md:text-4xl">
-                        {formatNum(i + 1)}
+                      <span className="shrink-0 flex size-8 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
+                        {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="flex-1 font-display text-lg font-semibold tracking-tight text-foreground md:text-xl">
+                      <span className="flex-1 font-display text-base font-semibold tracking-tight text-foreground md:text-lg">
                         {item.q}
                       </span>
                       <ChevronDown
@@ -120,30 +135,32 @@ export function FAQSection() {
                       "data-[state=open]:animate-[accordion-down_0.3s_ease-out]",
                     )}
                   >
-                    <div className="pb-6 pl-[calc(theme(fontSize.3xl)+1.25rem)] pr-8 md:pl-[calc(theme(fontSize.4xl)+1.25rem)]">
-                      <p className="font-body text-base leading-relaxed text-foreground-secondary">
+                    <div className="px-6 pb-6 pl-[calc(2rem+1.5rem)]">
+                      <p className="text-base leading-relaxed text-foreground-secondary">
                         {item.a}
                       </p>
                     </div>
                   </Accordion.Content>
                 </Accordion.Item>
-              </motion.div>
-            ))}
-          </Accordion.Root>
+              ))}
+            </Accordion.Root>
 
-          <motion.div
-            className="mt-12 flex justify-center"
-            variants={staggerItem}
-          >
-            <Link
-              href="/chesto-zadavani-vaprosi"
-              className="group inline-flex items-center gap-2 font-display text-base font-semibold text-accent transition-colors hover:text-accent/80"
+            <motion.div
+              className="mt-8 flex justify-center lg:justify-start"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
-              Виж Всички Въпроси
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+              <Link
+                href="/chesti-vuprosi"
+                className="group inline-flex items-center gap-2 text-base font-semibold text-accent transition-colors hover:text-accent-hover"
+              >
+                Виж Всички Въпроси
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

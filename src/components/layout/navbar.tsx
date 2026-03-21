@@ -16,14 +16,15 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { SolaronLogo } from "@/components/ui/solaron-logo";
 
 const PRODUKTY = [
   { label: "Соларни Панели", href: "/produkti/solarni-paneli", icon: Sun, desc: "MWT модули, 21.5% ефективност" },
   { label: "Инвертори", href: "/produkti/invertori", icon: Cpu, desc: "SolarEdge HD-Wave, 99.5% ефективност" },
   { label: "Батерии", href: "/produkti/baterii", icon: Battery, desc: "LFP съхранение, 6000+ цикъла" },
   { label: "Конструкции", href: "/produkti/konstrukcii", icon: Wrench, desc: "Van der Valk, 15 год. гаранция" },
-  { label: "Мониторинг", href: "/produkti/monitoring", icon: Monitor, desc: "Реално време, панел по панел" },
-  { label: "EV Зарядни", href: "/produkti/ev-zaryadni-stantsii", icon: Zap, desc: "Интелигентно зареждане за дома" },
+  { label: "Мониторинг", href: "/produkti/monitoring", icon: Monitor, desc: "Реално време, панел по панел", isNew: true },
+  { label: "EV Зарядни", href: "/produkti/ev-zaryadni-stantsii", icon: Zap, desc: "Интелигентно зареждане за дома", isNew: true },
 ];
 
 const RESHENIYA = [
@@ -71,7 +72,7 @@ function RichMegaMenu({
   featuredHref,
   featuredImage,
 }: {
-  items: { label: string; href: string; icon: LucideIcon; desc: string }[];
+  items: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
   featuredTitle: string;
   featuredDesc: string;
   featuredHref: string;
@@ -91,7 +92,18 @@ function RichMegaMenu({
           <item.icon className="size-4" />
         </span>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-foreground">{item.label}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-semibold text-foreground">{item.label}</p>
+            {item.isNew && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                Ново
+              </span>
+            )}
+          </div>
           <p className="mt-0.5 text-xs text-foreground-tertiary line-clamp-1">{item.desc}</p>
         </div>
       </Link>
@@ -135,18 +147,23 @@ function RichMegaMenu({
   );
 }
 
-function DesktopNav() {
+function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
   const triggerClass = cn(
-    "group inline-flex h-10 items-center gap-1 rounded-lg px-2.5 text-sm font-medium text-foreground",
+    "group inline-flex h-10 items-center gap-1 rounded-lg px-2.5 text-sm font-medium",
     "outline-none transition-colors duration-200",
-    "hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-    "data-[state=open]:bg-foreground/[0.06]",
+    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+    isTransparent
+      ? "text-white/90 hover:bg-white/10 data-[state=open]:bg-white/10"
+      : "text-foreground hover:bg-foreground/[0.06] data-[state=open]:bg-foreground/[0.06]",
   );
 
   const directLinkClass = cn(
-    "inline-flex h-10 items-center rounded-lg px-2.5 text-sm font-medium text-foreground",
+    "inline-flex h-10 items-center rounded-lg px-2.5 text-sm font-medium",
     "outline-none transition-colors duration-200",
-    "hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+    isTransparent
+      ? "text-white/90 hover:bg-white/10"
+      : "text-foreground hover:bg-foreground/[0.06]",
   );
 
   const contentClass = cn(
@@ -415,7 +432,7 @@ function MobileNavSheet({
             <div className="mt-6 space-y-3">
               <Dialog.Close asChild>
                 <Link
-                  href="/kontakt"
+                  href="/kontakti"
                   className={cn(
                     "flex h-12 w-full items-center justify-center rounded-full bg-accent text-base font-semibold text-white",
                     "shadow-soft transition-colors hover:bg-accent-hover",
@@ -468,21 +485,25 @@ export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { isEn, bgHref, enHref } = useLocaleHref();
+  const pathname = usePathname();
+  const isHomepage = pathname === "/" || pathname === "/en";
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 2);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isTransparent = isHomepage && !scrolled;
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300 ease-out",
-        scrolled
-          ? "border-b border-border/80 bg-background shadow-soft"
-          : "border-b border-transparent bg-transparent shadow-none",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-out",
+        isTransparent
+          ? "border-b border-transparent bg-transparent"
+          : "border-b border-border/80 bg-background/95 backdrop-blur-md shadow-soft",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
@@ -494,32 +515,32 @@ export function Navbar() {
             "focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           )}
         >
-          <Image
-            src="/logo-solaron.png"
-            alt="Solaron"
-            width={140}
-            height={24}
-            className="h-6 w-auto sm:h-7"
-            priority
-          />
+          <SolaronLogo variant={isTransparent ? "white" : "dark"} />
         </Link>
 
-        <DesktopNav />
+        <DesktopNav isTransparent={isTransparent} />
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
           <Link
-            href="/kontakt"
+            href="/kontakti"
             className={cn(
-              "inline-flex h-10 items-center justify-center rounded-full bg-accent px-4 text-sm font-semibold text-white",
-              "shadow-soft transition-colors duration-200 hover:bg-accent-hover",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "inline-flex h-10 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all duration-300",
+              isTransparent
+                ? "border border-white/30 text-white hover:bg-white/15 hover:border-white/50"
+                : "bg-accent text-white shadow-soft hover:bg-accent-hover",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
             )}
           >
             Безплатна Консултация
           </Link>
 
           <div
-            className="flex items-center rounded-lg border border-border bg-background-secondary/60 p-0.5"
+            className={cn(
+              "flex items-center rounded-lg p-0.5 transition-all duration-300",
+              isTransparent
+                ? "border border-white/20 bg-white/10 backdrop-blur-sm"
+                : "border border-border bg-background-secondary/60",
+            )}
             role="group"
             aria-label="Език"
           >
@@ -527,9 +548,9 @@ export function Navbar() {
               href={bgHref}
               className={cn(
                 "min-h-9 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors",
-                !isEn
-                  ? "bg-background text-foreground shadow-soft"
-                  : "text-foreground-secondary hover:text-foreground",
+                isTransparent
+                  ? (!isEn ? "bg-white/20 text-white" : "text-white/60 hover:text-white")
+                  : (!isEn ? "bg-background text-foreground shadow-soft" : "text-foreground-secondary hover:text-foreground"),
               )}
               aria-current={!isEn ? "true" : undefined}
             >
@@ -539,9 +560,9 @@ export function Navbar() {
               href={enHref}
               className={cn(
                 "min-h-9 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors",
-                isEn
-                  ? "bg-background text-foreground shadow-soft"
-                  : "text-foreground-secondary hover:text-foreground",
+                isTransparent
+                  ? (isEn ? "bg-white/20 text-white" : "text-white/60 hover:text-white")
+                  : (isEn ? "bg-background text-foreground shadow-soft" : "text-foreground-secondary hover:text-foreground"),
               )}
               aria-current={isEn ? "true" : undefined}
             >
@@ -556,9 +577,11 @@ export function Navbar() {
             type="button"
             onClick={() => setMobileOpen(true)}
             className={cn(
-              "inline-flex size-11 items-center justify-center rounded-lg text-foreground",
-              "transition-colors hover:bg-foreground/[0.06]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "inline-flex size-11 items-center justify-center rounded-lg transition-colors",
+              isTransparent
+                ? "text-white hover:bg-white/10"
+                : "text-foreground hover:bg-foreground/[0.06]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
             )}
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation"

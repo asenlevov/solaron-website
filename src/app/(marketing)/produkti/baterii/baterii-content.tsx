@@ -10,6 +10,9 @@ import { TextReveal } from "@/components/ui/text-reveal";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
+import { BeforeAfterComparison } from "@/components/marketing/before-after-comparison";
 import { PRODUCT_IMAGES, REAL_IMAGES, LIFESTYLE_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
@@ -272,6 +275,52 @@ export function BateriiContent() {
         </div>
       </section>
 
+      {/* 5.5 — Battery Capabilities Bento */}
+      <section className="py-24 md:py-32 bg-[#f8faf6]">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center mb-12">
+            <BadgeChip variant="accent" className="mb-4">Възможности</BadgeChip>
+            <TextReveal as="h2" className="text-editorial-heading">
+              Какво осигурява батерията
+            </TextReveal>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { title: "Резервно Захранване", desc: "Автоматично превключване при спиране на тока — домът ви не остава без електричество.", icon: Shield, color: "#3B7A2A", span: "sm:col-span-2" },
+              { title: "Peak Shaving", desc: "Намалете пиковото потребление от мрежата и избегнете скъпи тарифи.", icon: Zap, color: "#f59e0b" },
+              { title: "TOU Оптимизация", desc: "Зареждайте евтино, изразходвайте при скъпа тарифа. Интелигентно управление на потреблението.", icon: Repeat, color: "#0ea5e9" },
+              { title: "Нощна Автономия", desc: "Произведена енергия през деня, използвана през нощта — без нощна тарифа.", icon: Moon, color: "#8B5CF6" },
+              { title: "30 Години Гаранция", desc: "Дълготрайна инвестиция с пълно покритие и сервиз.", icon: Shield, color: "#14b8a6", span: "sm:col-span-2" },
+            ].map((card) => (
+              <GlowCard key={card.title} className={card.span || ""}>
+                <div className="p-6 flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: `${card.color}15`, color: card.color }}>
+                    <card.icon className="size-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-base font-semibold text-foreground">{card.title}</h3>
+                    <p className="mt-1 text-sm text-foreground-secondary">{card.desc}</p>
+                  </div>
+                </div>
+              </GlowCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5.7 — Before/After with Battery */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center mb-12">
+            <BadgeChip variant="accent" className="mb-4">Сравнение</BadgeChip>
+            <TextReveal as="h2" className="text-editorial-heading">
+              С батерия или без
+            </TextReveal>
+          </div>
+          <BeforeAfterComparison />
+        </div>
+      </section>
+
       {/* 6 — Case Study */}
       <section ref={caseRef} className="py-24 md:py-32 bg-[#f8faf6]">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -349,13 +398,15 @@ export function BateriiContent() {
               { title: "Инвертори SolarEdge", desc: "HD-Wave технология с 99.5% ефективност за интелигентно преобразуване на енергията.", href: "/produkti/invertori" },
               { title: "Мониторинг", desc: "Наблюдение в реално време, панел по панел, от всяка точка на света.", href: "/produkti/monitoring" },
             ].map((p) => (
-              <Link key={p.href} href={p.href} className="group rounded-2xl border border-border bg-white p-8 transition-shadow hover:shadow-lg">
-                <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                  Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
+              <GlowCard key={p.href}>
+                <Link href={p.href} className="group block p-8">
+                  <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
+                  <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </GlowCard>
             ))}
           </div>
         </div>

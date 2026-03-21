@@ -2,40 +2,59 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import { Car, TreePine, Home } from "lucide-react";
-import { StatNumber } from "@/components/ui/stat-number";
-import { scaleSpring, createStagger } from "@/lib/animations";
+import { Car, TreePine, Home, Leaf } from "lucide-react";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { cn } from "@/lib/utils";
 
 const metrics: {
   icon: typeof Car;
   value: number;
   suffix?: string;
+  label: string;
   context: string;
   comparison: string;
+  color: string;
 }[] = [
   {
     icon: Car,
     value: 847,
-    suffix: " тона",
-    context: "CO₂ спестени годишно",
-    comparison: "= 184 коли от пътя",
+    suffix: " т",
+    label: "CO₂ Спестени",
+    context: "тона CO₂ годишно",
+    comparison: "= 184 коли махнати от пътя",
+    color: "text-emerald-600",
   },
   {
     icon: TreePine,
     value: 42350,
-    context: "дървета еквивалент",
+    label: "Дървета",
+    context: "еквивалент засадени дървета",
     comparison: "= 1 гора от 42 хектара",
+    color: "text-green-600",
   },
   {
     icon: Home,
     value: 580,
+    label: "Домакинства",
     context: "домакинства захранени",
     comparison: "= малък български град",
+    color: "text-teal-600",
   },
 ];
 
-const stagger = createStagger(0.15, 0.1);
+function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+  return (
+    <motion.span
+      className="tabular-nums"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+    >
+      {value.toLocaleString("bg-BG")}{suffix}
+    </motion.span>
+  );
+}
 
 export function EnvironmentalImpact() {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,64 +62,56 @@ export function EnvironmentalImpact() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="relative overflow-hidden px-6 py-24 md:px-8 md:py-32 lg:py-40" style={{ backgroundColor: "#0a0f0a" }}>
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse at 20% 50%, rgba(59,122,42,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 30%, rgba(40,100,30,0.06) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 80%, rgba(59,122,42,0.05) 0%, transparent 50%)
-          `,
-          animation: "pulse-subtle 8s ease-in-out infinite",
-        }}
-      />
-
-      <span
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[200px] font-black leading-none text-white opacity-[0.02] md:text-[300px]"
-        aria-hidden
-      >
-        CO₂
-      </span>
-
+    <section className="relative overflow-hidden bg-gradient-to-b from-accent/5 via-background to-background px-6 py-24 md:px-8 md:py-32">
       <div ref={ref} className="relative mx-auto max-w-6xl">
-        <p className="text-editorial-overline mb-10 text-accent md:mb-14">Екология</p>
-
         <motion.div
-          className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12"
-          variants={stagger}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
         >
-          {metrics.map((m) => {
+          <BadgeChip variant="success" className="mb-4">
+            <Leaf className="mr-1.5 size-3.5" />
+            Екологично Въздействие
+          </BadgeChip>
+          <h2 className="text-editorial-heading">Нашият Принос за Планетата</h2>
+          <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
+            Реален принос, измерен от нашите инсталации в България.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {metrics.map((m, i) => {
             const Icon = m.icon;
             return (
               <motion.div
-                key={m.context}
-                variants={scaleSpring}
-                className="flex flex-col items-center text-center md:items-start md:text-left"
+                key={m.label}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.15, duration: 0.5 }}
               >
-                <Icon className="mb-4 size-8 text-accent/60" strokeWidth={1.5} aria-hidden />
-                <StatNumber
-                  value={m.value}
-                  suffix={m.suffix}
-                  context={m.context}
-                  className="text-accent"
-                  contextClassName="text-white/60"
-                />
-                <p className="mt-3 text-sm text-white/40">{m.comparison}</p>
+                <GlowCard>
+                  <div className="p-8 text-center">
+                    <div className={cn("mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-accent/10", m.color)}>
+                      <Icon className="size-7" strokeWidth={1.5} />
+                    </div>
+                    <p className="text-4xl font-black text-foreground md:text-5xl">
+                      <AnimatedNumber value={m.value} suffix={m.suffix} />
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-foreground-secondary">{m.context}</p>
+                    <p className="mt-3 text-xs text-foreground-tertiary">{m.comparison}</p>
+                  </div>
+                </GlowCard>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
-        <div className="mt-20 flex flex-col items-center">
+        <div className="mt-12 flex flex-col items-center">
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className={cn(
-              "font-body text-sm text-white/40 underline underline-offset-4 transition-colors hover:text-white/60",
-            )}
+            className="text-sm text-foreground-tertiary underline underline-offset-4 transition-colors hover:text-foreground-secondary"
           >
             {expanded ? "Скрий" : "Как изчислихме?"}
           </button>
@@ -114,7 +125,7 @@ export function EnvironmentalImpact() {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <p className="mx-auto mt-6 max-w-2xl text-center font-body text-sm leading-relaxed text-white/50">
+                <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-foreground-secondary">
                   Изчисленията се базират на реалните данни от нашите инсталации в
                   България. Средното CO₂ спестяване е калкулирано спрямо
                   емисионния фактор на българската електроенергийна мрежа (0.47

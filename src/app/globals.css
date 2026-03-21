@@ -209,6 +209,54 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 128px 128px;
 }
 
+@keyframes mesh-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  20% { transform: translate(100px, 40px) scale(1.15) rotate(15deg); }
+  40% { transform: translate(60px, -60px) scale(0.9) rotate(-10deg); }
+  60% { transform: translate(-80px, 30px) scale(1.1) rotate(20deg); }
+  80% { transform: translate(-40px, -50px) scale(0.95) rotate(-5deg); }
+}
+@keyframes mesh-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(-90px, 70px) scale(1.12) rotate(-20deg); }
+  50% { transform: translate(50px, -40px) scale(0.88) rotate(15deg); }
+  75% { transform: translate(-60px, -30px) scale(1.08) rotate(-10deg); }
+}
+@keyframes mesh-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  30% { transform: translate(70px, -80px) scale(1.18) rotate(25deg); }
+  60% { transform: translate(-50px, 60px) scale(0.85) rotate(-15deg); }
+  85% { transform: translate(40px, 20px) scale(1.05) rotate(10deg); }
+}
+@keyframes mesh-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  20% { transform: translate(-60px, -70px) scale(1.1) rotate(-25deg); }
+  45% { transform: translate(80px, 50px) scale(0.92) rotate(20deg); }
+  70% { transform: translate(-30px, 40px) scale(1.08) rotate(-10deg); }
+  90% { transform: translate(50px, -30px) scale(0.98) rotate(5deg); }
+}
+@keyframes mesh-drift-5 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  35% { transform: translate(60px, 80px) scale(1.2) rotate(30deg); }
+  65% { transform: translate(-70px, -50px) scale(0.9) rotate(-20deg); }
+  85% { transform: translate(30px, -40px) scale(1.05) rotate(10deg); }
+}
+@keyframes mesh-drift-6 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(-80px, 30px) scale(1.1) rotate(-15deg); }
+  50% { transform: translate(40px, -70px) scale(0.95) rotate(25deg); }
+  75% { transform: translate(70px, 50px) scale(1.12) rotate(-20deg); }
+}
+@keyframes mesh-pulse {
+  0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+@keyframes ken-burns {
+  0% { transform: scale(1.05) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1%, -1%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

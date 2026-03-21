@@ -10,6 +10,8 @@ import { TextReveal } from "@/components/ui/text-reveal";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
 import { REAL_IMAGES, LIFESTYLE_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
@@ -108,9 +110,9 @@ export function KonstrukciiContent() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
-          <motion.p variants={blurIn} initial="hidden" animate="visible" className="text-editorial-overline text-accent">
-            Монтажни системи
-          </motion.p>
+          <motion.div variants={blurIn} initial="hidden" animate="visible">
+            <BadgeChip variant="accent">Монтажни системи</BadgeChip>
+          </motion.div>
           <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
             Конструкции
           </TextReveal>
@@ -264,13 +266,15 @@ export function KonstrukciiContent() {
               { title: "Соларни Панели", desc: "MWT модули с 21.5% ефективност за максимално производство от всеки квадратен метър.", href: "/produkti/solarni-paneli" },
               { title: "Мониторинг", desc: "Наблюдение в реално време, панел по панел, от всяка точка на света.", href: "/produkti/monitoring" },
             ].map((p) => (
-              <Link key={p.href} href={p.href} className="group rounded-2xl border border-border bg-white p-8 transition-shadow hover:shadow-lg">
-                <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                  Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
+              <GlowCard key={p.href}>
+                <Link href={p.href} className="group block p-8">
+                  <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
+                  <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </GlowCard>
             ))}
           </div>
         </div>

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-const ACCENT = "#d97706";
+const ACCENT = "#3B7A2A";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

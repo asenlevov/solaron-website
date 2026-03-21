@@ -149,6 +149,21 @@ export default function KontaktiPage() {
         </div>
       </section>
 
+      {/* Map */}
+      <section className="w-full">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.2!2d23.2985!3d42.6699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z0LHRg9C7LiDQp9C10YDQvdC4INCS0YDRitGFIDU50JEsINCh0L7RhNC40Y8!5e0!3m2!1sbg!2sbg!4v1"
+          width="100%"
+          height="400"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Solaron Office Location"
+          className="grayscale hover:grayscale-0 transition-[filter] duration-500"
+        />
+      </section>
+
       {/* Dark trust section */}
       <section className="bg-foreground py-16 md:py-20 grain">
         <div className="mx-auto max-w-7xl px-6 md:px-10">

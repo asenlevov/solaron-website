@@ -1,3 +1,16 @@
+export interface ProjectMetrics {
+  annualKwh?: number;
+  co2SavedTons?: number;
+  treesEquivalent?: number;
+  savingsPerYear?: number;
+}
+
+export interface ProjectTestimonial {
+  quote: string;
+  name: string;
+  role?: string;
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -8,6 +21,7 @@ export interface Project {
   category: "residential" | "commercial" | "industrial" | "carport";
   description: string;
   image: string;
+  gallery?: string[];
   technologies: {
     panels?: string;
     inverters?: string;
@@ -17,6 +31,8 @@ export interface Project {
   };
   benefits: string;
   client?: string;
+  metrics?: ProjectMetrics;
+  testimonial?: ProjectTestimonial;
 }
 
 export const projects: Project[] = [
@@ -29,6 +45,12 @@ export const projects: Project[] = [
     date: "2024-06",
     category: "industrial",
     image: "/real/projects/651kwp-saedinenie-hero.jpg",
+    gallery: [
+      "/real/projects/651kwp-saedinenie-1.jpg",
+      "/real/projects/651kwp-saedinenie-2.jpg",
+      "/real/projects/651kwp-saedinenie-3.jpg",
+      "/real/projects/651kwp-saedinenie-4.jpg",
+    ],
     description:
       "Голямо индустриално покритие с високоефективни модули и централизирано управление чрез SolarEdge за максимален добив и мониторинг на ниво модул.",
     technologies: {
@@ -38,6 +60,12 @@ export const projects: Project[] = [
       mounting: "Van Der Valk",
     },
     benefits: "Производство на енергия за собствени нужди",
+    metrics: {
+      annualKwh: 780000,
+      co2SavedTons: 312,
+      treesEquivalent: 15600,
+      savingsPerYear: 195000,
+    },
   },
   {
     slug: "270-kwp-carport-kazanlak",
@@ -48,6 +76,12 @@ export const projects: Project[] = [
     date: "2023-11",
     category: "carport",
     image: "/real/projects/270kwp-carport-kazanlak-hero.jpg",
+    gallery: [
+      "/real/projects/270kwp-carport-kazanlak-1.jpg",
+      "/real/projects/270kwp-carport-kazanlak-2.jpg",
+      "/real/projects/270kwp-carport-kazanlak-3.jpg",
+      "/real/projects/270kwp-carport-kazanlak-4.jpg",
+    ],
     description:
       "Карпорт инсталация, съчетаваща защита на паркинга с производство на слънчева енергия — оптимално използване на градското пространство.",
     technologies: {
@@ -57,6 +91,12 @@ export const projects: Project[] = [
       mounting: "Van Der Valk",
     },
     benefits: "Производство на енергия за собствени нужди",
+    metrics: {
+      annualKwh: 324000,
+      co2SavedTons: 129,
+      treesEquivalent: 6480,
+      savingsPerYear: 81000,
+    },
   },
   {
     slug: "119-kwp-hotel-erma",
@@ -154,6 +194,11 @@ export const projects: Project[] = [
     country: "България",
     category: "residential",
     image: "/real/projects/15kw-vratsa-1.jpg",
+    gallery: [
+      "/real/projects/15kw-vratsa-2.jpg",
+      "/real/projects/15kw-vratsa-3.jpg",
+      "/real/projects/15kw-vratsa-4.jpg",
+    ],
     description:
       "Домашна система с акумулатор за вечерно и нощно потребление — идеална за потребители с висок дял собствено производство.",
     technologies: {
@@ -163,6 +208,17 @@ export const projects: Project[] = [
     },
     benefits:
       "По-висока степен на автономност и защита от поскъпване на тока чрез съхранение на излишъка.",
+    metrics: {
+      annualKwh: 19500,
+      co2SavedTons: 7.8,
+      treesEquivalent: 390,
+      savingsPerYear: 8400,
+    },
+    testimonial: {
+      quote: "Професионален подход от начало до край. Монтажът приключи за 2 дни.",
+      name: "Мария Георгиева",
+      role: "Домакинство",
+    },
   },
   {
     slug: "5-kw-kran",
@@ -172,11 +228,27 @@ export const projects: Project[] = [
     country: "България",
     category: "residential",
     image: "/real/projects/5kw-kran-1.jpg",
+    gallery: [
+      "/real/projects/5kw-kran-2.jpg",
+      "/real/projects/5kw-kran-3.jpg",
+      "/real/projects/5kw-kran-4.jpg",
+    ],
     description:
       "Малка покривна инсталация за еднофамилна къща — достъпен вход в соларната енергия с бърз монтаж.",
     technologies: {},
     benefits:
       "Веднага намалена сметка за ток и стъпка към по-устойчив начин на живот.",
+    metrics: {
+      annualKwh: 6800,
+      co2SavedTons: 2.7,
+      treesEquivalent: 135,
+      savingsPerYear: 4200,
+    },
+    testimonial: {
+      quote: "Системата работи безупречно от първия ден. За 8 месеца вече сме спестили над 4000 лв.",
+      name: "Иван Петров",
+      role: "Домакинство",
+    },
   },
   {
     slug: "golqmo-dryanovo",
