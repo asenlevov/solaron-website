@@ -49,7 +49,7 @@ export function StatNumber({
         {suffix && <span className="text-[0.6em]">{suffix}</span>}
       </div>
       {context && (
-        <p className={cn("mt-2 text-sm font-body", contextClassName)}>
+        <p className={cn("mt-2 text-sm md:text-base font-body", contextClassName)}>
           {context}
         </p>
       )}

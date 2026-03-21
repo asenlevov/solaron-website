@@ -6,7 +6,7 @@ const variantStyles = {
   accent: "bg-accent/15 text-accent border border-accent/30",
   success: "bg-success/15 text-success border border-success/30",
   new: "bg-accent/15 text-accent border border-accent/30",
-  hero: "bg-white/15 text-white border border-white/20 backdrop-blur-sm",
+  hero: "bg-white/20 text-white border border-white/25 backdrop-blur-sm text-base px-5 py-1.5",
 } as const;
 
 export interface BadgeChipProps

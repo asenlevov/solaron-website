@@ -82,13 +82,13 @@ export function InvertoriContent() {
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             Инвертори
           </TextReveal>
-          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
             Интелигентно преобразуване на соларна енергия с 99.2% ефективност, панелно ниво оптимизация и пълен облачен мониторинг.
           </motion.p>
-          <div className="mt-10 flex flex-wrap gap-12">
-            <StatNumber value={99.2} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/50" duration={1500} />
-            <StatNumber value={10} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/50" />
-            <StatNumber value={12} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/50" />
+          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+            <StatNumber value={99.2} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60" duration={1500} />
+            <StatNumber value={10} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/60" />
+            <StatNumber value={12} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/60" />
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/konfigurator" variant="primary">

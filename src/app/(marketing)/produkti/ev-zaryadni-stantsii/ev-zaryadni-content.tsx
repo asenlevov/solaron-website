@@ -103,13 +103,13 @@ export function EvZaryadniContent() {
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             EV Зарядни Станции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
             Заредете автомобила си от слънцето. Интелигентни зарядни станции, интегрирани с вашата соларна система и батерия.
           </motion.p>
-          <div className="mt-10 flex flex-wrap gap-12">
-            <StatNumber value={22} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/50" />
-            <StatNumber value={77} suffix="%" context="Спестяване" className="text-accent" contextClassName="text-white/50" />
-            <StatNumber value={0.15} suffix=" лв/kWh" context="Цена от слънце" className="text-white" contextClassName="text-white/50" duration={1500} />
+          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+            <StatNumber value={22} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/60" />
+            <StatNumber value={77} suffix="%" context="Спестяване" className="text-accent" contextClassName="text-white/60" />
+            <StatNumber value={0.15} suffix=" лв/kWh" context="Цена от слънце" className="text-white" contextClassName="text-white/60" duration={1500} />
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
             <MagneticButton href="/konfigurator" variant="primary">

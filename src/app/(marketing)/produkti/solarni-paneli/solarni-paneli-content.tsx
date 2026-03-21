@@ -273,12 +273,12 @@ export function SolarniPaneliContent() {
             variants={blurIn}
             initial="hidden"
             animate="visible"
-            className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed"
+            className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed"
           >
             MWT монокристални модули от ново поколение — максимална ефективност,
             минимална деградация, 30 години гарантирана производителност.
           </motion.p>
-          <div className="mt-10 md:mt-14 flex flex-wrap gap-8 md:gap-16">
+          <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
             <StatNumber value={450} suffix="W" context="Пикова мощност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" />
             <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1500} />
             <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1800} />

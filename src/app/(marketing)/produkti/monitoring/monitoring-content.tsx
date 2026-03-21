@@ -107,13 +107,13 @@ export function MonitoringContent() {
               <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
                 Мониторинг
               </TextReveal>
-              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-body leading-relaxed">
                 Пълен контрол над вашата соларна система — от телефона, таблета или компютъра. 24/7 данни в реално време.
               </motion.p>
-              <div className="mt-10 flex flex-wrap gap-12">
-                <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/50" />
-                <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/50" />
-                <StatNumber value={99.9} suffix="%" context="Uptime" className="text-white" contextClassName="text-white/50" duration={1500} />
+              <div className="mt-10 md:mt-14 flex flex-wrap gap-10 md:gap-16">
+                <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/60" />
+                <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/60" />
+                <StatNumber value={99.9} suffix="%" context="Uptime" className="text-white" contextClassName="text-white/60" duration={1500} />
               </div>
               <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
                 <MagneticButton href="/konfigurator" variant="primary">
