@@ -12,6 +12,7 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { ProductPageProjects, RelatedProducts } from "@/components/marketing/product-page-shared";
 import { SceneCanvasDynamic } from "@/components/3d/scene-container";
 import { SolarPanel } from "@/components/3d/solar-panel";
 import { REAL_IMAGES, PRODUCT_IMAGES } from "@/data/images";
@@ -693,40 +694,11 @@ export function SolarniPaneliContent() {
         </div>
       </section>
 
-      {/* ── 12 · Related Products ─────────────────────────── */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
-            Свързани продукти
-          </TextReveal>
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid sm:grid-cols-2 gap-6 max-w-3xl"
-          >
-            {[
-              { title: "Инвертори SolarEdge", href: "/produkti/invertori", img: PRODUCT_IMAGES.inverter },
-              { title: "Конструкции за монтаж", href: "/produkti/konstrukcii", img: REAL_IMAGES.projects.varna39_1 },
-            ].map((p) => (
-              <motion.div key={p.title} variants={staggerItem}>
-                <GlowCard className="rounded-2xl h-full">
-                  <Link href={p.href} className="group block overflow-hidden rounded-2xl">
-                    <div className="relative aspect-[16/9]">
-                      <Image src={p.img} alt={p.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                    </div>
-                    <div className="p-6 flex items-center justify-between">
-                      <h3 className="font-display font-bold">{p.title}</h3>
-                      <ArrowRight className="h-5 w-5 text-accent transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </Link>
-                </GlowCard>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* ── 12 · Featured Projects ──────────────────────────── */}
+      <ProductPageProjects />
+
+      {/* ── 13 · Related Products ─────────────────────────── */}
+      <RelatedProducts currentProductId="solarni-paneli" />
 
       {/* ── 12 · CTA ──────────────────────────────────────── */}
       <section className="py-24 md:py-32 bg-foreground">

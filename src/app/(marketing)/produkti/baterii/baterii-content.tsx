@@ -12,6 +12,7 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { ProductPageProjects, RelatedProducts } from "@/components/marketing/product-page-shared";
 import { BeforeAfterComparison } from "@/components/marketing/before-after-comparison";
 import { PRODUCT_IMAGES, REAL_IMAGES, LIFESTYLE_IMAGES } from "@/data/images";
 import {
@@ -473,28 +474,8 @@ export function BateriiContent() {
         </div>
       </section>
 
-      {/* Related Products */}
-      <section className="py-24 md:py-32 bg-background-secondary">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-editorial-display mb-12">Свързани продукти</h2>
-          <div className="grid gap-8 md:grid-cols-2">
-            {[
-              { title: "Инвертори SolarEdge", desc: "HD-Wave технология с 99.5% ефективност за интелигентно преобразуване на енергията.", href: "/produkti/invertori" },
-              { title: "Мониторинг", desc: "Наблюдение в реално време, панел по панел, от всяка точка на света.", href: "/produkti/monitoring" },
-            ].map((p) => (
-              <GlowCard key={p.href}>
-                <Link href={p.href} className="group block p-8">
-                  <h3 className="font-display text-xl font-bold group-hover:text-accent transition-colors">{p.title}</h3>
-                  <p className="mt-2 text-sm text-foreground-secondary">{p.desc}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                    Научи повече <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </GlowCard>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductPageProjects />
+      <RelatedProducts currentProductId="baterii" />
 
       {/* 8 — CTA */}
       <section className="py-24 md:py-32 bg-gradient-to-br from-[#0a0f1a] via-[#0f1a2e] to-[#0a1520]">
