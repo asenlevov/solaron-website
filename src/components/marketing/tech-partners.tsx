@@ -7,12 +7,12 @@ import { REAL_IMAGES } from "@/data/images";
 import { cn } from "@/lib/utils";
 
 const partners = [
-  { name: "SolarEdge", logo: REAL_IMAGES.partners.solaredge, width: 140 },
-  { name: "Engie", logo: REAL_IMAGES.partners.engie, width: 100 },
-  { name: "Eneco", logo: REAL_IMAGES.partners.eneco, width: 110 },
-  { name: "Hoppenbrouwers", logo: REAL_IMAGES.partners.hoppenbrouwers, width: 150 },
-  { name: "Pure Energie", logo: REAL_IMAGES.partners.pureEnergie, width: 120 },
-  { name: "Volta Solar", logo: REAL_IMAGES.partners.voltaSolar, width: 110 },
+  { name: "SolarEdge", logo: REAL_IMAGES.partners.solaredge, width: 120 },
+  { name: "Engie", logo: REAL_IMAGES.partners.engie, width: 90 },
+  { name: "Eneco", logo: REAL_IMAGES.partners.eneco, width: 100 },
+  { name: "Hoppenbrouwers", logo: REAL_IMAGES.partners.hoppenbrouwers, width: 130 },
+  { name: "Pure Energie", logo: REAL_IMAGES.partners.pureEnergie, width: 110 },
+  { name: "Volta Solar", logo: REAL_IMAGES.partners.voltaSolar, width: 100 },
 ] as const;
 
 export function TechPartners() {
@@ -26,21 +26,23 @@ export function TechPartners() {
           Доверени от водещите в индустрията
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14 lg:gap-x-16">
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-20">
           {partners.map((partner, i) => (
             <motion.div
               key={partner.name}
               initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="relative grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+              className="relative flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+              style={{ height: 36 }}
             >
               <Image
                 src={partner.logo}
                 alt={partner.name}
                 width={partner.width}
-                height={40}
-                className="h-8 w-auto object-contain md:h-10"
+                height={36}
+                className="h-7 w-auto object-contain md:h-9"
+                style={{ maxWidth: partner.width }}
               />
             </motion.div>
           ))}

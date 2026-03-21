@@ -120,7 +120,7 @@ export const REAL_IMAGES = {
   partners: {
     solaredge: "/real/partners/solaredge-logo.png",
     engie: "/real/partners/engie-logo.png",
-    hoppenbrouwers: "/real/partners/hoppenbrouwers-logo.jpg",
+    hoppenbrouwers: "/real/partners/hoppenbrouwers-logo.png",
     pureEnergie: "/real/partners/pure-energie-logo.png",
     eneco: "/real/partners/eneco-logo.png",
     voltaSolar: "/real/partners/volta-solar-logo.png",
