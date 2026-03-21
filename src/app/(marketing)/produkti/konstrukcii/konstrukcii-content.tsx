@@ -12,7 +12,7 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
-import { REAL_IMAGES, LIFESTYLE_IMAGES } from "@/data/images";
+import { PRODUCT_IMAGES, REAL_IMAGES, LIFESTYLE_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
   blurIn,
@@ -99,8 +99,8 @@ export function KonstrukciiContent() {
       {/* 1 — Hero */}
       <section className="relative min-h-[80vh] flex items-end">
         <ImageEditorial
-          src={REAL_IMAGES.projects.varna39_hero}
-          alt="Покривна соларна конструкция"
+          src={PRODUCT_IMAGES.constructions}
+          alt="Премиум конструкция за соларни панели"
           fill
           parallax
           grain

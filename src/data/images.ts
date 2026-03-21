@@ -153,7 +153,13 @@ export const LIFESTYLE_IMAGES = {
 } as const;
 
 export const PRODUCT_IMAGES = {
-  solarPanel: REAL_IMAGES.installations.adoreenergyC1,
-  inverter: REAL_IMAGES.installations.nlProjectInstall2,
-  battery: REAL_IMAGES.projects.kran5_2,
+  solarPanel: "/real/products/solar-panels-hero.jpg",
+  inverter: "/real/products/inverters-hero.png",
+  battery: "/real/products/batteries-hero.jpg",
+  evCharging: "/real/products/ev-charging-hero.jpg",
+  constructions: "/real/products/constructions-hero.png",
+  monitoring: "/real/products/monitoring-hero.png",
+  solarPanelThumb: REAL_IMAGES.installations.adoreenergyC1,
+  inverterThumb: REAL_IMAGES.installations.nlProjectInstall2,
+  batteryThumb: REAL_IMAGES.projects.kran5_2,
 } as const;

@@ -59,39 +59,34 @@ export function InvertoriContent() {
 
   return (
     <div className="overflow-hidden">
-      {/* 1 — Hero: White, product-centered */}
-      <section className="relative py-24 md:py-36 bg-white overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <motion.div variants={slideFromLeft} initial="hidden" animate="visible">
-              <BadgeChip variant="accent">SolarEdge HD-Wave</BadgeChip>
-            </motion.div>
-            <TextReveal as="h1" className="text-editorial-hero max-w-4xl mt-2">
-              Инвертори
-            </TextReveal>
-            <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 text-lg text-muted-foreground font-body max-w-md">
-              Интелигентно преобразуване на соларна енергия с 99.2% ефективност, панелно ниво оптимизация и пълен облачен мониторинг.
-            </motion.p>
-          </div>
-          <motion.div variants={scaleSpring} initial="hidden" animate="visible" className="relative">
-            <ImageEditorial
-              src={PRODUCT_IMAGES.inverter}
-              alt="SolarEdge инвертор"
-              width={600}
-              height={450}
-              grain
-              containerClassName="aspect-[4/3] rounded-2xl"
-              className="rounded-2xl"
-            />
-            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg">
-              <span className="text-sm font-display font-bold text-accent">99.2%</span>
-              <span className="text-xs text-muted-foreground ml-1 font-body">ефективност</span>
-            </div>
-            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg">
-              <span className="text-sm font-display font-bold">3–10 kW</span>
-              <span className="text-xs text-muted-foreground ml-1 font-body">обхват</span>
-            </div>
+      {/* 1 — Hero: Full-bleed image */}
+      <section className="relative min-h-[85vh] flex items-end">
+        <ImageEditorial
+          src={PRODUCT_IMAGES.inverter}
+          alt="Соларна система с инвертор"
+          fill
+          reveal
+          grain
+          parallax
+          containerClassName="absolute inset-0"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+          <motion.div variants={blurIn} initial="hidden" animate="visible">
+            <BadgeChip variant="accent">SolarEdge HD-Wave</BadgeChip>
           </motion.div>
+          <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
+            Инвертори
+          </TextReveal>
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
+            Интелигентно преобразуване на соларна енергия с 99.2% ефективност, панелно ниво оптимизация и пълен облачен мониторинг.
+          </motion.p>
+          <div className="mt-10 flex flex-wrap gap-12">
+            <StatNumber value={99.2} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/50" duration={1500} />
+            <StatNumber value={10} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/50" />
+            <StatNumber value={12} suffix=" г." context="Гаранция" className="text-white" contextClassName="text-white/50" />
+          </div>
         </div>
       </section>
 

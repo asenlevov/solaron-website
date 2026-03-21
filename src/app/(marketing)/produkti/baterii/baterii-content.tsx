@@ -63,39 +63,34 @@ export function BateriiContent() {
 
   return (
     <div className="overflow-hidden">
-      {/* 1 — Hero: Dark, product glow */}
-      <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-[#0a0f1a] via-[#0f1a2e] to-[#0a1520]">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(500px,100vw)] h-[500px] rounded-full bg-accent/5 blur-[120px]" />
-        </div>
-        <div className="relative z-10 mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <motion.p variants={blurIn} initial="hidden" animate="visible" className="text-editorial-overline text-accent">
-              Съхранение
-            </motion.p>
-            <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
-              Батерии
-            </TextReveal>
-            <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 text-lg text-white/60 font-body max-w-md">
-              LiFePO₄ батерии за енергийна независимост — зареждайте от слънцето, използвайте денонощно.
-            </motion.p>
-            <div className="mt-10 flex gap-12">
-              <StatNumber value={6000} suffix="+" context="Цикъла" className="text-white" contextClassName="text-white/50" />
-              <StatNumber value={15} suffix=" г." context="Живот" className="text-white" contextClassName="text-white/50" />
-            </div>
-          </div>
-          <motion.div variants={scaleSpring} initial="hidden" animate="visible" className="relative">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-accent/20 to-transparent blur-2xl" />
-            <ImageEditorial
-              src={PRODUCT_IMAGES.battery}
-              alt="Батерийна система"
-              width={600}
-              height={450}
-              grain
-              containerClassName="aspect-[4/3] rounded-2xl relative z-10"
-              className="rounded-2xl"
-            />
+      {/* 1 — Hero: Full-bleed image */}
+      <section className="relative min-h-[85vh] flex items-end">
+        <ImageEditorial
+          src={PRODUCT_IMAGES.battery}
+          alt="Модерен дом с батерийна система"
+          fill
+          reveal
+          grain
+          parallax
+          containerClassName="absolute inset-0"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+          <motion.div variants={blurIn} initial="hidden" animate="visible">
+            <BadgeChip variant="accent">Съхранение</BadgeChip>
           </motion.div>
+          <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
+            Батерии
+          </TextReveal>
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
+            LiFePO₄ батерии за енергийна независимост — зареждайте от слънцето, използвайте денонощно.
+          </motion.p>
+          <div className="mt-10 flex flex-wrap gap-12">
+            <StatNumber value={6000} suffix="+" context="Цикъла" className="text-white" contextClassName="text-white/50" />
+            <StatNumber value={15} suffix=" г." context="Живот" className="text-white" contextClassName="text-white/50" />
+            <StatNumber value={10} suffix=" kWh" context="Капацитет" className="text-white" contextClassName="text-white/50" />
+          </div>
         </div>
       </section>
 

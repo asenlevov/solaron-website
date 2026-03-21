@@ -6,10 +6,12 @@ import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { TextReveal } from "@/components/ui/text-reveal";
+import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import { PRODUCT_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
   blurIn,
@@ -70,43 +72,57 @@ export function MonitoringContent() {
 
   return (
     <div className="overflow-hidden">
-      {/* 1 — Hero: Dashboard mockup */}
-      <section className="relative min-h-[85vh] flex items-center bg-[#0a0f1a] overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,122,42,0.08),transparent_60%)]" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      {/* 1 — Hero: Full-bleed image with dashboard overlay */}
+      <section className="relative min-h-[85vh] flex items-end">
+        <ImageEditorial
+          src={PRODUCT_IMAGES.monitoring}
+          alt="Модерен дом със соларна система"
+          fill
+          reveal
+          grain
+          parallax
+          containerClassName="absolute inset-0"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 md:pb-24">
+          <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
               <motion.div variants={blurIn} initial="hidden" animate="visible">
                 <BadgeChip variant="accent">SolarEdge</BadgeChip>
               </motion.div>
-              <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
+              <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
                 Мониторинг
               </TextReveal>
-              <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 text-lg text-white/50 font-body max-w-md">
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg text-white/70 font-body">
                 Пълен контрол над вашата соларна система — от телефона, таблета или компютъра. 24/7 данни в реално време.
               </motion.p>
+              <div className="mt-10 flex flex-wrap gap-12">
+                <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/50" />
+                <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/50" />
+              </div>
             </div>
             <motion.div
               variants={scaleSpring}
               initial="hidden"
               animate="visible"
-              className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-6 md:p-8"
+              className="hidden md:block bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-5"
             >
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-4">
                 {[
                   { icon: Zap, label: "Текуща мощност", val: "6.2 kW", accent: true },
                   { icon: Sun, label: "Днес", val: "32.5 kWh", accent: false },
                   { icon: TrendingUp, label: "Този месец", val: "847 kWh", accent: false },
                   { icon: Wifi, label: "Статус", val: "Онлайн", accent: true },
                 ].map((card) => (
-                  <div key={card.label} className="bg-white/5 rounded-xl p-4 border border-white/5">
-                    <card.icon className={cn("h-4 w-4 mb-2", card.accent ? "text-accent" : "text-white/40")} />
-                    <p className="text-xs text-white/40 font-body">{card.label}</p>
-                    <p className={cn("text-lg font-display font-bold mt-1", card.accent ? "text-accent" : "text-white")}>{card.val}</p>
+                  <div key={card.label} className="bg-white/5 rounded-lg p-3 border border-white/5">
+                    <card.icon className={cn("h-4 w-4 mb-1", card.accent ? "text-accent" : "text-white/40")} />
+                    <p className="text-[10px] text-white/40 font-body">{card.label}</p>
+                    <p className={cn("text-base font-display font-bold mt-0.5", card.accent ? "text-accent" : "text-white")}>{card.val}</p>
                   </div>
                 ))}
               </div>
-              <div className="flex items-end gap-1 h-20">
+              <div className="flex items-end gap-1 h-16">
                 {[35, 48, 65, 72, 80, 88, 92, 85, 78, 62, 45, 30].map((h, i) => (
                   <motion.div
                     key={i}
@@ -118,7 +134,7 @@ export function MonitoringContent() {
                   />
                 ))}
               </div>
-              <div className="flex justify-between mt-2 text-[10px] text-white/50 font-body">
+              <div className="flex justify-between mt-1.5 text-[9px] text-white/40 font-body">
                 <span>06:00</span>
                 <span>12:00</span>
                 <span>18:00</span>

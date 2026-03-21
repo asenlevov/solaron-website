@@ -12,7 +12,7 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
-import { LIFESTYLE_IMAGES, REAL_IMAGES } from "@/data/images";
+import { PRODUCT_IMAGES, LIFESTYLE_IMAGES, REAL_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
   blurIn,
@@ -76,8 +76,8 @@ export function EvZaryadniContent() {
       {/* 1 — Hero */}
       <section className="relative min-h-[85vh] flex items-end">
         <ImageEditorial
-          src={LIFESTYLE_IMAGES.evCharging}
-          alt="EV зарядна станция"
+          src={PRODUCT_IMAGES.evCharging}
+          alt="Соларен карпорт с EV зарядни станции"
           fill
           reveal
           grain

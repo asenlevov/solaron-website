@@ -249,7 +249,7 @@ export function SolarniPaneliContent() {
       <section className="relative min-h-[100vh] flex items-end">
         <ImageEditorial
           src={PRODUCT_IMAGES.solarPanel}
-          alt="Соларни панели отблизо"
+          alt="Модерен дом със соларни панели"
           fill
           reveal
           grain
