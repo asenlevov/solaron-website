@@ -143,16 +143,16 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(1); opacity: 1; }
 }
 
-.text-editorial-hero {
+.editorial-hero {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 700;
-  letter-spacing: -0.05em;
-  line-height: 0.85;
-  font-size: clamp(3.5rem, 12vw, 10rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(3rem, 10vw, 9rem);
   overflow-wrap: break-word;
 }
 
-.text-editorial-display {
+.editorial-display {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -161,7 +161,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-.text-editorial-heading {
+.editorial-heading {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -170,7 +170,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-.text-editorial-overline {
+.editorial-overline {
   font-size: clamp(0.625rem, 1vw, 0.875rem);
   text-transform: uppercase;
   letter-spacing: 0.25em;
@@ -178,7 +178,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent);
 }
 
-.text-editorial-pull-quote {
+.editorial-pull-quote {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 300;
   font-style: italic;
@@ -186,12 +186,12 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(1.5rem, 2.5vw, 2rem);
 }
 
-.text-editorial-stat {
+.editorial-stat {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 0.85;
-  font-size: clamp(3rem, 7vw, 6rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(2.5rem, 6vw, 5rem);
 }
 
 .grain {

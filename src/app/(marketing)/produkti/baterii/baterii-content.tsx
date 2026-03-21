@@ -70,7 +70,6 @@ export function BateriiContent() {
           src={PRODUCT_IMAGES.battery}
           alt="Модерен дом с батерийна система"
           fill
-          reveal
           grain
           parallax
           containerClassName="absolute inset-0"
@@ -81,7 +80,7 @@ export function BateriiContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">Съхранение</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3">
             Батерии
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
@@ -110,7 +109,7 @@ export function BateriiContent() {
       {/* 2 — Sizing Calculator */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+          <TextReveal as="h2" className="editorial-display text-center mb-4">
             Калкулатор за размер
           </TextReveal>
           <p className="text-center text-muted-foreground font-body mb-12 max-w-lg mx-auto">
@@ -193,7 +192,7 @@ export function BateriiContent() {
             className="bg-gradient-to-br from-amber-50 to-orange-50 p-12 md:p-16 flex flex-col justify-center"
           >
             <Sun className="h-12 w-12 text-amber-500 mb-6" strokeWidth={1.5} />
-            <h3 className="text-editorial-heading">Ден</h3>
+            <h3 className="editorial-heading">Ден</h3>
             <p className="mt-4 text-lg text-amber-800/70 font-body leading-relaxed max-w-md">
               Панелите произвеждат електричество. Домът се захранва директно, а излишъкът зарежда батерията. При пълна батерия, излишъкът се продава в мрежата.
             </p>
@@ -209,7 +208,7 @@ export function BateriiContent() {
             className="bg-gradient-to-br from-[#0f1a2e] to-[#0a0f1a] p-12 md:p-16 flex flex-col justify-center"
           >
             <Moon className="h-12 w-12 text-blue-300 mb-6" strokeWidth={1.5} />
-            <h3 className="text-editorial-heading text-white">Нощ</h3>
+            <h3 className="editorial-heading text-white">Нощ</h3>
             <p className="mt-4 text-lg text-blue-200/60 font-body leading-relaxed max-w-md">
               Слънцето залязва, но домът продължава да работи на батерийна енергия. Без прекъсвания, без зависимост от мрежата, без нощна тарифа.
             </p>
@@ -224,8 +223,8 @@ export function BateriiContent() {
       {/* 4 — LFP vs NMC */}
       <section className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Технология</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-12">
+          <p className="editorial-overline text-accent">Технология</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-12">
             LFP срещу NMC
           </TextReveal>
           <motion.div variants={revealFromBottom} initial="hidden" whileInView="visible" viewport={{ once: true }} className="overflow-x-auto">
@@ -254,7 +253,7 @@ export function BateriiContent() {
       {/* 5 — Integration Diagram */}
       <section ref={diagramRef} className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-5xl px-6">
-          <TextReveal as="h2" className="text-editorial-heading text-center mb-16">
+          <TextReveal as="h2" className="editorial-heading text-center mb-16">
             Интеграция в системата
           </TextReveal>
           <motion.div
@@ -301,7 +300,7 @@ export function BateriiContent() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
             <BadgeChip variant="accent" className="mb-4">Възможности</BadgeChip>
-            <TextReveal as="h2" className="text-editorial-heading">
+            <TextReveal as="h2" className="editorial-heading">
               Какво осигурява батерията
             </TextReveal>
           </div>
@@ -334,7 +333,7 @@ export function BateriiContent() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
             <BadgeChip variant="accent" className="mb-4">Сравнение</BadgeChip>
-            <TextReveal as="h2" className="text-editorial-heading">
+            <TextReveal as="h2" className="editorial-heading">
               С батерия или без
             </TextReveal>
           </div>
@@ -358,8 +357,8 @@ export function BateriiContent() {
             />
           </motion.div>
           <motion.div variants={slideFromRight} initial="hidden" animate={caseInView ? "visible" : "hidden"}>
-            <p className="text-editorial-overline text-accent">Реален проект</p>
-            <h2 className="text-editorial-heading mt-2">60 kW + 184 kWh батерия</h2>
+            <p className="editorial-overline text-accent">Реален проект</p>
+            <h2 className="editorial-heading mt-2">60 kW + 184 kWh батерия</h2>
             <p className="mt-6 text-lg text-muted-foreground font-body leading-relaxed">
               Търговски обект с високо нощно потребление. Соларната система с 60 kW мощност зарежда 184 kWh батерийна система през деня, осигурявайки пълна автономия от 18:00 до 08:00.
             </p>
@@ -375,8 +374,8 @@ export function BateriiContent() {
       {/* 7 — Environmental Impact */}
       <section className="py-24 md:py-32 bg-[#f7f9f4]">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <p className="text-editorial-overline text-accent">Екологичен принос</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Екологичен принос</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             Вашето въздействие
           </TextReveal>
           <motion.div
@@ -403,8 +402,8 @@ export function BateriiContent() {
       {/* 8 — Project Gallery */}
       <section className="py-24 md:py-32 bg-foreground">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Инсталации</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-16">
+          <p className="editorial-overline text-accent">Инсталации</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-16">
             Реализирани проекти
           </TextReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -439,7 +438,7 @@ export function BateriiContent() {
       {/* 9 — FAQ */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
+          <TextReveal as="h2" className="editorial-display mb-12">
             Въпроси и отговори
           </TextReveal>
           <div className="space-y-3">
@@ -480,7 +479,7 @@ export function BateriiContent() {
       {/* 8 — CTA */}
       <section className="py-24 md:py-32 bg-gradient-to-br from-[#0a0f1a] via-[#0f1a2e] to-[#0a1520]">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-6">
+          <TextReveal as="h2" className="editorial-display text-white mb-6">
             Енергийна независимост
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-white/60 font-body mb-10 max-w-xl mx-auto">

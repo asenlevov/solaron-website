@@ -27,7 +27,7 @@ export function TextReveal({
   return (
     <Tag ref={ref as React.RefObject<never>} className={cn("flex flex-wrap", className?.includes("text-center") && "justify-center", className)} aria-label={children}>
       {words.map((word, i) => (
-        <span key={`${word}-${i}`} className="inline-block overflow-hidden mr-[0.25em]">
+        <span key={`${word}-${i}`} className="inline-block overflow-hidden mr-[0.25em] py-[0.05em]">
           <motion.span
             className="inline-block"
             initial={{ y: "110%" }}

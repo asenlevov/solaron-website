@@ -154,7 +154,7 @@ export const LIFESTYLE_IMAGES = {
 
 export const PRODUCT_IMAGES = {
   solarPanel: "/real/products/solar-panels-hero.jpg",
-  inverter: "/real/products/inverters-hero.png",
+  inverter: "/real/products/inverters-hero.jpg",
   battery: "/real/products/batteries-hero.jpg",
   evCharging: "/real/products/ev-charging-hero.jpg",
   constructions: "/real/products/constructions-hero.jpg",

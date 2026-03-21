@@ -254,7 +254,6 @@ export function SolarniPaneliContent() {
           src={PRODUCT_IMAGES.solarPanel}
           alt="Модерен дом със соларни панели"
           fill
-          reveal
           grain
           parallax
           containerClassName="absolute inset-0"
@@ -266,7 +265,7 @@ export function SolarniPaneliContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">MWT Технология</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3">
             Соларни Панели
           </TextReveal>
           <motion.p
@@ -310,8 +309,8 @@ export function SolarniPaneliContent() {
               initial="hidden"
               animate={techInView ? "visible" : "hidden"}
             >
-              <p className="text-editorial-overline text-accent">Технология</p>
-              <h2 className="text-editorial-heading mt-2 font-display">
+              <p className="editorial-overline text-accent">Технология</p>
+              <h2 className="editorial-heading mt-2 font-display">
                 MWT — Metal Wrap Through
               </h2>
               <div className="mt-8 space-y-5">
@@ -345,7 +344,7 @@ export function SolarniPaneliContent() {
       {/* ── 3 · Key Advantages — 2×2 Grid ────────────────── */}
       <section className="py-24 md:py-32 bg-[#f8faf6]">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-center mb-16">
             Предимства
           </TextReveal>
           <motion.div
@@ -376,8 +375,8 @@ export function SolarniPaneliContent() {
       {/* ── 4 · Interactive 3D Panel Viewer ───────────────── */}
       <section className="py-24 md:py-32 bg-foreground">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">3D Модел</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-8">
+          <p className="editorial-overline text-accent">3D Модел</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-8">
             Разгледайте панела
           </TextReveal>
           <div className="aspect-[16/9] max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10">
@@ -397,7 +396,7 @@ export function SolarniPaneliContent() {
       {/* ── 5 · Technical Specifications ──────────────────── */}
       <section ref={specsRef} className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
+          <TextReveal as="h2" className="editorial-display mb-12">
             Технически характеристики
           </TextReveal>
           <motion.div
@@ -431,8 +430,8 @@ export function SolarniPaneliContent() {
       {/* ── 6 · Technology Comparison ─────────────────────── */}
       <section ref={compRef} className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Сравнение</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-12">
+          <p className="editorial-overline text-accent">Сравнение</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-12">
             MWT срещу конкуренцията
           </TextReveal>
           <motion.div
@@ -494,7 +493,7 @@ export function SolarniPaneliContent() {
       {/* ── 7 · Installation Gallery ──────────────────────── */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Реализирани проекти
           </TextReveal>
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
@@ -530,8 +529,8 @@ export function SolarniPaneliContent() {
       {/* ── 8 · Warranty Timeline with Industry Avg ──────── */}
       <section ref={warrantyRef} className="py-24 md:py-32 bg-[#f8faf6]">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Гаранция</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Гаранция</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             30 години гарантирана мощност
           </TextReveal>
 
@@ -589,8 +588,8 @@ export function SolarniPaneliContent() {
       {/* ── 9 · Performance in Real Conditions ────────────── */}
       <section ref={conditionsRef} className="py-24 md:py-32 bg-foreground">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Производителност</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-16">
+          <p className="editorial-overline text-accent">Производителност</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-16">
             При всякакви условия
           </TextReveal>
           <motion.div
@@ -635,7 +634,7 @@ export function SolarniPaneliContent() {
             variants={blurIn}
             initial="hidden"
             animate={quoteInView ? "visible" : "hidden"}
-            className="text-editorial-pull-quote text-foreground relative z-10"
+            className="editorial-pull-quote text-foreground relative z-10"
           >
             Технологията MWT елиминира микропукнатините — най-честата причина за
             загуба на мощност при конвенционалните панели.
@@ -654,7 +653,7 @@ export function SolarniPaneliContent() {
       {/* ── 11 · FAQ ──────────────────────────────────────── */}
       <section className="py-24 md:py-32 bg-[#f8faf6]">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-center mb-16">
             Често задавани въпроси
           </TextReveal>
           <div className="space-y-4">
@@ -702,7 +701,7 @@ export function SolarniPaneliContent() {
       {/* ── 12 · CTA ──────────────────────────────────────── */}
       <section className="py-24 md:py-32 bg-foreground">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-6">
+          <TextReveal as="h2" className="editorial-display text-white mb-6">
             Готови за соларна енергия?
           </TextReveal>
           <motion.p

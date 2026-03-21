@@ -89,7 +89,6 @@ export function EvZaryadniContent() {
           src={PRODUCT_IMAGES.evCharging}
           alt="Соларен карпорт с EV зарядни станции"
           fill
-          reveal
           grain
           parallax
           containerClassName="absolute inset-0"
@@ -100,7 +99,7 @@ export function EvZaryadniContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">E-мобилност</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3">
             EV Зарядни Станции
           </TextReveal>
           <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
@@ -129,7 +128,7 @@ export function EvZaryadniContent() {
       {/* 2 — Smart Charging Modes */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-4">
+          <TextReveal as="h2" className="editorial-display mb-4">
             Режими на зареждане
           </TextReveal>
           <p className="text-lg text-muted-foreground font-body mb-12 max-w-2xl">
@@ -163,8 +162,8 @@ export function EvZaryadniContent() {
       {/* 3 — Vehicle Compatibility */}
       <section ref={vehicleRef} className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Съвместимост</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-12">
+          <p className="editorial-overline text-accent">Съвместимост</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-12">
             Поддържани автомобили
           </TextReveal>
           <motion.div
@@ -202,7 +201,7 @@ export function EvZaryadniContent() {
       {/* 4 — Cost Comparison */}
       <section ref={compRef} className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Цена на зареждане
           </TextReveal>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -253,7 +252,7 @@ export function EvZaryadniContent() {
       {/* 5 — Integration Diagram */}
       <section ref={integRef} className="py-24 md:py-32 bg-[#0a0f1a] text-white">
         <div className="mx-auto max-w-5xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-white text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-white text-center mb-16">
             Интегрирана система
           </TextReveal>
           <motion.div
@@ -308,7 +307,7 @@ export function EvZaryadniContent() {
       {/* 6 — Cost Savings Calculator */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+          <TextReveal as="h2" className="editorial-display text-center mb-4">
             Калкулатор за спестявания
           </TextReveal>
           <p className="text-center text-muted-foreground font-body mb-12 max-w-lg mx-auto">
@@ -359,8 +358,8 @@ export function EvZaryadniContent() {
       {/* 7 — Environmental Impact */}
       <section className="py-24 md:py-32 bg-[#f7f9f4]">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <p className="text-editorial-overline text-accent">Екология</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Екология</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             Пътуване с нулеви емисии
           </TextReveal>
           <motion.div
@@ -401,7 +400,7 @@ export function EvZaryadniContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-pull-quote text-foreground relative z-10"
+            className="editorial-pull-quote text-foreground relative z-10"
           >
             Зареждам колата от покрива всяка нощ. Сметката за гориво падна от 400 лв на под 50 лв месечно.
           </motion.blockquote>
@@ -420,7 +419,7 @@ export function EvZaryadniContent() {
       {/* 9 — FAQ */}
       <section className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-12">
+          <TextReveal as="h2" className="editorial-display text-white mb-12">
             Често задавани въпроси
           </TextReveal>
           <div className="space-y-3">
@@ -461,7 +460,7 @@ export function EvZaryadniContent() {
       {/* 6 — CTA */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display mb-6">
+          <TextReveal as="h2" className="editorial-display mb-6">
             Заредете от слънцето
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-muted-foreground font-body mb-10 max-w-xl mx-auto">

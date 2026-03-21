@@ -68,7 +68,6 @@ export function InvertoriContent() {
           src={PRODUCT_IMAGES.inverter}
           alt="Соларна система с инвертор"
           fill
-          reveal
           grain
           parallax
           containerClassName="absolute inset-0"
@@ -79,7 +78,7 @@ export function InvertoriContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">SolarEdge HD-Wave</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3">
             Инвертори
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
@@ -108,7 +107,7 @@ export function InvertoriContent() {
       {/* 2 — DC→AC Flow */}
       <section ref={flowRef} className="py-20 md:py-28 bg-[#f7f9f4]">
         <div className="mx-auto max-w-5xl px-6">
-          <TextReveal as="h2" className="text-editorial-heading text-center mb-16">
+          <TextReveal as="h2" className="editorial-heading text-center mb-16">
             Преобразуване на енергията
           </TextReveal>
           <motion.div
@@ -149,8 +148,8 @@ export function InvertoriContent() {
       {/* 3 — SolarEdge Monitoring Platform (Dark) */}
       <section className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Мониторинг</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-16">
+          <p className="editorial-overline text-accent">Мониторинг</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-16">
             Облачна платформа
           </TextReveal>
           <motion.div
@@ -193,8 +192,8 @@ export function InvertoriContent() {
       <section ref={optRef} className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-16 items-center">
           <motion.div variants={slideFromLeft} initial="hidden" animate={optInView ? "visible" : "hidden"}>
-            <p className="text-editorial-overline text-accent">Оптимизация</p>
-            <h2 className="text-editorial-heading mt-2">Оптимизатор P950</h2>
+            <p className="editorial-overline text-accent">Оптимизация</p>
+            <h2 className="editorial-heading mt-2">Оптимизатор P950</h2>
             <p className="mt-6 text-lg text-muted-foreground font-body leading-relaxed">
               Всеки панел получава собствен оптимизатор, който следи и максимизира неговата мощност независимо от останалите. При частично засенчване или замърсяване, само засегнатият панел губи ефективност.
             </p>
@@ -240,7 +239,7 @@ export function InvertoriContent() {
       {/* 5 — Specs Table */}
       <section className="py-24 md:py-32 bg-[#f7f9f4]">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
+          <TextReveal as="h2" className="editorial-display mb-12">
             Модели и спецификации
           </TextReveal>
           <motion.div variants={slideUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="overflow-x-auto">
@@ -279,7 +278,7 @@ export function InvertoriContent() {
       {/* 6 — Bento Benefits */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
+          <TextReveal as="h2" className="editorial-display mb-12">
             Защо SolarEdge
           </TextReveal>
           <motion.div
@@ -311,7 +310,7 @@ export function InvertoriContent() {
       {/* 7 — FAQ */}
       <section className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-12">
+          <TextReveal as="h2" className="editorial-display text-white mb-12">
             Често задавани въпроси
           </TextReveal>
           <div className="space-y-3">
@@ -349,7 +348,7 @@ export function InvertoriContent() {
       {/* 8 — Project Gallery */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Реализирани инсталации
           </TextReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -384,8 +383,8 @@ export function InvertoriContent() {
       {/* 9 — Environmental Impact */}
       <section className="py-24 md:py-32 bg-[#f7f9f4]">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <p className="text-editorial-overline text-accent">Въздействие</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Въздействие</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             Екологичен принос
           </TextReveal>
           <motion.div
@@ -416,7 +415,7 @@ export function InvertoriContent() {
       {/* 8 — CTA */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display mb-6">
+          <TextReveal as="h2" className="editorial-display mb-6">
             Проектирайте вашата система
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-muted-foreground font-body mb-10 max-w-xl mx-auto">

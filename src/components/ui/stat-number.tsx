@@ -43,7 +43,7 @@ export function StatNumber({
 
   return (
     <div ref={ref} className="flex flex-col overflow-hidden">
-      <div className={cn("text-editorial-stat", className)}>
+      <div className={cn("editorial-stat", className)}>
         {prefix}
         {display.toLocaleString("bg-BG")}
         {suffix && <span className="text-[0.6em]">{suffix}</span>}

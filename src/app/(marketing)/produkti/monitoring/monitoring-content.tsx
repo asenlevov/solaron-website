@@ -93,7 +93,7 @@ export function MonitoringContent() {
               <motion.div variants={blurIn} initial="hidden" animate="visible">
                 <BadgeChip variant="hero">SolarEdge</BadgeChip>
               </motion.div>
-              <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+              <TextReveal as="h1" className="editorial-hero text-white mt-3">
                 Мониторинг
               </TextReveal>
               <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
@@ -176,7 +176,7 @@ export function MonitoringContent() {
       {/* 2 — Features Grid */}
       <section ref={featRef} className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Функционалности
           </TextReveal>
           <motion.div
@@ -248,8 +248,8 @@ export function MonitoringContent() {
             </div>
           </motion.div>
           <motion.div variants={slideFromRight} initial="hidden" animate={mobileInView ? "visible" : "hidden"}>
-            <p className="text-editorial-overline text-accent">Мобилно приложение</p>
-            <h2 className="text-editorial-heading text-white mt-2">Системата в джоба ви</h2>
+            <p className="editorial-overline text-accent">Мобилно приложение</p>
+            <h2 className="editorial-heading text-white mt-2">Системата в джоба ви</h2>
             <p className="mt-6 text-lg text-white/50 font-body leading-relaxed">
               MySolarEdge приложението ви дава пълен контрол навсякъде. Следете производството, получавайте известия и анализирайте данните — от телефона си.
             </p>
@@ -268,7 +268,7 @@ export function MonitoringContent() {
       {/* 4 — Alert Types */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-5xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-4">
+          <TextReveal as="h2" className="editorial-display mb-4">
             Система за известия
           </TextReveal>
           <p className="text-lg text-muted-foreground font-body mb-12 max-w-2xl">
@@ -297,7 +297,7 @@ export function MonitoringContent() {
       {/* 5 — Dashboard Stats (Dark) */}
       <section className="py-24 md:py-32 bg-[#0a0f1a]">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-16 text-center">
+          <TextReveal as="h2" className="editorial-display text-white mb-16 text-center">
             Вашите данни, визуализирани
           </TextReveal>
           <motion.div
@@ -324,8 +324,8 @@ export function MonitoringContent() {
       {/* 6 — ROI of Monitoring */}
       <section className="py-24 md:py-32 bg-[#f7f9f4]">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="text-editorial-overline text-accent">Възвращаемост</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Възвращаемост</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             Мониторингът спестява пари
           </TextReveal>
           <div className="grid md:grid-cols-3 gap-8">
@@ -355,7 +355,7 @@ export function MonitoringContent() {
       {/* 7 — FAQ */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-center mb-16">
             Често задавани въпроси
           </TextReveal>
           <div className="space-y-3">
@@ -396,7 +396,7 @@ export function MonitoringContent() {
       {/* 6 — CTA */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display mb-6">
+          <TextReveal as="h2" className="editorial-display mb-6">
             Поемете контрола
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-muted-foreground font-body mb-10 max-w-xl mx-auto">

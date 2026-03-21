@@ -249,7 +249,6 @@ export function KonstrukciiContent() {
           fill
           parallax
           grain
-          reveal
           containerClassName="absolute inset-0"
           priority
         />
@@ -258,7 +257,7 @@ export function KonstrukciiContent() {
           <motion.div variants={blurIn} initial="hidden" animate="visible">
             <BadgeChip variant="hero">Монтажни системи</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3">
             Конструкции
           </TextReveal>
           <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
@@ -287,7 +286,7 @@ export function KonstrukciiContent() {
       {/* 2 — Type Selector */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-12">
+          <TextReveal as="h2" className="editorial-display mb-12">
             Типове конструкции
           </TextReveal>
           <div className="flex flex-wrap gap-3 mb-12">
@@ -321,7 +320,7 @@ export function KonstrukciiContent() {
                 <MountDiagram type={current.id} />
               </div>
               <div>
-                <h3 className="text-editorial-heading">{current.label}</h3>
+                <h3 className="editorial-heading">{current.label}</h3>
                 <p className="mt-4 text-lg text-muted-foreground font-body leading-relaxed">{current.description}</p>
                 <div className="mt-8 space-y-4">
                   {current.specs.map((s) => (
@@ -340,8 +339,8 @@ export function KonstrukciiContent() {
       {/* 3 — Engineering Specs */}
       <section ref={engRef} className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-editorial-overline text-accent">Инженерство</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-16">
+          <p className="editorial-overline text-accent">Инженерство</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-16">
             Проектирани за издръжливост
           </TextReveal>
           <motion.div
@@ -368,7 +367,7 @@ export function KonstrukciiContent() {
       {/* 4 — Installation Steps */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Процес на инсталация
           </TextReveal>
           <motion.div
@@ -405,8 +404,8 @@ export function KonstrukciiContent() {
             animate={partnerInView ? "visible" : "hidden"}
             className="bg-white rounded-3xl p-10 md:p-16 border border-border/50 text-center"
           >
-            <p className="text-editorial-overline text-accent mb-4">Партньор</p>
-            <h2 className="text-editorial-heading">Van Der Valk Solar Systems</h2>
+            <p className="editorial-overline text-accent mb-4">Партньор</p>
+            <h2 className="editorial-heading">Van Der Valk Solar Systems</h2>
             <p className="mt-6 text-lg text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto">
               Работим с Van Der Valk — холандски производител на монтажни системи с над 15 години опит и инсталации в 40+ държави. Техните алуминиеви конструкции са сертифицирани по EN 1090 и оптимизирани за минимално време за монтаж с максимална сигурност.
             </p>
@@ -422,8 +421,8 @@ export function KonstrukciiContent() {
       {/* 6 — Material Comparison */}
       <section className="py-24 md:py-32 bg-foreground text-white">
         <div className="mx-auto max-w-5xl px-6">
-          <p className="text-editorial-overline text-accent">Материали</p>
-          <TextReveal as="h2" className="text-editorial-display text-white mt-2 mb-12">
+          <p className="editorial-overline text-accent">Материали</p>
+          <TextReveal as="h2" className="editorial-display text-white mt-2 mb-12">
             Защо алуминий?
           </TextReveal>
           <motion.div variants={slideUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="overflow-x-auto">
@@ -460,8 +459,8 @@ export function KonstrukciiContent() {
       {/* 7 — Certifications */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <p className="text-editorial-overline text-accent">Сертификати</p>
-          <TextReveal as="h2" className="text-editorial-display mt-2 mb-16">
+          <p className="editorial-overline text-accent">Сертификати</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
             Тествани и сертифицирани
           </TextReveal>
           <motion.div
@@ -490,7 +489,7 @@ export function KonstrukciiContent() {
       {/* 8 — Project Gallery */}
       <section className="py-24 md:py-32 bg-[#f8faf6]">
         <div className="mx-auto max-w-7xl px-6">
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Реализирани конструкции
           </TextReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -528,7 +527,7 @@ export function KonstrukciiContent() {
       {/* 9 — FAQ */}
       <section className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-3xl px-6">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-center mb-16">
             Често задавани въпроси
           </TextReveal>
           <div className="space-y-3">
@@ -569,7 +568,7 @@ export function KonstrukciiContent() {
       {/* 6 — CTA */}
       <section className="py-24 md:py-32 bg-foreground">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-6">
+          <TextReveal as="h2" className="editorial-display text-white mb-6">
             Подберете конструкция
           </TextReveal>
           <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-white/60 font-body mb-10 max-w-lg mx-auto">
