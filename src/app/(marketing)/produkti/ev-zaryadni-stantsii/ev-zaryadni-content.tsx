@@ -103,7 +103,7 @@ export function EvZaryadniContent() {
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             EV Зарядни Станции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
             Заредете автомобила си от слънцето. Интелигентни зарядни станции, интегрирани с вашата соларна система и батерия.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">
@@ -468,7 +468,7 @@ export function EvZaryadniContent() {
             Добавете EV зарядна станция към вашата соларна система и намалете разходите за гориво с до 77%.
           </motion.p>
           <MagneticButton href="/konfigurator" variant="dark" size="xl">
-            Конфигурирайте система <ArrowRight className="ml-2 h-5 w-5" />
+            Конфигурирайте система
           </MagneticButton>
         </div>
       </section>

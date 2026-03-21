@@ -107,7 +107,7 @@ export function MonitoringContent() {
               <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
                 Мониторинг
               </TextReveal>
-              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
                 Пълен контрол над вашата соларна система — от телефона, таблета или компютъра. 24/7 данни в реално време.
               </motion.p>
               <div className="mt-10 flex flex-wrap gap-12">
@@ -400,7 +400,7 @@ export function MonitoringContent() {
             Всяка наша инсталация включва безплатен достъп до SolarEdge мониторинг платформата — за целия живот на системата.
           </motion.p>
           <MagneticButton href="/konfigurator" variant="dark" size="xl">
-            Конфигурирайте система <ArrowRight className="ml-2 h-5 w-5" />
+            Конфигурирайте система
           </MagneticButton>
         </div>
       </section>

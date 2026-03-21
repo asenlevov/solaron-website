@@ -210,7 +210,6 @@ export function FeaturedProjects() {
         <div className="mt-14 flex justify-center md:mt-16">
           <MagneticButton href="/proekti" variant="outline" size="lg">
             Всички Проекти
-            <ArrowRight className="ml-2 h-4 w-4" />
           </MagneticButton>
         </div>
       </div>

@@ -261,7 +261,7 @@ export function KonstrukciiContent() {
           <TextReveal as="h1" className="text-editorial-hero max-w-4xl text-white mt-2">
             Конструкции
           </TextReveal>
-          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-lg text-lg md:text-2xl text-white/70 font-body leading-relaxed">
+          <motion.p variants={slideFromLeft} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
             Алуминиеви конструкции за всеки тип инсталация — от скатен покрив до соларен карпорт. Проектирани за българския климат.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">

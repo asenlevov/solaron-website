@@ -84,7 +84,7 @@ export function BateriiContent() {
           <TextReveal as="h1" className="text-editorial-hero text-white mt-2 max-w-4xl">
             Батерии
           </TextReveal>
-          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-xl text-lg md:text-2xl text-white/70 font-body leading-relaxed">
+          <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed">
             LiFePO₄ батерии за енергийна независимост — зареждайте от слънцето, използвайте денонощно.
           </motion.p>
           <div className="mt-10 flex flex-wrap gap-12">
@@ -487,7 +487,7 @@ export function BateriiContent() {
             Конфигурирайте соларна система с батерия и разберете колко можете да спестите.
           </motion.p>
           <MagneticButton href="/konfigurator" variant="primary" size="xl">
-            Изчислете спестяванията <ArrowRight className="ml-2 h-5 w-5" />
+            Изчислете спестяванията
           </MagneticButton>
         </div>
       </section>

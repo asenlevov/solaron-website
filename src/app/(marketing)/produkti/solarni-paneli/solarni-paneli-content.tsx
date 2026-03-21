@@ -273,17 +273,17 @@ export function SolarniPaneliContent() {
             variants={blurIn}
             initial="hidden"
             animate="visible"
-            className="mt-6 max-w-xl text-lg md:text-2xl text-white/80 font-body leading-relaxed"
+            className="mt-6 max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 font-body leading-relaxed"
           >
             MWT монокристални модули от ново поколение — максимална ефективност,
             минимална деградация, 30 години гарантирана производителност.
           </motion.p>
-          <div className="mt-14 flex flex-wrap gap-12 md:gap-20">
-            <StatNumber value={450} suffix="W" context="Пикова мощност" className="text-white" contextClassName="text-white/60" />
-            <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60" duration={1500} />
-            <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60" duration={1800} />
+          <div className="mt-10 md:mt-14 flex flex-wrap gap-8 md:gap-16">
+            <StatNumber value={450} suffix="W" context="Пикова мощност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" />
+            <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1500} />
+            <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60 text-sm md:text-base" duration={1800} />
           </div>
-          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-10">
+          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
             <MagneticButton href="/konfigurator" variant="primary">
               Безплатна оферта
             </MagneticButton>
@@ -716,7 +716,7 @@ export function SolarniPaneliContent() {
             Конфигурирайте вашата система онлайн и получете персонализирана оферта за минути.
           </motion.p>
           <MagneticButton href="/konfigurator" variant="primary" size="xl">
-            Конфигуратор <ArrowRight className="ml-2 h-5 w-5" />
+            Конфигуратор
           </MagneticButton>
         </div>
       </section>

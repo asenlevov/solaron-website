@@ -75,22 +75,22 @@ export function MagneticButton({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={reset}
     >
-      {/* Shimmer sweep on hover */}
       <span
         className={cn(
           "pointer-events-none absolute inset-0 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700",
           hovered && "translate-x-full",
         )}
       />
-      
-      <span className="relative z-10 whitespace-nowrap">{children}</span>
-      
-      {showArrow && (
-        <ArrowRight className={cn(
-          "relative z-10 size-4 transition-all duration-300",
-          hovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 w-0",
-        )} />
-      )}
+
+      <span className="relative z-10 inline-flex items-center gap-2 whitespace-nowrap">
+        {children}
+        {showArrow && (
+          <ArrowRight className={cn(
+            "size-4 shrink-0 transition-all duration-300",
+            hovered ? "opacity-100 translate-x-0" : "opacity-70",
+          )} />
+        )}
+      </span>
     </motion.div>
   );
 
