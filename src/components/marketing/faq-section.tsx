@@ -70,7 +70,7 @@ export function FAQSection() {
               <HelpCircle className="mr-1.5 size-3.5" />
               Въпроси
             </BadgeChip>
-            <h2 className="text-editorial-heading">
+            <h2 className="editorial-heading">
               Често Задавани Въпроси
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary">

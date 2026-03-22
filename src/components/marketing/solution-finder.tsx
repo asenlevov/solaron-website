@@ -57,8 +57,8 @@ export function SolutionFinder() {
     <section className="bg-white px-6 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mb-14 md:mb-20">
-          <p className="text-editorial-overline mb-4 text-accent">РЕШЕНИЯ</p>
-          <TextReveal as="h2" className="text-editorial-display">
+          <p className="editorial-overline mb-4 text-accent">РЕШЕНИЯ</p>
+          <TextReveal as="h2" className="editorial-display">
             Намерете Вашето Решение
           </TextReveal>
         </div>

@@ -5,12 +5,10 @@ import {
   ContactShadows,
   Environment,
   OrbitControls,
-  SoftShadows,
 } from "@react-three/drei";
 import {
   EffectComposer,
   Bloom,
-  SSAO,
   Vignette,
 } from "@react-three/postprocessing";
 import dynamic from "next/dynamic";
@@ -29,6 +27,7 @@ export type SceneCanvasProps = {
     near?: number;
     far?: number;
   };
+  target?: [number, number, number];
   shadows?: boolean;
   autoRotate?: boolean;
 };
@@ -64,12 +63,6 @@ function PostProcessing() {
         luminanceSmoothing={0.9}
         mipmapBlur
       />
-      <SSAO
-        radius={0.04}
-        intensity={8}
-        luminanceInfluence={0.6}
-        color={new THREE.Color(0, 0, 0)}
-      />
       <Vignette offset={0.3} darkness={0.4} />
     </EffectComposer>
   );
@@ -80,6 +73,7 @@ export function SceneCanvas({
   className,
   style,
   camera,
+  target,
   shadows = true,
   autoRotate = false,
 }: SceneCanvasProps) {
@@ -93,7 +87,7 @@ export function SceneCanvas({
       <Suspense fallback={<LoadingFallback />}>
         <Canvas
           className="!h-full !w-full"
-          shadows={shadows ? "soft" : false}
+          shadows={shadows}
           gl={{
             antialias: true,
             alpha: true,
@@ -109,8 +103,6 @@ export function SceneCanvas({
         >
           <color attach="background" args={[BG_COLOR]} />
           <fog attach="fog" args={[BG_COLOR, 25, 60]} />
-
-          {shadows && <SoftShadows size={25} samples={16} focus={0.5} />}
 
           <ambientLight intensity={0.5} />
 
@@ -155,7 +147,7 @@ export function SceneCanvas({
           <Environment preset="city" />
 
           <ContactShadows
-            position={[0, 0.005, 0]}
+            position={[0, -0.02, 0]}
             opacity={0.4}
             scale={30}
             blur={2}
@@ -168,6 +160,7 @@ export function SceneCanvas({
 
           <OrbitControls
             makeDefault
+            target={target ?? [0, 0, 0]}
             minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2.2}
             enableZoom={false}

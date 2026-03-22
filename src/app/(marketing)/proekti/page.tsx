@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { MagneticButton } from "@/components/ui/magnetic-button";
+import { ImageEditorial } from "@/components/ui/image-editorial";
 import { projects, categoryLabels, type Project } from "@/data/projects";
+import { REAL_IMAGES } from "@/data/images";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -47,10 +50,19 @@ export default async function ProektiPage({
   return (
     <main className="pt-16">
       {/* ── Editorial hero ── */}
-      <section className="grain relative overflow-hidden bg-[#0a0f0a] px-6 py-20 md:px-12 md:py-32">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-editorial-overline mb-6">ПОРТФОЛИО</p>
-          <h1 className="text-editorial-hero max-w-4xl text-white">
+      <section className="relative flex min-h-[50vh] items-end overflow-hidden">
+        <ImageEditorial
+          src={REAL_IMAGES.projects.saedinenie651_hero}
+          alt="Соларен парк Съединение — 651 kWp"
+          fill
+          priority
+          grain
+          containerClassName="absolute inset-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-40 md:px-12 md:pb-20">
+          <p className="editorial-overline text-white/60 mb-6">ПОРТФОЛИО</p>
+          <h1 className="editorial-hero max-w-4xl text-white">
             Нашите
             <br />
             Проекти
@@ -72,12 +84,12 @@ export default async function ProektiPage({
       {/* ── Featured project ── */}
       <section className="relative bg-white px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-7xl">
-          <p className="text-editorial-overline mb-10">
+          <p className="editorial-overline mb-10">
             ВОДЕЩ ПРОЕКТ
           </p>
           <div className="relative grid gap-8 lg:grid-cols-12">
             <div className="relative overflow-hidden rounded-2xl lg:col-span-8">
-              <div className="aspect-[16/9]">
+              <div className="relative aspect-[16/9]">
                 <Image
                   src={featured.image}
                   alt={featured.title}
@@ -97,11 +109,11 @@ export default async function ProektiPage({
 
             <div className="flex flex-col justify-center lg:col-span-4 lg:-ml-16 lg:relative lg:z-10">
               <div className="rounded-2xl border border-border bg-white p-8 shadow-elevated lg:p-10">
-                <p className="text-editorial-overline mb-2">
+                <p className="editorial-overline mb-2">
                   {featured.location}
                 </p>
                 {featured.kWp > 0 && (
-                  <p className="text-editorial-stat text-accent">
+                  <p className="editorial-stat text-accent">
                     {featured.kWp}
                     <span className="ml-1 text-[0.35em] font-semibold text-foreground-tertiary">
                       kWp
@@ -197,24 +209,21 @@ export default async function ProektiPage({
       </section>
 
       {/* ── CTA ── */}
-      <section className="grain bg-[#0a0f0a] px-6 py-20 text-center md:px-12 md:py-28">
+      <section className="grain bg-foreground px-6 py-20 text-center md:px-12 md:py-28">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-editorial-display text-white">
+          <h2 className="editorial-display text-white">
             Готови За
             <br />
             Подобен Проект?
           </h2>
-          <p className="mt-6 text-lg leading-relaxed text-white/60">
+          <p className="mt-6 text-lg leading-relaxed text-white/70">
             Разкажете ни за обекта си и ще предложим оптимално решение
             за вашите нужди.
           </p>
           <div className="mt-10">
-            <Link
-              href="/kontakti"
-              className="inline-flex items-center justify-center rounded-lg bg-accent px-8 py-4 font-display text-base font-semibold text-white transition-shadow duration-300 hover:shadow-[0_0_30px_rgba(59,122,42,0.35)]"
-            >
+            <MagneticButton href="/kontakti" variant="primary" size="xl">
               Безплатна Консултация
-            </Link>
+            </MagneticButton>
           </div>
         </div>
       </section>

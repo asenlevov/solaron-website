@@ -54,9 +54,9 @@ function SolarPanelsSection() {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <p className="text-editorial-overline mb-4">ПРОДУКТ</p>
+            <p className="editorial-overline mb-4">ПРОДУКТ</p>
 
-            <TextReveal as="h3" className="text-editorial-display text-foreground">
+            <TextReveal as="h3" className="editorial-display text-foreground">
               Соларни Панели
             </TextReveal>
 
@@ -86,7 +86,7 @@ function SolarPanelsSection() {
             </div>
 
             {/* Pull quote */}
-            <blockquote className="text-editorial-pull-quote mt-8 max-w-md border-l-2 border-[#3B7A2A]/30 pl-6 text-foreground-secondary">
+            <blockquote className="editorial-pull-quote mt-8 max-w-md border-l-2 border-[#3B7A2A]/30 pl-6 text-foreground-secondary">
               Технологията MWT елиминира микропукнатините и увеличава ефективността с
               до 3%
             </blockquote>
@@ -137,8 +137,8 @@ function BatterySection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <p className="text-editorial-overline mb-4">СЪХРАНЕНИЕ</p>
-          <TextReveal as="h3" className="text-editorial-display text-white">
+          <p className="editorial-overline mb-4">СЪХРАНЕНИЕ</p>
+          <TextReveal as="h3" className="editorial-display text-white">
             Батерии
           </TextReveal>
         </motion.div>
@@ -271,8 +271,8 @@ function InverterSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <p className="text-editorial-overline mb-4">ОПТИМИЗАЦИЯ</p>
-          <TextReveal as="h3" className="text-editorial-display text-foreground">
+          <p className="editorial-overline mb-4">ОПТИМИЗАЦИЯ</p>
+          <TextReveal as="h3" className="editorial-display text-foreground">
             Инвертори
           </TextReveal>
         </motion.div>

@@ -86,7 +86,7 @@ export function Testimonials() {
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <BadgeChip variant="accent" className="mb-4">Отзиви на Клиенти</BadgeChip>
-            <h2 className="text-editorial-heading">Какво Казват Нашите Клиенти</h2>
+            <h2 className="editorial-heading">Какво Казват Нашите Клиенти</h2>
           </div>
           <div className="flex items-center gap-2">
             <button

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(process.cwd()),
   },
+  serverExternalPackages: ["jspdf", "fflate"],
 };
 
 export default nextConfig;

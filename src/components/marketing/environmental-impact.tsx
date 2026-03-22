@@ -74,7 +74,7 @@ export function EnvironmentalImpact() {
             <Leaf className="mr-1.5 size-3.5" />
             Екологично Въздействие
           </BadgeChip>
-          <h2 className="text-editorial-heading">Нашият Принос за Планетата</h2>
+          <h2 className="editorial-heading">Нашият Принос за Планетата</h2>
           <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
             Реален принос, измерен от нашите инсталации в България.
           </p>

@@ -352,6 +352,7 @@ export function VuzvrashchaemostContent() {
           src={KAK_RABOTI_IMAGES.vuzvrashchaemost}
           alt="Фотоволтаична система — възвръщаемост на инвестицията"
           fill
+          sizes="100vw"
           priority
           parallax
           grain

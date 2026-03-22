@@ -47,18 +47,18 @@ export default function SertifikatiPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="grain overflow-hidden bg-foreground pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-6">
+          <p className="editorial-overline text-white/60 mb-6">
             Стандарти
           </p>
           <TextReveal
             as="h1"
-            className="text-editorial-hero max-w-4xl text-foreground"
+            className="editorial-hero max-w-4xl text-white"
           >
             Сертификати и Награди
           </TextReveal>
-          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-foreground-secondary md:text-xl">
+          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-white/70 md:text-xl">
             Независими отличия, които потвърждават качеството на изпълнение и
             ангажимента ни към клиентите.
           </p>
@@ -72,7 +72,7 @@ export default function SertifikatiPage() {
             <div className="shrink-0">
               <div className="flex h-40 w-40 items-center justify-center rounded-3xl border-4 border-accent bg-accent/10">
                 <div className="text-center">
-                  <p className="text-editorial-stat text-accent text-5xl">
+                  <p className="editorial-stat text-accent text-5xl">
                     2024
                   </p>
                   <p className="mt-1 text-xs font-bold uppercase tracking-widest text-accent">
@@ -82,10 +82,10 @@ export default function SertifikatiPage() {
               </div>
             </div>
             <div className="max-w-2xl">
-              <p className="text-editorial-overline text-accent mb-3">
+              <p className="editorial-overline text-accent mb-3">
                 Отличие
               </p>
-              <h2 className="text-editorial-display text-white">
+              <h2 className="editorial-display text-white">
                 EUPD Research — Top Brand PV Installer
               </h2>
               <p className="mt-6 font-body text-base leading-relaxed text-white/60 md:text-lg">
@@ -102,10 +102,10 @@ export default function SertifikatiPage() {
       {/* Certificate Cards */}
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Сертификати
           </p>
-          <h2 className="text-editorial-heading text-foreground mb-14 max-w-xl">
+          <h2 className="editorial-heading text-foreground mb-14 max-w-xl">
             Гаранция за качество
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
@@ -114,10 +114,10 @@ export default function SertifikatiPage() {
                 <div
                   className={`rounded-2xl border border-border border-t-4 ${cert.accent} bg-white p-8 h-full`}
                 >
-                  <p className="text-editorial-stat text-foreground/40 text-3xl mb-4">
+                  <p className="editorial-stat text-foreground/40 text-3xl mb-4">
                     {cert.year}
                   </p>
-                  <h3 className="text-editorial-heading text-foreground text-xl mb-2">
+                  <h3 className="editorial-heading text-foreground text-xl mb-2">
                     {cert.name}
                   </h3>
                   <p className="font-body text-xs uppercase tracking-widest text-foreground-secondary mb-4">
@@ -136,17 +136,17 @@ export default function SertifikatiPage() {
       {/* Timeline */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Хронология
           </p>
-          <h2 className="text-editorial-heading text-foreground mb-14 max-w-xl">
+          <h2 className="editorial-heading text-foreground mb-14 max-w-xl">
             Път към стандарти
           </h2>
           <div className="relative border-l-2 border-accent/20 pl-8 md:pl-12">
             {TIMELINE_ITEMS.map((t) => (
               <div key={t.year} className="relative mb-10 last:mb-0">
                 <div className="absolute -left-[calc(2rem+5px)] top-1.5 h-3 w-3 rounded-full bg-accent md:-left-[calc(3rem+5px)]" />
-                <p className="text-editorial-stat text-accent text-2xl">
+                <p className="editorial-stat text-accent text-2xl">
                   {t.year}
                 </p>
                 <p className="mt-1 font-body text-base text-foreground-secondary">
@@ -162,7 +162,7 @@ export default function SertifikatiPage() {
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="mx-auto max-w-3xl text-center">
-            <blockquote className="text-editorial-pull-quote text-foreground">
+            <blockquote className="editorial-pull-quote text-foreground">
               &ldquo;Сертификатите не са цел — те са следствие от последователен
               ангажимент към качеството.&rdquo;
             </blockquote>

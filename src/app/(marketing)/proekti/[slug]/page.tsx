@@ -200,13 +200,13 @@ export default async function ProjectDetailPage({
 
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                  <h1 className="text-editorial-display text-white md:text-editorial-hero">
+                  <h1 className="editorial-display text-white md:editorial-hero">
                     {project.title}
                   </h1>
                 </div>
                 {project.kWp > 0 && (
                   <p
-                    className="text-editorial-stat text-accent md:text-right"
+                    className="editorial-stat text-accent md:text-right"
                     aria-label={`${project.kWp} киловата пикова мощност`}
                   >
                     {project.kWp}
@@ -280,13 +280,13 @@ export default async function ProjectDetailPage({
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <p className="text-editorial-overline mb-4">Описание</p>
+              <p className="editorial-overline mb-4">Описание</p>
               <p className="text-xl leading-relaxed text-foreground-secondary md:text-2xl md:leading-relaxed">
                 {project.description}
               </p>
             </div>
             <div>
-              <p className="text-editorial-overline mb-4">Ползи</p>
+              <p className="editorial-overline mb-4">Ползи</p>
               <p className="text-xl leading-relaxed text-foreground-secondary md:text-2xl md:leading-relaxed">
                 {project.benefits}
               </p>
@@ -299,7 +299,7 @@ export default async function ProjectDetailPage({
       {gallery.length > 0 && (
         <section className="bg-[#f7f7f5] px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto max-w-7xl">
-            <p className="text-editorial-overline mb-8">Галерия</p>
+            <p className="editorial-overline mb-8">Галерия</p>
             <div
               className={cn(
                 "grid gap-4",
@@ -349,7 +349,7 @@ export default async function ProjectDetailPage({
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Specs table */}
             <div className="lg:col-span-5">
-              <p className="text-editorial-overline mb-6">
+              <p className="editorial-overline mb-6">
                 Технически данни
               </p>
               <div className="overflow-x-auto rounded-xl border border-border">
@@ -380,7 +380,7 @@ export default async function ProjectDetailPage({
             <div className="lg:col-span-7">
               {techEntries.length > 0 && (
                 <div>
-                  <p className="text-editorial-overline mb-6">
+                  <p className="editorial-overline mb-6">
                     Технологии и оборудване
                   </p>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -430,10 +430,10 @@ export default async function ProjectDetailPage({
       {project.client && (
         <section className="grain bg-[#0a0f0a] px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="text-editorial-overline mb-6 !text-accent">
+            <p className="editorial-overline mb-6 !text-accent">
               Партньор
             </p>
-            <blockquote className="text-editorial-pull-quote text-white/80">
+            <blockquote className="editorial-pull-quote text-white/80">
               &ldquo;Проектът беше реализиран в партньорство с{" "}
               <strong className="font-semibold not-italic text-white">
                 {project.client}
@@ -449,7 +449,7 @@ export default async function ProjectDetailPage({
       <section className="bg-[#f7f7f5] px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="rounded-2xl border border-border bg-white px-8 py-12 text-center shadow-card md:px-16 md:py-16">
-            <h2 className="text-editorial-heading">
+            <h2 className="editorial-heading">
               Свържете се за подобен проект
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-foreground-secondary">
@@ -472,10 +472,10 @@ export default async function ProjectDetailPage({
       {related.length > 0 && (
         <section className="bg-white px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto max-w-7xl">
-            <p className="text-editorial-overline mb-3">
+            <p className="editorial-overline mb-3">
               Още от портфолиото
             </p>
-            <h2 className="text-editorial-heading mb-12">
+            <h2 className="editorial-heading mb-12">
               Подобни проекти
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

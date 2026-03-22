@@ -84,14 +84,14 @@ export function Hero3D() {
           <div style={{ textShadow: "0 2px 30px rgba(0,0,0,0.7), 0 4px 60px rgba(0,0,0,0.4)" }}>
             <TextReveal
               as="h1"
-              className="text-editorial-hero font-light text-white"
+              className="editorial-hero font-light text-white"
               delay={0.1}
             >
               Захранете
             </TextReveal>
             <TextReveal
               as="span"
-              className="text-editorial-hero font-black text-white"
+              className="editorial-hero font-black text-white"
               delay={0.3}
             >
               Бъдещето

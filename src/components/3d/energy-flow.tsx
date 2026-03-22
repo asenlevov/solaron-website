@@ -13,9 +13,9 @@ export type EnergyFlowProps = {
   batteryPosition?: [number, number, number];
 };
 
-const PARTICLE_COUNT = 50;
+const PARTICLE_COUNT = 30;
 const BRAND_GREEN = new THREE.Color("#3B7A2A");
-const TRAIL_LENGTH = 3;
+const TRAIL_LENGTH = 2;
 
 function createSplinePath(
   panelPos: THREE.Vector3,
@@ -63,7 +63,7 @@ const vertexShader = `
     vAlpha = uOpacity * smoothstep(0.0, 0.1, t) * smoothstep(1.0, 0.85, t);
 
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    gl_PointSize = aSize * (200.0 / -mvPosition.z);
+    gl_PointSize = aSize * (80.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
   }
 `;
@@ -113,7 +113,7 @@ export function EnergyFlow({
         const trailIdx = i % TRAIL_LENGTH;
 
         off[i] = (baseIdx / PARTICLE_COUNT + trailIdx * 0.008) % 1.0;
-        sz[i] = (1.0 - trailIdx / TRAIL_LENGTH) * 3.0 + 1.0;
+        sz[i] = (1.0 - trailIdx / TRAIL_LENGTH) * 2.0 + 0.8;
 
         const point = c.getPointAt(off[i]);
         pos[i * 3] = point.x;

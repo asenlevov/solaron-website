@@ -98,7 +98,6 @@ export const REAL_IMAGES = {
     nlProjectAerial1: "/real/installations/nl-project-aerial-1.jpg",
     nlRefBuilding1: "/real/installations/nl-ref-building-1.jpg",
     solarCarportBlog: "/real/installations/solar-carport-blog.jpg",
-    adoreenergyHero: "/real/installations/adoreenergy-hero.jpg",
     adoreenergyC1: "/real/installations/adoreenergy-c1.jpg",
     adoreenergyC2: "/real/installations/adoreenergy-c2.jpg",
     adoreenergyC3: "/real/installations/adoreenergy-c3.jpg",
@@ -116,6 +115,7 @@ export const REAL_IMAGES = {
     solaronLogo: "/real/team/solaron-logo.png",
     solaronLogoWhite: "/real/team/solaron-logo-white.png",
     solaronLogoSmall: "/real/team/solaron-logo-small.png",
+    teamFounders: "/real/team/team-founders.jpg",
   },
   partners: {
     solaredge: "/real/partners/solaredge-logo.png",
@@ -174,7 +174,7 @@ export const SOLUTION_IMAGES = {
 } as const;
 
 export const KAK_RABOTI_IMAGES = {
-  slanchevaEnergiya: REAL_IMAGES.installations.adoreenergyHero,
+  slanchevaEnergiya: REAL_IMAGES.installations.nlProjectAerial1,
   protsesNaMontazh: REAL_IMAGES.installations.nlProjectInstall1,
   svurzvaneMrezhata: REAL_IMAGES.installations.nlProjectOverview1,
   netnoMetering: REAL_IMAGES.installations.nlRefRooftop1,

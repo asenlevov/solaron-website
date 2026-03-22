@@ -50,8 +50,8 @@ export function FinancingPreview() {
     <section className="bg-white px-6 py-24 md:px-8 md:py-32 lg:py-40">
       <div ref={ref} className="mx-auto max-w-7xl">
         <div className="mb-6 text-center md:mb-8">
-          <p className="text-editorial-overline mb-4">ФИНАНСИРАНЕ</p>
-          <TextReveal as="h2" className="text-editorial-display justify-center">
+          <p className="editorial-overline mb-4">ФИНАНСИРАНЕ</p>
+          <TextReveal as="h2" className="editorial-display justify-center">
             Как Се Финансира
           </TextReveal>
         </div>

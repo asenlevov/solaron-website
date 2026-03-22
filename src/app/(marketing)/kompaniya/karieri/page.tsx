@@ -64,16 +64,16 @@ export default function KarieriPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="grain overflow-hidden bg-foreground pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-6">Кариери</p>
+          <p className="editorial-overline text-white/60 mb-6">Кариери</p>
           <TextReveal
             as="h1"
-            className="text-editorial-hero max-w-4xl text-foreground"
+            className="editorial-hero max-w-4xl text-white"
           >
             Стани част от бъдещето
           </TextReveal>
-          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-foreground-secondary md:text-xl">
+          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-white/70 md:text-xl">
             Търсим хора с ентусиазъм към чистата енергия, прецизност в работата и
             желание за учене.
           </p>
@@ -83,10 +83,10 @@ export default function KarieriPage() {
       {/* Open Positions */}
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Отворени позиции
           </p>
-          <h2 className="text-editorial-heading text-foreground mb-14 max-w-xl">
+          <h2 className="editorial-heading text-foreground mb-14 max-w-xl">
             Присъедини се
           </h2>
           <div className="space-y-6">
@@ -97,7 +97,7 @@ export default function KarieriPage() {
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h3 className="text-editorial-heading text-foreground text-xl md:text-2xl">
+                    <h3 className="editorial-heading text-foreground text-xl md:text-2xl">
                       {pos.title}
                     </h3>
                     <p className="mt-2 font-body text-sm leading-relaxed text-foreground-secondary md:text-base">
@@ -122,17 +122,17 @@ export default function KarieriPage() {
       {/* Benefits — dark section */}
       <section className="bg-foreground py-20 md:py-28 grain">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Защо Solaron
           </p>
-          <h2 className="text-editorial-heading text-white mb-14 max-w-xl">
+          <h2 className="editorial-heading text-white mb-14 max-w-xl">
             Какво предлагаме
           </h2>
           <div className="grid gap-8 md:grid-cols-3">
             {BENEFITS.map((b) => (
               <div key={b.title}>
                 <div className="mb-4 h-1 w-10 rounded-full bg-accent" />
-                <h3 className="text-editorial-heading text-white text-lg mb-2">
+                <h3 className="editorial-heading text-white text-lg mb-2">
                   {b.title}
                 </h3>
                 <p className="font-body text-sm leading-relaxed text-white/60">
@@ -148,10 +148,10 @@ export default function KarieriPage() {
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="mx-auto max-w-2xl">
-            <p className="text-editorial-overline text-accent mb-4">
+            <p className="editorial-overline text-accent mb-4">
               Кандидатствай
             </p>
-            <h2 className="text-editorial-heading text-foreground mb-8">
+            <h2 className="editorial-heading text-foreground mb-8">
               Изпрати своята кандидатура
             </h2>
             <Suspense fallback={<FormFallback />}>

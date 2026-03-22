@@ -50,20 +50,20 @@ export default function ZaNasPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="grain relative overflow-hidden bg-foreground pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-6">Компания</p>
+          <p className="editorial-overline text-white/60 mb-6">Компания</p>
           <TextReveal
             as="h1"
-            className="text-editorial-hero max-w-4xl text-foreground"
+            className="editorial-hero max-w-4xl text-white"
           >
             Европейско качество. Българска надеждност.
           </TextReveal>
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <p className="font-body text-lg leading-relaxed text-foreground-secondary md:text-xl">
+            <p className="font-body text-lg leading-relaxed text-white/70 md:text-xl">
               Solaron е българска компания, специализирана в проектиране и монтаж
               на фотоволтаични системи. Основана с партньорството на{" "}
-              <strong className="text-foreground">Adore Energy Systems</strong> —
+              <strong className="text-white">Adore Energy Systems</strong> —
               водеща холандска компания с над 20 години опит и стотици успешни
               проекта в Нидерландия, Белгия, Германия и България.
             </p>
@@ -85,7 +85,7 @@ export default function ZaNasPage() {
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="mx-auto max-w-3xl text-center">
-            <blockquote className="text-editorial-pull-quote text-foreground">
+            <blockquote className="editorial-pull-quote text-foreground">
               &ldquo;Мисията ни е да направим слънчевата енергия достъпна и
               надеждна за всеки дом и бизнес в България.&rdquo;
             </blockquote>
@@ -99,7 +99,7 @@ export default function ZaNasPage() {
       {/* Stats — dark section */}
       <section className="bg-foreground py-20 md:py-28 grain">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-10">
+          <p className="editorial-overline text-accent mb-10">
             В числа
           </p>
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -137,8 +137,8 @@ export default function ZaNasPage() {
       {/* Values */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">Ценности</p>
-          <h2 className="text-editorial-heading text-foreground mb-14 max-w-xl">
+          <p className="editorial-overline text-accent mb-4">Ценности</p>
+          <h2 className="editorial-heading text-foreground mb-14 max-w-xl">
             Принципите, които ръководят екипа ни
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -148,7 +148,7 @@ export default function ZaNasPage() {
                   <div
                     className={`mb-6 h-1 w-12 rounded-full ${v.accent}`}
                   />
-                  <h3 className="text-editorial-heading text-foreground mb-3 text-xl">
+                  <h3 className="editorial-heading text-foreground mb-3 text-xl">
                     {v.title}
                   </h3>
                   <p className="font-body text-sm leading-relaxed text-foreground-secondary">
@@ -164,17 +164,17 @@ export default function ZaNasPage() {
       {/* Timeline */}
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Хронология
           </p>
-          <h2 className="text-editorial-heading text-foreground mb-14 max-w-xl">
+          <h2 className="editorial-heading text-foreground mb-14 max-w-xl">
             Ключови моменти
           </h2>
           <div className="relative border-l-2 border-accent/20 pl-8 md:pl-12">
             {TIMELINE.map((t) => (
               <div key={t.year} className="relative mb-12 last:mb-0">
                 <div className="absolute -left-[calc(2rem+5px)] top-1 h-3 w-3 rounded-full bg-accent md:-left-[calc(3rem+5px)]" />
-                <p className="text-editorial-stat text-accent text-3xl">
+                <p className="editorial-stat text-accent text-3xl">
                   {t.year}
                 </p>
                 <p className="mt-2 font-body text-base text-foreground-secondary md:text-lg">
@@ -187,12 +187,12 @@ export default function ZaNasPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="grain bg-foreground py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 text-center md:px-10">
-          <h2 className="text-editorial-display text-foreground mx-auto max-w-2xl">
+          <h2 className="editorial-display mx-auto max-w-2xl text-white">
             Готови да стартирате вашия соларен проект?
           </h2>
-          <p className="mx-auto mt-6 max-w-lg font-body text-lg text-foreground-secondary">
+          <p className="mx-auto mt-6 max-w-lg font-body text-lg text-white/70">
             Свържете се с нас за безплатна консултация и индивидуална оферта.
           </p>
           <div className="mt-10">

@@ -9,14 +9,15 @@ export type HouseModelProps = {
   type: HouseType;
   color?: string;
   showRoof: boolean;
+  roofPitchDeg?: number;
 };
 
-const WALL_COLOR = "#f5f0e8";
-const ROOF_COLOR = "#9B4D3A";
-const DOOR_COLOR = "#5D4037";
+const WALL_COLOR = "#f8f8f8";
+const ROOF_COLOR = "#4a4a4a";
+const DOOR_COLOR = "#333333";
 const FOUNDATION_COLOR = "#e8e4dc";
-const TRIM_COLOR = "#f5f2ec";
-const SIDING_COLOR = "#e5e0d8";
+const TRIM_COLOR = "#e0e0e0";
+const FRAME_COLOR = "#2d2d2d";
 
 const OVERHANG = 0.15;
 const FOUNDATION_H = 0.18;
@@ -64,10 +65,10 @@ function createGableRoofGeometry(
   ]);
 
   const indices = [
-    0, 1, 2, 0, 2, 3,
-    4, 6, 5, 4, 7, 6,
-    8, 9, 10,
-    11, 13, 12,
+    0, 2, 1, 0, 3, 2,
+    4, 5, 6, 4, 6, 7,
+    8, 10, 9,
+    11, 12, 13,
   ];
 
   const geo = new THREE.BufferGeometry();
@@ -84,22 +85,24 @@ function WindowUnit({
   width,
   height,
   divisions = [2, 2],
+  rotation = [0, 0, 0] as [number, number, number],
 }: {
   position: [number, number, number];
   width: number;
   height: number;
   divisions?: [number, number];
+  rotation?: [number, number, number];
 }) {
   const frameThickness = 0.04;
   const frameDepth = 0.06;
   const [cols, rows] = divisions;
 
   return (
-    <group position={position}>
+    <group position={position} rotation={rotation}>
       {/* Outer frame */}
       <mesh castShadow>
         <boxGeometry args={[width + frameThickness * 2, height + frameThickness * 2, frameDepth]} />
-        <meshStandardMaterial color="#4a4540" roughness={0.6} metalness={0.1} />
+        <meshStandardMaterial color={FRAME_COLOR} roughness={0.4} metalness={0.15} />
       </mesh>
 
       {/* Glass */}
@@ -135,7 +138,7 @@ function WindowUnit({
         return (
           <mesh key={`h-${i}`} position={[0, y, 0.03]}>
             <boxGeometry args={[width, 0.015, 0.02]} />
-            <meshStandardMaterial color="#4a4540" roughness={0.6} metalness={0.1} />
+            <meshStandardMaterial color={FRAME_COLOR} roughness={0.4} metalness={0.15} />
           </mesh>
         );
       })}
@@ -146,7 +149,7 @@ function WindowUnit({
         return (
           <mesh key={`v-${i}`} position={[x, 0, 0.03]}>
             <boxGeometry args={[0.015, height, 0.02]} />
-            <meshStandardMaterial color="#4a4540" roughness={0.6} metalness={0.1} />
+            <meshStandardMaterial color={FRAME_COLOR} roughness={0.4} metalness={0.15} />
           </mesh>
         );
       })}
@@ -154,66 +157,13 @@ function WindowUnit({
       {/* Window sill */}
       <mesh position={[0, -height / 2 - 0.02, 0.04]}>
         <boxGeometry args={[width + 0.06, 0.025, 0.08]} />
-        <meshStandardMaterial color="#d5d0ca" roughness={0.7} metalness={0.05} />
+        <meshStandardMaterial color={FRAME_COLOR} roughness={0.4} metalness={0.15} />
       </mesh>
     </group>
   );
 }
 
 /* ─── Horizontal clapboard siding strips on front and back walls ─── */
-
-function WallSiding({ w, h, d, y }: { w: number; h: number; d: number; y: number }) {
-  const count = Math.floor(h / 0.25);
-  return (
-    <group>
-      {Array.from({ length: count }, (_, i) => {
-        const stripY = y - h / 2 + (i + 0.5) * (h / count);
-        return (
-          <group key={i}>
-            <mesh position={[0, stripY, d / 2 + 0.015]}>
-              <boxGeometry args={[w, 0.008, 0.01]} />
-              <meshStandardMaterial color={SIDING_COLOR} roughness={0.8} metalness={0} />
-            </mesh>
-            <mesh position={[0, stripY, -d / 2 - 0.015]}>
-              <boxGeometry args={[w, 0.008, 0.01]} />
-              <meshStandardMaterial color={SIDING_COLOR} roughness={0.8} metalness={0} />
-            </mesh>
-            <mesh position={[-w / 2 - 0.015, stripY, 0]}>
-              <boxGeometry args={[0.01, 0.008, d]} />
-              <meshStandardMaterial color={SIDING_COLOR} roughness={0.8} metalness={0} />
-            </mesh>
-            <mesh position={[w / 2 + 0.015, stripY, 0]}>
-              <boxGeometry args={[0.01, 0.008, d]} />
-              <meshStandardMaterial color={SIDING_COLOR} roughness={0.8} metalness={0} />
-            </mesh>
-          </group>
-        );
-      })}
-    </group>
-  );
-}
-
-/* ─── Corner trim boards ─── */
-
-function CornerTrims({ w, h, d, y }: { w: number; h: number; d: number; y: number }) {
-  const trimW = 0.06;
-  const corners: [number, number, number][] = [
-    [-w / 2, y, -d / 2],
-    [w / 2, y, -d / 2],
-    [-w / 2, y, d / 2],
-    [w / 2, y, d / 2],
-  ];
-  return (
-    <group>
-      {corners.map((pos, i) => (
-        <mesh key={i} position={pos} castShadow>
-          <boxGeometry args={[trimW, h, trimW]} />
-          <meshStandardMaterial color={TRIM_COLOR} roughness={0.65} metalness={0.02} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
 
 function Foundation({ w, d }: { w: number; d: number }) {
   return (
@@ -237,8 +187,8 @@ function FrontDoor({
   h: number;
   d: number;
 }) {
-  const doorW = 0.9;
-  const doorH = h * 0.52;
+  const doorW = 0.95;
+  const doorH = h * 0.55;
   const doorY = FOUNDATION_H + doorH / 2;
   const doorZ = d / 2 + 0.025;
 
@@ -246,95 +196,48 @@ function FrontDoor({
     <group position={[x, 0, 0]}>
       {/* Door frame */}
       <mesh castShadow position={[0, doorY, doorZ]}>
-        <boxGeometry args={[doorW + 0.08, doorH + 0.04, 0.05]} />
-        <meshStandardMaterial color="#4a4540" roughness={0.6} metalness={0.1} />
+        <boxGeometry args={[doorW + 0.06, doorH + 0.04, 0.05]} />
+        <meshStandardMaterial color={FRAME_COLOR} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Door panel */}
+      {/* Clean flat door panel */}
       <mesh castShadow position={[0, doorY, doorZ + 0.01]}>
         <boxGeometry args={[doorW, doorH, 0.04]} />
-        <meshStandardMaterial color={DOOR_COLOR} roughness={0.6} metalness={0.08} />
+        <meshStandardMaterial color={DOOR_COLOR} roughness={0.25} metalness={0.1} />
       </mesh>
 
-      {/* Recessed upper panel */}
-      <mesh position={[0, doorY + doorH * 0.18, doorZ + 0.035]}>
-        <boxGeometry args={[doorW * 0.7, doorH * 0.35, 0.008]} />
-        <meshStandardMaterial color="#5e5040" roughness={0.7} metalness={0.05} />
+      {/* Modern bar handle */}
+      <mesh position={[doorW * 0.35, doorY, doorZ + 0.05]}>
+        <boxGeometry args={[0.02, 0.25, 0.02]} />
+        <meshStandardMaterial color="#999" metalness={0.9} roughness={0.1} />
       </mesh>
 
-      {/* Recessed lower panel */}
-      <mesh position={[0, doorY - doorH * 0.18, doorZ + 0.035]}>
-        <boxGeometry args={[doorW * 0.7, doorH * 0.3, 0.008]} />
-        <meshStandardMaterial color="#5e5040" roughness={0.7} metalness={0.05} />
+      {/* Minimal flat canopy */}
+      <mesh castShadow position={[0, doorY + doorH / 2 + 0.08, doorZ + 0.3]}>
+        <boxGeometry args={[doorW + 0.6, 0.03, 0.55]} />
+        <meshStandardMaterial color={ROOF_COLOR} roughness={0.3} metalness={0.15} />
       </mesh>
-
-      {/* Handle plate */}
-      <mesh position={[doorW * 0.35, doorY, doorZ + 0.045]}>
-        <boxGeometry args={[0.05, 0.12, 0.008]} />
-        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
-      </mesh>
-      {/* Handle lever */}
-      <mesh position={[doorW * 0.35 + 0.01, doorY, doorZ + 0.06]}>
-        <boxGeometry args={[0.06, 0.015, 0.015]} />
-        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
-      </mesh>
-      {/* Handle knob */}
-      <mesh position={[doorW * 0.35 + 0.04, doorY, doorZ + 0.06]}>
-        <sphereGeometry args={[0.015, 8, 8]} />
-        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
-      </mesh>
-
-      {/* Porch awning */}
-      <mesh castShadow position={[0, doorY + doorH / 2 + 0.1, doorZ + 0.25]}>
-        <boxGeometry args={[doorW + 0.6, 0.04, 0.5]} />
-        <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
-      </mesh>
-      {/* Awning brackets */}
-      {[-0.5, 0.5].map((side) => (
-        <mesh key={side} castShadow position={[side * (doorW / 2 + 0.2), doorY + doorH / 2 + 0.02, doorZ + 0.3]}>
-          <boxGeometry args={[0.02, 0.12, 0.04]} />
-          <meshStandardMaterial color="#333" roughness={0.5} metalness={0.3} />
-        </mesh>
-      ))}
 
       {/* Porch step */}
-      <mesh receiveShadow position={[0, 0.06, d / 2 + 0.35]}>
-        <boxGeometry args={[doorW + 0.6, 0.12, 0.5]} />
-        <meshStandardMaterial color="#d1d5db" roughness={0.75} metalness={0.02} />
+      <mesh receiveShadow position={[0, 0.12, d / 2 + 0.35]}>
+        <boxGeometry args={[doorW + 0.6, 0.14, 0.5]} />
+        <meshStandardMaterial color="#d1d5db" roughness={0.5} metalness={0.05} />
       </mesh>
     </group>
   );
 }
 
-function Chimney({ x, y, z }: { x: number; y: number; z: number }) {
-  return (
-    <mesh castShadow position={[x, y, z]}>
-      <boxGeometry args={[0.4, 0.8, 0.4]} />
-      <meshStandardMaterial color="#9ca3af" roughness={0.7} metalness={0.05} />
-    </mesh>
-  );
-}
-
 function Gutters({ w, d, h }: { w: number; d: number; h: number }) {
-  const hw = w / 2 + OVERHANG;
   const hd = d / 2 + OVERHANG;
   return (
     <group>
       <mesh position={[0, h, -hd]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.06, 0.05]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
+        <boxGeometry args={[w + OVERHANG * 2, 0.04, 0.04]} />
+        <meshStandardMaterial color="#888" metalness={0.6} roughness={0.3} />
       </mesh>
       <mesh position={[0, h, hd]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.06, 0.05]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
-      </mesh>
-      <mesh position={[-hw + 0.05, h / 2, -hd]}>
-        <boxGeometry args={[0.06, h, 0.06]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
-      </mesh>
-      <mesh position={[hw - 0.05, h / 2, -hd]}>
-        <boxGeometry args={[0.06, h, 0.06]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
+        <boxGeometry args={[w + OVERHANG * 2, 0.04, 0.04]} />
+        <meshStandardMaterial color="#888" metalness={0.6} roughness={0.3} />
       </mesh>
     </group>
   );
@@ -345,48 +248,24 @@ function Gutters({ w, d, h }: { w: number; d: number; h: number }) {
 function RoofDetails({ w, d, h, rise }: { w: number; d: number; h: number; rise: number }) {
   const ridgeY = h + rise;
   const eaveY = h;
-  const hw = w / 2 + OVERHANG;
   const hd = d / 2 + OVERHANG;
 
   return (
     <group>
       {/* Ridge cap */}
-      <mesh castShadow position={[0, ridgeY + 0.015, 0]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.03, 0.12]} />
-        <meshStandardMaterial color="#7A3D2E" roughness={0.5} metalness={0.08} />
+      <mesh castShadow position={[0, ridgeY + 0.025, 0]}>
+        <boxGeometry args={[w + OVERHANG * 2, 0.05, 0.2]} />
+        <meshStandardMaterial color="#3a3a3a" roughness={0.3} metalness={0.3} />
       </mesh>
 
-      {/* Fascia boards along eave lines */}
-      <mesh castShadow position={[0, eaveY - 0.03, -hd]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.08, 0.025]} />
-        <meshStandardMaterial color={TRIM_COLOR} roughness={0.65} metalness={0.02} />
+      {/* Thin fascia along eaves */}
+      <mesh castShadow position={[0, eaveY - 0.02, -hd]}>
+        <boxGeometry args={[w + OVERHANG * 2, 0.04, 0.02]} />
+        <meshStandardMaterial color={TRIM_COLOR} roughness={0.4} metalness={0.1} />
       </mesh>
-      <mesh castShadow position={[0, eaveY - 0.03, hd]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.08, 0.025]} />
-        <meshStandardMaterial color={TRIM_COLOR} roughness={0.65} metalness={0.02} />
-      </mesh>
-
-      {/* Rake boards along gable edges */}
-      {[-1, 1].map((side) => (
-        <mesh
-          key={side}
-          castShadow
-          position={[side * hw, eaveY + rise / 2, 0]}
-          rotation={[0, 0, 0]}
-        >
-          <boxGeometry args={[0.025, 0.06, d + OVERHANG * 2]} />
-          <meshStandardMaterial color={TRIM_COLOR} roughness={0.65} metalness={0.02} />
-        </mesh>
-      ))}
-
-      {/* Soffit boards under overhang */}
-      <mesh position={[0, eaveY + 0.01, -hd + 0.05]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.01, OVERHANG]} />
-        <meshStandardMaterial color="#f0ece6" roughness={0.7} metalness={0} />
-      </mesh>
-      <mesh position={[0, eaveY + 0.01, hd - 0.05]}>
-        <boxGeometry args={[w + OVERHANG * 2, 0.01, OVERHANG]} />
-        <meshStandardMaterial color="#f0ece6" roughness={0.7} metalness={0} />
+      <mesh castShadow position={[0, eaveY - 0.02, hd]}>
+        <boxGeometry args={[w + OVERHANG * 2, 0.04, 0.02]} />
+        <meshStandardMaterial color={TRIM_COLOR} roughness={0.4} metalness={0.1} />
       </mesh>
     </group>
   );
@@ -448,22 +327,33 @@ function BuildingBlock({
     <group>
       <mesh castShadow receiveShadow position={[0, wallY, 0]}>
         <boxGeometry args={[w, h, d]} />
-        <meshStandardMaterial color={color} roughness={0.85} metalness={0.02} />
+        <meshStandardMaterial color={color} roughness={0.3} metalness={0.02} />
       </mesh>
-      <WallSiding w={w} h={h} d={d} y={wallY} />
-      <CornerTrims w={w} h={h} d={d} y={wallY} />
       {windowLayout}
     </group>
   );
 }
 
-export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelProps) {
+export function HouseModel({ type, color = WALL_COLOR, showRoof, roofPitchDeg }: HouseModelProps) {
   const spec = SPECS[type];
+
+  const rise = useMemo(() => {
+    if (roofPitchDeg == null) return spec.rise;
+    const rad = (roofPitchDeg * Math.PI) / 180;
+    return Math.tan(rad) * (spec.d / 2);
+  }, [roofPitchDeg, spec.d, spec.rise]);
+
+  const wingRise = useMemo(() => {
+    if (!spec.wing) return 0;
+    if (roofPitchDeg == null) return spec.rise * 0.8;
+    const rad = (roofPitchDeg * Math.PI) / 180;
+    return Math.tan(rad) * (spec.wing.d / 2);
+  }, [roofPitchDeg, spec.wing, spec.rise]);
 
   const pitchedRoofGeo = useMemo(() => {
     if (spec.roof !== "pitched") return null;
-    return createGableRoofGeometry(spec.w, spec.d, spec.h, spec.rise, OVERHANG);
-  }, [spec]);
+    return createGableRoofGeometry(spec.w, spec.d, spec.h, rise, OVERHANG);
+  }, [spec.roof, spec.w, spec.d, spec.h, rise]);
 
   const wingRoofGeo = useMemo(() => {
     if (!spec.wing || spec.roof !== "pitched") return null;
@@ -471,10 +361,10 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
       spec.wing.w,
       spec.wing.d,
       spec.wing.h,
-      spec.rise * 0.8,
+      wingRise,
       OVERHANG * 0.7,
     );
-  }, [spec]);
+  }, [spec.wing, spec.roof, wingRise]);
 
   const wallY = FOUNDATION_H + spec.h / 2;
   const isCommercial = type === "commercial";
@@ -487,83 +377,80 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
 
       <BuildingBlock w={spec.w} h={spec.h} d={spec.d} wallY={wallY} color={color} />
 
-      {/* ── Front windows ── */}
-      <group>
-        <WindowUnit
-          position={[spec.w * 0.25, wallY + spec.h * 0.08, spec.d / 2 + 0.02]}
-          width={spec.w * 0.12}
-          height={spec.h * 0.24}
-        />
-        <WindowUnit
-          position={[-spec.w * 0.25, wallY + spec.h * 0.08, spec.d / 2 + 0.02]}
-          width={spec.w * 0.12}
-          height={spec.h * 0.24}
-        />
+      {/* ── Windows ── */}
+      {(() => {
+        const storyH = isTwoStory ? spec.h / 2 : spec.h;
+        const floorBase = FOUNDATION_H;
+        const winH = Math.min(storyH * 0.4, 1.2);
+        const winW = Math.min(spec.w * 0.14, 1.2);
+        const winCenterY1 = floorBase + storyH * 0.5;
+        const winCenterY2 = isTwoStory ? floorBase + storyH + storyH * 0.5 : 0;
+        const fz = spec.d / 2 + 0.02;
+        const bz = -spec.d / 2 - 0.02;
+        const lx = -spec.w / 2 - 0.02;
+        const rx = spec.w / 2 + 0.02;
+        const sideWinW = Math.min(spec.d * 0.12, 1.0);
 
-        {isTwoStory && (
+        const floor1Windows = (
           <>
-            <WindowUnit
-              position={[spec.w * 0.25, wallY + spec.h * 0.35, spec.d / 2 + 0.02]}
-              width={spec.w * 0.11}
-              height={spec.h * 0.16}
-            />
-            <WindowUnit
-              position={[-spec.w * 0.25, wallY + spec.h * 0.35, spec.d / 2 + 0.02]}
-              width={spec.w * 0.11}
-              height={spec.h * 0.16}
-            />
-            <WindowUnit
-              position={[0, wallY + spec.h * 0.35, spec.d / 2 + 0.02]}
-              width={spec.w * 0.09}
-              height={spec.h * 0.13}
-              divisions={[2, 1]}
-            />
+            {/* Front — ground floor */}
+            <WindowUnit position={[spec.w * 0.25, winCenterY1, fz]} width={winW} height={winH} divisions={[2, 2]} />
+            <WindowUnit position={[-spec.w * 0.25, winCenterY1, fz]} width={winW} height={winH} divisions={[2, 2]} />
+            {/* Left side */}
+            <WindowUnit position={[lx, winCenterY1, 0]} width={sideWinW} height={winH} rotation={[0, -Math.PI / 2, 0]} />
+            {/* Right side */}
+            <WindowUnit position={[rx, winCenterY1, -spec.d * 0.15]} width={sideWinW} height={winH} rotation={[0, Math.PI / 2, 0]} />
+            {/* Back */}
+            <WindowUnit position={[spec.w * 0.2, winCenterY1, bz]} width={winW * 1.2} height={winH} rotation={[0, Math.PI, 0]} />
+            <WindowUnit position={[-spec.w * 0.2, winCenterY1, bz]} width={winW} height={winH} rotation={[0, Math.PI, 0]} />
           </>
-        )}
+        );
 
-        {isCommercial && (
+        const floor2Windows = isTwoStory ? (
           <>
-            <WindowUnit
-              position={[0, wallY - spec.h * 0.05, spec.d / 2 + 0.02]}
-              width={spec.w * 0.32}
-              height={spec.h * 0.38}
-              divisions={[3, 2]}
-            />
-            <WindowUnit
-              position={[spec.w * 0.35, wallY + spec.h * 0.1, spec.d / 2 + 0.02]}
-              width={spec.w * 0.11}
-              height={spec.h * 0.2}
-            />
-            <WindowUnit
-              position={[-spec.w * 0.35, wallY + spec.h * 0.1, spec.d / 2 + 0.02]}
-              width={spec.w * 0.11}
-              height={spec.h * 0.2}
-            />
+            {/* Front — second floor */}
+            <WindowUnit position={[spec.w * 0.25, winCenterY2, fz]} width={winW * 0.9} height={winH * 0.85} divisions={[2, 2]} />
+            <WindowUnit position={[-spec.w * 0.25, winCenterY2, fz]} width={winW * 0.9} height={winH * 0.85} divisions={[2, 2]} />
+            <WindowUnit position={[0, winCenterY2, fz]} width={winW * 0.7} height={winH * 0.7} divisions={[1, 2]} />
+            {/* Left side */}
+            <WindowUnit position={[lx, winCenterY2, 0]} width={sideWinW} height={winH * 0.85} rotation={[0, -Math.PI / 2, 0]} />
+            {/* Right side */}
+            <WindowUnit position={[rx, winCenterY2, -spec.d * 0.15]} width={sideWinW} height={winH * 0.85} rotation={[0, Math.PI / 2, 0]} />
+            {/* Back */}
+            <WindowUnit position={[spec.w * 0.2, winCenterY2, bz]} width={winW} height={winH * 0.85} rotation={[0, Math.PI, 0]} />
           </>
-        )}
-      </group>
+        ) : null;
+
+        const commercialWindows = isCommercial ? (
+          <>
+            {/* Large front glazing */}
+            <WindowUnit position={[0, winCenterY1 - 0.2, fz]} width={spec.w * 0.3} height={winH * 1.1} divisions={[4, 2]} />
+            <WindowUnit position={[spec.w * 0.3, winCenterY1, fz]} width={winW} height={winH * 0.9} divisions={[2, 2]} />
+            <WindowUnit position={[-spec.w * 0.3, winCenterY1, fz]} width={winW} height={winH * 0.9} divisions={[2, 2]} />
+            {/* Side windows — multiple along long walls */}
+            {[-0.3, 0, 0.3].map((zOff) => (
+              <WindowUnit key={`l${zOff}`} position={[lx, winCenterY1, spec.d * zOff]} width={sideWinW} height={winH * 0.9} rotation={[0, -Math.PI / 2, 0]} />
+            ))}
+            {[-0.3, 0, 0.3].map((zOff) => (
+              <WindowUnit key={`r${zOff}`} position={[rx, winCenterY1, spec.d * zOff]} width={sideWinW} height={winH * 0.9} rotation={[0, Math.PI / 2, 0]} />
+            ))}
+            {/* Back */}
+            <WindowUnit position={[spec.w * 0.2, winCenterY1, bz]} width={winW * 1.2} height={winH * 0.9} rotation={[0, Math.PI, 0]} />
+            <WindowUnit position={[-spec.w * 0.2, winCenterY1, bz]} width={winW * 1.2} height={winH * 0.9} rotation={[0, Math.PI, 0]} />
+          </>
+        ) : null;
+
+        return (
+          <group>
+            {!isCommercial && floor1Windows}
+            {floor2Windows}
+            {commercialWindows}
+          </group>
+        );
+      })()}
 
       {/* ── Front door ── */}
-      <FrontDoor x={0} wallY={wallY} h={spec.h} d={spec.d} />
-
-      {/* ── Side windows ── */}
-      <WindowUnit
-        position={[-spec.w / 2 - 0.02, wallY + spec.h * 0.08, 0]}
-        width={spec.d * 0.1}
-        height={spec.h * 0.22}
-      />
-      <WindowUnit
-        position={[spec.w / 2 + 0.02, wallY + spec.h * 0.08, -spec.d * 0.15]}
-        width={spec.d * 0.1}
-        height={spec.h * 0.22}
-      />
-
-      {/* ── Back window ── */}
-      <WindowUnit
-        position={[spec.w * 0.15, wallY + spec.h * 0.08, -spec.d / 2 - 0.02]}
-        width={spec.w * 0.18}
-        height={spec.h * 0.22}
-      />
+      <FrontDoor x={0} wallY={wallY} h={isTwoStory ? spec.h / 2 : spec.h} d={spec.d} />
 
       {/* ── Villa side wing ── */}
       {spec.wing && (
@@ -613,17 +500,10 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
       {showRoof && spec.roof === "pitched" && pitchedRoofGeo && (
         <>
           <mesh castShadow receiveShadow geometry={pitchedRoofGeo} position={[0, FOUNDATION_H, 0]}>
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.35} metalness={0.2} side={THREE.DoubleSide} />
           </mesh>
-          <RoofDetails w={spec.w} d={spec.d} h={FOUNDATION_H + spec.h} rise={spec.rise} />
+          <RoofDetails w={spec.w} d={spec.d} h={FOUNDATION_H + spec.h} rise={rise} />
           <Gutters w={spec.w} d={spec.d} h={FOUNDATION_H + spec.h} />
-          {(type === "single-story" || isTwoStory || isVilla) && (
-            <Chimney
-              x={spec.w * 0.25}
-              y={FOUNDATION_H + spec.h + spec.rise * 0.7}
-              z={-spec.d * 0.15}
-            />
-          )}
         </>
       )}
 
@@ -631,9 +511,9 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
       {showRoof && isVilla && spec.wing && wingRoofGeo && (
         <group position={[spec.wing.offset[0], FOUNDATION_H, spec.wing.offset[2]]}>
           <mesh castShadow receiveShadow geometry={wingRoofGeo}>
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.35} metalness={0.2} side={THREE.DoubleSide} />
           </mesh>
-          <RoofDetails w={spec.wing.w} d={spec.wing.d} h={spec.wing.h} rise={spec.rise * 0.8} />
+          <RoofDetails w={spec.wing.w} d={spec.wing.d} h={spec.wing.h} rise={wingRise} />
         </group>
       )}
     </group>

@@ -128,7 +128,7 @@ export default async function BlogArticlePage({
               {minutes} мин. четене
             </span>
           </div>
-          <h1 className="text-editorial-hero max-w-4xl text-white">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl max-w-4xl text-balance">
             {post.title}
           </h1>
           <p className="mt-6 font-body text-base text-white/60">
@@ -147,7 +147,7 @@ export default async function BlogArticlePage({
               <div
                 className={cn(
                   "blog-article space-y-6 font-body text-base leading-relaxed text-foreground-secondary",
-                  "[&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-editorial-heading [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:first:mt-0",
+                  "[&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:first:mt-0",
                   "[&_p]:mb-4 [&_p]:last:mb-0",
                   "[&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6",
                   "[&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6",
@@ -159,7 +159,7 @@ export default async function BlogArticlePage({
 
               {/* Share */}
               <div className="mt-16 border-t border-border pt-8">
-                <p className="text-editorial-overline text-accent mb-4">
+                <p className="editorial-overline text-accent mb-4">
                   Сподели
                 </p>
                 <div className="flex gap-3">
@@ -218,7 +218,7 @@ export default async function BlogArticlePage({
               <div className="sticky top-28 space-y-8">
                 {headings.length > 0 && (
                   <nav aria-label="Съдържание">
-                    <p className="text-editorial-overline text-accent mb-4">
+                    <p className="editorial-overline text-accent mb-4">
                       Съдържание
                     </p>
                     <ul className="space-y-2 border-l border-border pl-4">
@@ -260,7 +260,7 @@ export default async function BlogArticlePage({
       <section className="bg-[#f7f7f5] py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="rounded-2xl border border-border bg-white px-8 py-12 text-center md:px-12">
-            <h2 className="text-editorial-heading text-foreground text-2xl md:text-3xl">
+            <h2 className="editorial-heading text-foreground text-2xl md:text-3xl">
               Готови за оферта за вашия покрив?
             </h2>
             <p className="mx-auto mt-3 max-w-xl font-body text-foreground-secondary">
@@ -279,10 +279,10 @@ export default async function BlogArticlePage({
       {related.length > 0 && (
         <section className="bg-white py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <p className="text-editorial-overline text-accent mb-4">
+            <p className="editorial-overline text-accent mb-4">
               Още от блога
             </p>
-            <h2 className="text-editorial-heading text-foreground mb-14">
+            <h2 className="editorial-heading text-foreground mb-14">
               Свързани публикации
             </h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -307,7 +307,7 @@ export default async function BlogArticlePage({
                     <span className="mb-2 w-fit rounded-full bg-accent/10 px-3 py-1 font-body text-xs font-semibold text-accent">
                       {p.category}
                     </span>
-                    <h3 className="text-editorial-heading text-foreground text-lg group-hover:text-accent transition-colors">
+                    <h3 className="font-display text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent md:text-lg">
                       {p.title}
                     </h3>
                     <p className="mt-2 flex-1 font-body text-sm leading-relaxed text-foreground-secondary line-clamp-2">

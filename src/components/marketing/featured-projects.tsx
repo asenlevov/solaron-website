@@ -70,7 +70,7 @@ export function FeaturedProjects() {
         <div className="mb-12 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div>
             <BadgeChip variant="accent" className="mb-4">Реализирани Проекти</BadgeChip>
-            <h2 className="text-editorial-heading">Проекти, Които Говорят</h2>
+            <h2 className="editorial-heading">Проекти, Които Говорят</h2>
             <p className="mt-3 max-w-xl text-lg text-foreground-secondary">
               Всеки проект е индивидуално проектиран за максимална ефективност и възвръщаемост.
             </p>

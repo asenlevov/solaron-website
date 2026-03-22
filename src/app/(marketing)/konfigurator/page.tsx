@@ -26,18 +26,20 @@ import {
   calculateSystemCost,
 } from "@/lib/solar-calculations";
 
-const PANEL_MOUNT_Y: Record<HouseType, [number, number, number]> = {
-  "single-story": [0, 3.57, 0.15],
-  "two-story": [0, 6.2, 0.15],
-  villa: [0, 5.0, 0.15],
-  commercial: [0, 4.87, 0],
+const FOUNDATION_H = 0.18;
+
+const HOUSE_SPECS: Record<HouseType, { w: number; h: number; d: number }> = {
+  "single-story": { w: 8, h: 3.4, d: 7 },
+  "two-story": { w: 8, h: 6.0, d: 7 },
+  villa: { w: 10, h: 4.4, d: 9 },
+  commercial: { w: 12, h: 4.8, d: 13 },
 };
 
 const BATTERY_POS: Record<HouseType, [number, number, number]> = {
-  "single-story": [4, 0.65, 2],
-  "two-story": [4, 0.65, 2],
-  villa: [5.5, 0.65, 2.5],
-  commercial: [6, 0.65, 3],
+  "single-story": [4.5, 1.4, 3],
+  "two-story": [4.5, 1.4, 3],
+  villa: [5.5, 1.4, 4],
+  commercial: [6.5, 1.4, 6],
 };
 
 const ORIENTATION_MULTIPLIERS: Record<string, number> = {
@@ -59,7 +61,7 @@ const DEFAULT_CONFIG: SolarConfiguratorConfig = {
   houseType: "single-story",
   roofArea: 80,
   panelCount: 27,
-  hasBattery: false,
+  hasBattery: true,
   batteryCapacity: 10,
   monthlyBill: 150,
   city: "София",
@@ -73,22 +75,49 @@ function ConfiguratorScene({
   roofArea,
   panelCount,
   hasBattery,
+  roofPitchDeg,
 }: {
   houseType: HouseType;
   roofArea: number;
   panelCount: number;
   hasBattery: boolean;
+  roofPitchDeg: number;
 }) {
   const scale = Math.sqrt(roofArea / 80);
-  const roofWidth = 5.5 * scale;
-  const roofDepth = 7 * scale;
-  const mount = PANEL_MOUNT_Y[houseType];
+  const spec = HOUSE_SPECS[houseType];
+  const isFlat = houseType === "commercial";
+
+  const pitchRad = (roofPitchDeg * Math.PI) / 180;
+  const rise = isFlat ? 0.25 : Math.tan(pitchRad) * (spec.d / 2);
+
+  const wallTop = FOUNDATION_H + spec.h;
+
+  // The house geometry is rendered with scale=[scale, 1, scale].
+  // Y stays 1:1 but Z is multiplied by scale, changing the apparent pitch.
+  const apparentPitchRad = isFlat ? 0 : Math.atan2(rise, (spec.d / 2) * scale);
+
+  const midSlopeY = wallTop + rise * 0.5;
+  const halfSlopeZ = (spec.d / 4) * scale;
+
+  const NORMAL_OFFSET = 0.15;
+  const nOffY = NORMAL_OFFSET * Math.cos(apparentPitchRad);
+  const nOffZ = NORMAL_OFFSET * Math.sin(apparentPitchRad);
+
+  const backMountY = isFlat ? wallTop + 0.3 : midSlopeY + nOffY;
+  const backMountZ = isFlat ? 0 : -halfSlopeZ - nOffZ;
+  const frontMountY = backMountY;
+  const frontMountZ = isFlat ? 0 : halfSlopeZ + nOffZ;
+
+  const roofWidth = spec.w * scale * 0.85;
+  const slopeDepth = isFlat ? spec.d * scale * 0.85 : (spec.d / 2) * scale * 0.85;
+
+  const backCount = isFlat ? panelCount : Math.ceil(panelCount / 2);
+  const frontCount = isFlat ? 0 : panelCount - backCount;
+
+  const backMount: [number, number, number] = [0, backMountY, backMountZ];
+  const frontMount: [number, number, number] = [0, frontMountY, frontMountZ];
+
   const batt = BATTERY_POS[houseType];
-  const scaledMount: [number, number, number] = [
-    mount[0] * scale,
-    mount[1],
-    mount[2] * scale,
-  ];
   const scaledBatt: [number, number, number] = [
     batt[0] * scale,
     batt[1],
@@ -96,24 +125,39 @@ function ConfiguratorScene({
   ];
 
   const showFlow = panelCount > 0;
+  const backPitchRad = isFlat ? 0 : -apparentPitchRad;
+  const frontPitchRad = isFlat ? 0 : apparentPitchRad;
 
   return (
     <group>
       <DioramaBase />
       <group scale={[scale, 1, scale]}>
-        <HouseModel type={houseType} showRoof />
+        <HouseModel type={houseType} showRoof roofPitchDeg={isFlat ? undefined : roofPitchDeg} />
       </group>
-      <group position={scaledMount}>
-        <SolarPanelArray
-          count={panelCount}
-          roofWidth={roofWidth}
-          roofDepth={roofDepth}
-        />
-      </group>
+      {backCount > 0 && (
+        <group position={backMount}>
+          <SolarPanelArray
+            count={backCount}
+            roofWidth={roofWidth}
+            roofDepth={slopeDepth}
+            roofPitchRad={backPitchRad}
+          />
+        </group>
+      )}
+      {frontCount > 0 && (
+        <group position={frontMount}>
+          <SolarPanelArray
+            count={frontCount}
+            roofWidth={roofWidth}
+            roofDepth={slopeDepth}
+            roofPitchRad={frontPitchRad}
+          />
+        </group>
+      )}
       <BatteryUnit visible={hasBattery} position={scaledBatt} />
       <EnergyFlow
         visible={showFlow}
-        panelPosition={[scaledMount[0], scaledMount[1] + 0.5, scaledMount[2]]}
+        panelPosition={[0, backMountY + 0.5, backMountZ]}
         housePosition={[0, 1.5, 0]}
         inverterPosition={[4 * scale, 2, 3 * scale]}
         batteryPosition={scaledBatt}
@@ -209,7 +253,7 @@ export default function KonfiguratorPage() {
         mounted ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       }`}
     >
-      <div className="mx-auto max-w-[1600px] px-4 py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 pt-14 pb-10 md:px-6 md:pt-22 lg:px-8">
         <header className="mb-8 max-w-3xl">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Solaron
@@ -224,11 +268,12 @@ export default function KonfiguratorPage() {
         </header>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
-          <div className="relative min-h-[480px] w-full overflow-hidden rounded-2xl border border-border bg-background-secondary/30 shadow-card lg:min-h-[min(72vh,640px)] lg:w-[60%]">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
+          <div className="relative h-[500px] w-full overflow-hidden rounded-2xl border border-border bg-background-secondary/30 shadow-card lg:sticky lg:top-28 lg:h-[min(75vh,700px)] lg:w-[60%]">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30 pointer-events-none z-10" />
             <SceneCanvasDynamic
-              className="h-full min-h-[480px] w-full lg:min-h-[min(72vh,640px)]"
-              camera={{ position: [6.5, 3.8, 9.5], fov: 38 }}
+              className="h-full w-full"
+              camera={{ position: [14, 7, 16], fov: 38 }}
+              target={[0, 2, 0]}
               autoRotate
             >
               <ConfiguratorScene
@@ -236,11 +281,12 @@ export default function KonfiguratorPage() {
                 roofArea={config.roofArea}
                 panelCount={config.panelCount}
                 hasBattery={config.hasBattery}
+                roofPitchDeg={config.roofPitch}
               />
             </SceneCanvasDynamic>
           </div>
 
-          <div className="flex w-full flex-col gap-6 lg:sticky lg:top-20 lg:w-[40%] lg:self-start">
+          <div className="flex w-full flex-col gap-6 lg:w-[40%]">
             <ControlPanel onChange={onConfigChange} />
 
             {showCelebration ? (

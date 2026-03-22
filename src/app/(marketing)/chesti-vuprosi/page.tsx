@@ -282,7 +282,7 @@ export default function ChestiVuprosiPage() {
 
       <SectionWrapper background="white">
         <div className="flex flex-col items-center text-center py-12">
-          <p className="text-editorial-overline text-accent mb-3">Не намирате отговор?</p>
+          <p className="editorial-overline text-accent mb-3">Не намирате отговор?</p>
           <h2 className="font-display text-2xl font-bold md:text-3xl mb-4">
             Свържете се с нас
           </h2>

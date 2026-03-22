@@ -56,12 +56,12 @@ export default function NasledstvoPage() {
       {/* Hero */}
       <section className="overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-6">
+          <p className="editorial-overline text-accent mb-6">
             Наследство
           </p>
           <TextReveal
             as="h1"
-            className="text-editorial-hero max-w-4xl text-foreground"
+            className="editorial-hero max-w-4xl text-foreground"
           >
             20 години опит. Един стандарт.
           </TextReveal>
@@ -77,7 +77,7 @@ export default function NasledstvoPage() {
       <section className="bg-[#f7f7f5] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <blockquote className="mx-auto max-w-3xl text-center">
-            <p className="text-editorial-pull-quote text-foreground">
+            <p className="editorial-pull-quote text-foreground">
               &ldquo;Качеството не е случайност — то е резултат от хиляди правилно
               взети решения на обекта.&rdquo;
             </p>
@@ -91,10 +91,10 @@ export default function NasledstvoPage() {
       {/* Timeline */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Хронология
           </p>
-          <h2 className="text-editorial-heading text-foreground mb-16 max-w-xl">
+          <h2 className="editorial-heading text-foreground mb-16 max-w-xl">
             Ключови моменти
           </h2>
           <div className="relative">
@@ -115,10 +115,10 @@ export default function NasledstvoPage() {
                           : "md:col-start-2 md:pl-12"
                       }
                     >
-                      <p className="text-editorial-stat text-accent text-3xl md:text-4xl">
+                      <p className="editorial-stat text-accent text-3xl md:text-4xl">
                         {m.year}
                       </p>
-                      <h3 className="text-editorial-heading text-foreground text-xl mt-2">
+                      <h3 className="editorial-heading text-foreground text-xl mt-2">
                         {m.title}
                       </h3>
                       <p className="mt-2 font-body text-base leading-relaxed text-foreground-secondary">
@@ -137,7 +137,7 @@ export default function NasledstvoPage() {
       {/* Stats — dark section */}
       <section className="bg-foreground py-20 md:py-28 grain">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-10">
+          <p className="editorial-overline text-accent mb-10">
             В числа
           </p>
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -203,7 +203,7 @@ export default function NasledstvoPage() {
       <section className="bg-white py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <blockquote className="mx-auto max-w-3xl text-center">
-            <p className="text-editorial-pull-quote text-foreground">
+            <p className="editorial-pull-quote text-foreground">
               &ldquo;Опитът от хиляди покриви в Европа ни дава увереността да
               предложим същото качество и в България.&rdquo;
             </p>
@@ -214,7 +214,7 @@ export default function NasledstvoPage() {
       {/* CTA */}
       <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 text-center md:px-10">
-          <h2 className="text-editorial-display text-foreground mx-auto max-w-2xl">
+          <h2 className="editorial-display text-foreground mx-auto max-w-2xl">
             Бъдете част от следващата глава
           </h2>
           <p className="mx-auto mt-6 max-w-lg font-body text-lg text-foreground-secondary">

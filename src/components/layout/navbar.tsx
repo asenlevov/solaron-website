@@ -19,6 +19,14 @@ import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { SolaronLogo } from "@/components/ui/solaron-logo";
 
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
+
 const PRODUKTY = [
   { label: "Соларни Панели", href: "/produkti/solarni-paneli", icon: Sun, desc: "MWT модули, 21.5% ефективност" },
   { label: "Инвертори", href: "/produkti/invertori", icon: Cpu, desc: "SolarEdge HD-Wave, 99.5% ефективност" },
@@ -51,6 +59,70 @@ const DIRECT_LINKS = [
   { label: "Проекти", href: "/proekti" },
   { label: "Блог", href: "/blog" },
 ] as const;
+
+function CSSFlag({ stripes, vertical = false, size = "w-8 h-5.5" }: { stripes: string[]; vertical?: boolean; size?: string }) {
+  return (
+    <div className={cn(size, "flex", vertical ? "flex-row" : "flex-col")}>
+      {stripes.map((color, i) => (
+        <div key={i} className="flex-1" style={{ backgroundColor: color }} />
+      ))}
+    </div>
+  );
+}
+
+function UKFlag({ size = "w-8 h-5.5" }: { size?: string }) {
+  return (
+    <svg viewBox="0 0 60 40" className={size}>
+      <rect width="60" height="40" fill="#012169" />
+      <polygon points="0,0 24,13.3 24,0" fill="#fff" />
+      <polygon points="36,0 60,0 60,13.3 36,0" fill="#fff" />
+      <polygon points="0,40 24,26.7 24,40" fill="#fff" />
+      <polygon points="36,40 60,40 60,26.7" fill="#fff" />
+      <polygon points="0,0 20,13.3" fill="#C8102E" />
+      <polygon points="60,0 40,13.3" fill="#C8102E" />
+      <polygon points="0,40 20,26.7" fill="#C8102E" />
+      <polygon points="60,40 40,26.7" fill="#C8102E" />
+      <rect x="25" width="10" height="40" fill="#fff" />
+      <rect y="15" width="60" height="10" fill="#fff" />
+      <rect x="27" width="6" height="40" fill="#C8102E" />
+      <rect y="17" width="60" height="6" fill="#C8102E" />
+    </svg>
+  );
+}
+
+function GreeceFlag({ size = "w-8 h-5.5" }: { size?: string }) {
+  return (
+    <svg viewBox="0 0 60 40" className={size}>
+      {[0,1,2,3,4,5,6,7,8].map(i => (
+        <rect key={i} y={i * (40/9)} width="60" height={40/9} fill={i % 2 === 0 ? "#0D5EAF" : "#fff"} />
+      ))}
+      <rect width="22" height="20" fill="#0D5EAF" />
+      <rect x="8.5" width="5" height="20" fill="#fff" />
+      <rect y="7.5" width="22" height="5" fill="#fff" />
+    </svg>
+  );
+}
+
+const COUNTRY_OPTIONS: {
+  code: string;
+  native: string;
+  english: string;
+  flag: React.ReactNode;
+  comingSoon: boolean;
+}[] = [
+  { code: "bg", native: "Български", english: "Bulgaria", flag: <CSSFlag stripes={["#fff", "#00966E", "#D62612"]} />, comingSoon: false },
+  { code: "en", native: "English", english: "International", flag: <UKFlag />, comingSoon: false },
+  { code: "ro", native: "Romana", english: "Romania", flag: <CSSFlag stripes={["#002B7F", "#FCD116", "#CE1126"]} vertical />, comingSoon: true },
+  { code: "rs", native: "Srpski", english: "Serbia", flag: <CSSFlag stripes={["#C6363C", "#0C4076", "#fff"]} />, comingSoon: true },
+  { code: "gr", native: "Ellinika", english: "Greece", flag: <GreeceFlag />, comingSoon: true },
+  { code: "hr", native: "Hrvatski", english: "Croatia", flag: <CSSFlag stripes={["#FF0000", "#fff", "#171796"]} />, comingSoon: true },
+  { code: "mk", native: "Makedonski", english: "North Macedonia", flag: <CSSFlag stripes={["#CE2028", "#F9D616", "#CE2028"]} />, comingSoon: true },
+  { code: "al", native: "Shqip", english: "Albania", flag: <CSSFlag stripes={["#E41E20", "#E41E20"]} />, comingSoon: true },
+  { code: "me", native: "Crnogorski", english: "Montenegro", flag: <CSSFlag stripes={["#C8102E", "#D4AF37", "#C8102E"]} />, comingSoon: true },
+  { code: "ba", native: "Bosanski", english: "Bosnia & Herz.", flag: <CSSFlag stripes={["#002395", "#002395"]} />, comingSoon: true },
+  { code: "si", native: "Slovenscina", english: "Slovenia", flag: <CSSFlag stripes={["#fff", "#003DA5", "#ED1C24"]} />, comingSoon: true },
+  { code: "tr", native: "Turkce", english: "Turkey", flag: <CSSFlag stripes={["#E30A17", "#E30A17"]} />, comingSoon: true },
+];
 
 function useLocaleHref() {
   const pathname = usePathname();
@@ -132,6 +204,7 @@ function RichMegaMenu({
                 src={featuredImage}
                 alt={featuredTitle}
                 fill
+                sizes="180px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
@@ -433,46 +506,51 @@ function MobileNavSheet({
             <div className="mt-6 space-y-3">
               <Dialog.Close asChild>
                 <Link
-                  href="/kontakti"
+                  href="https://wa.me/359896699009"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={cn(
-                    "flex h-12 w-full items-center justify-center rounded-full bg-accent text-base font-semibold text-white",
+                    "flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent text-base font-semibold text-white",
                     "shadow-soft transition-colors hover:bg-accent-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   )}
                 >
+                  <WhatsAppIcon className="size-5" />
                   Безплатна Консултация
                 </Link>
               </Dialog.Close>
 
-              <div
-                className="flex items-center justify-center gap-1 rounded-lg border border-border bg-background-secondary/80 p-1"
-                role="group"
-                aria-label="Език"
-              >
-                <Link
-                  href={bgHref}
-                  className={cn(
-                    "min-h-10 flex-1 rounded-md px-3 py-2 text-center text-sm font-semibold transition-colors",
-                    !isEn
-                      ? "bg-background text-foreground shadow-soft"
-                      : "text-foreground-secondary hover:text-foreground",
-                  )}
-                  aria-current={!isEn ? "true" : undefined}
-                >
-                  BG
-                </Link>
-                <Link
-                  href={enHref}
-                  className={cn(
-                    "min-h-10 flex-1 rounded-md px-3 py-2 text-center text-sm font-semibold transition-colors",
-                    isEn
-                      ? "bg-background text-foreground shadow-soft"
-                      : "text-foreground-secondary hover:text-foreground",
-                  )}
-                  aria-current={isEn ? "true" : undefined}
-                >
-                  EN
-                </Link>
+              <div className="space-y-2" role="group" aria-label="Език">
+                <p className="text-xs font-semibold uppercase tracking-widest text-foreground-tertiary px-1">Държава</p>
+                <Dialog.Close asChild>
+                  <Link
+                    href={bgHref}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
+                      !isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
+                    )}
+                  >
+                    <CSSFlag stripes={["#fff", "#00966E", "#D62612"]} size="w-7 h-5" />
+                    <span className="text-sm font-semibold text-foreground">Български</span>
+                    {!isEn && <div className="ml-auto size-2 rounded-full bg-accent" />}
+                  </Link>
+                </Dialog.Close>
+                <Dialog.Close asChild>
+                  <Link
+                    href={enHref}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
+                      isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
+                    )}
+                  >
+                    <UKFlag size="w-7 h-5" />
+                    <span className="text-sm font-semibold text-foreground">English</span>
+                    {isEn && <div className="ml-auto size-2 rounded-full bg-accent" />}
+                  </Link>
+                </Dialog.Close>
+                <p className="text-[11px] text-foreground-tertiary px-1">
+                  + 10 държави от Балканите — скоро
+                </p>
               </div>
             </div>
           </div>
@@ -518,22 +596,32 @@ export function Navbar() {
             "focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           )}
         >
-          <SolaronLogo variant={isTransparent ? "white" : "dark"} />
+          <Image
+            src="/logo-solaron.png"
+            alt="Solaron"
+            width={160}
+            height={27}
+            className={cn("h-7 w-auto sm:h-8 transition-all duration-300", isTransparent && "brightness-0 invert")}
+            priority
+          />
         </Link>
 
         <DesktopNav isTransparent={isTransparent} />
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
           <Link
-            href="/kontakti"
+            href="https://wa.me/359896699009"
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
-              "inline-flex h-10 items-center justify-center rounded-full px-5 text-sm font-semibold transition-all duration-300",
+              "inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-all duration-300",
               isTransparent
                 ? "border border-white/30 text-white hover:bg-white/15 hover:border-white/50"
                 : "bg-accent text-white shadow-soft hover:bg-accent-hover",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
             )}
           >
+            <WhatsAppIcon className="size-4" />
             Безплатна Консултация
           </Link>
 
@@ -577,7 +665,7 @@ export function Navbar() {
     <AnimatePresence>
       {langOverlayOpen && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 backdrop-blur-xl"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 backdrop-blur-xl overflow-y-auto py-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -586,73 +674,81 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setLangOverlayOpen(false)}
-            className="absolute top-6 right-6 flex size-10 items-center justify-center rounded-full bg-foreground/5 text-foreground hover:bg-foreground/10 transition-colors"
+            className="absolute top-6 right-6 z-10 flex size-10 items-center justify-center rounded-full bg-foreground/5 text-foreground hover:bg-foreground/10 transition-colors"
             aria-label="Close"
           >
             <X className="size-5" />
           </button>
 
           <motion.div
-            className="text-center"
+            className="w-full max-w-3xl px-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ delay: 0.1, duration: 0.3 }}
           >
-            <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-              Изберете език
-            </h2>
-            <p className="text-foreground-secondary mb-12">Choose your language</p>
-
-            <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
-              <button
-                type="button"
-                onClick={() => setLangOverlayOpen(false)}
-                className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-8 transition-all duration-300 hover:border-accent hover:shadow-lg"
-              >
-                <div className="relative size-16 rounded-full overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent z-10 rounded-full" />
-                  <div className="w-full h-full flex flex-col">
-                    <div className="flex-1 bg-white" />
-                    <div className="flex-1 bg-[#00966E]" />
-                    <div className="flex-1 bg-[#D62612]" />
-                  </div>
-                </div>
-                <div>
-                  <p className="font-display text-lg font-bold text-foreground">Български</p>
-                  <p className="text-sm text-foreground-secondary">Bulgarian</p>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setLangOverlayOpen(false)}
-                className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-border p-8 transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
-              >
-                <div className="relative size-16 rounded-full overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent z-10 rounded-full" />
-                  <svg viewBox="0 0 60 40" className="w-full h-full">
-                    <rect width="60" height="40" fill="#012169" />
-                    <polygon points="0,0 24,13.3 24,0" fill="#fff" />
-                    <polygon points="36,0 60,0 60,13.3 36,0" fill="#fff" />
-                    <polygon points="0,40 24,26.7 24,40" fill="#fff" />
-                    <polygon points="36,40 60,40 60,26.7" fill="#fff" />
-                    <polygon points="0,0 20,13.3" fill="#C8102E" />
-                    <polygon points="60,0 40,13.3" fill="#C8102E" />
-                    <polygon points="0,40 20,26.7" fill="#C8102E" />
-                    <polygon points="60,40 40,26.7" fill="#C8102E" />
-                    <rect x="25" width="10" height="40" fill="#fff" />
-                    <rect y="15" width="60" height="10" fill="#fff" />
-                    <rect x="27" width="6" height="40" fill="#C8102E" />
-                    <rect y="17" width="60" height="6" fill="#C8102E" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-display text-lg font-bold text-foreground">English</p>
-                  <p className="text-sm text-foreground-secondary">Английски</p>
-                </div>
-              </button>
+            <div className="text-center mb-10">
+              <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+                Изберете държава
+              </h2>
+              <p className="text-foreground-secondary">Choose your country and language</p>
             </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              {COUNTRY_OPTIONS.map((country) => {
+                const isActive = country.code === "bg" ? !isEn : country.code === "en" ? isEn : false;
+                const href = country.code === "bg" ? bgHref : country.code === "en" ? enHref : undefined;
+
+                if (country.comingSoon) {
+                  return (
+                    <div
+                      key={country.code}
+                      className="relative flex items-center gap-3 rounded-xl border border-border/60 bg-stone-50/50 p-3 opacity-60"
+                    >
+                      <div className="shrink-0 overflow-hidden rounded shadow-sm">
+                        {country.flag}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-foreground truncate">{country.native}</p>
+                        <p className="text-[11px] text-foreground-tertiary truncate">{country.english}</p>
+                      </div>
+                      <span className="absolute top-1.5 right-1.5 rounded-full bg-foreground/8 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-foreground-tertiary">
+                        скоро
+                      </span>
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={country.code}
+                    href={href!}
+                    onClick={() => setLangOverlayOpen(false)}
+                    className={cn(
+                      "group flex items-center gap-3 rounded-xl border-2 p-3 transition-all duration-200 hover:shadow-md",
+                      isActive
+                        ? "border-accent bg-accent/5 shadow-sm"
+                        : "border-border hover:border-accent/40",
+                    )}
+                  >
+                    <div className="shrink-0 overflow-hidden rounded shadow-sm group-hover:shadow-md transition-shadow">
+                      {country.flag}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-foreground truncate">{country.native}</p>
+                      <p className="text-[11px] text-foreground-tertiary truncate">{country.english}</p>
+                    </div>
+                    {isActive && (
+                      <div className="size-2 shrink-0 rounded-full bg-accent" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <p className="mt-6 text-center text-xs text-foreground-tertiary">
+              Solaron разширява присъствието си в региона. Следете за нови държави.
+            </p>
           </motion.div>
         </motion.div>
       )}

@@ -400,10 +400,10 @@ export function SolarniPaneliContent() {
           </TextReveal>
           <div className="aspect-[16/9] min-h-[240px] md:min-h-[400px] max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10">
             <SceneCanvasDynamic
-              camera={{ position: [2.5, 1.5, 3], fov: 35 }}
+              camera={{ position: [0, 1.5, 3.5], fov: 35 }}
               autoRotate
             >
-              <SolarPanel position={[0, 0.5, 0]} rotation={[-0.3, 0, 0]} scale={1.5} />
+              <SolarPanel position={[0, 0.5, 0]} rotation={[-0.3, Math.PI, 0]} scale={1.5} />
             </SceneCanvasDynamic>
           </div>
           <p className="mt-4 text-center text-sm text-white/50 font-body">

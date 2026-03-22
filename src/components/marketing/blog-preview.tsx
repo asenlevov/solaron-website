@@ -51,8 +51,8 @@ export function BlogPreview() {
     <section className="px-6 py-24 md:px-8 md:py-32 lg:py-40" style={{ backgroundColor: "#f7f7f5" }}>
       <div ref={ref} className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-20">
-          <p className="text-editorial-overline mb-4">БЛОГ</p>
-          <TextReveal as="h2" className="text-editorial-heading">
+          <p className="editorial-overline mb-4">БЛОГ</p>
+          <TextReveal as="h2" className="editorial-heading">
             Новини и Ръководства
           </TextReveal>
         </div>

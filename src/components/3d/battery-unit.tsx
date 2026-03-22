@@ -24,12 +24,10 @@ function WallBracket() {
     <group>
       {[-1, 1].map((side) => (
         <group key={side} position={[side * (W / 2 + thickness / 2 + 0.005), 0, 0]}>
-          {/* Vertical piece against wall */}
           <mesh position={[0, 0, -D / 2 - wallDepth / 2]}>
             <boxGeometry args={[thickness, bracketH, wallDepth]} />
             <meshStandardMaterial color="#888" metalness={0.8} roughness={0.25} />
           </mesh>
-          {/* Horizontal lip supporting unit */}
           <mesh position={[side * thickness * 0.5, -bracketH / 2 + thickness / 2, -D / 2 + 0.01]}>
             <boxGeometry args={[thickness * 2.5, thickness, D * 0.4]} />
             <meshStandardMaterial color="#888" metalness={0.8} roughness={0.25} />
@@ -42,52 +40,40 @@ function WallBracket() {
 
 export function BatteryUnit({ visible, position = [0, 0, 0] }: BatteryUnitProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const progressRef = useRef(0);
+  const scaleRef = useRef(visible ? 1 : 0);
 
   useFrame((_, delta) => {
     const g = groupRef.current;
     if (!g) return;
 
     const target = visible ? 1 : 0;
-    progressRef.current += (target - progressRef.current) * (1 - Math.exp(-6 * delta));
+    scaleRef.current += (target - scaleRef.current) * (1 - Math.exp(-8 * delta));
 
-    const t = progressRef.current;
-    const scaleVal = 0.85 + t * 0.15;
-    g.scale.setScalar(scaleVal);
-
-    g.traverse((obj) => {
-      if (obj instanceof THREE.Mesh && obj.material) {
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        for (const m of mats) {
-          if ("opacity" in m && "transparent" in m) {
-            const mat = m as THREE.MeshStandardMaterial;
-            mat.transparent = t < 0.99;
-            mat.opacity = t;
-          }
-        }
-      }
-    });
-
-    g.visible = !(!visible && t < 0.01);
+    if (scaleRef.current < 0.01) {
+      g.visible = false;
+    } else {
+      g.visible = true;
+      g.scale.setScalar(scaleRef.current);
+    }
   });
 
   return (
-    <group ref={groupRef} position={position} scale={0.85} visible={false}>
+    <group ref={groupRef} position={position} visible={visible}>
       {/* Main body */}
       <RoundedBox args={[W, H, D]} radius={0.05} smoothness={4} castShadow receiveShadow>
-        <meshStandardMaterial color="#f5f5f5" roughness={0.25} metalness={0.03} transparent opacity={0} />
+        <meshStandardMaterial color="#f5f5f5" roughness={0.25} metalness={0.03} />
       </RoundedBox>
 
       {/* Front face plate */}
       <mesh position={[0, 0, D / 2 - 0.003]}>
         <boxGeometry args={[W - 0.03, H - 0.03, 0.006]} />
-        <meshStandardMaterial color="#fafafa" roughness={0.2} metalness={0.02} transparent opacity={0} />
+        <meshStandardMaterial color="#fafafa" roughness={0.2} metalness={0.02} />
       </mesh>
 
       {/* Subtle perimeter edge line */}
       <mesh position={[0, 0, D / 2 + 0.001]}>
         <boxGeometry args={[W - 0.01, H - 0.01, 0.002]} />
-        <meshStandardMaterial color="#e8e8e8" roughness={0.3} metalness={0.05} transparent opacity={0} />
+        <meshStandardMaterial color="#e8e8e8" roughness={0.3} metalness={0.05} />
       </mesh>
 
       {/* LED status strip */}
@@ -99,8 +85,6 @@ export function BatteryUnit({ visible, position = [0, 0, 0] }: BatteryUnitProps)
           emissiveIntensity={2.5}
           roughness={0.2}
           metalness={0.1}
-          transparent
-          opacity={0}
         />
       </mesh>
 

@@ -60,6 +60,7 @@ function HeroSection() {
         src={KAK_RABOTI_IMAGES.netnoMetering}
         alt="Покривна фотоволтаична система с двупосочен електромер"
         fill
+        sizes="100vw"
         priority
         parallax
         grain

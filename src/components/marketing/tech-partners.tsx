@@ -4,7 +4,6 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { REAL_IMAGES } from "@/data/images";
-import { cn } from "@/lib/utils";
 
 const partners = [
   { name: "SolarEdge", logo: REAL_IMAGES.partners.solaredge, width: 120 },
@@ -42,7 +41,7 @@ export function TechPartners() {
                 width={partner.width}
                 height={36}
                 className="h-7 w-auto object-contain md:h-9"
-                style={{ maxWidth: partner.width }}
+                style={{ width: "auto", maxWidth: partner.width }}
               />
             </motion.div>
           ))}

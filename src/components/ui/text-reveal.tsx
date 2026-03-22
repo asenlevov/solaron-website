@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -19,8 +19,18 @@ export function TextReveal({
   delay = 0,
   staggerDelay = 0.04,
 }: TextRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const [parentCentered, setParentCentered] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const parent = el.parentElement;
+    if (parent && getComputedStyle(parent).textAlign === "center") {
+      setParentCentered(true);
+    }
+  }, []);
 
   const words = children.split(" ");
 
@@ -35,8 +45,11 @@ export function TextReveal({
     return className;
   })();
 
+  const shouldCenter =
+    resolvedClassName?.includes("text-center") || parentCentered;
+
   return (
-    <Tag ref={ref as React.RefObject<never>} className={cn("flex flex-wrap", resolvedClassName?.includes("text-center") && "justify-center", resolvedClassName)} aria-label={children}>
+    <Tag ref={ref as React.RefObject<never>} className={cn("flex flex-wrap", shouldCenter && "justify-center", resolvedClassName)} aria-label={children}>
       {words.map((word, i) => (
         <span key={`${word}-${i}`} className="inline-block overflow-hidden mr-[0.25em] py-[0.05em]">
           <motion.span

@@ -41,10 +41,10 @@ export default function BlogPage() {
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <p className="text-editorial-overline text-accent mb-6">Блог</p>
+              <p className="editorial-overline text-accent mb-6">Блог</p>
               <TextReveal
                 as="h1"
-                className="text-editorial-hero max-w-4xl text-white"
+                className="editorial-hero max-w-4xl text-white"
               >
                 Новини и Ръководства
               </TextReveal>
@@ -82,7 +82,7 @@ export default function BlogPage() {
       {featured && (
         <section className="bg-white py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <p className="text-editorial-overline text-accent mb-8">
+            <p className="editorial-overline text-accent mb-8">
               Актуално
             </p>
             <Link
@@ -111,7 +111,7 @@ export default function BlogPage() {
                     {readingTime(featured.content)} мин. четене
                   </span>
                 </div>
-                <h2 className="text-editorial-display text-foreground group-hover:text-accent transition-colors">
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent md:text-3xl">
                   {featured.title}
                 </h2>
                 <p className="mt-4 font-body text-base leading-relaxed text-foreground-secondary md:text-lg">
@@ -133,10 +133,10 @@ export default function BlogPage() {
       {rest.length > 0 && (
         <section className="bg-[#f7f7f5] py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <p className="text-editorial-overline text-accent mb-4">
+            <p className="editorial-overline text-accent mb-4">
               Всички статии
             </p>
-            <h2 className="text-editorial-heading text-foreground mb-14">
+            <h2 className="editorial-heading text-foreground mb-14">
               Последни публикации
             </h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -166,7 +166,7 @@ export default function BlogPage() {
                         {readingTime(post.content)} мин.
                       </span>
                     </div>
-                    <h3 className="text-editorial-heading text-foreground text-lg group-hover:text-accent transition-colors">
+                    <h3 className="font-display text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent md:text-lg">
                       {post.title}
                     </h3>
                     <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-foreground-secondary line-clamp-3">
@@ -186,12 +186,12 @@ export default function BlogPage() {
       )}
 
       {/* CTA */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="grain bg-foreground py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 text-center md:px-10">
-          <h2 className="text-editorial-display text-foreground mx-auto max-w-2xl">
+          <h2 className="editorial-display mx-auto max-w-2xl text-white">
             Готови за вашия соларен проект?
           </h2>
-          <p className="mx-auto mt-6 max-w-lg font-body text-lg text-foreground-secondary">
+          <p className="mx-auto mt-6 max-w-lg font-body text-lg text-white/70">
             Свържете се с нас за безплатна консултация и оферта.
           </p>
           <div className="mt-10">

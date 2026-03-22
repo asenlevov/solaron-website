@@ -57,18 +57,18 @@ export default function PartnoriPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="overflow-hidden bg-white pt-32 pb-20 md:pt-40 md:pb-28">
+      <section className="grain overflow-hidden bg-foreground pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-6">
+          <p className="editorial-overline text-white/60 mb-6">
             Партньори
           </p>
           <TextReveal
             as="h1"
-            className="text-editorial-hero max-w-4xl text-foreground"
+            className="editorial-hero max-w-4xl text-white"
           >
             Технологии, на които разчитаме
           </TextReveal>
-          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-foreground-secondary md:text-xl">
+          <p className="mt-8 max-w-2xl font-body text-lg leading-relaxed text-white/70 md:text-xl">
             Работим с водещи производители, които споделят нашия ангажимент към
             качество и дълготрайност.
           </p>
@@ -84,10 +84,10 @@ export default function PartnoriPage() {
           <div className="mx-auto max-w-7xl px-6 md:px-10">
             <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
               <div>
-                <p className="text-editorial-overline text-accent mb-3">
+                <p className="editorial-overline text-accent mb-3">
                   {partner.category}
                 </p>
-                <h2 className="text-editorial-display text-foreground mb-2">
+                <h2 className="editorial-display text-foreground mb-2">
                   {partner.name}
                 </h2>
                 <p className="font-body text-sm uppercase tracking-widest text-foreground-secondary mb-6">
@@ -110,7 +110,7 @@ export default function PartnoriPage() {
                   </div>
                 )}
                 <div className="rounded-2xl border border-accent/20 bg-accent/5 p-6">
-                  <p className="text-editorial-overline text-accent mb-2">
+                  <p className="editorial-overline text-accent mb-2">
                     Акцент
                   </p>
                   <p className="font-body text-base leading-relaxed text-foreground">
@@ -126,10 +126,10 @@ export default function PartnoriPage() {
       {/* Dark joint projects section */}
       <section className="bg-foreground py-20 md:py-28 grain">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
-          <p className="text-editorial-overline text-accent mb-4">
+          <p className="editorial-overline text-accent mb-4">
             Съвместни проекти
           </p>
-          <h2 className="text-editorial-heading text-white mb-10 max-w-2xl">
+          <h2 className="editorial-heading text-white mb-10 max-w-2xl">
             Партньорства, доказани на терен
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -159,7 +159,7 @@ export default function PartnoriPage() {
       {/* CTA */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 text-center md:px-10">
-          <h2 className="text-editorial-display text-foreground mx-auto max-w-2xl">
+          <h2 className="editorial-display text-foreground mx-auto max-w-2xl">
             Заедно изграждаме по-чисто бъдеще
           </h2>
           <div className="mt-10">

@@ -129,8 +129,8 @@ export function ProcessTimeline() {
     >
       <div className="mx-auto max-w-5xl">
         <div className="mb-16 md:mb-20">
-          <p className="text-editorial-overline mb-4 text-accent">ПРОЦЕС</p>
-          <TextReveal as="h2" className="text-editorial-display">
+          <p className="editorial-overline mb-4 text-accent">ПРОЦЕС</p>
+          <TextReveal as="h2" className="editorial-display">
             Нашият Процес
           </TextReveal>
         </div>

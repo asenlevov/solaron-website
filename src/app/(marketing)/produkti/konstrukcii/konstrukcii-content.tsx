@@ -247,6 +247,7 @@ export function KonstrukciiContent() {
           src={PRODUCT_IMAGES.constructions}
           alt="Премиум конструкция за соларни панели"
           fill
+          sizes="100vw"
           parallax
           grain
           containerClassName="absolute inset-0"
@@ -381,7 +382,13 @@ export function KonstrukciiContent() {
               <motion.div key={step.title} variants={staggerItem}>
                 <div className="group">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4">
-                    <Image src={step.src} alt={step.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <Image
+                      src={step.src}
+                      alt={step.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                     <div className="absolute top-3 left-3 bg-accent text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-display font-bold">
                       {i + 1}
                     </div>
