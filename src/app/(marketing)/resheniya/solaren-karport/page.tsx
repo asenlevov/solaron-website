@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-
-import SolarenKarportContent from "./content";
-
+import dynamic from "next/dynamic";
+const SolarenKarportContent = dynamic(() => import("./content").then((m) => m.SolarenKarportContent), { ssr: true });
 export const metadata: Metadata = {
   title: "Соларен Карпорт | Solaron",
-  description:
-    "Соларен карпорт за търговски паркинги, хотели и бизнес паркове — енергия от покрива и опция за EV зареждане.",
+  description: "Соларни навеси за паркинги с интегрирано EV зареждане. 270 kWp референтен проект. Двоен приход от паркиране и енергия.",
 };
-
-export default function SolarenKarportPage() {
-  return <SolarenKarportContent />;
-}
+export default function SolarenKarportPage() { return <SolarenKarportContent />; }

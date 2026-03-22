@@ -163,3 +163,21 @@ export const PRODUCT_IMAGES = {
   inverterThumb: REAL_IMAGES.installations.nlProjectInstall2,
   batteryThumb: REAL_IMAGES.projects.kran5_2,
 } as const;
+
+export const SOLUTION_IMAGES = {
+  zaDoma: REAL_IMAGES.projects.kran5_1,
+  zaBiznesa: REAL_IMAGES.projects.sedemBg108_hero,
+  zaIndustriyata: REAL_IMAGES.projects.saedinenie651_hero,
+  zaZemedelieto: REAL_IMAGES.projects.dryanovo_1,
+  solarenKarport: REAL_IMAGES.projects.carport270_hero,
+  avtonomniSistemi: REAL_IMAGES.projects.vratsa15_1,
+} as const;
+
+export const KAK_RABOTI_IMAGES = {
+  slanchevaEnergiya: REAL_IMAGES.installations.adoreenergyHero,
+  protsesNaMontazh: REAL_IMAGES.installations.nlProjectInstall1,
+  svurzvaneMrezhata: REAL_IMAGES.installations.nlProjectOverview1,
+  netnoMetering: REAL_IMAGES.installations.nlRefRooftop1,
+  finansirane: REAL_IMAGES.projects.solaron_01,
+  vuzvrashchaemost: REAL_IMAGES.projects.saedinenie651_hero,
+} as const;
