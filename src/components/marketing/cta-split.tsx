@@ -2,21 +2,24 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { Phone, ArrowRight, Shield, Clock, BadgeCheck } from "lucide-react";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-
-const guarantees = [
-  { icon: Shield, text: "30 год. гаранция панели" },
-  { icon: Clock, text: "Безплатен оглед" },
-  { icon: BadgeCheck, text: "Без скрити такси" },
-];
 
 export function CTASplit() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
+
+  const guarantees = [
+    { icon: Shield, text: "30 год. гаранция панели" },
+    { icon: Clock, text: "Безплатен оглед" },
+    { icon: BadgeCheck, text: "Без скрити такси" },
+  ];
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-gradient-to-br from-accent via-accent to-emerald-700 px-6 py-24 md:px-8 md:py-32">
@@ -33,11 +36,11 @@ export function CTASplit() {
         </BadgeChip>
 
         <h2 className="editorial-display text-white">
-          Вашата Соларна<br />Революция Започва Тук
+          {t("ctaSplit.title")}
         </h2>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80">
-          Безплатна консултация с наш експерт. Ще проектираме идеалната система за вашите нужди — без ангажимент.
+          {t("ctaSplit.subtitle")}
         </p>
 
         <a
@@ -50,10 +53,10 @@ export function CTASplit() {
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-5">
           <Link
-            href="/kontakti"
+            href={"/kontakti" as never}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-accent shadow-lg transition-all duration-200 hover:bg-white/90 hover:shadow-xl"
           >
-            Безплатна Консултация
+            {t("ctaSplit.primaryCta")}
             <ArrowRight className="size-5" />
           </Link>
           <a

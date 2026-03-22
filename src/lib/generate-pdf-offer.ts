@@ -20,6 +20,427 @@ export interface PdfOfferData {
   monthlyBill: number;
 }
 
+// ---------------------------------------------------------------------------
+// Locale texts & formatting
+// ---------------------------------------------------------------------------
+
+interface PdfTexts {
+  numberLocale: string;
+  dateLocale: string;
+  currency: (v: number) => string;
+  orientations: Record<string, string>;
+  fileName: string;
+
+  personalizedOffer: string;
+  docDisclaimer: string;
+
+  coverPanels: string;
+  coverPower: string;
+  coverSavingsYr: string;
+  coverPayback: string;
+
+  yourSystem: string;
+  power: string;
+  panels: string;
+  pcs: string;
+  roofArea: string;
+  orientation: string;
+  pitch: string;
+  city: string;
+  batteryStorage: string;
+  batterySpec: string;
+  annualProduction: string;
+  monthlyBill: string;
+
+  financialAnalysis: string;
+  monthlySavings: string;
+  annualSavings: string;
+  savings25yr: string;
+  systemCost: string;
+  paybackPeriod: string;
+  years: string;
+  savingsAccumulation: string;
+  year: string;
+
+  roi: string;
+  investment: string;
+  paybackLabel: string;
+  yr: string;
+  cumulativeSavings: string;
+  systemCostLegend: string;
+
+  productSpec: string;
+  solarPanelsTitle: string;
+  solarPanelsSub: string;
+  inverterTitle: string;
+  inverterSub: string;
+  batteryTitle: string;
+  specPower: string;
+  specEfficiency: string;
+  specTechnology: string;
+  specWarranty: string;
+  specCount: string;
+  specTotalPower: string;
+  specType: string;
+  specMonitoring: string;
+  specOptimizers: string;
+  specCapacity: string;
+  specCycles: string;
+  specDoD: string;
+  specHybrid: string;
+  specMppt: string;
+  specLinearWarranty: string;
+  specInverterWarranty: string;
+  specBatteryWarranty: string;
+  specInstallWarranty: string;
+
+  installProcess: string;
+  steps: { num: string; t: string; d: string }[];
+
+  envImpact: string;
+  co2SavedAnnual: string;
+  treeEquivalent: string;
+  co2For25yr: string;
+  envForecast: string;
+  envSummary: string;
+
+  warrantyTitle: string;
+  warrantyConditions: string;
+  warranties: { c: string; p: string; d: string }[];
+  nextSteps: string;
+  nextStepsList: string[];
+  readyNext: string;
+}
+
+function fmtNum(v: number, locale: string): string {
+  return new Intl.NumberFormat(locale).format(Math.round(v));
+}
+
+const TEXTS: Record<string, PdfTexts> = {
+  bg: {
+    numberLocale: "bg-BG",
+    dateLocale: "bg-BG",
+    currency: (v) => `${new Intl.NumberFormat("bg-BG").format(Math.round(v))} лв.`,
+    orientations: { "Юг": "Юг", "Югоизток": "Югоизток", "Югозапад": "Югозапад", "Изток": "Изток", "Запад": "Запад" },
+    fileName: "Solaron-Оферта.pdf",
+
+    personalizedOffer: "Персонализирана Соларна Оферта",
+    docDisclaimer: "Този документ е генериран от Solaron конфигуратора. За финална оферта, свържете се с нас.",
+
+    coverPanels: "Панели",
+    coverPower: "Мощност",
+    coverSavingsYr: "Спестявания/г.",
+    coverPayback: "Изплащане",
+
+    yourSystem: "Вашата Соларна Система",
+    power: "Мощност",
+    panels: "Панели",
+    pcs: "бр.",
+    roofArea: "Покривна площ",
+    orientation: "Ориентация",
+    pitch: "Наклон",
+    city: "Град",
+    batteryStorage: "Батерийно Съхранение",
+    batterySpec: "LiFePO4  |  6 000+ цикъла  |  10 г. гаранция",
+    annualProduction: "Годишно производство",
+    monthlyBill: "Месечна сметка",
+
+    financialAnalysis: "Финансов Анализ",
+    monthlySavings: "Месечни спестявания",
+    annualSavings: "Годишни спестявания",
+    savings25yr: "Спестявания (25 г.)",
+    systemCost: "Цена на системата",
+    paybackPeriod: "Период на изплащане:",
+    years: "години",
+    savingsAccumulation: "Натрупване на спестявания по години",
+    year: "Година",
+
+    roi: "Възвръщаемост на Инвестицията",
+    investment: "Инвестиция",
+    paybackLabel: "Изплащане",
+    yr: "г.",
+    cumulativeSavings: "Кумулативни спестявания",
+    systemCostLegend: "Цена на системата",
+
+    productSpec: "Продуктова Спецификация",
+    solarPanelsTitle: "Соларни Панели",
+    solarPanelsSub: "Монокристални MWT 450W",
+    inverterTitle: "Инвертор",
+    inverterSub: "SolarEdge HD-Wave",
+    batteryTitle: "Батерия",
+    specPower: "Мощност",
+    specEfficiency: "Ефективност",
+    specTechnology: "Технология",
+    specWarranty: "Гаранция",
+    specCount: "Брой",
+    specTotalPower: "Обща мощност",
+    specType: "Тип",
+    specMonitoring: "Мониторинг",
+    specOptimizers: "Оптимизатори",
+    specCapacity: "Капацитет",
+    specCycles: "Цикли",
+    specDoD: "DoD",
+    specHybrid: "Хибриден",
+    specMppt: "MPPT за панел",
+    specLinearWarranty: "30 г. линейна",
+    specInverterWarranty: "12 години",
+    specBatteryWarranty: "10 години",
+    specInstallWarranty: "5 години",
+
+    installProcess: "Процес на Инсталация",
+    steps: [
+      { num: "01", t: "Консултация", d: "Безплатна техническа консултация на място. Анализ на покрива и потреблението." },
+      { num: "02", t: "Проектиране", d: "Детайлен технически проект с 3D визуализация, съобразен с вашите нужди." },
+      { num: "03", t: "Документация", d: "Цялата документация за присъединяване към електроразпределителното дружество." },
+      { num: "04", t: "Монтаж", d: "Професионален монтаж от сертифициран екип. 2\u20133 дни за жилищни системи." },
+      { num: "05", t: "Свързване", d: "Свързване към мрежата и настройка на мониторинг системата в реално време." },
+      { num: "06", t: "Активиране", d: "Финално тестване, пускане и обучение за ползване на мониторинг приложението." },
+    ],
+
+    envImpact: "Екологичен Принос",
+    co2SavedAnnual: "CO\u2082 спестено годишно",
+    treeEquivalent: "Еквивалент на дървета",
+    co2For25yr: "CO\u2082 за 25 години",
+    envForecast: "25-годишна екологична прогноза",
+    envSummary: "За 25 години вашата система ще предотврати {co2} kg CO\u2082 \u2014 еквивалент на {trees} дървета.",
+
+    warrantyTitle: "Гаранция и Следващи Стъпки",
+    warrantyConditions: "Гаранционни Условия",
+    warranties: [
+      { c: "Соларни панели", p: "30 години", d: "Линейна гаранция (мин. 87.4% на 25-та година)" },
+      { c: "Инвертор", p: "12 години", d: "Пълна гаранция, опция за удължаване до 25 г." },
+      { c: "Батерия", p: "10 години", d: "Капацитет мин. 70% след 6 000 цикъла" },
+      { c: "Монтаж", p: "5 години", d: "Качество на монтаж и конструкция" },
+    ],
+    nextSteps: "Следващи Стъпки",
+    nextStepsList: [
+      "Свържете се с нас за безплатна консултация",
+      "Получете детайлен технически проект",
+      "Финална оферта с фиксирана цена",
+      "Насладете се на чиста енергия",
+    ],
+    readyNext: "Готови ли сте за следващата стъпка?",
+  },
+
+  en: {
+    numberLocale: "en-US",
+    dateLocale: "en-US",
+    currency: (v) => `€${new Intl.NumberFormat("en-US").format(Math.round(v))}`,
+    orientations: { "Юг": "South", "Югоизток": "Southeast", "Югозапад": "Southwest", "Изток": "East", "Запад": "West" },
+    fileName: "Solaron-Offer.pdf",
+
+    personalizedOffer: "Personalized Solar Offer",
+    docDisclaimer: "This document was generated by the Solaron configurator. For a final offer, contact us.",
+
+    coverPanels: "Panels",
+    coverPower: "Power",
+    coverSavingsYr: "Savings/yr",
+    coverPayback: "Payback",
+
+    yourSystem: "Your Solar System",
+    power: "Power",
+    panels: "Panels",
+    pcs: "pcs",
+    roofArea: "Roof Area",
+    orientation: "Orientation",
+    pitch: "Pitch",
+    city: "City",
+    batteryStorage: "Battery Storage",
+    batterySpec: "LiFePO4  |  6,000+ cycles  |  10 yr warranty",
+    annualProduction: "Annual Production",
+    monthlyBill: "Monthly Bill",
+
+    financialAnalysis: "Financial Analysis",
+    monthlySavings: "Monthly Savings",
+    annualSavings: "Annual Savings",
+    savings25yr: "Savings (25 yr)",
+    systemCost: "System Cost",
+    paybackPeriod: "Payback period:",
+    years: "years",
+    savingsAccumulation: "Savings accumulation by year",
+    year: "Year",
+
+    roi: "Return on Investment",
+    investment: "Investment",
+    paybackLabel: "Payback",
+    yr: "yr",
+    cumulativeSavings: "Cumulative Savings",
+    systemCostLegend: "System Cost",
+
+    productSpec: "Product Specification",
+    solarPanelsTitle: "Solar Panels",
+    solarPanelsSub: "Monocrystalline MWT 450W",
+    inverterTitle: "Inverter",
+    inverterSub: "SolarEdge HD-Wave",
+    batteryTitle: "Battery",
+    specPower: "Power",
+    specEfficiency: "Efficiency",
+    specTechnology: "Technology",
+    specWarranty: "Warranty",
+    specCount: "Count",
+    specTotalPower: "Total Power",
+    specType: "Type",
+    specMonitoring: "Monitoring",
+    specOptimizers: "Optimizers",
+    specCapacity: "Capacity",
+    specCycles: "Cycles",
+    specDoD: "DoD",
+    specHybrid: "Hybrid",
+    specMppt: "MPPT per panel",
+    specLinearWarranty: "30 yr linear",
+    specInverterWarranty: "12 years",
+    specBatteryWarranty: "10 years",
+    specInstallWarranty: "5 years",
+
+    installProcess: "Installation Process",
+    steps: [
+      { num: "01", t: "Consultation", d: "Free on-site technical consultation. Roof and consumption analysis." },
+      { num: "02", t: "Design", d: "Detailed technical design with 3D visualization, tailored to your needs." },
+      { num: "03", t: "Documentation", d: "All documentation for grid connection with the utility company." },
+      { num: "04", t: "Installation", d: "Professional installation by a certified team. 2\u20133 days for residential systems." },
+      { num: "05", t: "Connection", d: "Grid connection and real-time monitoring system setup." },
+      { num: "06", t: "Activation", d: "Final testing, commissioning, and monitoring app training." },
+    ],
+
+    envImpact: "Environmental Impact",
+    co2SavedAnnual: "CO\u2082 saved annually",
+    treeEquivalent: "Tree equivalent",
+    co2For25yr: "CO\u2082 over 25 years",
+    envForecast: "25-year environmental forecast",
+    envSummary: "Over 25 years your system will prevent {co2} kg CO\u2082 \u2014 equivalent to {trees} trees.",
+
+    warrantyTitle: "Warranty & Next Steps",
+    warrantyConditions: "Warranty Terms",
+    warranties: [
+      { c: "Solar Panels", p: "30 years", d: "Linear warranty (min. 87.4% at year 25)" },
+      { c: "Inverter", p: "12 years", d: "Full warranty, option to extend to 25 yr" },
+      { c: "Battery", p: "10 years", d: "Capacity min. 70% after 6,000 cycles" },
+      { c: "Installation", p: "5 years", d: "Installation and construction quality" },
+    ],
+    nextSteps: "Next Steps",
+    nextStepsList: [
+      "Contact us for a free consultation",
+      "Receive a detailed technical design",
+      "Final offer with a fixed price",
+      "Enjoy clean energy",
+    ],
+    readyNext: "Ready for the next step?",
+  },
+
+  nl: {
+    numberLocale: "nl-NL",
+    dateLocale: "nl-NL",
+    currency: (v) => `\u20AC ${new Intl.NumberFormat("nl-NL").format(Math.round(v))}`,
+    orientations: { "Юг": "Zuid", "Югоизток": "Zuidoost", "Югозапад": "Zuidwest", "Изток": "Oost", "Запад": "West" },
+    fileName: "Solaron-Offerte.pdf",
+
+    personalizedOffer: "Gepersonaliseerde Zonne-offerte",
+    docDisclaimer: "Dit document is gegenereerd door de Solaron configurator. Neem contact met ons op voor een definitieve offerte.",
+
+    coverPanels: "Panelen",
+    coverPower: "Vermogen",
+    coverSavingsYr: "Besparing/jr.",
+    coverPayback: "Terugverdientijd",
+
+    yourSystem: "Uw Zonnepanelensysteem",
+    power: "Vermogen",
+    panels: "Panelen",
+    pcs: "st.",
+    roofArea: "Dakoppervlakte",
+    orientation: "Ori\u00EBntatie",
+    pitch: "Helling",
+    city: "Stad",
+    batteryStorage: "Batterijopslag",
+    batterySpec: "LiFePO4  |  6.000+ cycli  |  10 jr. garantie",
+    annualProduction: "Jaarlijkse Productie",
+    monthlyBill: "Maandelijkse Rekening",
+
+    financialAnalysis: "Financi\u00EBle Analyse",
+    monthlySavings: "Maandelijkse Besparingen",
+    annualSavings: "Jaarlijkse Besparingen",
+    savings25yr: "Besparingen (25 jr.)",
+    systemCost: "Systeemkosten",
+    paybackPeriod: "Terugverdientijd:",
+    years: "jaren",
+    savingsAccumulation: "Opbouw besparingen per jaar",
+    year: "Jaar",
+
+    roi: "Rendement op Investering",
+    investment: "Investering",
+    paybackLabel: "Terugverdientijd",
+    yr: "jr.",
+    cumulativeSavings: "Cumulatieve Besparingen",
+    systemCostLegend: "Systeemkosten",
+
+    productSpec: "Productspecificatie",
+    solarPanelsTitle: "Zonnepanelen",
+    solarPanelsSub: "Monokristallijn MWT 450W",
+    inverterTitle: "Omvormer",
+    inverterSub: "SolarEdge HD-Wave",
+    batteryTitle: "Batterij",
+    specPower: "Vermogen",
+    specEfficiency: "Effici\u00EBntie",
+    specTechnology: "Technologie",
+    specWarranty: "Garantie",
+    specCount: "Aantal",
+    specTotalPower: "Totaal vermogen",
+    specType: "Type",
+    specMonitoring: "Monitoring",
+    specOptimizers: "Optimizers",
+    specCapacity: "Capaciteit",
+    specCycles: "Cycli",
+    specDoD: "DoD",
+    specHybrid: "Hybride",
+    specMppt: "MPPT per paneel",
+    specLinearWarranty: "30 jr. lineair",
+    specInverterWarranty: "12 jaar",
+    specBatteryWarranty: "10 jaar",
+    specInstallWarranty: "5 jaar",
+
+    installProcess: "Installatieproces",
+    steps: [
+      { num: "01", t: "Consultatie", d: "Gratis technische consultatie op locatie. Analyse van het dak en verbruik." },
+      { num: "02", t: "Ontwerp", d: "Gedetailleerd technisch ontwerp met 3D-visualisatie, afgestemd op uw behoeften." },
+      { num: "03", t: "Documentatie", d: "Alle documentatie voor aansluiting op het elektriciteitsnet." },
+      { num: "04", t: "Installatie", d: "Professionele installatie door een gecertificeerd team. 2\u20133 dagen voor woningen." },
+      { num: "05", t: "Aansluiting", d: "Aansluiting op het net en installatie van het real-time monitoringsysteem." },
+      { num: "06", t: "Activering", d: "Eindtest, inbedrijfstelling en training voor de monitoring-app." },
+    ],
+
+    envImpact: "Milieu-impact",
+    co2SavedAnnual: "CO\u2082 bespaard per jaar",
+    treeEquivalent: "Boomequivalent",
+    co2For25yr: "CO\u2082 over 25 jaar",
+    envForecast: "25-jarige milieuprognose",
+    envSummary: "Over 25 jaar zal uw systeem {co2} kg CO\u2082 voorkomen \u2014 equivalent van {trees} bomen.",
+
+    warrantyTitle: "Garantie & Volgende Stappen",
+    warrantyConditions: "Garantievoorwaarden",
+    warranties: [
+      { c: "Zonnepanelen", p: "30 jaar", d: "Lineaire garantie (min. 87,4% in jaar 25)" },
+      { c: "Omvormer", p: "12 jaar", d: "Volledige garantie, optie tot 25 jr. verlenging" },
+      { c: "Batterij", p: "10 jaar", d: "Capaciteit min. 70% na 6.000 cycli" },
+      { c: "Installatie", p: "5 jaar", d: "Installatie- en constructiekwaliteit" },
+    ],
+    nextSteps: "Volgende Stappen",
+    nextStepsList: [
+      "Neem contact met ons op voor een gratis consultatie",
+      "Ontvang een gedetailleerd technisch ontwerp",
+      "Definitieve offerte met vaste prijs",
+      "Geniet van schone energie",
+    ],
+    readyNext: "Klaar voor de volgende stap?",
+  },
+};
+
+function getTexts(locale: string): PdfTexts {
+  return TEXTS[locale] ?? TEXTS.bg!;
+}
+
+// ---------------------------------------------------------------------------
+// Colours & layout constants
+// ---------------------------------------------------------------------------
+
 const G = "#3B7A2A";
 const GL = "#5CA644";
 const GD = "#2d5e20";
@@ -35,13 +456,9 @@ const PH = 210;
 const MX = 20;
 const CW = PW - MX * 2;
 
-function n(v: number): string {
-  return new Intl.NumberFormat("bg-BG").format(Math.round(v));
-}
-
-function lv(v: number): string {
-  return `${new Intl.NumberFormat("bg-BG").format(Math.round(v))} лв.`;
-}
+// ---------------------------------------------------------------------------
+// Font loading
+// ---------------------------------------------------------------------------
 
 async function loadFonts(doc: Doc) {
   const [regBuf, boldBuf] = await Promise.all([
@@ -63,12 +480,16 @@ async function loadFonts(doc: Doc) {
   doc.setFont("Inter", "normal");
 }
 
+// ---------------------------------------------------------------------------
+// Reusable drawing helpers
+// ---------------------------------------------------------------------------
+
 function headerBar(doc: Doc) {
   doc.setFillColor(G);
   doc.rect(0, 0, PW, 3.5, "F");
 }
 
-function footer(doc: Doc, pg: number, total: number) {
+function footer(doc: Doc, pg: number, total: number, t: PdfTexts) {
   doc.setDrawColor("#e5e7eb");
   doc.setLineWidth(0.2);
   doc.line(MX, PH - 16, PW - MX, PH - 16);
@@ -84,7 +505,7 @@ function footer(doc: Doc, pg: number, total: number) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(7);
   doc.setTextColor(G4);
-  doc.text("Персонализирана Соларна Оферта", MX + sw + doc.getTextWidth("on") + 4, PH - 10);
+  doc.text(t.personalizedOffer, MX + sw + doc.getTextWidth("on") + 4, PH - 10);
   doc.text(`${pg} / ${total}`, PW - MX, PH - 10, { align: "right" });
 }
 
@@ -132,7 +553,13 @@ function card(
   doc.text(value, x + w / 2, y + h * 0.72, { align: "center" });
 }
 
-function pageCover(doc: Doc, data: PdfOfferData) {
+// ---------------------------------------------------------------------------
+// Pages
+// ---------------------------------------------------------------------------
+
+function pageCover(doc: Doc, data: PdfOfferData, t: PdfTexts) {
+  const n = (v: number) => fmtNum(v, t.numberLocale);
+
   doc.setFillColor(D);
   doc.rect(0, 0, PW, PH, "F");
 
@@ -158,11 +585,11 @@ function pageCover(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(20);
   doc.setTextColor("#d1d5db");
-  doc.text("Персонализирана Соларна Оферта", MX + 28, 96);
+  doc.text(t.personalizedOffer, MX + 28, 96);
 
   doc.setFontSize(11);
   doc.setTextColor(G4);
-  const today = new Date().toLocaleDateString("bg-BG", {
+  const today = new Date().toLocaleDateString(t.dateLocale, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -170,11 +597,14 @@ function pageCover(doc: Doc, data: PdfOfferData) {
   doc.text(`${today}  |  ${data.city}  |  ${data.systemSizeKwp.toFixed(1)} kWp`, MX + 28, 112);
 
   const statsY = 128;
+  const paybackVal = Number.isFinite(data.paybackYears)
+    ? `${data.paybackYears.toFixed(1)} ${t.yr}`
+    : "\u2014";
   const statsData = [
-    { label: "Панели", value: `${data.panelCount}` },
-    { label: "Мощност", value: `${data.systemSizeKwp.toFixed(1)} kWp` },
-    { label: "Спестявания/г.", value: lv(data.annualSavings) },
-    { label: "Изплащане", value: Number.isFinite(data.paybackYears) ? `${data.paybackYears.toFixed(1)} г.` : "—" },
+    { label: t.coverPanels, value: `${data.panelCount}` },
+    { label: t.coverPower, value: `${data.systemSizeKwp.toFixed(1)} kWp` },
+    { label: t.coverSavingsYr, value: t.currency(data.annualSavings) },
+    { label: t.coverPayback, value: paybackVal },
   ];
   const statW = (CW - 56 - 12 * 3) / 4;
   for (let i = 0; i < statsData.length; i++) {
@@ -192,12 +622,7 @@ function pageCover(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(8);
   doc.setTextColor("#6b7280");
-  doc.text(
-    "Този документ е генериран от Solaron конфигуратора. За финална оферта, свържете се с нас.",
-    PW / 2,
-    PH - 16,
-    { align: "center" },
-  );
+  doc.text(t.docDisclaimer, PW / 2, PH - 16, { align: "center" });
 
   doc.setFontSize(7.5);
   doc.setTextColor(G4);
@@ -206,24 +631,27 @@ function pageCover(doc: Doc, data: PdfOfferData) {
   });
 }
 
-function pageSystem(doc: Doc, data: PdfOfferData) {
+function pageSystem(doc: Doc, data: PdfOfferData, t: PdfTexts) {
+  const n = (v: number) => fmtNum(v, t.numberLocale);
+  const orient = t.orientations[data.roofOrientation] ?? data.roofOrientation;
+
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  let y = heading(doc, "Вашата Соларна Система", 22);
+  let y = heading(doc, t.yourSystem, 22);
 
   const bw = (CW - 16) / 3;
   const bh = 36;
 
-  card(doc, MX, y, bw, bh, "Мощност", `${data.systemSizeKwp.toFixed(2)} kWp`, true);
-  card(doc, MX + bw + 8, y, bw, bh, "Панели", `${data.panelCount} бр.`);
-  card(doc, MX + (bw + 8) * 2, y, bw, bh, "Покривна площ", `${data.roofArea} м\u00B2`);
+  card(doc, MX, y, bw, bh, t.power, `${data.systemSizeKwp.toFixed(2)} kWp`, true);
+  card(doc, MX + bw + 8, y, bw, bh, t.panels, `${data.panelCount} ${t.pcs}`);
+  card(doc, MX + (bw + 8) * 2, y, bw, bh, t.roofArea, `${data.roofArea} m\u00B2`);
 
   y += bh + 8;
-  card(doc, MX, y, bw, bh, "Ориентация", data.roofOrientation);
-  card(doc, MX + bw + 8, y, bw, bh, "Наклон", `${data.roofPitch}\u00B0`);
-  card(doc, MX + (bw + 8) * 2, y, bw, bh, "Град", data.city);
+  card(doc, MX, y, bw, bh, t.orientation, orient);
+  card(doc, MX + bw + 8, y, bw, bh, t.pitch, `${data.roofPitch}\u00B0`);
+  card(doc, MX + (bw + 8) * 2, y, bw, bh, t.city, data.city);
 
   y += bh + 10;
 
@@ -241,7 +669,7 @@ function pageSystem(doc: Doc, data: PdfOfferData) {
     doc.setFont("Inter", "bold");
     doc.setFontSize(11);
     doc.setTextColor(D);
-    doc.text("Батерийно Съхранение", MX + 14, y + 13);
+    doc.text(t.batteryStorage, MX + 14, y + 13);
 
     doc.setFont("Inter", "bold");
     doc.setFontSize(14);
@@ -251,7 +679,7 @@ function pageSystem(doc: Doc, data: PdfOfferData) {
     doc.setFont("Inter", "normal");
     doc.setFontSize(8.5);
     doc.setTextColor(G6);
-    doc.text("LiFePO4  |  6 000+ цикъла  |  10 г. гаранция", MX + 80, y + 19);
+    doc.text(t.batterySpec, MX + 80, y + 19);
 
     y += 40;
   }
@@ -262,7 +690,7 @@ function pageSystem(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(9);
   doc.setTextColor(G6);
-  doc.text("Годишно производство", MX + 12, y + 11);
+  doc.text(t.annualProduction, MX + 12, y + 11);
   doc.setFont("Inter", "bold");
   doc.setFontSize(13);
   doc.setTextColor(D);
@@ -271,29 +699,29 @@ function pageSystem(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(9);
   doc.setTextColor(G6);
-  doc.text("Месечна сметка", MX + CW / 2 + 12, y + 11);
+  doc.text(t.monthlyBill, MX + CW / 2 + 12, y + 11);
   doc.setFont("Inter", "bold");
   doc.setFontSize(13);
   doc.setTextColor(D);
-  doc.text(lv(data.monthlyBill), MX + CW / 2 + 12, y + 22);
+  doc.text(t.currency(data.monthlyBill), MX + CW / 2 + 12, y + 22);
 
-  footer(doc, 2, 8);
+  footer(doc, 2, 8, t);
 }
 
-function pageFinance(doc: Doc, data: PdfOfferData) {
+function pageFinance(doc: Doc, data: PdfOfferData, t: PdfTexts) {
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  let y = heading(doc, "Финансов Анализ", 22);
+  let y = heading(doc, t.financialAnalysis, 22);
 
   const bw = (CW - 24) / 4;
   const bh = 40;
 
-  card(doc, MX, y, bw, bh, "Месечни спестявания", lv(data.annualSavings / 12));
-  card(doc, MX + bw + 8, y, bw, bh, "Годишни спестявания", lv(data.annualSavings), true);
-  card(doc, MX + (bw + 8) * 2, y, bw, bh, "Спестявания (25 г.)", lv(data.savings25yr));
-  card(doc, MX + (bw + 8) * 3, y, bw, bh, "Цена на системата", lv(data.systemCost));
+  card(doc, MX, y, bw, bh, t.monthlySavings, t.currency(data.annualSavings / 12));
+  card(doc, MX + bw + 8, y, bw, bh, t.annualSavings, t.currency(data.annualSavings), true);
+  card(doc, MX + (bw + 8) * 2, y, bw, bh, t.savings25yr, t.currency(data.savings25yr));
+  card(doc, MX + (bw + 8) * 3, y, bw, bh, t.systemCost, t.currency(data.systemCost));
 
   y += bh + 10;
 
@@ -306,11 +734,13 @@ function pageFinance(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(10);
   doc.setTextColor(G6);
-  doc.text("Период на изплащане:", MX + 14, y + 15);
+  doc.text(t.paybackPeriod, MX + 14, y + 15);
   doc.setFont("Inter", "bold");
   doc.setFontSize(16);
   doc.setTextColor(G);
-  const payT = Number.isFinite(data.paybackYears) ? `${data.paybackYears.toFixed(1)} години` : "\u2014";
+  const payT = Number.isFinite(data.paybackYears)
+    ? `${data.paybackYears.toFixed(1)} ${t.years}`
+    : "\u2014";
   doc.text(payT, MX + 75, y + 15);
 
   y += 36;
@@ -318,7 +748,7 @@ function pageFinance(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "bold");
   doc.setFontSize(11);
   doc.setTextColor(D);
-  doc.text("Натрупване на спестявания по години", MX, y);
+  doc.text(t.savingsAccumulation, MX, y);
   y += 8;
 
   const cX = MX;
@@ -355,17 +785,19 @@ function pageFinance(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(7);
   doc.setTextColor(G4);
-  doc.text("Година", cX + cW / 2, y + cH + 9, { align: "center" });
+  doc.text(t.year, cX + cW / 2, y + cH + 9, { align: "center" });
 
-  footer(doc, 3, 8);
+  footer(doc, 3, 8, t);
 }
 
-function pageROI(doc: Doc, data: PdfOfferData) {
+function pageROI(doc: Doc, data: PdfOfferData, t: PdfTexts) {
+  const n = (v: number) => fmtNum(v, t.numberLocale);
+
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  let y = heading(doc, "Възвръщаемост на Инвестицията", 22);
+  let y = heading(doc, t.roi, 22);
 
   const cX = MX + 12;
   const cY = y + 6;
@@ -407,7 +839,7 @@ function pageROI(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(6.5);
   doc.setTextColor("#ef4444");
-  doc.text(`Инвестиция: ${lv(data.systemCost)}`, cX + cW, costY - 2, { align: "right" });
+  doc.text(`${t.investment}: ${t.currency(data.systemCost)}`, cX + cW, costY - 2, { align: "right" });
 
   doc.setDrawColor(G);
   doc.setLineWidth(0.6);
@@ -432,7 +864,7 @@ function pageROI(doc: Doc, data: PdfOfferData) {
     doc.setFont("Inter", "bold");
     doc.setFontSize(8);
     doc.setTextColor(G);
-    doc.text(`Изплащане: ${data.paybackYears.toFixed(1)} г.`, bx, costY - 5, { align: "center" });
+    doc.text(`${t.paybackLabel}: ${data.paybackYears.toFixed(1)} ${t.yr}`, bx, costY - 5, { align: "center" });
   }
 
   for (let i = 0; i < 25; i += 5) {
@@ -445,7 +877,7 @@ function pageROI(doc: Doc, data: PdfOfferData) {
   doc.text("25", cX + cW, cY + cH + 5, { align: "center" });
 
   doc.setFontSize(7);
-  doc.text("Година", cX + cW / 2, cY + cH + 10, { align: "center" });
+  doc.text(t.year, cX + cW / 2, cY + cH + 10, { align: "center" });
 
   y = cY + cH + 16;
   doc.setFillColor(G);
@@ -453,61 +885,61 @@ function pageROI(doc: Doc, data: PdfOfferData) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(D);
-  doc.text("Кумулативни спестявания", MX + 12, y + 2.5);
+  doc.text(t.cumulativeSavings, MX + 12, y + 2.5);
 
   doc.setDrawColor("#ef4444");
   doc.setLineWidth(0.35);
   doc.setLineDashPattern([3, 2], 0);
   doc.line(MX + 80, y + 1.5, MX + 88, y + 1.5);
   doc.setLineDashPattern([], 0);
-  doc.text("Цена на системата", MX + 92, y + 2.5);
+  doc.text(t.systemCostLegend, MX + 92, y + 2.5);
 
-  footer(doc, 4, 8);
+  footer(doc, 4, 8, t);
 }
 
-function pageSpecs(doc: Doc, data: PdfOfferData) {
+function pageSpecs(doc: Doc, data: PdfOfferData, t: PdfTexts) {
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  const y = heading(doc, "Продуктова Спецификация", 22);
+  const y = heading(doc, t.productSpec, 22);
 
   const specs = [
     {
-      title: "Соларни Панели",
-      sub: "Монокристални MWT 450W",
+      title: t.solarPanelsTitle,
+      sub: t.solarPanelsSub,
       rows: [
-        ["Мощност", "450 W"],
-        ["Ефективност", "21.5%"],
-        ["Технология", "MWT (Metal Wrap Through)"],
-        ["Гаранция", "30 г. линейна"],
-        ["Брой", `${data.panelCount} бр.`],
-        ["Обща мощност", `${data.systemSizeKwp.toFixed(2)} kWp`],
+        [t.specPower, "450 W"],
+        [t.specEfficiency, "21.5%"],
+        [t.specTechnology, "MWT (Metal Wrap Through)"],
+        [t.specWarranty, t.specLinearWarranty],
+        [t.specCount, `${data.panelCount} ${t.pcs}`],
+        [t.specTotalPower, `${data.systemSizeKwp.toFixed(2)} kWp`],
       ],
     },
     {
-      title: "Инвертор",
-      sub: "SolarEdge HD-Wave",
+      title: t.inverterTitle,
+      sub: t.inverterSub,
       rows: [
-        ["Тип", "Хибриден"],
-        ["Ефективност", "99.5%"],
-        ["Мониторинг", "Wi-Fi"],
-        ["Гаранция", "12 години"],
-        ["Оптимизатори", "MPPT за панел"],
+        [t.specType, t.specHybrid],
+        [t.specEfficiency, "99.5%"],
+        [t.specMonitoring, "Wi-Fi"],
+        [t.specWarranty, t.specInverterWarranty],
+        [t.specOptimizers, t.specMppt],
       ],
     },
   ];
 
   if (data.hasBattery) {
     specs.push({
-      title: "Батерия",
+      title: t.batteryTitle,
       sub: `LiFePO4 \u2013 ${data.batteryCapacityKwh} kWh`,
       rows: [
-        ["Капацитет", `${data.batteryCapacityKwh} kWh`],
-        ["Технология", "LiFePO4 (LFP)"],
-        ["Цикли", "6 000+"],
-        ["Гаранция", "10 години"],
-        ["DoD", "95%"],
+        [t.specCapacity, `${data.batteryCapacityKwh} kWh`],
+        [t.specTechnology, "LiFePO4 (LFP)"],
+        [t.specCycles, "6 000+"],
+        [t.specWarranty, t.specBatteryWarranty],
+        [t.specDoD, "95%"],
       ],
     });
   }
@@ -555,24 +987,15 @@ function pageSpecs(doc: Doc, data: PdfOfferData) {
     }
   }
 
-  footer(doc, 5, 8);
+  footer(doc, 5, 8, t);
 }
 
-function pageInstall(doc: Doc) {
+function pageInstall(doc: Doc, t: PdfTexts) {
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  const y = heading(doc, "Процес на Инсталация", 22);
-
-  const steps = [
-    { num: "01", t: "Консултация", d: "Безплатна техническа консултация на място. Анализ на покрива и потреблението." },
-    { num: "02", t: "Проектиране", d: "Детайлен технически проект с 3D визуализация, съобразен с вашите нужди." },
-    { num: "03", t: "Документация", d: "Цялата документация за присъединяване към електроразпределителното дружество." },
-    { num: "04", t: "Монтаж", d: "Професионален монтаж от сертифициран екип. 2\u20133 дни за жилищни системи." },
-    { num: "05", t: "Свързване", d: "Свързване към мрежата и настройка на мониторинг системата в реално време." },
-    { num: "06", t: "Активиране", d: "Финално тестване, пускане и обучение за ползване на мониторинг приложението." },
-  ];
+  const y = heading(doc, t.installProcess, 22);
 
   const cols = 3;
   const gX = 8;
@@ -580,8 +1003,8 @@ function pageInstall(doc: Doc) {
   const bW = (CW - gX * (cols - 1)) / cols;
   const bH = (PH - y - 32 - gY) / 2;
 
-  for (let i = 0; i < steps.length; i++) {
-    const s = steps[i]!;
+  for (let i = 0; i < t.steps.length; i++) {
+    const s = t.steps[i]!;
     const col = i % cols;
     const row = Math.floor(i / cols);
     const bx = MX + col * (bW + gX);
@@ -609,29 +1032,31 @@ function pageInstall(doc: Doc) {
     doc.text(lines, bx + 9, by + 28);
   }
 
-  footer(doc, 6, 8);
+  footer(doc, 6, 8, t);
 }
 
-function pageEnv(doc: Doc, data: PdfOfferData) {
+function pageEnv(doc: Doc, data: PdfOfferData, t: PdfTexts) {
+  const n = (v: number) => fmtNum(v, t.numberLocale);
+
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  let y = heading(doc, "Екологичен Принос", 22);
+  let y = heading(doc, t.envImpact, 22);
 
   const bw = (CW - 16) / 3;
   const bh = 44;
 
-  card(doc, MX, y, bw, bh, "CO\u2082 спестено годишно", `${n(data.co2SavedKgPerYear)} kg`, true);
-  card(doc, MX + bw + 8, y, bw, bh, "Еквивалент на дървета", `${data.treeEquivalent < 10 ? data.treeEquivalent.toFixed(1) : n(data.treeEquivalent)}`);
-  card(doc, MX + (bw + 8) * 2, y, bw, bh, "CO\u2082 за 25 години", `${n(data.co2SavedKgPerYear * 25)} kg`);
+  card(doc, MX, y, bw, bh, t.co2SavedAnnual, `${n(data.co2SavedKgPerYear)} kg`, true);
+  card(doc, MX + bw + 8, y, bw, bh, t.treeEquivalent, `${data.treeEquivalent < 10 ? data.treeEquivalent.toFixed(1) : n(data.treeEquivalent)}`);
+  card(doc, MX + (bw + 8) * 2, y, bw, bh, t.co2For25yr, `${n(data.co2SavedKgPerYear * 25)} kg`);
 
   y += bh + 14;
 
   doc.setFont("Inter", "bold");
   doc.setFontSize(11);
   doc.setTextColor(D);
-  doc.text("25-годишна екологична прогноза", MX, y);
+  doc.text(t.envForecast, MX, y);
   y += 8;
 
   const cX = MX + 12;
@@ -676,7 +1101,7 @@ function pageEnv(doc: Doc, data: PdfOfferData) {
     doc.setFont("Inter", "normal");
     doc.setFontSize(6.5);
     doc.setTextColor(G4);
-    doc.text(`${yr} г.`, bx + barW * 0.4, y + cH + 5, { align: "center" });
+    doc.text(`${yr} ${t.yr}`, bx + barW * 0.4, y + cH + 5, { align: "center" });
   }
 
   y = y + cH + 12;
@@ -684,39 +1109,34 @@ function pageEnv(doc: Doc, data: PdfOfferData) {
   doc.setFontSize(8.5);
   doc.setTextColor(G6);
   doc.text(
-    `За 25 години вашата система ще предотврати ${n(co25)} kg CO\u2082 \u2014 еквивалент на ${n(data.treeEquivalent * 25)} дървета.`,
+    t.envSummary
+      .replace("{co2}", n(co25))
+      .replace("{trees}", n(data.treeEquivalent * 25)),
     MX,
     y,
   );
 
-  footer(doc, 7, 8);
+  footer(doc, 7, 8, t);
 }
 
-function pageWarranty(doc: Doc) {
+function pageWarranty(doc: Doc, t: PdfTexts) {
   doc.setFillColor(W);
   doc.rect(0, 0, PW, PH, "F");
   headerBar(doc);
 
-  let y = heading(doc, "Гаранция и Следващи Стъпки", 22);
+  let y = heading(doc, t.warrantyTitle, 22);
 
   doc.setFont("Inter", "bold");
   doc.setFontSize(12);
   doc.setTextColor(D);
-  doc.text("Гаранционни Условия", MX, y);
+  doc.text(t.warrantyConditions, MX, y);
   y += 7;
-
-  const warranties = [
-    { c: "Соларни панели", p: "30 години", d: "Линейна гаранция (мин. 87.4% на 25-та година)" },
-    { c: "Инвертор", p: "12 години", d: "Пълна гаранция, опция за удължаване до 25 г." },
-    { c: "Батерия", p: "10 години", d: "Капацитет мин. 70% след 6 000 цикъла" },
-    { c: "Монтаж", p: "5 години", d: "Качество на монтаж и конструкция" },
-  ];
 
   const wW = (CW - 10) / 2;
   const wH = 34;
 
-  for (let i = 0; i < warranties.length; i++) {
-    const w = warranties[i]!;
+  for (let i = 0; i < t.warranties.length; i++) {
+    const w = t.warranties[i]!;
     const col = i % 2;
     const row = Math.floor(i / 2);
     const bx = MX + col * (wW + 10);
@@ -745,7 +1165,7 @@ function pageWarranty(doc: Doc) {
     doc.text(dl, bx + 12, by + 22);
   }
 
-  y += Math.ceil(warranties.length / 2) * (wH + 6) + 12;
+  y += Math.ceil(t.warranties.length / 2) * (wH + 6) + 12;
 
   doc.setDrawColor("#e5e7eb");
   doc.setLineWidth(0.2);
@@ -755,17 +1175,10 @@ function pageWarranty(doc: Doc) {
   doc.setFont("Inter", "bold");
   doc.setFontSize(12);
   doc.setTextColor(D);
-  doc.text("Следващи Стъпки", MX, y);
+  doc.text(t.nextSteps, MX, y);
   y += 9;
 
-  const steps = [
-    "Свържете се с нас за безплатна консултация",
-    "Получете детайлен технически проект",
-    "Финална оферта с фиксирана цена",
-    "Насладете се на чиста енергия",
-  ];
-
-  for (let i = 0; i < steps.length; i++) {
+  for (let i = 0; i < t.nextStepsList.length; i++) {
     doc.setFillColor(G);
     doc.circle(MX + 5, y + 1, 3.5, "F");
     doc.setFont("Inter", "bold");
@@ -776,7 +1189,7 @@ function pageWarranty(doc: Doc) {
     doc.setFont("Inter", "normal");
     doc.setFontSize(10);
     doc.setTextColor(D);
-    doc.text(steps[i]!, MX + 14, y + 3);
+    doc.text(t.nextStepsList[i]!, MX + 14, y + 3);
     y += 13;
   }
 
@@ -791,7 +1204,7 @@ function pageWarranty(doc: Doc) {
   doc.setFont("Inter", "bold");
   doc.setFontSize(15);
   doc.setTextColor(W);
-  doc.text("Готови ли сте за следващата стъпка?", MX + CW / 2, y + 18, { align: "center" });
+  doc.text(t.readyNext, MX + CW / 2, y + 18, { align: "center" });
 
   doc.setFont("Inter", "normal");
   doc.setFontSize(10);
@@ -800,37 +1213,45 @@ function pageWarranty(doc: Doc) {
     align: "center",
   });
 
-  footer(doc, 8, 8);
+  footer(doc, 8, 8, t);
 }
 
-export async function generateSolarOffer(data: PdfOfferData): Promise<void> {
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
+export async function generateSolarOffer(
+  data: PdfOfferData,
+  locale: string = "bg",
+): Promise<void> {
+  const t = getTexts(locale);
   const { default: jsPDF } = await import("jspdf");
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
 
   await loadFonts(doc);
 
-  pageCover(doc, data);
+  pageCover(doc, data, t);
 
   doc.addPage();
-  pageSystem(doc, data);
+  pageSystem(doc, data, t);
 
   doc.addPage();
-  pageFinance(doc, data);
+  pageFinance(doc, data, t);
 
   doc.addPage();
-  pageROI(doc, data);
+  pageROI(doc, data, t);
 
   doc.addPage();
-  pageSpecs(doc, data);
+  pageSpecs(doc, data, t);
 
   doc.addPage();
-  pageInstall(doc);
+  pageInstall(doc, t);
 
   doc.addPage();
-  pageEnv(doc, data);
+  pageEnv(doc, data, t);
 
   doc.addPage();
-  pageWarranty(doc);
+  pageWarranty(doc, t);
 
-  doc.save("Solaron-Оферта.pdf");
+  doc.save(t.fileName);
 }

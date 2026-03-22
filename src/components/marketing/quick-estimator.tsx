@@ -12,31 +12,34 @@ import {
   Compass,
   ChevronDown,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { CITY_IRRADIANCE } from "@/lib/electricity-prices";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 const ELECTRICITY_PRICE = 0.25;
 
-const PROPERTY_TYPES = [
-  { id: "house" as const, label: "Къща", icon: Home, defaultConsumption: 450, min: 150, max: 1200, step: 10 },
-  { id: "apartment" as const, label: "Апартамент", icon: Building, defaultConsumption: 250, min: 80, max: 600, step: 10 },
-  { id: "business" as const, label: "Бизнес", icon: Building2, defaultConsumption: 1500, min: 300, max: 5000, step: 50 },
-  { id: "industry" as const, label: "Индустрия", icon: Factory, defaultConsumption: 8000, min: 1000, max: 50000, step: 500 },
-];
+type PropertyId = "house" | "apartment" | "business" | "industry";
 
-type PropertyId = (typeof PROPERTY_TYPES)[number]["id"];
+const PROPERTY_CONFIGS = {
+  house: { icon: Home, defaultConsumption: 450, min: 150, max: 1200, step: 10 },
+  apartment: { icon: Building, defaultConsumption: 250, min: 80, max: 600, step: 10 },
+  business: { icon: Building2, defaultConsumption: 1500, min: 300, max: 5000, step: 50 },
+  industry: { icon: Factory, defaultConsumption: 8000, min: 1000, max: 50000, step: 500 },
+} as const;
 
-const ORIENTATIONS = [
-  { id: "south", label: "Юг", multiplier: 1.0 },
-  { id: "southeast", label: "Югоизток", multiplier: 0.95 },
-  { id: "southwest", label: "Югозапад", multiplier: 0.95 },
-  { id: "east", label: "Изток", multiplier: 0.82 },
-  { id: "west", label: "Запад", multiplier: 0.82 },
-];
+const ORIENTATION_MULTIPLIERS: Record<string, number> = {
+  south: 1.0,
+  southeast: 0.95,
+  southwest: 0.95,
+  east: 0.82,
+  west: 0.82,
+};
+
+const ORIENTATION_IDS = ["south", "southeast", "southwest", "east", "west"] as const;
 
 const CITIES = Object.keys(CITY_IRRADIANCE);
 
@@ -53,15 +56,15 @@ const ORIENTATION_ANGLES: Record<string, number> = {
 function MiniSystemViz({
   panelCount,
   orientation,
+  orientationLabel,
 }: {
   panelCount: number;
   orientation: string;
+  orientationLabel: string;
 }) {
   const displayPanels = Math.min(panelCount, 12);
   const cols = Math.min(displayPanels, 4) || 1;
   const angle = ORIENTATION_ANGLES[orientation] ?? 180;
-  const orientationLabel =
-    ORIENTATIONS.find((o) => o.id === orientation)?.label ?? "";
 
   const panelW = 11;
   const panelH = 7;
@@ -215,6 +218,8 @@ function MiniSystemViz({
 export function QuickEstimator() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
 
   const [propertyType, setPropertyType] = useState<PropertyId>("house");
   const [city, setCity] = useState("София");
@@ -222,6 +227,21 @@ export function QuickEstimator() {
   const [showInLev, setShowInLev] = useState(false);
   const [orientation, setOrientation] = useState("south");
   const [showDetails, setShowDetails] = useState(false);
+
+  const PROPERTY_TYPES = [
+    { id: "house" as const, label: t("quickEstimator.house"), ...PROPERTY_CONFIGS.house },
+    { id: "apartment" as const, label: t("quickEstimator.apartment"), ...PROPERTY_CONFIGS.apartment },
+    { id: "business" as const, label: t("quickEstimator.business"), ...PROPERTY_CONFIGS.business },
+    { id: "industry" as const, label: t("quickEstimator.industry"), ...PROPERTY_CONFIGS.industry },
+  ];
+
+  const ORIENTATIONS = [
+    { id: "south", label: t("quickEstimator.south"), multiplier: ORIENTATION_MULTIPLIERS.south! },
+    { id: "southeast", label: t("quickEstimator.southeast"), multiplier: ORIENTATION_MULTIPLIERS.southeast! },
+    { id: "southwest", label: t("quickEstimator.southwest"), multiplier: ORIENTATION_MULTIPLIERS.southwest! },
+    { id: "east", label: t("quickEstimator.east"), multiplier: ORIENTATION_MULTIPLIERS.east! },
+    { id: "west", label: t("quickEstimator.west"), multiplier: ORIENTATION_MULTIPLIERS.west! },
+  ];
 
   const property = PROPERTY_TYPES.find((p) => p.id === propertyType)!;
   const orientationData = ORIENTATIONS.find((o) => o.id === orientation)!;
@@ -300,11 +320,11 @@ export function QuickEstimator() {
           transition={{ duration: 0.5 }}
         >
           <BadgeChip variant="accent" className="mb-4">
-            Интелигентен Калкулатор
+            {t("quickEstimator.badge")}
           </BadgeChip>
-          <h2 className="editorial-heading">Изчислете Вашата Система</h2>
+          <h2 className="editorial-heading">{t("quickEstimator.title")}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-foreground-secondary">
-            Персонализирана оценка на база вашата консумация, локация и покрив.
+            {t("quickEstimator.subtitle")}
           </p>
         </motion.div>
 
@@ -320,7 +340,7 @@ export function QuickEstimator() {
             {/* Property type */}
             <div className="mb-6">
               <p className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                Тип имот
+                {t("quickEstimator.propertyType")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {PROPERTY_TYPES.map((pt) => {
@@ -349,7 +369,7 @@ export function QuickEstimator() {
             {/* Location */}
             <div className="mb-6">
               <p className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                Локация
+                {t("quickEstimator.locationLabel")}
               </p>
               <select
                 value={city}
@@ -363,7 +383,7 @@ export function QuickEstimator() {
                 ))}
               </select>
               <p className="mt-1.5 text-xs text-foreground-tertiary">
-                ~{irradiance} kWh/kWp слънчева енергия годишно
+                {t("quickEstimator.solarEnergyPerYear", { value: String(irradiance) })}
               </p>
             </div>
 
@@ -371,7 +391,7 @@ export function QuickEstimator() {
             <div className="mb-6">
               <div className="mb-2.5 flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                  Месечно потребление
+                  {t("quickEstimator.monthlyConsumption")}
                 </p>
                 <button
                   type="button"
@@ -383,7 +403,7 @@ export function QuickEstimator() {
                       : "text-foreground-tertiary hover:text-foreground-secondary",
                   )}
                 >
-                  {showInLev ? "В лв. ✓" : "Предпочитам в лв."}
+                  {showInLev ? t("quickEstimator.inLev") : t("quickEstimator.preferLev")}
                 </button>
               </div>
 
@@ -392,7 +412,7 @@ export function QuickEstimator() {
                   {sliderValue.toLocaleString("bg-BG")}
                 </span>
                 <span className="ml-1.5 text-lg text-foreground-secondary">
-                  {showInLev ? "лв./мес." : "kWh/мес."}
+                  {showInLev ? t("quickEstimator.lvPerMonth") : t("quickEstimator.kWhPerMonth")}
                 </span>
               </div>
 
@@ -422,7 +442,7 @@ export function QuickEstimator() {
 
               {(propertyType === "house" || propertyType === "apartment") && (
                 <p className="mt-2 text-xs text-foreground-tertiary">
-                  Не знаете? Средното домакинство: ~380 kWh/мес.
+                  {t("quickEstimator.avgHousehold")}
                 </p>
               )}
             </div>
@@ -431,7 +451,7 @@ export function QuickEstimator() {
             <div>
               <p className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
                 <Compass className="mr-1 inline size-3.5 align-[-2px]" />
-                Ориентация на покрива
+                {t("quickEstimator.roofOrientation")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {ORIENTATIONS.map((o) => (
@@ -463,6 +483,7 @@ export function QuickEstimator() {
             <MiniSystemViz
               panelCount={results.panelCount}
               orientation={orientation}
+              orientationLabel={orientationData.label}
             />
           </motion.div>
 
@@ -476,7 +497,7 @@ export function QuickEstimator() {
             {/* Hero stat – monthly savings */}
             <div className="rounded-2xl border border-accent/20 bg-accent/5 px-6 py-8 text-center">
               <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                Месечни спестявания
+                {t("quickEstimator.monthlySavings")}
               </p>
               <AnimatedCounter
                 key={`m-${results.monthlySavings}`}
@@ -485,7 +506,7 @@ export function QuickEstimator() {
                 className="text-5xl font-black tabular-nums text-accent md:text-6xl"
               />
               <p className="mt-1 text-sm font-medium text-accent/60">
-                лв./мес.
+                {t("quickEstimator.lvPerMonthUnit")}
               </p>
             </div>
 
@@ -499,7 +520,7 @@ export function QuickEstimator() {
                   className="text-xl font-bold tabular-nums text-foreground"
                 />
                 <p className="mt-0.5 text-xs text-foreground-tertiary">
-                  лв./годишно
+                  {t("quickEstimator.lvPerYear")}
                 </p>
               </div>
               <div className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-4 text-center">
@@ -509,7 +530,7 @@ export function QuickEstimator() {
                   duration={500}
                   className="text-xl font-bold tabular-nums text-accent"
                 />
-                <p className="mt-0.5 text-xs text-accent/60">за 25 години</p>
+                <p className="mt-0.5 text-xs text-accent/60">{t("quickEstimator.in25Years")}</p>
               </div>
             </div>
 
@@ -522,9 +543,9 @@ export function QuickEstimator() {
                   </span>{" "}
                   система
                   <span className="mx-1.5 text-foreground-tertiary">•</span>
-                  {results.panelCount} панела
+                  {results.panelCount} {tc("panels")}
                   <span className="mx-1.5 text-foreground-tertiary">•</span>
-                  {results.roofArea} м² покрив
+                  {results.roofArea} {tc("roofArea")}
                 </p>
               </div>
             </GlowCard>
@@ -532,9 +553,9 @@ export function QuickEstimator() {
             {/* Payback bar */}
             <div className="rounded-xl border border-border bg-background p-5">
               <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="text-foreground-secondary">Изплащане</span>
+                <span className="text-foreground-secondary">{t("quickEstimator.payback")}</span>
                 <span className="font-bold text-accent">
-                  {results.paybackYears.toFixed(1)} години
+                  {t("quickEstimator.paybackYears", { value: results.paybackYears.toFixed(1) })}
                 </span>
               </div>
               <div className="relative h-3 w-full overflow-hidden rounded-full bg-border">
@@ -559,7 +580,7 @@ export function QuickEstimator() {
             {/* System cost */}
             <div className="rounded-xl border border-border bg-background px-5 py-4">
               <p className="mb-1 text-xs text-foreground-tertiary">
-                Приблизителна стойност
+                {t("quickEstimator.approximateCost")}
               </p>
               <p className="text-lg font-bold tabular-nums text-foreground">
                 {Math.round(results.systemCost * 0.85).toLocaleString("bg-BG")}{" "}
@@ -590,7 +611,7 @@ export function QuickEstimator() {
                 onClick={() => setShowDetails((v) => !v)}
                 className="flex w-full items-center justify-between px-5 py-3 text-sm font-medium text-foreground-secondary transition-colors hover:text-foreground"
               >
-                <span>Детайли</span>
+                <span>{tc("details")}</span>
                 <ChevronDown
                   className={cn(
                     "size-4 transition-transform duration-200",
@@ -608,11 +629,7 @@ export function QuickEstimator() {
                     className="overflow-hidden"
                   >
                     <div className="border-t border-border px-5 py-3 text-sm text-foreground-secondary">
-                      Финансиране от ~
-                      <span className="font-semibold text-foreground">
-                        {results.financingMonthly} лв./мес.
-                      </span>{" "}
-                      с банков кредит
+                      {t("quickEstimator.financingFrom", { value: String(results.financingMonthly) })}
                     </div>
                   </motion.div>
                 )}
@@ -629,10 +646,10 @@ export function QuickEstimator() {
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <Link
-            href="/konfigurator"
+            href={"/konfigurator" as never}
             className="group flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-accent-hover hover:shadow-lg"
           >
-            Пълна Конфигурация
+            {t("quickEstimator.fullConfiguration")}
             <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>

@@ -1,54 +1,37 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { ChevronDown, ArrowRight, HelpCircle } from "lucide-react";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { cn } from "@/lib/utils";
 
-const FAQ_ITEMS = [
-  {
-    q: "Колко струва инсталацията на соларна система?",
-    a: "Цената зависи от мощността и типа система. За жилищни системи от 3 до 10 kWp, цените варират между 5,000 и 18,000 лв. Предлагаме безплатна консултация и персонализирана оферта.",
-  },
-  {
-    q: "За колко време се изплаща инвестицията?",
-    a: "При текущите цени на електроенергията, типичната жилищна система се изплаща за 3-5 години. С нетно отчитане и оптимална ориентация, срокът може да бъде и по-кратък.",
-  },
-  {
-    q: "Какво е нетно отчитане?",
-    a: "Нетното отчитане е механизъм, при който излишната произведена енергия се връща в мрежата и се приспада от сметката ви. В България домакинствата могат да ползват нетно отчитане за системи до 30 kWp.",
-  },
-  {
-    q: "Колко дълго трае монтажът?",
-    a: "Типичният монтаж на жилищна система отнема 1-3 дни. За по-големи търговски системи — 1-2 седмици. Целият процес от консултация до пускане отнема 2-4 седмици.",
-  },
-  {
-    q: "Каква гаранция предлагате?",
-    a: "Предлагаме 30-годишна гаранция за соларните панели, 25-годишна за инверторите и 10-годишна за батериите. Допълнително, даваме 5-годишна гаранция за монтажа.",
-  },
-  {
-    q: "Имам ли нужда от разрешение за монтаж?",
-    a: "За системи до 30 kWp обикновено не е необходимо строително разрешение. За по-големи системи се изисква проектна документация. Ние се грижим за цялата документация.",
-  },
-] as const;
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
-};
+const FAQ_KEYS = [1, 2, 3, 4, 5, 6] as const;
 
 export function FAQSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
+
+  const FAQ_ITEMS = FAQ_KEYS.map((n) => ({
+    q: t(`faq.q${n}`),
+    a: t(`faq.a${n}`),
+  }));
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
 
   return (
     <section className="bg-background px-6 py-24 md:px-8 md:py-32">
@@ -68,27 +51,27 @@ export function FAQSection() {
           >
             <BadgeChip variant="accent" className="mb-4">
               <HelpCircle className="mr-1.5 size-3.5" />
-              Въпроси
+              {t("faq.badge")}
             </BadgeChip>
             <h2 className="editorial-heading">
-              Често Задавани Въпроси
+              {t("faq.title")}
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary">
-              Всичко, което трябва да знаете за соларните системи и процеса на инсталация.
+              {t("faq.subtitle")}
             </p>
 
             <div className="mt-8 rounded-xl border border-accent/20 bg-accent/5 p-6">
               <p className="text-sm font-medium text-foreground">
-                Не намирате отговор на вашия въпрос?
+                {t("faq.notFoundTitle")}
               </p>
               <p className="mt-1 text-sm text-foreground-secondary">
-                Свържете се с нас за безплатна консултация.
+                {t("faq.notFoundSubtitle")}
               </p>
               <Link
-                href="/kontakti"
+                href={"/kontakti" as never}
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
               >
-                Свържете се с нас
+                {tc("contactUs")}
                 <ArrowRight className="size-4" />
               </Link>
             </div>
@@ -152,10 +135,10 @@ export function FAQSection() {
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <Link
-                href="/chesti-vuprosi"
+                href={"/chesti-vuprosi" as never}
                 className="group inline-flex items-center gap-2 text-base font-semibold text-accent transition-colors hover:text-accent-hover"
               >
-                Виж Всички Въпроси
+                {t("faq.seeAll")}
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </motion.div>

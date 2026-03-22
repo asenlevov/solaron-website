@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { useTranslations } from "next-intl";
 import { SceneCanvasDynamic } from "@/components/3d/scene-container";
 import { HouseModel } from "@/components/3d/house-model";
 import { SolarPanelArray } from "@/components/3d/solar-panel-array";
@@ -38,6 +39,7 @@ function HeroScene() {
 
 export function Hero3D() {
   const ref = useRef<HTMLElement>(null);
+  const t = useTranslations("Home");
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -87,14 +89,14 @@ export function Hero3D() {
               className="editorial-hero font-light text-white"
               delay={0.1}
             >
-              Захранете
+              {t("hero.3dTitle1")}
             </TextReveal>
             <TextReveal
               as="span"
               className="editorial-hero font-black text-white"
               delay={0.3}
             >
-              Бъдещето
+              {t("hero.3dTitle2")}
             </TextReveal>
           </div>
 
@@ -105,9 +107,7 @@ export function Hero3D() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
           >
-            Спестете до{" "}
-            <span className="font-semibold text-[#3B7A2A]">80%</span> от
-            сметката за ток с 20+ години европейски опит
+            {t("hero.3dSubtitle", { percent: "80%" })}
           </motion.p>
 
           <motion.div
@@ -116,11 +116,11 @@ export function Hero3D() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 0.6 }}
           >
-            <span>20+ години</span>
+            <span>{t("hero.3dYears")}</span>
             <span className="text-[#3B7A2A]">·</span>
-            <span>400+ клиенти</span>
+            <span>{t("hero.3dClients")}</span>
             <span className="text-[#3B7A2A]">·</span>
-            <span>EUPD 2024</span>
+            <span>{t("hero.3dAward")}</span>
           </motion.div>
 
           <motion.div
@@ -130,10 +130,10 @@ export function Hero3D() {
             transition={{ delay: 1.0, duration: 0.7 }}
           >
             <MagneticButton href="/konfigurator" variant="primary" size="xl">
-              Конфигурирай Система
+              {t("hero.primaryCta")}
             </MagneticButton>
             <MagneticButton href="/kontakti" variant="outline" size="xl">
-              Безплатна Консултация
+              {t("hero.secondaryCta")}
             </MagneticButton>
           </motion.div>
         </div>

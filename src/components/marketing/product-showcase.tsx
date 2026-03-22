@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { motion, useInView } from "motion/react";
 
@@ -25,6 +26,8 @@ import { cn } from "@/lib/utils";
 function SolarPanelsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
 
   return (
     <div ref={ref} className="relative overflow-hidden bg-white py-24 md:py-32 lg:py-40">
@@ -54,15 +57,15 @@ function SolarPanelsSection() {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <p className="editorial-overline mb-4">ПРОДУКТ</p>
+            <p className="editorial-overline mb-4">{t("productShowcase.solarPanels.overline")}</p>
 
             <TextReveal as="h3" className="editorial-display text-foreground">
-              Соларни Панели
+              {t("productShowcase.solarPanels.title")}
             </TextReveal>
 
             {/* Spec badges */}
             <div className="mt-6 flex flex-wrap gap-3">
-              {["450W", "21.5% ефективност", "30 год. гаранция"].map((spec) => (
+              {(t.raw("productShowcase.solarPanels.specs") as string[]).map((spec: string) => (
                 <span
                   key={spec}
                   className="rounded-full border border-[#3B7A2A]/20 bg-[#3B7A2A]/5 px-4 py-1.5 text-sm font-semibold text-[#3B7A2A]"
@@ -73,29 +76,20 @@ function SolarPanelsSection() {
             </div>
 
             <div className="mt-8 max-w-lg space-y-4 text-base leading-relaxed text-foreground-secondary md:text-lg">
-              <p>
-                Нашите панели използват Metal Wrap Through (MWT) технология — иновативен
-                подход, при който проводниците преминават през задната страна на клетката,
-                елиминирайки засенчването от традиционните busbar ленти.
-              </p>
-              <p>
-                Резултатът е по-голяма активна повърхност, по-висока ефективност и
-                значително по-дълъг експлоатационен живот благодарение на намалените
-                механични напрежения.
-              </p>
+              <p>{t("productShowcase.solarPanels.desc1")}</p>
+              <p>{t("productShowcase.solarPanels.desc2")}</p>
             </div>
 
             {/* Pull quote */}
             <blockquote className="editorial-pull-quote mt-8 max-w-md border-l-2 border-[#3B7A2A]/30 pl-6 text-foreground-secondary">
-              Технологията MWT елиминира микропукнатините и увеличава ефективността с
-              до 3%
+              {t("productShowcase.solarPanels.pullQuote")}
             </blockquote>
 
             <Link
-              href="/produkti/solarni-paneli"
+              href={"/produkti/solarni-paneli" as never}
               className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-[#3B7A2A] transition-colors hover:text-[#2D6120]"
             >
-              Научи Повече
+              {tc("learnMore")}
               <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </motion.div>
@@ -110,6 +104,8 @@ function SolarPanelsSection() {
 function BatterySection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
 
   return (
     <div
@@ -137,9 +133,9 @@ function BatterySection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <p className="editorial-overline mb-4">СЪХРАНЕНИЕ</p>
+          <p className="editorial-overline mb-4">{t("productShowcase.batteries.overline")}</p>
           <TextReveal as="h3" className="editorial-display text-white">
-            Батерии
+            {t("productShowcase.batteries.title")}
           </TextReveal>
         </motion.div>
 
@@ -155,7 +151,7 @@ function BatterySection() {
               <StatNumber
                 value={10}
                 suffix=" kWh"
-                context="Капацитет"
+                context={t("productShowcase.batteries.capacity")}
                 className="text-white"
                 contextClassName="text-white/40 text-right"
               />
@@ -164,7 +160,7 @@ function BatterySection() {
               <StatNumber
                 value={6000}
                 prefix="+"
-                context="Цикъла"
+                context={t("productShowcase.batteries.cycles")}
                 className="text-white"
                 contextClassName="text-white/40 text-right"
               />
@@ -198,7 +194,7 @@ function BatterySection() {
               <StatNumber
                 value={10}
                 suffix=" год."
-                context="Гаранция"
+                context={t("productShowcase.batteries.warrantyLabel")}
                 className="text-white"
                 contextClassName="text-white/40"
               />
@@ -207,7 +203,7 @@ function BatterySection() {
               <StatNumber
                 value={95}
                 suffix="%"
-                context="Ефективност"
+                context={t("productShowcase.batteries.efficiencyLabel")}
                 className="text-[#4CAF50]"
                 contextClassName="text-white/40"
               />
@@ -222,16 +218,14 @@ function BatterySection() {
           animate={isInView ? "visible" : "hidden"}
         >
           <p className="text-base leading-relaxed text-white/60 md:text-lg">
-            Литиево-желязо-фосфатните (LFP) батерии предлагат несравнима безопасност
-            и дълъг живот. Съхранявайте излишната енергия от деня и я използвайте
-            вечер — постигнете пълна енергийна независимост без компромиси.
+            {t("productShowcase.batteries.desc")}
           </p>
 
           <Link
-            href="/produkti/baterii"
+            href={"/produkti/baterii" as never}
             className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-[#4CAF50] transition-colors hover:text-[#66BB6A]"
           >
-            Научи Повече
+            {tc("learnMore")}
             <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>
@@ -245,6 +239,8 @@ function BatterySection() {
 function InverterSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
 
   return (
     <div ref={ref} className="bg-[#f7f7f5] px-6 py-24 md:px-8 md:py-32 lg:py-40">
@@ -271,9 +267,9 @@ function InverterSection() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <p className="editorial-overline mb-4">ОПТИМИЗАЦИЯ</p>
+          <p className="editorial-overline mb-4">{t("productShowcase.inverters.overline")}</p>
           <TextReveal as="h3" className="editorial-display text-foreground">
-            Инвертори
+            {t("productShowcase.inverters.title")}
           </TextReveal>
         </motion.div>
 
@@ -286,25 +282,21 @@ function InverterSection() {
         >
           <motion.div variants={staggerItem} className="space-y-4">
             <p className="text-base leading-relaxed text-foreground-secondary md:text-lg">
-              Инверторите SolarEdge с HD-Wave технология преобразуват постоянния
-              ток от панелите в променлив ток с рекордна ефективност от 99.5%.
-              Всеки панел се оптимизира поотделно чрез P950 оптимайзерите.
+              {t("productShowcase.inverters.desc1")}
             </p>
             <p className="text-base leading-relaxed text-foreground-secondary md:text-lg">
-              Вградената платформа за мониторинг ви дава пълна видимост на
-              производството в реално време — от всеки отделен панел до цялата
-              система.
+              {t("productShowcase.inverters.desc2")}
             </p>
           </motion.div>
 
           <motion.div variants={staggerItem}>
             <div className="space-y-6">
               {[
-                { label: "Технология", value: "SolarEdge HD-Wave" },
-                { label: "Оптимайзери", value: "P950 per-panel" },
-                { label: "Ефективност", value: "99.5%" },
-                { label: "Гаранция", value: "12 години" },
-                { label: "Мониторинг", value: "Real-time per-panel" },
+                { label: t("productShowcase.inverters.specTechnology"), value: t("productShowcase.inverters.specTechnologyValue") },
+                { label: t("productShowcase.inverters.specOptimizers"), value: t("productShowcase.inverters.specOptimizersValue") },
+                { label: t("productShowcase.inverters.specEfficiency"), value: t("productShowcase.inverters.specEfficiencyValue") },
+                { label: t("productShowcase.inverters.specWarranty"), value: t("productShowcase.inverters.specWarrantyValue") },
+                { label: t("productShowcase.inverters.specMonitoring"), value: t("productShowcase.inverters.specMonitoringValue") },
               ].map((spec) => (
                 <div
                   key={spec.label}
@@ -321,12 +313,12 @@ function InverterSection() {
             </div>
 
             <Link
-              href="/produkti/invertori"
+              href={"/produkti/invertori" as never}
               className={cn(
                 "group mt-8 inline-flex items-center gap-2 text-base font-semibold text-[#3B7A2A] transition-colors hover:text-[#2D6120]",
               )}
             >
-              Научи Повече
+              {tc("learnMore")}
               <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </motion.div>

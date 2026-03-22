@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Search, PenTool, Wrench, Zap, Check, type LucideIcon } from "lucide-react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
+import { useTranslations } from "next-intl";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { cn } from "@/lib/utils";
 import { slideFromLeft, slideFromRight } from "@/lib/animations";
@@ -17,50 +18,10 @@ interface Step {
   indent: string;
 }
 
-const steps: Step[] = [
-  {
-    icon: Search,
-    number: 1,
-    title: "Консултация",
-    description:
-      "Безплатен оглед и анализ на покрива. Изчисляваме оптималния размер на системата спрямо вашето потребление.",
-    duration: "1-2 дни",
-    provide: "Сметка за ток, снимка на покрива",
-    indent: "lg:ml-[8%]",
-  },
-  {
-    icon: PenTool,
-    number: 2,
-    title: "Проектиране",
-    description:
-      "3D модел и персонализиран проект. Всяка система е уникална — проектираме за максимална ефективност.",
-    duration: "3-5 дни",
-    provide: "Достъп до тавана/покрива",
-    indent: "lg:ml-[22%]",
-  },
-  {
-    icon: Wrench,
-    number: 3,
-    title: "Монтаж",
-    description:
-      "Професионален монтаж от сертифициран екип. Използваме само висококачествени компоненти с гаранция.",
-    duration: "1-3 дни",
-    provide: "Достъп до имота",
-    indent: "lg:ml-[12%]",
-  },
-  {
-    icon: Zap,
-    number: 4,
-    title: "Активиране",
-    description:
-      "Свързване и пускане в експлоатация. Системата започва да произвежда енергия от първия ден.",
-    duration: "1-2 седмици",
-    provide: "Документи за ЕРП",
-    indent: "lg:ml-[28%]",
-  },
-];
+const STEP_ICONS = [Search, PenTool, Wrench, Zap] as const;
+const STEP_INDENTS = ["lg:ml-[8%]", "lg:ml-[22%]", "lg:ml-[12%]", "lg:ml-[28%]"];
 
-function StepCard({ step, index }: { step: Step; index: number }) {
+function StepCard({ step, index, whatYouProvideLabel }: { step: Step; index: number; whatYouProvideLabel: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
   const Icon = step.icon;
@@ -100,7 +61,7 @@ function StepCard({ step, index }: { step: Step; index: number }) {
 
         <div className="mt-4 border-t border-border pt-4">
           <p className="mb-1.5 font-body text-xs font-semibold uppercase tracking-wider text-foreground-secondary/60">
-            Какво осигурявате:
+            {whatYouProvideLabel}
           </p>
           <div className="flex items-start gap-2 font-body text-sm text-foreground-secondary">
             <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={2} />
@@ -114,6 +75,7 @@ function StepCard({ step, index }: { step: Step; index: number }) {
 
 export function ProcessTimeline() {
   const sectionRef = useRef<HTMLElement>(null);
+  const t = useTranslations("Home");
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -122,6 +84,45 @@ export function ProcessTimeline() {
 
   const lineScaleY = useTransform(scrollYProgress, [0.1, 0.85], [0, 1]);
 
+  const steps: Step[] = [
+    {
+      icon: STEP_ICONS[0],
+      number: 1,
+      title: t("processTimeline.step1Title"),
+      description: t("processTimeline.step1Desc"),
+      duration: t("processTimeline.step1Duration"),
+      provide: t("processTimeline.step1Provide"),
+      indent: STEP_INDENTS[0]!,
+    },
+    {
+      icon: STEP_ICONS[1],
+      number: 2,
+      title: t("processTimeline.step2Title"),
+      description: t("processTimeline.step2Desc"),
+      duration: t("processTimeline.step2Duration"),
+      provide: t("processTimeline.step2Provide"),
+      indent: STEP_INDENTS[1]!,
+    },
+    {
+      icon: STEP_ICONS[2],
+      number: 3,
+      title: t("processTimeline.step3Title"),
+      description: t("processTimeline.step3Desc"),
+      duration: t("processTimeline.step3Duration"),
+      provide: t("processTimeline.step3Provide"),
+      indent: STEP_INDENTS[2]!,
+    },
+    {
+      icon: STEP_ICONS[3],
+      number: 4,
+      title: t("processTimeline.step4Title"),
+      description: t("processTimeline.step4Desc"),
+      duration: t("processTimeline.step4Duration"),
+      provide: t("processTimeline.step4Provide"),
+      indent: STEP_INDENTS[3]!,
+    },
+  ];
+
   return (
     <section
       ref={sectionRef}
@@ -129,9 +130,9 @@ export function ProcessTimeline() {
     >
       <div className="mx-auto max-w-5xl">
         <div className="mb-16 md:mb-20">
-          <p className="editorial-overline mb-4 text-accent">ПРОЦЕС</p>
+          <p className="editorial-overline mb-4 text-accent">{t("processTimeline.overline")}</p>
           <TextReveal as="h2" className="editorial-display">
-            Нашият Процес
+            {t("processTimeline.title")}
           </TextReveal>
         </div>
 
@@ -148,7 +149,7 @@ export function ProcessTimeline() {
 
           <div className="flex flex-col gap-12 lg:gap-16">
             {steps.map((step, i) => (
-              <StepCard key={step.title} step={step} index={i} />
+              <StepCard key={step.title} step={step} index={i} whatYouProvideLabel={t("processTimeline.whatYouProvide")} />
             ))}
           </div>
         </div>

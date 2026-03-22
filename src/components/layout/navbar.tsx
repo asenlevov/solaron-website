@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Accordion from "@radix-ui/react-accordion";
@@ -27,38 +27,6 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-const PRODUKTY = [
-  { label: "Соларни Панели", href: "/produkti/solarni-paneli", icon: Sun, desc: "MWT модули, 21.5% ефективност" },
-  { label: "Инвертори", href: "/produkti/invertori", icon: Cpu, desc: "SolarEdge HD-Wave, 99.5% ефективност" },
-  { label: "Батерии", href: "/produkti/baterii", icon: Battery, desc: "LFP съхранение, 6000+ цикъла" },
-  { label: "Конструкции", href: "/produkti/konstrukcii", icon: Wrench, desc: "Van der Valk, 15 год. гаранция" },
-  { label: "Мониторинг", href: "/produkti/monitoring", icon: Monitor, desc: "Реално време, панел по панел", isNew: true },
-  { label: "EV Зарядни", href: "/produkti/ev-zaryadni-stantsii", icon: Zap, desc: "Интелигентно зареждане за дома", isNew: true },
-];
-
-const RESHENIYA = [
-  { label: "За Дома", href: "/resheniya/za-doma", icon: Home, desc: "До 80% спестявания от ток" },
-  { label: "За Бизнеса", href: "/resheniya/za-biznesa", icon: Building2, desc: "Намалете оперативните разходи" },
-  { label: "За Индустрията", href: "/resheniya/za-industriyata", icon: Factory, desc: "Мащабни системи за максимална ефективност" },
-  { label: "За Земеделието", href: "/resheniya/za-zemedelieto", icon: Tractor, desc: "Агриволтаици и системи за стопанства" },
-  { label: "Соларен Карпорт", href: "/resheniya/solaren-karport", icon: Car, desc: "Паркинг + чиста енергия" },
-  { label: "Автономни Системи", href: "/resheniya/avtonomni-sistemi", icon: Wifi, desc: "Независимост от електрическата мрежа" },
-];
-
-const KAK_RABOTI = [
-  { label: "Слънчева Енергия", href: "/kak-raboti/slancheva-energiya", icon: BookOpen, desc: "Как работят соларните панели" },
-  { label: "Процес на Монтаж", href: "/kak-raboti/protsesa-na-montazh", icon: Settings, desc: "От оглед до активиране" },
-  { label: "Свързване към Мрежата", href: "/kak-raboti/svurzvane-kum-mrezhata", icon: Network, desc: "Нетно отчитане и мрежова връзка" },
-  { label: "Нетно Отчитане", href: "/kak-raboti/netno-metering", icon: Calculator, desc: "Продавайте излишната енергия" },
-  { label: "Финансиране", href: "/kak-raboti/finansirane", icon: CreditCard, desc: "Кредит, лизинг, субсидии" },
-  { label: "Възвръщаемост", href: "/kak-raboti/vuzvrashchaemost", icon: TrendingUp, desc: "ROI калкулатор и прогнози" },
-];
-
-const DIRECT_LINKS = [
-  { label: "Конфигуратор", href: "/konfigurator" },
-  { label: "Проекти", href: "/proekti" },
-  { label: "Блог", href: "/blog" },
-] as const;
 
 function CSSFlag({ stripes, vertical = false, size = "w-8 h-5.5" }: { stripes: string[]; vertical?: boolean; size?: string }) {
   return (
@@ -112,6 +80,7 @@ const COUNTRY_OPTIONS: {
 }[] = [
   { code: "bg", native: "Български", english: "Bulgaria", flag: <CSSFlag stripes={["#fff", "#00966E", "#D62612"]} />, comingSoon: false },
   { code: "en", native: "English", english: "International", flag: <UKFlag />, comingSoon: false },
+  { code: "nl", native: "Nederlands", english: "Netherlands", flag: <CSSFlag stripes={["#AE1C28", "#fff", "#21468B"]} />, comingSoon: false },
   { code: "ro", native: "Romana", english: "Romania", flag: <CSSFlag stripes={["#002B7F", "#FCD116", "#CE1126"]} vertical />, comingSoon: true },
   { code: "rs", native: "Srpski", english: "Serbia", flag: <CSSFlag stripes={["#C6363C", "#0C4076", "#fff"]} />, comingSoon: true },
   { code: "gr", native: "Ellinika", english: "Greece", flag: <GreeceFlag />, comingSoon: true },
@@ -124,18 +93,11 @@ const COUNTRY_OPTIONS: {
   { code: "tr", native: "Turkce", english: "Turkey", flag: <CSSFlag stripes={["#E30A17", "#E30A17"]} />, comingSoon: true },
 ];
 
-function useLocaleHref() {
+function useLocaleInfo() {
   const pathname = usePathname();
-  const isEn = pathname.startsWith("/en");
-  const bgHref = pathname.startsWith("/en")
-    ? pathname === "/en"
-      ? "/"
-      : pathname.replace(/^\/en/, "") || "/"
-    : pathname;
-  const enHref = pathname.startsWith("/en")
-    ? pathname
-    : `/en${pathname === "/" ? "" : pathname}`;
-  return { isEn, bgHref, enHref };
+  const locale = useLocale();
+  const isEn = locale === "en";
+  return { isEn, pathname };
 }
 
 function RichMegaMenu({
@@ -144,12 +106,16 @@ function RichMegaMenu({
   featuredDesc,
   featuredHref,
   featuredImage,
+  newLabel,
+  learnMoreLabel,
 }: {
   items: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
   featuredTitle: string;
   featuredDesc: string;
   featuredHref: string;
   featuredImage?: string;
+  newLabel: string;
+  learnMoreLabel: string;
 }) {
   const half = Math.ceil(items.length / 2);
   const col1 = items.slice(0, half);
@@ -158,7 +124,7 @@ function RichMegaMenu({
   const renderItem = (item: (typeof items)[number]) => (
     <NavigationMenu.Link asChild key={item.href}>
       <Link
-        href={item.href}
+        href={item.href as never}
         className="group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-background-secondary"
       >
         <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background-secondary/50 text-accent group-hover:bg-accent group-hover:text-white transition-colors">
@@ -173,7 +139,7 @@ function RichMegaMenu({
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
                 </span>
-                Ново
+                {newLabel}
               </span>
             )}
           </div>
@@ -197,7 +163,7 @@ function RichMegaMenu({
       </div>
 
       <div className="border-l border-border bg-background-secondary/30 p-3">
-        <Link href={featuredHref} className="group block h-full">
+        <Link href={featuredHref as never} className="group block h-full">
           {featuredImage && (
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-3">
               <Image
@@ -212,7 +178,7 @@ function RichMegaMenu({
           <p className="text-sm font-bold text-foreground">{featuredTitle}</p>
           <p className="mt-1 text-xs text-foreground-tertiary">{featuredDesc}</p>
           <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent">
-            Научи повече
+            {learnMoreLabel}
             <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
           </span>
         </Link>
@@ -221,7 +187,21 @@ function RichMegaMenu({
   );
 }
 
-function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
+function DesktopNav({
+  isTransparent = false,
+  produkty,
+  resheniya,
+  kakRaboti,
+  directLinks,
+  t,
+}: {
+  isTransparent?: boolean;
+  produkty: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  resheniya: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  kakRaboti: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  directLinks: { label: string; href: string }[];
+  t: (key: string) => string;
+}) {
   const triggerClass = cn(
     "group inline-flex h-10 items-center gap-1 rounded-lg px-2.5 text-sm font-medium",
     "outline-none transition-colors duration-200",
@@ -257,11 +237,11 @@ function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
     >
       <NavigationMenu.List
         className="flex list-none items-center gap-0.5 p-0"
-        aria-label="Основна навигация"
+        aria-label={t("mainNavigation")}
       >
         <NavigationMenu.Item value="produkti">
           <NavigationMenu.Trigger className={triggerClass}>
-            Продукти
+            {t("products")}
             <ChevronDown
               className="size-4 shrink-0 opacity-60 transition-transform duration-200 group-data-[state=open]:rotate-180"
               aria-hidden
@@ -269,18 +249,20 @@ function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className={contentClass}>
             <RichMegaMenu
-              items={PRODUKTY}
-              featuredTitle="Соларни Панели MWT"
-              featuredDesc="Ново поколение модули с 30 год. гаранция"
+              items={produkty}
+              featuredTitle={t("featuredProductsTitle")}
+              featuredDesc={t("featuredProductsDesc")}
               featuredHref="/produkti/solarni-paneli"
               featuredImage="/real/installations/adoreenergy-c1.jpg"
+              newLabel={t("new")}
+              learnMoreLabel={t("learnMore")}
             />
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item value="resheniya">
           <NavigationMenu.Trigger className={triggerClass}>
-            Решения
+            {t("solutions")}
             <ChevronDown
               className="size-4 shrink-0 opacity-60 transition-transform duration-200 group-data-[state=open]:rotate-180"
               aria-hidden
@@ -288,18 +270,20 @@ function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className={contentClass}>
             <RichMegaMenu
-              items={RESHENIYA}
-              featuredTitle="За Дома"
-              featuredDesc="Спестете до 80% от сметката за ток"
+              items={resheniya}
+              featuredTitle={t("featuredSolutionsTitle")}
+              featuredDesc={t("featuredSolutionsDesc")}
               featuredHref="/resheniya/za-doma"
               featuredImage="/real/projects/5kw-kran-1.jpg"
+              newLabel={t("new")}
+              learnMoreLabel={t("learnMore")}
             />
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item value="kak-raboti">
           <NavigationMenu.Trigger className={triggerClass}>
-            Как Работи
+            {t("howItWorks")}
             <ChevronDown
               className="size-4 shrink-0 opacity-60 transition-transform duration-200 group-data-[state=open]:rotate-180"
               aria-hidden
@@ -307,19 +291,21 @@ function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
           </NavigationMenu.Trigger>
           <NavigationMenu.Content className={contentClass}>
             <RichMegaMenu
-              items={KAK_RABOTI}
-              featuredTitle="Конфигуратор"
-              featuredDesc="Визуализирайте и изчислете вашата система"
+              items={kakRaboti}
+              featuredTitle={t("featuredHowItWorksTitle")}
+              featuredDesc={t("featuredHowItWorksDesc")}
               featuredHref="/konfigurator"
               featuredImage="/real/installations/step-02-design.jpg"
+              newLabel={t("new")}
+              learnMoreLabel={t("learnMore")}
             />
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
-        {DIRECT_LINKS.map((link) => (
+        {directLinks.map((link) => (
           <NavigationMenu.Item key={link.href}>
             <NavigationMenu.Link asChild>
-              <Link href={link.href} className={directLinkClass}>
+              <Link href={link.href as never} className={directLinkClass}>
                 {link.label}
               </Link>
             </NavigationMenu.Link>
@@ -343,12 +329,21 @@ function DesktopNav({ isTransparent = false }: { isTransparent?: boolean }) {
 function MobileNavSheet({
   open,
   onOpenChange,
+  produkty,
+  resheniya,
+  kakRaboti,
+  directLinks,
+  t,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  produkty: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  resheniya: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  kakRaboti: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
+  directLinks: { label: string; href: string }[];
+  t: (key: string) => string;
 }) {
-  const pathname = usePathname();
-  const { isEn, bgHref, enHref } = useLocaleHref();
+  const { isEn, pathname } = useLocaleInfo();
   const prevPathRef = React.useRef(pathname);
 
   React.useEffect(() => {
@@ -391,11 +386,11 @@ function MobileNavSheet({
           )}
         >
           <Dialog.Description className="sr-only">
-            Навигация по сайта на Solaron — продукти, решения и контакти.
+            {t("siteNavDescription")}
           </Dialog.Description>
           <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-4">
             <Dialog.Title className="font-display text-lg font-bold tracking-wide text-foreground">
-              Меню
+              {t("menu")}
             </Dialog.Title>
             <Dialog.Close asChild>
               <button
@@ -405,7 +400,7 @@ function MobileNavSheet({
                   "transition-colors hover:bg-background-secondary",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 )}
-                aria-label="Затвори меню"
+                aria-label={t("closeMenu")}
               >
                 <X className="size-5" aria-hidden />
               </button>
@@ -417,7 +412,7 @@ function MobileNavSheet({
               <Accordion.Item value="produkti" className="border-b border-border/80">
                 <Accordion.Header>
                   <Accordion.Trigger className={accordionTrigger}>
-                    Продукти
+                    {t("products")}
                     <ChevronDown
                       className="size-4 shrink-0 opacity-70 transition-transform duration-200"
                       aria-hidden
@@ -426,10 +421,10 @@ function MobileNavSheet({
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden">
                   <ul className="space-y-0.5 pb-3 pl-1" role="list">
-                    {PRODUKTY.map((item) => (
+                    {produkty.map((item) => (
                       <li key={item.href}>
                         <Dialog.Close asChild>
-                          <Link href={item.href} className={linkRow}>
+                          <Link href={item.href as never} className={linkRow}>
                             <item.icon className="size-4 shrink-0 text-accent" aria-hidden />
                             {item.label}
                           </Link>
@@ -443,7 +438,7 @@ function MobileNavSheet({
               <Accordion.Item value="resheniya" className="border-b border-border/80">
                 <Accordion.Header>
                   <Accordion.Trigger className={accordionTrigger}>
-                    Решения
+                    {t("solutions")}
                     <ChevronDown
                       className="size-4 shrink-0 opacity-70 transition-transform duration-200"
                       aria-hidden
@@ -452,10 +447,10 @@ function MobileNavSheet({
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden">
                   <ul className="space-y-0.5 pb-3 pl-1" role="list">
-                    {RESHENIYA.map((item) => (
+                    {resheniya.map((item) => (
                       <li key={item.href}>
                         <Dialog.Close asChild>
-                          <Link href={item.href} className={linkRow}>
+                          <Link href={item.href as never} className={linkRow}>
                             <item.icon className="size-4 shrink-0 text-accent" aria-hidden />
                             {item.label}
                           </Link>
@@ -469,7 +464,7 @@ function MobileNavSheet({
               <Accordion.Item value="kak-raboti" className="border-b border-border/80">
                 <Accordion.Header>
                   <Accordion.Trigger className={accordionTrigger}>
-                    Как Работи
+                    {t("howItWorks")}
                     <ChevronDown
                       className="size-4 shrink-0 opacity-70 transition-transform duration-200"
                       aria-hidden
@@ -478,10 +473,10 @@ function MobileNavSheet({
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden">
                   <ul className="space-y-0.5 pb-3 pl-1" role="list">
-                    {KAK_RABOTI.map((item) => (
+                    {kakRaboti.map((item) => (
                       <li key={item.href}>
                         <Dialog.Close asChild>
-                          <Link href={item.href} className={linkRow}>
+                          <Link href={item.href as never} className={linkRow}>
                             <item.icon className="size-4 shrink-0 text-accent" aria-hidden />
                             {item.label}
                           </Link>
@@ -493,10 +488,10 @@ function MobileNavSheet({
               </Accordion.Item>
             </Accordion.Root>
 
-            <nav className="mt-2 space-y-1 border-b border-border/80 pb-4" aria-label="Директни връзки">
-              {DIRECT_LINKS.map((link) => (
+            <nav className="mt-2 space-y-1 border-b border-border/80 pb-4" aria-label={t("directLinks")}>
+              {directLinks.map((link) => (
                 <Dialog.Close asChild key={link.href}>
-                  <Link href={link.href} className={cn(linkRow, "py-3 font-semibold")}>
+                  <Link href={link.href as never} className={cn(linkRow, "py-3 font-semibold")}>
                     {link.label}
                   </Link>
                 </Dialog.Close>
@@ -505,7 +500,7 @@ function MobileNavSheet({
 
             <div className="mt-6 space-y-3">
               <Dialog.Close asChild>
-                <Link
+                <a
                   href="https://wa.me/359896699009"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -516,15 +511,16 @@ function MobileNavSheet({
                   )}
                 >
                   <WhatsAppIcon className="size-5" />
-                  Безплатна Консултация
-                </Link>
+                  {t("freeConsultation")}
+                </a>
               </Dialog.Close>
 
-              <div className="space-y-2" role="group" aria-label="Език">
-                <p className="text-xs font-semibold uppercase tracking-widest text-foreground-tertiary px-1">Държава</p>
+              <div className="space-y-2" role="group" aria-label={t("country")}>
+                <p className="text-xs font-semibold uppercase tracking-widest text-foreground-tertiary px-1">{t("country")}</p>
                 <Dialog.Close asChild>
                   <Link
-                    href={bgHref}
+                    href={pathname as never}
+                    locale="bg"
                     className={cn(
                       "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
                       !isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
@@ -537,7 +533,8 @@ function MobileNavSheet({
                 </Dialog.Close>
                 <Dialog.Close asChild>
                   <Link
-                    href={enHref}
+                    href={pathname as never}
+                    locale="en"
                     className={cn(
                       "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
                       isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
@@ -549,7 +546,7 @@ function MobileNavSheet({
                   </Link>
                 </Dialog.Close>
                 <p className="text-[11px] text-foreground-tertiary px-1">
-                  + 10 държави от Балканите — скоро
+                  {t("countriesBalkan")}
                 </p>
               </div>
             </div>
@@ -561,12 +558,45 @@ function MobileNavSheet({
 }
 
 export function Navbar() {
+  const t = useTranslations("Nav");
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [langOverlayOpen, setLangOverlayOpen] = React.useState(false);
-  const { isEn, bgHref, enHref } = useLocaleHref();
-  const pathname = usePathname();
-  const isHomepage = pathname === "/" || pathname === "/en";
+  const { isEn, pathname } = useLocaleInfo();
+  const isHomepage = pathname === "/";
+
+  const produkty = React.useMemo(() => [
+    { label: t("solarPanels"), href: "/produkti/solarni-paneli", icon: Sun, desc: t("solarPanelsDesc") },
+    { label: t("inverters"), href: "/produkti/invertori", icon: Cpu, desc: t("invertersDesc") },
+    { label: t("batteries"), href: "/produkti/baterii", icon: Battery, desc: t("batteriesDesc") },
+    { label: t("mounting"), href: "/produkti/konstrukcii", icon: Wrench, desc: t("mountingDesc") },
+    { label: t("monitoring"), href: "/produkti/monitoring", icon: Monitor, desc: t("monitoringDesc"), isNew: true },
+    { label: t("evChargers"), href: "/produkti/ev-zaryadni-stantsii", icon: Zap, desc: t("evChargersDesc"), isNew: true },
+  ], [t]);
+
+  const resheniya = React.useMemo(() => [
+    { label: t("forHome"), href: "/resheniya/za-doma", icon: Home, desc: t("forHomeDesc") },
+    { label: t("forBusiness"), href: "/resheniya/za-biznesa", icon: Building2, desc: t("forBusinessDesc") },
+    { label: t("forIndustry"), href: "/resheniya/za-industriyata", icon: Factory, desc: t("forIndustryDesc") },
+    { label: t("forAgriculture"), href: "/resheniya/za-zemedelieto", icon: Tractor, desc: t("forAgricultureDesc") },
+    { label: t("solarCarport"), href: "/resheniya/solaren-karport", icon: Car, desc: t("solarCarportDesc") },
+    { label: t("offGrid"), href: "/resheniya/avtonomni-sistemi", icon: Wifi, desc: t("offGridDesc") },
+  ], [t]);
+
+  const kakRaboti = React.useMemo(() => [
+    { label: t("solarEnergy"), href: "/kak-raboti/slancheva-energiya", icon: BookOpen, desc: t("solarEnergyDesc") },
+    { label: t("installationProcess"), href: "/kak-raboti/protsesa-na-montazh", icon: Settings, desc: t("installationProcessDesc") },
+    { label: t("gridConnection"), href: "/kak-raboti/svurzvane-kum-mrezhata", icon: Network, desc: t("gridConnectionDesc") },
+    { label: t("netMetering"), href: "/kak-raboti/netno-metering", icon: Calculator, desc: t("netMeteringDesc") },
+    { label: t("financing"), href: "/kak-raboti/finansirane", icon: CreditCard, desc: t("financingDesc") },
+    { label: t("roi"), href: "/kak-raboti/vuzvrashchaemost", icon: TrendingUp, desc: t("roiDesc") },
+  ], [t]);
+
+  const directLinks = React.useMemo(() => [
+    { label: t("configurator"), href: "/konfigurator" },
+    { label: t("projects"), href: "/proekti" },
+    { label: t("blog"), href: "/blog" },
+  ], [t]);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -606,10 +636,17 @@ export function Navbar() {
           />
         </Link>
 
-        <DesktopNav isTransparent={isTransparent} />
+        <DesktopNav
+          isTransparent={isTransparent}
+          produkty={produkty}
+          resheniya={resheniya}
+          kakRaboti={kakRaboti}
+          directLinks={directLinks}
+          t={t}
+        />
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
-          <Link
+          <a
             href="https://wa.me/359896699009"
             target="_blank"
             rel="noopener noreferrer"
@@ -622,14 +659,14 @@ export function Navbar() {
             )}
           >
             <WhatsAppIcon className="size-4" />
-            Безплатна Консултация
-          </Link>
+            {t("freeConsultation")}
+          </a>
 
           <button
             type="button"
             onClick={() => setLangOverlayOpen(true)}
             className="relative flex items-center justify-center size-8 rounded-full overflow-hidden border-2 border-white/20 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
-            aria-label="Change language"
+            aria-label={t("chooseCountry")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none z-10 rounded-full" />
             <div className="w-full h-full flex flex-col">
@@ -641,7 +678,15 @@ export function Navbar() {
         </div>
 
         <div className="ml-auto flex items-center lg:ml-0 lg:hidden">
-          <MobileNavSheet open={mobileOpen} onOpenChange={setMobileOpen} />
+          <MobileNavSheet
+            open={mobileOpen}
+            onOpenChange={setMobileOpen}
+            produkty={produkty}
+            resheniya={resheniya}
+            kakRaboti={kakRaboti}
+            directLinks={directLinks}
+            t={t}
+          />
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
@@ -654,7 +699,7 @@ export function Navbar() {
             )}
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation"
-            aria-label="Отвори меню"
+            aria-label={t("openMenu")}
           >
             <Menu className="size-6" aria-hidden />
           </button>
@@ -689,15 +734,14 @@ export function Navbar() {
           >
             <div className="text-center mb-10">
               <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-                Изберете държава
+                {t("chooseCountry")}
               </h2>
-              <p className="text-foreground-secondary">Choose your country and language</p>
+              <p className="text-foreground-secondary">{t("chooseCountrySubtitle")}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
               {COUNTRY_OPTIONS.map((country) => {
                 const isActive = country.code === "bg" ? !isEn : country.code === "en" ? isEn : false;
-                const href = country.code === "bg" ? bgHref : country.code === "en" ? enHref : undefined;
 
                 if (country.comingSoon) {
                   return (
@@ -713,7 +757,7 @@ export function Navbar() {
                         <p className="text-[11px] text-foreground-tertiary truncate">{country.english}</p>
                       </div>
                       <span className="absolute top-1.5 right-1.5 rounded-full bg-foreground/8 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-foreground-tertiary">
-                        скоро
+                        {t("comingSoon")}
                       </span>
                     </div>
                   );
@@ -722,7 +766,8 @@ export function Navbar() {
                 return (
                   <Link
                     key={country.code}
-                    href={href!}
+                    href={pathname as never}
+                    locale={country.code as "bg" | "en" | "nl"}
                     onClick={() => setLangOverlayOpen(false)}
                     className={cn(
                       "group flex items-center gap-3 rounded-xl border-2 p-3 transition-all duration-200 hover:shadow-md",
@@ -747,7 +792,7 @@ export function Navbar() {
             </div>
 
             <p className="mt-6 text-center text-xs text-foreground-tertiary">
-              Solaron разширява присъствието си в региона. Следете за нови държави.
+              {t("expandingPresence")}
             </p>
           </motion.div>
         </motion.div>

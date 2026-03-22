@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { ImageEditorial } from "@/components/ui/image-editorial";
@@ -10,56 +11,57 @@ import { LIFESTYLE_IMAGES } from "@/data/images";
 import { createStagger, slideUp } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
-const solutions = [
-  {
-    title: "За Дома",
-    subtitle: "до 80% спестявания",
-    badge: "Най-популярно",
-    image: LIFESTYLE_IMAGES.modernHome,
-    href: "/resheniya/za-doma",
-    aspect: "aspect-[3/4]",
-    colSpan: "",
-  },
-  {
-    title: "За Бизнеса",
-    subtitle: "Намалете оперативните разходи",
-    badge: null,
-    image: LIFESTYLE_IMAGES.business,
-    href: "/resheniya/za-biznesa",
-    aspect: "aspect-[4/3]",
-    colSpan: "",
-  },
-  {
-    title: "За Индустрията",
-    subtitle: "Мащабни системи за максимална ефективност",
-    badge: null,
-    image: LIFESTYLE_IMAGES.factory,
-    href: "/resheniya/za-industriyata",
-    aspect: "aspect-[4/3]",
-    colSpan: "",
-  },
-  {
-    title: "За Земеделието",
-    subtitle: "Агриволтаици и системи за стопанства",
-    badge: null,
-    image: LIFESTYLE_IMAGES.farmland,
-    href: "/resheniya/za-zemedelieto",
-    aspect: "aspect-[3/4]",
-    colSpan: "",
-  },
-];
-
 export function SolutionFinder() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const t = useTranslations("Home");
+
+  const solutions = [
+    {
+      title: t("solutionFinder.forHome"),
+      subtitle: t("solutionFinder.forHomeSubtitle"),
+      badge: t("solutionFinder.forHomeBadge"),
+      image: LIFESTYLE_IMAGES.modernHome,
+      href: "/resheniya/za-doma",
+      aspect: "aspect-[3/4]",
+      colSpan: "",
+    },
+    {
+      title: t("solutionFinder.forBusiness"),
+      subtitle: t("solutionFinder.forBusinessSubtitle"),
+      badge: null,
+      image: LIFESTYLE_IMAGES.business,
+      href: "/resheniya/za-biznesa",
+      aspect: "aspect-[4/3]",
+      colSpan: "",
+    },
+    {
+      title: t("solutionFinder.forIndustry"),
+      subtitle: t("solutionFinder.forIndustrySubtitle"),
+      badge: null,
+      image: LIFESTYLE_IMAGES.factory,
+      href: "/resheniya/za-industriyata",
+      aspect: "aspect-[4/3]",
+      colSpan: "",
+    },
+    {
+      title: t("solutionFinder.forAgriculture"),
+      subtitle: t("solutionFinder.forAgricultureSubtitle"),
+      badge: null,
+      image: LIFESTYLE_IMAGES.farmland,
+      href: "/resheniya/za-zemedelieto",
+      aspect: "aspect-[3/4]",
+      colSpan: "",
+    },
+  ];
 
   return (
     <section className="bg-white px-6 py-20 md:px-8 md:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mb-14 md:mb-20">
-          <p className="editorial-overline mb-4 text-accent">РЕШЕНИЯ</p>
+          <p className="editorial-overline mb-4 text-accent">{t("solutionFinder.overline")}</p>
           <TextReveal as="h2" className="editorial-display">
-            Намерете Вашето Решение
+            {t("solutionFinder.title")}
           </TextReveal>
         </div>
 
@@ -72,7 +74,7 @@ export function SolutionFinder() {
         >
           {solutions.map((sol) => (
             <motion.div key={sol.href} variants={slideUp}>
-              <Link href={sol.href} className="group relative block">
+              <Link href={sol.href as never} className="group relative block">
                 <TiltCard className={cn("overflow-hidden rounded-2xl", sol.aspect)} tiltAmount={5}>
                   <ImageEditorial
                     src={sol.image}

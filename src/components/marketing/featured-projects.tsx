@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { MapPin, ArrowRight, Zap, Calendar, TrendingUp } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import { ImageEditorial } from "@/components/ui/image-editorial";
@@ -62,6 +63,8 @@ export function FeaturedProjects() {
   const gridRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, margin: "0px 0px -10% 0px" });
   const gridInView = useInView(gridRef, { once: true, margin: "0px 0px -10% 0px" });
+  const t = useTranslations("Home");
+  const tc = useTranslations("Common");
 
   return (
     <section className="overflow-hidden bg-background px-6 py-20 md:px-8 md:py-28 lg:py-32">
@@ -69,16 +72,16 @@ export function FeaturedProjects() {
         {/* Section header */}
         <div className="mb-12 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div>
-            <BadgeChip variant="accent" className="mb-4">Реализирани Проекти</BadgeChip>
-            <h2 className="editorial-heading">Проекти, Които Говорят</h2>
+            <BadgeChip variant="accent" className="mb-4">{t("featuredProjects.badge")}</BadgeChip>
+            <h2 className="editorial-heading">{t("featuredProjects.title")}</h2>
             <p className="mt-3 max-w-xl text-lg text-foreground-secondary">
-              Всеки проект е индивидуално проектиран за максимална ефективност и възвръщаемост.
+              {t("featuredProjects.subtitle")}
             </p>
           </div>
           <div className="flex gap-6 text-sm text-foreground-tertiary">
-            <span><strong className="text-accent font-semibold">1 000 kWp</strong> най-голям проект</span>
-            <span><strong className="text-foreground font-semibold">26</strong> завършени</span>
-            <span><strong className="text-foreground font-semibold">2</strong> държави</span>
+            <span><strong className="text-accent font-semibold">1 000 kWp</strong> {t("featuredProjects.largestProject")}</span>
+            <span><strong className="text-foreground font-semibold">26</strong> {t("featuredProjects.completed")}</span>
+            <span><strong className="text-foreground font-semibold">2</strong> {t("featuredProjects.countries")}</span>
           </div>
         </div>
 
@@ -121,31 +124,31 @@ export function FeaturedProjects() {
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
                       <Zap className="size-3.5" />
-                      Мощност
+                      {tc("power")}
                     </div>
                     <p className="text-xl font-bold text-accent">{heroProject.kWp} kWp</p>
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
                       <TrendingUp className="size-3.5" />
-                      Спестяване
+                      {tc("savings")}
                     </div>
                     <p className="text-xl font-bold text-foreground">{heroProject.savingsPercent}%</p>
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-foreground-tertiary mb-1">
                       <MapPin className="size-3.5" />
-                      Локация
+                      {tc("location")}
                     </div>
                     <p className="text-sm font-medium text-foreground">{heroProject.location}</p>
                   </div>
                 </div>
 
                 <Link
-                  href={`/proekti/${heroProject.slug}`}
+                  href={`/proekti/${heroProject.slug}` as never}
                   className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
                 >
-                  Виж проекта
+                  {tc("viewProject")}
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
@@ -173,7 +176,7 @@ export function FeaturedProjects() {
               }}
               className={cn("group", project.span)}
             >
-              <Link href={`/proekti/${project.slug}`}>
+              <Link href={`/proekti/${project.slug}` as never}>
                 <GlowCard className="overflow-hidden">
                   <div className={cn("relative w-full", project.aspect)}>
                     <ImageEditorial
@@ -209,7 +212,7 @@ export function FeaturedProjects() {
         {/* CTA */}
         <div className="mt-14 flex justify-center md:mt-16">
           <MagneticButton href="/proekti" variant="outline" size="lg">
-            Всички Проекти
+            {tc("allProjects")}
           </MagneticButton>
         </div>
       </div>

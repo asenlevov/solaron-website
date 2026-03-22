@@ -2,53 +2,55 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { cn } from "@/lib/utils";
 
-const testimonials = [
-  {
-    quote: "Системата работи безупречно от първия ден. За 8 месеца вече сме спестили над 4000 лв. Solaron подходиха изключително професионално — от първата среща до финалния тест.",
-    name: "Иван Петров",
-    role: "Домакинство",
-    location: "Казанлък",
-    project: "5 kW система",
-    savings: "4000+ лв.",
-    rating: 5,
-  },
-  {
-    quote: "Професионален подход от начало до край. Монтажът приключи за 2 дни, а системата работи над очакванията. Вече препоръчах Solaron на трима съседи.",
-    name: "Мария Георгиева",
-    role: "Домакинство",
-    location: "Враца",
-    project: "15 kW система",
-    savings: "80% спестяване",
-    rating: 5,
-  },
-  {
-    quote: "Инвестицията се изплати за по-малко от 4 години. Сега практически имаме безплатен ток. Качеството на компонентите и изпълнението е на световно ниво.",
-    name: "Стефан Димитров",
-    role: "Управител",
-    location: "София",
-    project: "108 kWp система",
-    savings: "Безплатен ток",
-    rating: 5,
-  },
-  {
-    quote: "Solaron проектира и монтира системата с невероятна прецизност. Мониторинг платформата ни дава пълна видимост над продукцията в реално време.",
-    name: "Петър Николов",
-    role: "Собственик",
-    location: "Варна",
-    project: "39 kWp система",
-    savings: "70% спестяване",
-    rating: 5,
-  },
-] as const;
-
 const INTERVAL_MS = 6000;
 
 export function Testimonials() {
+  const t = useTranslations("Home");
+
+  const testimonials = [
+    {
+      quote: t("testimonials.testimonial1.quote"),
+      name: t("testimonials.testimonial1.name"),
+      role: t("testimonials.household"),
+      location: t("testimonials.testimonial1.location"),
+      project: t("testimonials.testimonial1.project"),
+      savings: t("testimonials.testimonial1.savings"),
+      rating: 5,
+    },
+    {
+      quote: t("testimonials.testimonial2.quote"),
+      name: t("testimonials.testimonial2.name"),
+      role: t("testimonials.household"),
+      location: t("testimonials.testimonial2.location"),
+      project: t("testimonials.testimonial2.project"),
+      savings: t("testimonials.testimonial2.savings"),
+      rating: 5,
+    },
+    {
+      quote: t("testimonials.testimonial3.quote"),
+      name: t("testimonials.testimonial3.name"),
+      role: t("testimonials.manager"),
+      location: t("testimonials.testimonial3.location"),
+      project: t("testimonials.testimonial3.project"),
+      savings: t("testimonials.testimonial3.savings"),
+      rating: 5,
+    },
+    {
+      quote: t("testimonials.testimonial4.quote"),
+      name: t("testimonials.testimonial4.name"),
+      role: t("testimonials.owner"),
+      location: t("testimonials.testimonial4.location"),
+      project: t("testimonials.testimonial4.project"),
+      savings: t("testimonials.testimonial4.savings"),
+      rating: 5,
+    },
+  ];
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -75,7 +77,7 @@ export function Testimonials() {
     return () => cancelAnimationFrame(frame);
   }, [active]);
 
-  const t = testimonials[active];
+  const tItem = testimonials[active]!;
 
   return (
     <section
@@ -85,15 +87,15 @@ export function Testimonials() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <BadgeChip variant="accent" className="mb-4">Отзиви на Клиенти</BadgeChip>
-            <h2 className="editorial-heading">Какво Казват Нашите Клиенти</h2>
+            <BadgeChip variant="accent" className="mb-4">{t("testimonials.overline")}</BadgeChip>
+            <h2 className="editorial-heading">{t("testimonials.title")}</h2>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={prev}
               className="rounded-full border border-border p-2 text-foreground-secondary transition-colors hover:bg-background hover:text-foreground"
-              aria-label="Предишен отзив"
+              aria-label={t("testimonials.prevLabel")}
             >
               <ChevronLeft className="size-5" />
             </button>
@@ -101,7 +103,7 @@ export function Testimonials() {
               type="button"
               onClick={next}
               className="rounded-full border border-border p-2 text-foreground-secondary transition-colors hover:bg-background hover:text-foreground"
-              aria-label="Следващ отзив"
+              aria-label={t("testimonials.nextLabel")}
             >
               <ChevronRight className="size-5" />
             </button>
@@ -120,36 +122,36 @@ export function Testimonials() {
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex gap-0.5 mb-6" role="img" aria-label={`${t.rating} от 5 звезди`}>
-                  {Array.from({ length: t.rating }).map((_, i) => (
+                <div className="flex gap-0.5 mb-6" role="img" aria-label={t("testimonials.starsLabel", { n: tItem.rating })}>
+                  {Array.from({ length: tItem.rating }).map((_, i) => (
                     <Star key={i} className="size-5 fill-amber-400 text-amber-400" aria-hidden />
                   ))}
                 </div>
 
                 <blockquote className="text-xl font-medium leading-relaxed text-foreground md:text-2xl lg:text-3xl max-w-4xl">
-                  &ldquo;{t.quote}&rdquo;
+                  &ldquo;{tItem.quote}&rdquo;
                 </blockquote>
 
                 <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent font-bold text-lg">
-                      {t.name.charAt(0)}
+                      {tItem.name.charAt(0)}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="font-display text-base font-semibold text-foreground">
-                          {t.name}
+                          {tItem.name}
                         </p>
-                        <BadgeChip variant="success">Потвърден</BadgeChip>
+                        <BadgeChip variant="success">{t("testimonials.verified")}</BadgeChip>
                       </div>
                       <p className="text-sm text-foreground-secondary">
-                        {t.role}, {t.location} · {t.project}
+                        {tItem.role}, {tItem.location} · {tItem.project}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2">
-                    <span className="text-sm font-semibold text-accent">{t.savings}</span>
+                    <span className="text-sm font-semibold text-accent">{tItem.savings}</span>
                   </div>
                 </div>
               </motion.div>
@@ -165,7 +167,7 @@ export function Testimonials() {
               type="button"
               onClick={() => { setActive(i); setProgress(0); }}
               className="group relative h-1.5 w-12 cursor-pointer overflow-hidden rounded-full bg-border"
-              aria-label={`Отидете на отзив ${i + 1}`}
+              aria-label={t("testimonials.goToLabel", { n: i + 1 })}
             >
               <div
                 className={cn(

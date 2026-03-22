@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
@@ -44,6 +45,7 @@ export function SummaryCard({
   monthlyBill,
   className,
 }: SummaryCardProps) {
+  const locale = useLocale();
   const monthlySavings = annualSavings / 12;
   const query = new URLSearchParams({
     panelCount: String(panelCount),
@@ -185,24 +187,27 @@ export function SummaryCard({
             const { generateSolarOffer } = await import(
               "@/lib/generate-pdf-offer"
             );
-            await generateSolarOffer({
-              systemSizeKwp,
-              panelCount,
-              hasBattery,
-              batteryCapacityKwh,
-              annualProductionKwh,
-              annualSavings,
-              paybackYears,
-              savings25yr,
-              co2SavedKgPerYear,
-              treeEquivalent,
-              city,
-              roofOrientation: roofOrientation ?? "Юг",
-              roofArea: roofArea ?? 80,
-              roofPitch: roofPitch ?? 30,
-              systemCost: systemCost ?? panelCount * 1200,
-              monthlyBill: monthlyBill ?? 150,
-            });
+            await generateSolarOffer(
+              {
+                systemSizeKwp,
+                panelCount,
+                hasBattery,
+                batteryCapacityKwh,
+                annualProductionKwh,
+                annualSavings,
+                paybackYears,
+                savings25yr,
+                co2SavedKgPerYear,
+                treeEquivalent,
+                city,
+                roofOrientation: roofOrientation ?? "Юг",
+                roofArea: roofArea ?? 80,
+                roofPitch: roofPitch ?? 30,
+                systemCost: systemCost ?? panelCount * 1200,
+                monthlyBill: monthlyBill ?? 150,
+              },
+              locale,
+            );
           }}
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/30 bg-accent-light/20 px-4 py-3 font-body text-sm font-semibold text-accent transition-colors hover:bg-accent-light/40 active:scale-[0.98]"
         >

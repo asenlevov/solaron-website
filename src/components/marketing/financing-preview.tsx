@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion, useInView } from "motion/react";
 import { Wallet, Building2, FileText, ArrowRight } from "lucide-react";
 
@@ -138,7 +138,7 @@ export function FinancingPreview() {
           transition={{ duration: 0.6, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Link
-            href="/finansirane"
+            href="/kak-raboti/finansirane"
             className="group inline-flex items-center gap-2 font-display text-base font-semibold text-accent transition-colors hover:text-accent/80"
           >
             Научете Повече За Финансирането

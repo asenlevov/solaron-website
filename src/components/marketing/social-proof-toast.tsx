@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 
 const MESSAGES = [
@@ -11,13 +12,15 @@ const MESSAGES = [
   { name: "Д.С.", city: "Стара Загора", text: "заявиха оферта за 50 kWp система" },
   { name: "И.В.", city: "София", text: "заявиха консултация за батерия" },
   { name: "Н.Р.", city: "Бургас", text: "заявиха оферта за покривна система" },
-  { name: "А.Д.", city: "Банско", text: "заявиха безплатна консултация" },
+  { name: "А.Д.", city: "Банско", text: "заявиха безплатна консультация" },
   { name: "К.М.", city: "Казанлък", text: "заявиха оферта за 15 kWp система" },
 ];
 
 const TIMESTAMPS = ["Току-що", "Преди 1 мин.", "Преди 2 мин.", "Преди 3 мин."];
 
 export function SocialProofToast() {
+  const t = useTranslations("SocialProofToast");
+  const tc = useTranslations("Common");
   const [current, setCurrent] = useState<number | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
@@ -62,7 +65,7 @@ export function SocialProofToast() {
             <p className="text-sm leading-snug text-foreground">
               <span className="font-semibold">{msg.name}</span>{" "}
               <span className="text-foreground-secondary">
-                от {msg.city}
+                {t("inCity", { city: msg.city })}
               </span>{" "}
               {msg.text}
             </p>
@@ -74,7 +77,7 @@ export function SocialProofToast() {
           <button
             onClick={() => setDismissed(true)}
             className="shrink-0 text-foreground-tertiary transition-colors hover:text-foreground"
-            aria-label="Затвори"
+            aria-label={tc("close")}
           >
             <X className="size-3.5" />
           </button>

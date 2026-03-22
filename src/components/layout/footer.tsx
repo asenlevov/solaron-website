@@ -2,55 +2,12 @@
 
 import { useState } from "react";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import NextLink from "next/link";
 import Image from "next/image";
 import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const products = [
-  { href: "/produkti/solarni-paneli", label: "Соларни Панели" },
-  { href: "/produkti/invertori", label: "Инвертори" },
-  { href: "/produkti/baterii", label: "Батерии" },
-  { href: "/produkti/konstrukcii", label: "Конструкции" },
-  { href: "/produkti/monitoring", label: "Мониторинг" },
-  { href: "/produkti/ev-zaryadni-stantsii", label: "EV Зарядни" },
-] as const;
-
-const solutions = [
-  { href: "/resheniya/za-doma", label: "За Дома" },
-  { href: "/resheniya/za-biznesa", label: "За Бизнеса" },
-  { href: "/resheniya/za-industriyata", label: "За Индустрията" },
-  { href: "/resheniya/za-zemedelieto", label: "За Земеделието" },
-  { href: "/resheniya/solaren-karport", label: "Соларен Карпорт" },
-  { href: "/resheniya/avtonomni-sistemi", label: "Автономни Системи" },
-] as const;
-
-const resources = [
-  { href: "/kak-raboti/slancheva-energiya", label: "Как Работи" },
-  { href: "/kak-raboti/protsesa-na-montazh", label: "Процес на Монтаж" },
-  { href: "/kak-raboti/finansirane", label: "Финансиране" },
-  { href: "/konfigurator", label: "Конфигуратор" },
-  { href: "/proekti", label: "Проекти" },
-  { href: "/instrumenti/roi-kalkulator", label: "ROI Калкулатор" },
-  { href: "/blog", label: "Блог" },
-] as const;
-
-const companyPrimary = [
-  { href: "/kompaniya/za-nas", label: "За Нас" },
-  { href: "/kompaniya/nasledstvo", label: "Наследство" },
-  { href: "/kompaniya/ekip", label: "Екип" },
-  { href: "/kompaniya/sertifikati", label: "Сертификати" },
-  { href: "/kompaniya/partnori", label: "Партньори" },
-  { href: "/kompaniya/karieri", label: "Кариери" },
-  { href: "/kontakti", label: "Контакти" },
-] as const;
-
-const companyLegal = [
-  { href: "/pravna-informatsiya/poveritelnost", label: "Поверителност" },
-  { href: "/pravna-informatsiya/usloviya", label: "Условия" },
-  { href: "/pravna-informatsiya/garantsiya", label: "Гаранция" },
-  { href: "/pravna-informatsiya/biskvitki", label: "Бисквитки" },
-] as const;
+import { useTranslations } from "next-intl";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -70,7 +27,7 @@ const social = [
 function FooterLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <Link
-      href={href}
+      href={href as never}
       className="font-body text-sm text-foreground-secondary transition-colors hover:text-foreground"
     >
       {children}
@@ -86,7 +43,7 @@ function ColumnTitle({ children }: { children: ReactNode }) {
   );
 }
 
-function NewsletterForm() {
+function NewsletterForm({ t }: { t: ReturnType<typeof useTranslations<"Footer">> }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -100,7 +57,7 @@ function NewsletterForm() {
     >
       {submitted ? (
         <p className="text-sm text-accent font-medium">
-          Благодарим ви! Ще получите първия бюлетин скоро.
+          {t("thankYou")}
         </p>
       ) : (
         <div className="flex gap-2">
@@ -109,7 +66,7 @@ function NewsletterForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Вашият имейл"
+            placeholder={t("emailPlaceholder")}
             className="h-10 flex-1 rounded-lg border border-border-medium bg-background px-3 text-sm text-foreground placeholder:text-foreground-tertiary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
           />
           <button
@@ -125,15 +82,62 @@ function NewsletterForm() {
 }
 
 export function Footer({ className }: { className?: string }) {
+  const t = useTranslations("Footer");
+
+  const products = [
+    { href: "/produkti/solarni-paneli", label: t("solarPanels") },
+    { href: "/produkti/invertori", label: t("inverters") },
+    { href: "/produkti/baterii", label: t("batteries") },
+    { href: "/produkti/konstrukcii", label: t("mounting") },
+    { href: "/produkti/monitoring", label: t("monitoring") },
+    { href: "/produkti/ev-zaryadni-stantsii", label: t("evChargers") },
+  ];
+
+  const solutions = [
+    { href: "/resheniya/za-doma", label: t("forHome") },
+    { href: "/resheniya/za-biznesa", label: t("forBusiness") },
+    { href: "/resheniya/za-industriyata", label: t("forIndustry") },
+    { href: "/resheniya/za-zemedelieto", label: t("forAgriculture") },
+    { href: "/resheniya/solaren-karport", label: t("solarCarport") },
+    { href: "/resheniya/avtonomni-sistemi", label: t("offGridSystems") },
+  ];
+
+  const resources = [
+    { href: "/kak-raboti/slancheva-energiya", label: t("howItWorks") },
+    { href: "/kak-raboti/protsesa-na-montazh", label: t("installationProcess") },
+    { href: "/kak-raboti/finansirane", label: t("financing") },
+    { href: "/konfigurator", label: t("configurator") },
+    { href: "/proekti", label: t("projects") },
+    { href: "/instrumenti/roi-kalkulator", label: t("roiCalculator") },
+    { href: "/blog", label: t("blog") },
+  ];
+
+  const companyPrimary = [
+    { href: "/kompaniya/za-nas", label: t("aboutUs") },
+    { href: "/kompaniya/nasledstvo", label: t("heritage") },
+    { href: "/kompaniya/ekip", label: t("team") },
+    { href: "/kompaniya/sertifikati", label: t("certifications") },
+    { href: "/kompaniya/partnori", label: t("partners") },
+    { href: "/kompaniya/karieri", label: t("careers") },
+    { href: "/kontakti", label: t("contacts") },
+  ];
+
+  const companyLegal = [
+    { href: "/pravna-informatsiya/poveritelnost", label: t("privacy") },
+    { href: "/pravna-informatsiya/usloviya", label: t("terms") },
+    { href: "/pravna-informatsiya/garantsiya", label: t("warranty") },
+    { href: "/pravna-informatsiya/biskvitki", label: t("cookies") },
+  ];
+
   return (
     <footer className={cn("bg-[#F5F5F5] text-foreground", className)}>
       {/* Social proof bar */}
       <div className="border-b border-border bg-background-secondary/80">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-foreground-secondary">
-            <span className="font-semibold text-foreground">20+ години опит</span>
+            <span className="font-semibold text-foreground">{t("experience")}</span>
             <span className="hidden sm:inline text-border-medium">|</span>
-            <span>400+ доволни клиенти</span>
+            <span>{t("happyClients")}</span>
             <span className="hidden sm:inline text-border-medium">|</span>
             <span>EUPD Research Award 2024</span>
             <span className="hidden sm:inline text-border-medium">|</span>
@@ -156,7 +160,7 @@ export function Footer({ className }: { className?: string }) {
               />
             </Link>
             <p className="max-w-xs font-body text-sm leading-relaxed text-foreground-secondary">
-              Европейско качество. Българска надеждност.
+              {t("tagline")}
             </p>
 
             <div className="space-y-2 mt-2">
@@ -167,7 +171,7 @@ export function Footer({ className }: { className?: string }) {
                 className="flex items-start gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
               >
                 <MapPin className="size-4 shrink-0 mt-0.5 text-accent" />
-                бул. Черни Връх 59Б, ет. 3, 1407 София
+                {t("address")}
               </a>
               <a
                 href="tel:+35988432156"
@@ -187,7 +191,7 @@ export function Footer({ className }: { className?: string }) {
 
             <div className="flex items-center gap-2 pt-2">
               {social.map(({ href, label, Icon }) => (
-                <Link
+                <NextLink
                   key={label}
                   href={href}
                   target="_blank"
@@ -199,24 +203,24 @@ export function Footer({ className }: { className?: string }) {
                   )}
                 >
                   <Icon className="size-4" aria-hidden />
-                </Link>
+                </NextLink>
               ))}
             </div>
 
             <div className="mt-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-foreground mb-1">
-                Бюлетин
+                {t("newsletter")}
               </p>
               <p className="text-xs text-foreground-secondary">
-                Получавайте съвети за спестявания и новини за соларната индустрия.
+                {t("newsletterDesc")}
               </p>
-              <NewsletterForm />
+              <NewsletterForm t={t} />
             </div>
           </div>
 
           {/* Column 2: Products & Solutions */}
           <div className="flex flex-col gap-4">
-            <ColumnTitle>Продукти</ColumnTitle>
+            <ColumnTitle>{t("productsTitle")}</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {products.map((item) => (
                 <li key={item.href}>
@@ -225,7 +229,7 @@ export function Footer({ className }: { className?: string }) {
               ))}
             </ul>
             <div className="my-1 h-px bg-border" role="separator" />
-            <ColumnTitle>Решения</ColumnTitle>
+            <ColumnTitle>{t("solutionsTitle")}</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {solutions.map((item) => (
                 <li key={item.href}>
@@ -237,7 +241,7 @@ export function Footer({ className }: { className?: string }) {
 
           {/* Column 3: Resources */}
           <div className="flex flex-col gap-4">
-            <ColumnTitle>Ресурси</ColumnTitle>
+            <ColumnTitle>{t("resourcesTitle")}</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {resources.map((item) => (
                 <li key={item.href}>
@@ -249,7 +253,7 @@ export function Footer({ className }: { className?: string }) {
 
           {/* Column 4: Company */}
           <div className="flex flex-col gap-4">
-            <ColumnTitle>Компания</ColumnTitle>
+            <ColumnTitle>{t("companyTitle")}</ColumnTitle>
             <ul className="flex flex-col gap-2.5">
               {companyPrimary.map((item) => (
                 <li key={item.href}>
@@ -271,7 +275,7 @@ export function Footer({ className }: { className?: string }) {
         <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="font-body text-sm text-foreground-secondary">
-              &copy; 2026 Solaron. Всички права запазени.
+              &copy; 2026 Solaron. {t("allRightsReserved")}
             </p>
             <p className="font-body text-xs text-foreground-secondary sm:text-right">
               EUPD Research Award 2024 | SolarEdge Certified

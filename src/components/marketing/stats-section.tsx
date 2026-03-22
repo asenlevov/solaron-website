@@ -2,19 +2,18 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { StatNumber } from "@/components/ui/stat-number";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { REAL_IMAGES } from "@/data/images";
 import { scaleSpring, createStagger } from "@/lib/animations";
 
-const stats = [
-  { value: 20, suffix: "+", context: "години опит" },
-  { value: 384, suffix: "+", context: "доволни клиенти" },
-  { value: 1500, suffix: "+", context: "kWp инсталирани" },
-  { value: 2100, suffix: "+", context: "MWh произведени" },
-];
+const STAT_VALUES = [20, 384, 1500, 2100] as const;
+const STAT_SUFFIXES = ["+", "+", "+", "+"] as const;
+const STAT_KEYS = ["yearsExperience", "happyClients", "kWpInstalled", "mWhProduced"] as const;
 
 export function StatsSection() {
+  const t = useTranslations("Home");
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
 
@@ -42,16 +41,16 @@ export function StatsSection() {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {stats.map((stat) => (
+        {STAT_KEYS.map((key, i) => (
           <motion.div
-            key={stat.context}
+            key={key}
             variants={scaleSpring}
             className="text-center"
           >
             <StatNumber
-              value={stat.value}
-              suffix={stat.suffix}
-              context={stat.context}
+              value={STAT_VALUES[i]!}
+              suffix={STAT_SUFFIXES[i]}
+              context={t(`stats.${key}`)}
               className="text-white"
               contextClassName="text-white/70"
             />

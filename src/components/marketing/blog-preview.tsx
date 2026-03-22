@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
 import { ArrowRight, Clock } from "lucide-react";
 
 import { TextReveal } from "@/components/ui/text-reveal";
@@ -11,49 +12,50 @@ import { cn } from "@/lib/utils";
 import { REAL_IMAGES } from "@/data/images";
 import { createStagger, staggerItem } from "@/lib/animations";
 
-const BLOG_POSTS = [
-  {
-    title: "Как да изберете правилната соларна система за вашия дом",
-    category: "Ръководства",
-    reading: "8 мин.",
-    image: REAL_IMAGES.projects.kran5_1,
-    slug: "/blog/kak-da-izberete-solarna-sistema",
-    featured: true,
-  },
-  {
-    title: "Нетно отчитане в България — пълен наръчник 2025",
-    category: "Законодателство",
-    reading: "12 мин.",
-    image: REAL_IMAGES.projects.vratsa15_1,
-    slug: "/blog/netno-otchitane-bulgaria",
-    featured: false,
-  },
-  {
-    title: "Соларни панели и стойност на имота",
-    category: "Инвестиции",
-    reading: "5 мин.",
-    image: REAL_IMAGES.projects.kazanlak30_1,
-    slug: "/blog/solarni-paneli-stoynost-imot",
-    featured: false,
-  },
-] as const;
-
 const containerVariants = createStagger(0.15, 0.1);
 
 export function BlogPreview() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const t = useTranslations("Home");
 
-  const featured = BLOG_POSTS[0];
+  const BLOG_POSTS = [
+    {
+      title: t("blogPreview.post1Title"),
+      category: t("blogPreview.post1Category"),
+      reading: t("blogPreview.post1Reading"),
+      image: REAL_IMAGES.projects.kran5_1,
+      slug: "/blog/kak-da-izberete-solarna-sistema",
+      featured: true,
+    },
+    {
+      title: t("blogPreview.post2Title"),
+      category: t("blogPreview.post2Category"),
+      reading: t("blogPreview.post2Reading"),
+      image: REAL_IMAGES.projects.vratsa15_1,
+      slug: "/blog/netno-otchitane-bulgaria",
+      featured: false,
+    },
+    {
+      title: t("blogPreview.post3Title"),
+      category: t("blogPreview.post3Category"),
+      reading: t("blogPreview.post3Reading"),
+      image: REAL_IMAGES.projects.kazanlak30_1,
+      slug: "/blog/solarni-paneli-stoynost-imot",
+      featured: false,
+    },
+  ];
+
+  const featured = BLOG_POSTS[0]!;
   const secondary = BLOG_POSTS.slice(1);
 
   return (
     <section className="px-6 py-24 md:px-8 md:py-32 lg:py-40" style={{ backgroundColor: "#f7f7f5" }}>
       <div ref={ref} className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-20">
-          <p className="editorial-overline mb-4">БЛОГ</p>
+          <p className="editorial-overline mb-4">{t("blogPreview.overline")}</p>
           <TextReveal as="h2" className="editorial-heading">
-            Новини и Ръководства
+            {t("blogPreview.title")}
           </TextReveal>
         </div>
 
@@ -65,7 +67,7 @@ export function BlogPreview() {
         >
           {/* Featured large card */}
           <motion.div variants={staggerItem} className="lg:col-span-2">
-            <Link href={featured.slug} className="group block">
+            <Link href={featured.slug as never} className="group block">
               <article className="overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <Image
@@ -97,7 +99,7 @@ export function BlogPreview() {
           <div className="flex flex-col gap-6 lg:gap-8">
             {secondary.map((post) => (
               <motion.div key={post.slug} variants={staggerItem} className="flex-1">
-                <Link href={post.slug} className="group block h-full">
+                <Link href={post.slug as never} className="group block h-full">
                   <article className="flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
@@ -134,13 +136,13 @@ export function BlogPreview() {
           transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <Link
-            href="/blog"
+            href={"/blog" as never}
             className={cn(
               "group inline-flex items-center gap-2 font-display text-base font-semibold text-accent",
               "transition-colors hover:text-accent/80",
             )}
           >
-            Всички Статии
+            {t("blogPreview.allArticles")}
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>

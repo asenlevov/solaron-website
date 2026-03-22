@@ -1,0 +1,480 @@
+"use client";
+
+
+import { useRef, useState } from "react";
+import { motion, useInView } from "motion/react";
+import { cn } from "@/lib/utils";
+import { MagneticButton } from "@/components/ui/magnetic-button";
+import { TextReveal } from "@/components/ui/text-reveal";
+import { StatNumber } from "@/components/ui/stat-number";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowCard } from "@/components/ui/glow-card";
+import { BadgeChip } from "@/components/ui/badge-chip";
+import { ProductPageProjects, RelatedProducts } from "@/components/marketing/product-page-shared";
+import {
+  revealFromBottom,
+  blurIn,
+  slideUp,
+  slideFromLeft,
+  slideFromRight,
+  staggerContainer,
+  staggerItem,
+  createStagger,
+  scaleSpring,
+} from "@/lib/animations";
+import {
+  ArrowRight,
+  Activity,
+  LayoutGrid,
+  Bell,
+  Smartphone,
+  BarChart3,
+  Download,
+  AlertTriangle,
+  AlertCircle,
+  Info,
+  Wifi,
+  Zap,
+  TrendingUp,
+  Sun,
+  ChevronDown,
+  Leaf,
+  Clock,
+  Eye,
+} from "lucide-react";
+
+const features = [
+  { icon: Activity, title: "Данни в реално време", desc: "Моментна мощност, напрежение и ток от всеки панел и инвертор — обновяване на всеки 15 секунди." },
+  { icon: LayoutGrid, title: "Панелен мониторинг", desc: "Визуална карта на покрива с цветово кодиране по производителност на всеки индивидуален модул." },
+  { icon: Bell, title: "Система за известия", desc: "Автоматични нотификации по имейл и push при спад в производство, грешки или аномалии." },
+  { icon: Smartphone, title: "Мобилно приложение", desc: "Пълен контрол от телефона — мониторинг, статистики и известия навсякъде по света." },
+  { icon: BarChart3, title: "Исторически данни", desc: "25 години архив с дневни, месечни и годишни графики за производство и потребление." },
+  { icon: Download, title: "Експорт и API", desc: "Изтегляне на данни в CSV/Excel формат и REST API за интеграция с външни системи." },
+];
+
+const alerts = [
+  { type: "info", icon: Info, title: "Информация", desc: "Планирана поддръжка утре 10:00–12:00", color: "bg-blue-50 border-blue-200 text-blue-700" },
+  { type: "warning", icon: AlertTriangle, title: "Предупреждение", desc: "Панел A7 — 15% спад в производството", color: "bg-amber-50 border-amber-200 text-amber-700" },
+  { type: "critical", icon: AlertCircle, title: "Критично", desc: "Инвертор офлайн — необходима проверка", color: "bg-red-50 border-red-200 text-red-700" },
+];
+
+const mobileFeatures = [
+  "Преглед на производство в реално време",
+  "Push известия за аномалии",
+  "Дневен и месечен отчет",
+  "Споделяне на достъп с инсталатор",
+  "Сравнение по периоди",
+  "Тъмен режим",
+];
+
+const monitoringPlatforms = [
+  {
+    brand: "SolarEdge",
+    platform: "MySolarEdge / mySolarEdge App",
+    panelLevel: true,
+    refreshRate: "15 секунди",
+    dataRetention: "25 години",
+    highlight: "Панелно ниво мониторинг с оптимизатори",
+  },
+  {
+    brand: "Kstar",
+    platform: "SOLARMAN App",
+    panelLevel: false,
+    refreshRate: "5 минути",
+    dataRetention: "10 години",
+    highlight: "Интуитивен интерфейс с дистанционно управление",
+  },
+  {
+    brand: "Deye",
+    platform: "SOLARMAN / Deye Cloud",
+    panelLevel: false,
+    refreshRate: "5 минути",
+    dataRetention: "10 години",
+    highlight: "Мулти-инвертор мониторинг за мащабируеми системи",
+  },
+];
+
+const monitoringFaqs = [
+  { q: "На кои устройства работи приложението?", a: "MySolarEdge приложението е достъпно за iOS (iPhone, iPad) и Android. Уеб платформата работи във всеки модерен браузър — Chrome, Safari, Firefox, Edge." },
+  { q: "Колко дълго се съхраняват данните?", a: "SolarEdge съхранява пълна историческа информация за 25 години — дневни, месечни и годишни данни. Можете да експортирате в CSV/Excel по всяко време." },
+  { q: "Мога ли да наблюдавам няколко системи?", a: "Да. Една акаунт може да управлява неограничен брой инсталации. Идеално за бизнеси с множество обекти или за инсталатори, управляващи портфолио от клиенти." },
+  { q: "Има ли API за интеграция?", a: "Да. SolarEdge предлага REST API за интеграция с ERP, BMS и други системи. Данните за производство, потребление и статус са достъпни в реално време." },
+];
+
+export function MonitoringContent() {
+  const featRef = useRef<HTMLDivElement>(null);
+  const featInView = useInView(featRef, { once: true, margin: "0px 0px -10% 0px" });
+  const mobileRef = useRef<HTMLDivElement>(null);
+  const mobileInView = useInView(mobileRef, { once: true, margin: "0px 0px -10% 0px" });
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  return (
+    <div className="overflow-hidden">
+      {/* 1 — Hero: Dark gradient with dashboard UI */}
+      <section className="relative min-h-[100vh] flex items-center bg-gradient-to-br from-[#0a0f1a] via-[#0f1a2e] to-[#0a1520] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 md:py-40">
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-16 items-center">
+            <div>
+              <motion.div variants={blurIn} initial="hidden" animate="visible">
+                <BadgeChip variant="hero">SolarEdge</BadgeChip>
+              </motion.div>
+              <TextReveal as="h1" className="editorial-hero text-white mt-3">
+                Мониторинг
+              </TextReveal>
+              <motion.p variants={blurIn} initial="hidden" animate="visible" className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body">
+                Реално време. Панел по панел. 24/7 контрол.
+              </motion.p>
+              <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
+                <StatNumber value={15} suffix=" сек." context="Обновяване" className="text-white" contextClassName="text-white/60" />
+                <StatNumber value={25} suffix=" г." context="Данни" className="text-white" contextClassName="text-white/60" />
+                <StatNumber value={99.9} suffix="%" context="Uptime" className="text-white" contextClassName="text-white/60" duration={1500} />
+              </div>
+              <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
+                <MagneticButton href="/konfigurator" variant="primary" size="xl">
+                  Конфигурирай система
+                </MagneticButton>
+              </motion.div>
+            </div>
+
+            <motion.div
+              variants={scaleSpring}
+              initial="hidden"
+              animate="visible"
+              className="bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/10 p-6 md:p-8 shadow-2xl"
+            >
+              <div className="flex items-center gap-2 mb-6">
+                <div className="h-3 w-3 rounded-full bg-accent animate-pulse" />
+                <span className="text-xs text-white/50 font-body tracking-wide uppercase">Live Dashboard</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {[
+                  { icon: Zap, label: "Текуща мощност", val: "6.2 kW", accent: true },
+                  { icon: Sun, label: "Днес", val: "32.5 kWh", accent: false },
+                  { icon: TrendingUp, label: "Този месец", val: "847 kWh", accent: false },
+                  { icon: Wifi, label: "Статус", val: "Онлайн", accent: true },
+                ].map((card) => (
+                  <div key={card.label} className="bg-white/[0.04] rounded-xl p-4 border border-white/[0.06]">
+                    <card.icon className={cn("h-5 w-5 mb-2", card.accent ? "text-accent" : "text-white/30")} />
+                    <p className="text-xs text-white/40 font-body">{card.label}</p>
+                    <p className={cn("text-xl font-display font-bold mt-1", card.accent ? "text-accent" : "text-white")}>{card.val}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs text-white/40 font-body">Производство днес</span>
+                  <span className="text-xs text-accent font-display font-bold">32.5 kWh</span>
+                </div>
+                <div className="flex items-end gap-1.5 h-24">
+                  {[15, 25, 45, 65, 80, 92, 100, 95, 85, 70, 50, 25].map((h, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ delay: 0.5 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ originY: 1, height: `${h}%` }}
+                      className="flex-1 rounded-t bg-gradient-to-t from-accent/30 to-accent"
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between mt-2 text-[10px] text-white/30 font-body">
+                  <span>06:00</span>
+                  <span>09:00</span>
+                  <span>12:00</span>
+                  <span>15:00</span>
+                  <span>18:00</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-8 w-8 text-white/40" />
+        </motion.div>
+      </section>
+
+      {/* 2 — Features Grid */}
+      <section ref={featRef} className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <TextReveal as="h2" className="editorial-display mb-16">
+            Функционалности
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.08, 0.15)}
+            initial="hidden"
+            animate={featInView ? "visible" : "hidden"}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          >
+            {features.map((f) => (
+              <motion.div key={f.title} variants={staggerItem}>
+                <TiltCard className="h-full">
+                  <div className="rounded-2xl border border-border bg-[#f8faf6] p-7 h-full">
+                    <f.icon className="h-7 w-7 text-accent mb-4" strokeWidth={1.5} />
+                    <h3 className="font-display font-bold text-lg">{f.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground font-body leading-relaxed">{f.desc}</p>
+                  </div>
+                </TiltCard>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 3 — Mobile App */}
+      <section ref={mobileRef} className="py-24 md:py-32 bg-foreground text-white">
+        <div className="mx-auto max-w-7xl px-6 grid md:grid-cols-2 gap-16 items-center">
+          <motion.div
+            variants={slideFromLeft}
+            initial="hidden"
+            animate={mobileInView ? "visible" : "hidden"}
+            className="flex justify-center"
+          >
+            <div className="relative w-full max-w-[260px]">
+              <div className="bg-[#1a1f2e] rounded-[2.5rem] p-3 border-2 border-white/10 shadow-2xl">
+                <div className="bg-[#0f1520] rounded-[2rem] overflow-hidden">
+                  <div className="pt-8 pb-4 px-5">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <p className="text-[10px] text-white/40 font-body">Добро утро</p>
+                        <p className="text-sm font-display font-bold text-white">Моята система</p>
+                      </div>
+                      <div className="h-8 w-8 rounded-full bg-accent/20 flex items-center justify-center">
+                        <Sun className="h-4 w-4 text-accent" />
+                      </div>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-4 mb-4">
+                      <p className="text-[10px] text-white/40 font-body">Текущо производство</p>
+                      <p className="text-2xl font-display font-black text-accent mt-1">6.2 kW</p>
+                      <div className="flex items-end gap-0.5 h-10 mt-3">
+                        {[20, 35, 55, 70, 85, 90, 82, 65, 45, 25].map((h, i) => (
+                          <div key={i} className="flex-1 rounded-t-sm bg-accent/50" style={{ height: `${h}%` }} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-[9px] text-white/40 font-body">Днес</p>
+                        <p className="text-sm font-display font-bold text-white">32.5 kWh</p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-[9px] text-white/40 font-body">Спестено</p>
+                        <p className="text-sm font-display font-bold text-accent">12.40 лв</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/10 rounded-full" />
+            </div>
+          </motion.div>
+          <motion.div variants={slideFromRight} initial="hidden" animate={mobileInView ? "visible" : "hidden"}>
+            <p className="editorial-overline text-accent">Мобилно приложение</p>
+            <h2 className="editorial-heading text-white mt-2">Системата в джоба ви</h2>
+            <p className="mt-6 text-lg text-white/50 font-body leading-relaxed">
+              MySolarEdge приложението ви дава пълен контрол навсякъде. Следете производството, получавайте известия и анализирайте данните — от телефона си.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {mobileFeatures.map((feat) => (
+                <li key={feat} className="flex items-center gap-3">
+                  <div className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
+                  <span className="text-white/70 font-body">{feat}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 4 — Alert Types */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-5xl px-6">
+          <TextReveal as="h2" className="editorial-display mb-4">
+            Система за известия
+          </TextReveal>
+          <p className="text-lg text-muted-foreground font-body mb-12 max-w-2xl">
+            Три нива на известия гарантират, че ще бъдете информирани за всичко важно без излишен шум.
+          </p>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid sm:grid-cols-3 gap-5"
+          >
+            {alerts.map((a) => (
+              <motion.div key={a.type} variants={staggerItem}>
+                <div className={cn("rounded-2xl border-2 p-7 h-full", a.color)}>
+                  <a.icon className="h-8 w-8 mb-4" strokeWidth={1.5} />
+                  <h3 className="font-display font-bold text-lg">{a.title}</h3>
+                  <p className="mt-3 text-sm opacity-70 font-body">{a.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 5 — Dashboard Stats (Dark) */}
+      <section className="py-24 md:py-32 bg-[#0a0f1a]">
+        <div className="mx-auto max-w-7xl px-6">
+          <TextReveal as="h2" className="editorial-display text-white mb-16 text-center">
+            Вашите данни, визуализирани
+          </TextReveal>
+          <motion.div
+            variants={createStagger(0.1)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
+            {[
+              { val: 10500, sfx: " kWh", ctx: "Годишно производство" },
+              { val: 4200, sfx: " лв", ctx: "Годишни спестявания" },
+              { val: 7, sfx: " т", ctx: "Спестен CO₂" },
+              { val: 99, sfx: "%", ctx: "Системен uptime" },
+            ].map((s) => (
+              <motion.div key={s.ctx} variants={staggerItem} className="bg-white/5 rounded-2xl p-6 border border-white/5 text-center">
+                <StatNumber value={s.val} suffix={s.sfx} context={s.ctx} className="text-accent text-3xl md:text-4xl" contextClassName="text-white/40" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 6 — ROI of Monitoring */}
+      <section className="py-24 md:py-32 bg-[#f7f9f4]">
+        <div className="mx-auto max-w-5xl px-6">
+          <p className="editorial-overline text-accent">Възвращаемост</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-16">
+            Мониторингът спестява пари
+          </TextReveal>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: "Ранно откриване", desc: "Идентифицирайте проблеми в рамките на минути, преди да загубите седмици производство. Средно 15% по-малко загуби спрямо системи без мониторинг.", stat: "15%", statCtx: "По-малко загуби" },
+              { title: "Оптимизация", desc: "Данните за отделни панели показват кои се нуждаят от почистване или са засенчени — насочвайте усилията точно.", stat: "8%", statCtx: "Повече производство" },
+              { title: "Гаранционни казуси", desc: "Детайлните логове доказват проблеми пред производители и дистрибутори — ускорявайки гаранционни замени.", stat: "3×", statCtx: "По-бърза реакция" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="bg-white rounded-2xl border border-border/50 p-8"
+              >
+                <p className="text-4xl font-display font-black text-accent mb-2">{item.stat}</p>
+                <p className="text-xs text-muted-foreground font-body mb-4">{item.statCtx}</p>
+                <h3 className="font-display font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Monitoring Platform Comparison */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Всички платформи</p>
+          <TextReveal as="h2" className="editorial-heading mt-2 mb-12">
+            Мониторинг от всеки инвертор
+          </TextReveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {monitoringPlatforms.map((platform) => (
+              <motion.div
+                key={platform.brand}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-border p-8 flex flex-col"
+              >
+                <h3 className="font-display font-bold text-xl mb-2">{platform.brand}</h3>
+                <p className="text-sm text-accent font-display font-semibold mb-4">{platform.platform}</p>
+                <div className="space-y-3 flex-1">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Панелно ниво</span>
+                    <span className="text-sm font-display font-semibold">{platform.panelLevel ? "Да" : "Стрингово"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Обновяване</span>
+                    <span className="text-sm font-display font-semibold">{platform.refreshRate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Данни</span>
+                    <span className="text-sm font-display font-semibold">{platform.dataRetention}</span>
+                  </div>
+                </div>
+                <p className="mt-6 pt-4 border-t border-border/50 text-xs text-muted-foreground font-body italic">
+                  {platform.highlight}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7 — FAQ */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-3xl px-6">
+          <TextReveal as="h2" className="editorial-display text-center mb-16">
+            Често задавани въпроси
+          </TextReveal>
+          <div className="space-y-3">
+            {monitoringFaqs.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="border border-border rounded-xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
+                >
+                  <span className="font-display font-semibold">{f.q}</span>
+                  <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform duration-300 shrink-0 ml-4", openFaq === i && "rotate-180")} />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: openFaq === i ? "auto" : 0, opacity: openFaq === i ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-5 pb-5 text-muted-foreground font-body leading-relaxed">{f.a}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <ProductPageProjects />
+      <RelatedProducts currentProductId="monitoring" />
+
+      {/* 6 — CTA */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <TextReveal as="h2" className="editorial-display mb-6">
+            Поемете контрола
+          </TextReveal>
+          <motion.p variants={blurIn} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-lg text-muted-foreground font-body mb-10 max-w-xl mx-auto">
+            Всяка наша инсталация включва безплатен достъп до SolarEdge мониторинг платформата — за целия живот на системата.
+          </motion.p>
+          <MagneticButton href="/konfigurator" variant="dark" size="xl">
+            Конфигурирайте система
+          </MagneticButton>
+        </div>
+      </section>
+    </div>
+  );
+}

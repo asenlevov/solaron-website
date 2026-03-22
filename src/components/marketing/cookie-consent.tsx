@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 
 const STORAGE_KEY = "cookie-consent";
@@ -11,6 +12,7 @@ type ConsentValue = "all" | "essential";
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Common");
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -30,7 +32,7 @@ export function CookieConsent() {
         <motion.div
           ref={bannerRef}
           role="dialog"
-          aria-label="Съгласие за бисквитки"
+          aria-label={t("cookieConsent")}
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
@@ -38,13 +40,12 @@ export function CookieConsent() {
           className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-xl border border-border bg-background p-5 shadow-elevated sm:bottom-6 sm:left-6 sm:right-6"
         >
           <p className="text-sm leading-relaxed text-foreground-secondary">
-            Използваме бисквитки, за да подобрим вашето изживяване и да
-            анализираме трафика на сайта.{" "}
+            {t("cookieText")}{" "}
             <Link
-              href="/pravna-informatsiya/biskvitki"
+              href={"/pravna-informatsiya/biskvitki" as never}
               className="underline underline-offset-4 transition-colors hover:text-foreground"
             >
-              Политика за бисквитки
+              {t("cookiePolicy")}
             </Link>
           </p>
 
@@ -54,14 +55,14 @@ export function CookieConsent() {
               onClick={() => accept("essential")}
               className="inline-flex h-9 items-center justify-center rounded-lg border border-border bg-transparent px-4 text-sm font-medium text-foreground transition-colors hover:bg-background-secondary"
             >
-              Само необходими
+              {t("essentialOnly")}
             </button>
             <button
               type="button"
               onClick={() => accept("all")}
               className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
             >
-              Приеми всички
+              {t("acceptAll")}
             </button>
           </div>
         </motion.div>
