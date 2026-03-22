@@ -26,118 +26,225 @@ function useAnimatedValue(target: number, duration = 1500) {
    ═══════════════════════════════════════════════════════════════ */
 
 export function PanelAnimation() {
-  const watts = useAnimatedValue(450, 2000);
+  const watts = useAnimatedValue(487, 2000);
+  const efficiency = useAnimatedValue(22.8, 2500);
+  const temperature = useAnimatedValue(42, 3000);
 
   return (
-    <svg viewBox="0 0 480 360" className="w-full h-full" style={{ background: "#f0f7ff" }}>
+    <svg viewBox="0 0 480 360" className="w-full h-full">
       <defs>
-        <linearGradient id="p-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#dbeafe" />
-          <stop offset="100%" stopColor="#f0f7ff" />
+        <linearGradient id="pa-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#fafbfd" />
+          <stop offset="100%" stopColor="#f1f3f6" />
         </linearGradient>
-        <linearGradient id="p-cell" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1e3a5f" />
-          <stop offset="100%" stopColor="#152a45" />
+        <linearGradient id="pa-cell" x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0%" stopColor="#14253d" />
+          <stop offset="100%" stopColor="#0c1a2e" />
         </linearGradient>
-        <radialGradient id="p-sunGlow" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0%" stopColor="#FFD700" stopOpacity="0.35" />
-          <stop offset="60%" stopColor="#FFA500" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#FFA500" stopOpacity="0" />
+        <linearGradient id="pa-frame" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#e4e4e7" />
+          <stop offset="100%" stopColor="#c8c8cc" />
+        </linearGradient>
+        <radialGradient id="pa-sun" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#FFD700" stopOpacity="0.5" />
+          <stop offset="50%" stopColor="#FFD700" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#FFD700" stopOpacity="0" />
         </radialGradient>
-        <filter id="p-glow"><feGaussianBlur stdDeviation="3" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-        <filter id="p-softGlow"><feGaussianBlur stdDeviation="6" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <linearGradient id="pa-glass" x1="0.2" y1="0" x2="0.8" y2="1">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.12" />
+          <stop offset="50%" stopColor="#fff" stopOpacity="0.01" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0.06" />
+        </linearGradient>
+        <filter id="pa-glow"><feGaussianBlur stdDeviation="2.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <filter id="pa-sunGlow"><feGaussianBlur stdDeviation="6" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <filter id="pa-shadow"><feDropShadow dx="0" dy="1" stdDeviation="4" floodColor="#0f172a" floodOpacity="0.08" /></filter>
+        <clipPath id="pa-clip"><polygon points="160,72 400,54 420,185 180,203" /></clipPath>
       </defs>
 
-      <rect width="480" height="360" fill="url(#p-sky)" />
+      <rect width="480" height="360" fill="url(#pa-bg)" />
 
       {/* Sun */}
-      <circle cx="390" cy="65" r="70" fill="url(#p-sunGlow)" />
-      <circle cx="390" cy="65" r="32" fill="#FFD700" opacity="0.12" filter="url(#p-softGlow)">
-        <animate attributeName="r" values="32;36;32" dur="4s" repeatCount="indefinite" />
+      <circle cx="430" cy="38" r="90" fill="url(#pa-sun)" />
+      <circle cx="430" cy="38" r="22" fill="#FFD700" opacity="0.07" filter="url(#pa-sunGlow)">
+        <animate attributeName="r" values="22;28;22" dur="5s" repeatCount="indefinite" />
       </circle>
-      <circle cx="390" cy="65" r="18" fill="#FFD700" opacity="0.85">
-        <animate attributeName="r" values="18;20;18" dur="3s" repeatCount="indefinite" />
+      <circle cx="430" cy="38" r="14" fill="#FFD700" opacity="0.9">
+        <animate attributeName="opacity" values="0.85;1;0.85" dur="3s" repeatCount="indefinite" />
       </circle>
-
-      {/* Sun rays */}
-      {Array.from({ length: 8 }, (_, i) => {
-        const angle = (i * 45 - 160) * (Math.PI / 180);
+      {Array.from({ length: 10 }, (_, i) => {
+        const a = (i * 36) * Math.PI / 180;
         return (
-          <line key={i} x1={390 + Math.cos(angle) * 25} y1={65 + Math.sin(angle) * 25}
-            x2={390 + Math.cos(angle) * 45} y2={65 + Math.sin(angle) * 45}
-            stroke="#FFD700" strokeWidth="1.5" opacity="0.35" strokeLinecap="round">
-            <animate attributeName="opacity" values="0.15;0.5;0.15" dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+          <line key={`r${i}`}
+            x1={430 + Math.cos(a) * 18} y1={38 + Math.sin(a) * 18}
+            x2={430 + Math.cos(a) * (32 + (i % 2) * 10)} y2={38 + Math.sin(a) * (32 + (i % 2) * 10)}
+            stroke="#FFD700" strokeWidth={i % 2 ? "0.6" : "1.2"} strokeLinecap="round" opacity="0.25">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur={`${2 + i * 0.25}s`} repeatCount="indefinite" />
           </line>
         );
       })}
 
-      {/* Light beams to panels */}
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <line key={`beam${i}`} x1={375 - i * 6} y1={80 + i * 3} x2={80 + i * 42} y2={145 + i * 5}
-          stroke="#FFD700" strokeWidth="0.6" opacity="0.08" strokeDasharray="5 8">
-          <animate attributeName="stroke-dashoffset" from="13" to="0" dur={`${1.2 + i * 0.12}s`} repeatCount="indefinite" />
+      {/* Light beams from sun to panel */}
+      {[0, 1, 2, 3].map((i) => (
+        <line key={`lb${i}`}
+          x1={420 - i * 10} y1={52 + i * 5}
+          x2={200 + i * 50} y2={90 + i * 25}
+          stroke="#FFD700" strokeWidth="0.4" opacity="0.06" strokeDasharray="4 8">
+          <animate attributeName="stroke-dashoffset" from="12" to="0" dur={`${1.8 + i * 0.2}s`} repeatCount="indefinite" />
         </line>
       ))}
 
-      {/* Rooftop */}
-      <polygon points="30,200 240,130 450,200" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="1" />
-      <polygon points="30,200 240,130 240,144 30,214" fill="#cbd5e1" />
+      {/* Panel shadow on ground */}
+      <polygon points="165,208 425,193 435,200 175,215" fill="#000" opacity="0.03" />
 
-      {/* Solar panel array — 3x2 */}
-      {[0, 1, 2].map((col) =>
-        [0, 1].map((row) => {
-          const x = 62 + col * 118;
-          const y = 144 + row * 30 - col * 7;
-          return (
-            <g key={`panel-${col}-${row}`} transform={`translate(${x}, ${y})`}>
-              <rect x="0" y="0" width="108" height="26" rx="1.5" fill="url(#p-cell)" stroke="#334155" strokeWidth="0.8" />
-              {[1, 2, 3, 4, 5].map((c) => (
-                <line key={`cg${c}`} x1={c * 18} y1="1" x2={c * 18} y2="25" stroke="#1e293b" strokeWidth="0.3" />
-              ))}
-              <line x1="1" y1="13" x2="107" y2="13" stroke="#1e293b" strokeWidth="0.3" />
-              <rect x="0" y="0" width="18" height="26" rx="1" fill="white" opacity="0.06">
-                <animate attributeName="x" values="-18;126" dur={`${4 + col * 0.5}s`} repeatCount="indefinite" />
-              </rect>
-            </g>
-          );
-        })
-      )}
+      {/* Aluminum frame */}
+      <polygon points="153,68 407,50 432,189 178,207" fill="url(#pa-frame)" stroke="#b4b4b8" strokeWidth="0.8" />
 
-      {/* Energy particles from panels down */}
-      {Array.from({ length: 10 }, (_, i) => {
-        const startX = 110 + (i % 3) * 100;
+      {/* PV cell surface */}
+      <polygon points="160,72 400,54 420,185 180,203" fill="url(#pa-cell)" />
+
+      {/* Cell grid — horizontal */}
+      {Array.from({ length: 6 }, (_, i) => {
+        const t = (i + 1) / 7;
         return (
-          <circle key={`p-${i}`} r={2 + (i % 2)} fill={i % 2 === 0 ? "#FFD700" : "#3B7A2A"} filter="url(#p-glow)" opacity="0">
-            <animateMotion dur={`${1.6 + (i % 4) * 0.25}s`} repeatCount="indefinite" begin={`${i * 0.25}s`}
-              path={`M${startX},${152 + (i % 2) * 22} C${startX + 8},${195} ${175 + (i % 3) * 15},${240} ${195},${278}`} />
-            <animate attributeName="opacity" values="0;0.8;0.8;0" dur={`${1.6 + (i % 4) * 0.25}s`} repeatCount="indefinite" begin={`${i * 0.25}s`} />
-            <animate attributeName="fill" values="#FFD700;#3B7A2A" dur={`${1.6 + (i % 4) * 0.25}s`} repeatCount="indefinite" begin={`${i * 0.25}s`} />
+          <line key={`gh${i}`}
+            x1={160 + (180 - 160) * t} y1={72 + (203 - 72) * t}
+            x2={400 + (420 - 400) * t} y2={54 + (185 - 54) * t}
+            stroke="#1c3050" strokeWidth="0.3" opacity="0.6" />
+        );
+      })}
+
+      {/* Cell grid — vertical */}
+      {Array.from({ length: 10 }, (_, i) => {
+        const t = (i + 1) / 11;
+        return (
+          <line key={`gv${i}`}
+            x1={160 + (400 - 160) * t} y1={72 + (54 - 72) * t}
+            x2={180 + (420 - 180) * t} y2={203 + (185 - 203) * t}
+            stroke="#1c3050" strokeWidth="0.3" opacity="0.6" />
+        );
+      })}
+
+      {/* Busbars (silver conductor lines) */}
+      {[0.33, 0.66].map((t, i) => (
+        <line key={`bus${i}`}
+          x1={160 + (400 - 160) * t} y1={72 + (54 - 72) * t}
+          x2={180 + (420 - 180) * t} y2={203 + (185 - 203) * t}
+          stroke="#b0b8c4" strokeWidth="0.7" opacity="0.25" />
+      ))}
+
+      {/* Glass refraction overlay */}
+      <polygon points="160,72 400,54 420,185 180,203" fill="url(#pa-glass)" />
+
+      {/* Animated shimmer sweep across panel */}
+      <g clipPath="url(#pa-clip)">
+        <rect y="30" width="30" height="220" fill="white" opacity="0.07">
+          <animate attributeName="x" values="100;470;100" dur="5s" repeatCount="indefinite" />
+        </rect>
+      </g>
+
+      {/* Photon particles — sun to panel (golden) */}
+      {Array.from({ length: 10 }, (_, i) => {
+        const tx = 200 + (i % 5) * 45;
+        const ty = 70 + (i % 4) * 30;
+        return (
+          <circle key={`ph${i}`} r={1.2 + (i % 3) * 0.4} fill="#FFD700" opacity="0" filter="url(#pa-glow)">
+            <animateMotion dur={`${1 + (i % 4) * 0.2}s`} repeatCount="indefinite" begin={`${i * 0.18}s`}
+              path={`M${420 - i * 3},${45 + i * 2} L${tx},${ty}`} />
+            <animate attributeName="opacity" values="0;0.85;0.85;0" dur={`${1 + (i % 4) * 0.2}s`} repeatCount="indefinite" begin={`${i * 0.18}s`} />
           </circle>
         );
       })}
 
-      {/* Output meter card */}
-      <g transform="translate(165, 280)">
-        <rect x="0" y="0" width="150" height="44" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="1.5" />
-        <circle cx="18" cy="22" r="5" fill="#3B7A2A" opacity="0.15" />
-        <circle cx="18" cy="22" r="2.5" fill="#3B7A2A">
-          <animate attributeName="r" values="2.5;3.5;2.5" dur="1.5s" repeatCount="indefinite" />
-        </circle>
-        <text x="32" y="17" fill="#64748b" fontSize="8" fontFamily="system-ui">Производство</text>
-        <text x="32" y="33" fill="#3B7A2A" fontSize="16" fontWeight="900" fontFamily="system-ui">{Math.round(watts)}W</text>
-        {/* Mini bar */}
-        <rect x="112" y="10" width="26" height="24" rx="4" fill="#f0fdf4" stroke="#d1fae5" strokeWidth="0.8" />
-        {[0, 1, 2, 3, 4].map((b) => (
-          <rect key={b} x="116" y={28 - b * 5} width="18" height="3" rx="1"
-            fill={b < Math.floor(watts / 100) ? "#3B7A2A" : "#e2e8f0"}
-            opacity={b < Math.floor(watts / 100) ? 0.8 : 0.4} />
+      {/* Energy particles — panel to output (green) */}
+      {Array.from({ length: 8 }, (_, i) => {
+        const sx = 220 + (i % 4) * 50;
+        return (
+          <circle key={`en${i}`} r={1.5 + (i % 2) * 0.8} fill="#3B7A2A" opacity="0" filter="url(#pa-glow)">
+            <animateMotion dur={`${1.3 + (i % 3) * 0.2}s`} repeatCount="indefinite" begin={`${i * 0.22}s`}
+              path={`M${sx},${195 + (i % 2) * 8} Q${sx - 20},240 ${240},268`} />
+            <animate attributeName="opacity" values="0;0.75;0.75;0" dur={`${1.3 + (i % 3) * 0.2}s`} repeatCount="indefinite" begin={`${i * 0.22}s`} />
+          </circle>
+        );
+      })}
+
+      {/* MWT cross-section — exploded layer view */}
+      <g transform="translate(12, 58)">
+        <text x="0" y="-4" fill="#a1a1aa" fontSize="6.5" fontWeight="700" fontFamily="system-ui" letterSpacing="1.5">MWT ТЕХНОЛОГИЯ</text>
+
+        {[
+          { y: 6, h: 16, label: "Закалено стъкло", fill: "#dbeafe", stroke: "#93c5fd", text: "#3b82f6" },
+          { y: 28, h: 12, label: "EVA плёнка", fill: "#fef3c7", stroke: "#fbbf24", text: "#b45309" },
+          { y: 46, h: 22, label: "Si фотоклетка", fill: "#162844", stroke: "#3b82f6", text: "#93c5fd" },
+          { y: 74, h: 14, label: "MWT проводник", fill: "#e5e7eb", stroke: "#9ca3af", text: "#6b7280" },
+          { y: 94, h: 12, label: "Backsheet", fill: "#f9fafb", stroke: "#d1d5db", text: "#9ca3af" },
+        ].map((l, i) => (
+          <g key={`l${i}`} opacity="0">
+            <animate attributeName="opacity" from="0" to="1" dur="0.6s" begin={`${0.4 + i * 0.25}s`} fill="freeze" />
+            <rect x="0" y={l.y} width="120" height={l.h} rx="3" fill={l.fill} stroke={l.stroke} strokeWidth="0.7" />
+            <text x="60" y={l.y + l.h / 2 + 3} textAnchor="middle" fill={l.text} fontSize="6.5" fontWeight="600" fontFamily="system-ui">{l.label}</text>
+            {i === 3 && [0, 1, 2, 3, 4].map((v) => (
+              <circle key={`via${v}`} cx={12 + v * 24} cy={l.y + l.h / 2} r="3" fill="#d4d4d8" stroke="#9ca3af" strokeWidth="0.5" />
+            ))}
+          </g>
         ))}
+
+        {[22, 40, 68, 88].map((y, i) => (
+          <line key={`gap${i}`} x1="60" y1={y} x2="60" y2={y + 6} stroke="#d1d5db" strokeWidth="0.4" strokeDasharray="1.5 1.5" opacity="0">
+            <animate attributeName="opacity" from="0" to="0.5" dur="0.3s" begin={`${0.65 + i * 0.25}s`} fill="freeze" />
+          </line>
+        ))}
+
+        <g opacity="0">
+          <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2s" fill="freeze" />
+          <text x="60" y="-14" textAnchor="middle" fill="#FFD700" fontSize="7" fontWeight="700" fontFamily="system-ui">hν ↓ фотон</text>
+        </g>
+        <g opacity="0">
+          <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.3s" fill="freeze" />
+          <line x1="60" y1="108" x2="60" y2="122" stroke="#3B7A2A" strokeWidth="1.2" strokeDasharray="3 2">
+            <animate attributeName="stroke-dashoffset" from="5" to="0" dur="0.5s" repeatCount="indefinite" />
+          </line>
+          <text x="60" y="132" textAnchor="middle" fill="#3B7A2A" fontSize="7" fontWeight="700" fontFamily="system-ui">e⁻ → ток</text>
+        </g>
       </g>
 
-      {/* Energy line down */}
-      <line x1="240" y1="324" x2="240" y2="355" stroke="#3B7A2A" strokeWidth="1.5" opacity="0.25" strokeDasharray="3 4">
-        <animate attributeName="stroke-dashoffset" from="7" to="0" dur="0.8s" repeatCount="indefinite" />
-      </line>
+      {/* Dashboard — three stat cards */}
+      <g transform="translate(20, 278)">
+        <g filter="url(#pa-shadow)">
+          <rect x="0" y="0" width="140" height="58" rx="10" fill="white" />
+          <circle cx="18" cy="17" r="5.5" fill="#3B7A2A" opacity="0.1" />
+          <circle cx="18" cy="17" r="2.5" fill="#3B7A2A">
+            <animate attributeName="r" values="2.5;3.5;2.5" dur="1.5s" repeatCount="indefinite" />
+          </circle>
+          <text x="30" y="20" fill="#a1a1aa" fontSize="7.5" fontWeight="600" fontFamily="system-ui">Мощност</text>
+          <text x="12" y="47" fill="#1a1a1a" fontSize="22" fontWeight="900" fontFamily="system-ui">{Math.round(watts)}</text>
+          <text x={Math.round(watts) >= 100 ? 88 : 68} y="47" fill="#a1a1aa" fontSize="11" fontWeight="500" fontFamily="system-ui">W</text>
+          <polyline points="104,42 109,34 114,38 119,26 124,30 129,20" fill="none" stroke="#3B7A2A" strokeWidth="1.2" opacity="0.35" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+
+        <g transform="translate(152, 0)" filter="url(#pa-shadow)">
+          <rect x="0" y="0" width="140" height="58" rx="10" fill="white" />
+          <text x="12" y="18" fill="#a1a1aa" fontSize="7.5" fontWeight="600" fontFamily="system-ui">Ефективност</text>
+          <text x="12" y="47" fill="#3B7A2A" fontSize="22" fontWeight="900" fontFamily="system-ui">{efficiency.toFixed(1)}</text>
+          <text x="90" y="47" fill="#3B7A2A" fontSize="11" fontWeight="500" fontFamily="system-ui">%</text>
+          <g transform="translate(120, 30)">
+            <circle cx="0" cy="0" r="14" fill="none" stroke="#f0fdf4" strokeWidth="3" />
+            <circle cx="0" cy="0" r="14" fill="none" stroke="#3B7A2A" strokeWidth="3" strokeDasharray="80 88" strokeLinecap="round" transform="rotate(-90)" opacity="0.55">
+              <animate attributeName="stroke-dasharray" values="0 88;80 88" dur="2s" fill="freeze" />
+            </circle>
+          </g>
+        </g>
+
+        <g transform="translate(304, 0)" filter="url(#pa-shadow)">
+          <rect x="0" y="0" width="140" height="58" rx="10" fill="white" />
+          <text x="12" y="18" fill="#a1a1aa" fontSize="7.5" fontWeight="600" fontFamily="system-ui">Температура</text>
+          <text x="12" y="47" fill="#64748b" fontSize="22" fontWeight="900" fontFamily="system-ui">{Math.round(temperature)}</text>
+          <text x="62" y="47" fill="#a1a1aa" fontSize="11" fontWeight="500" fontFamily="system-ui">°C</text>
+          {[0, 1, 2, 3, 4, 5].map((b) => (
+            <rect key={`t${b}`} x={96 + b * 7} y={44 - b * 5} width="4" height={8 + b * 5} rx="2"
+              fill={b < 4 ? "#3B7A2A" : "#f59e0b"} opacity={b < Math.floor(temperature / 10) ? 0.45 : 0.08} />
+          ))}
+        </g>
+      </g>
     </svg>
   );
 }
@@ -294,6 +401,7 @@ export function InverterAnimation() {
 
 export function BatteryAnimation() {
   const [isDay, setIsDay] = useState(true);
+  const soh = useAnimatedValue(98, 2000);
 
   useEffect(() => {
     const interval = setInterval(() => setIsDay((p) => !p), 5000);
@@ -301,118 +409,263 @@ export function BatteryAnimation() {
   }, []);
 
   const level = isDay ? 95 : 30;
-  const bg = isDay ? "#f5f9ff" : "#1a2030";
-  const cardBg = isDay ? "white" : "#1e293b";
-  const cardBorder = isDay ? "#e2e8f0" : "#334155";
-  const textPrimary = isDay ? "#1a1a1a" : "white";
+  const bg = isDay ? "#f0f5ff" : "#080e1a";
+  const cardBg = isDay ? "white" : "#111827";
+  const cardBorder = isDay ? "#e2e8f0" : "#1e293b";
+  const textPrimary = isDay ? "#0f172a" : "#e2e8f0";
   const textSecondary = isDay ? "#64748b" : "#94a3b8";
-  const textTertiary = isDay ? "#94a3b8" : "#64748b";
+  const accent = isDay ? "#FFD700" : "#6366f1";
+  const cellCount = 8;
+  const filledCells = Math.round((level / 100) * cellCount);
+  const R = 88;
+  const C = 2 * Math.PI * R;
+  const arcLen = C * 0.75;
+  const filledLen = (level / 100) * arcLen;
 
   return (
-    <svg viewBox="0 0 480 360" className="w-full h-full" style={{ background: bg, transition: "background 1.5s" }}>
+    <svg viewBox="0 0 480 360" className="w-full h-full" style={{ background: bg, transition: "background 1.5s ease" }}>
       <defs>
         <filter id="b-glow"><feGaussianBlur stdDeviation="3.5" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-        <linearGradient id="b-charge" x1="0" y1="1" x2="0" y2="0">
+        <filter id="b-softGlow"><feGaussianBlur stdDeviation="6" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <filter id="b-cellGlow"><feGaussianBlur stdDeviation="2" /><feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+        <linearGradient id="b-gaugeGrad" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stopColor="#dc2626" />
+          <stop offset="35%" stopColor="#FFD700" />
+          <stop offset="65%" stopColor="#4ade80" />
+          <stop offset="100%" stopColor="#3B7A2A" />
+        </linearGradient>
+        <linearGradient id="b-cellFill" x1="0" y1="1" x2="0" y2="0">
           <stop offset="0%" stopColor="#3B7A2A" />
           <stop offset="100%" stopColor="#4ade80" />
         </linearGradient>
       </defs>
 
-      <rect x="0" y="0" width="480" height="3" fill={isDay ? "#FFD700" : "#6366f1"} opacity="0.3" style={{ transition: "fill 1.5s" }} />
-      <text x="240" y="24" textAnchor="middle" fill={textSecondary} fontSize="10" fontWeight="bold" fontFamily="system-ui" letterSpacing="2" style={{ transition: "fill 1.5s" }}>
-        {isDay ? "ДНЕВЕН РЕЖИМ — ЗАРЕЖДАНЕ" : "НОЩЕН РЕЖИМ — ЗАХРАНВАНЕ"}
+      {/* Ambient glow — day */}
+      <circle cx="240" cy="142" r="130" fill="#FFD700" opacity={isDay ? 0.06 : 0} style={{ transition: "opacity 1.5s" }}>
+        <animate attributeName="r" values="120;140;120" dur="4s" repeatCount="indefinite" />
+      </circle>
+      {/* Ambient glow — night */}
+      <circle cx="240" cy="142" r="130" fill="#6366f1" opacity={!isDay ? 0.08 : 0} style={{ transition: "opacity 1.5s" }}>
+        <animate attributeName="r" values="120;140;120" dur="4s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Top mode bar */}
+      <rect x="0" y="0" width="480" height="3" fill={accent} opacity="0.5" style={{ transition: "fill 1.5s" }} />
+      <text x="240" y="20" textAnchor="middle" fill={textSecondary} fontSize="9" fontWeight="bold" fontFamily="system-ui" letterSpacing="3" style={{ transition: "fill 1.5s" }}>
+        {isDay ? "☀ ДНЕВЕН РЕЖИМ — ЗАРЕЖДАНЕ" : "☾ НОЩЕН РЕЖИМ — ЗАХРАНВАНЕ"}
       </text>
 
-      {/* Solar Panels */}
-      <g transform="translate(30, 48)" opacity={isDay ? 1 : 0.3} style={{ transition: "opacity 1.5s" }}>
-        <rect x="0" y="0" width="100" height="68" rx="8" fill={cardBg} stroke={isDay ? "#3B7A2A" : cardBorder} strokeWidth="1.2" style={{ transition: "all 1.5s" }} />
-        <text x="50" y="18" textAnchor="middle" fill={isDay ? "#3B7A2A" : textTertiary} fontSize="8" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>ПАНЕЛИ</text>
+      {/* ═══ CIRCULAR POWER GAUGE ═══ */}
+      <circle cx="240" cy="142" r={R} fill="none"
+        stroke={isDay ? "#e2e8f0" : "#1e293b"} strokeWidth="7" strokeLinecap="round"
+        strokeDasharray={`${arcLen} ${C}`} transform="rotate(135, 240, 142)"
+        style={{ transition: "stroke 1.5s" }} />
+      {Array.from({ length: 28 }, (_, i) => {
+        const angle = (135 + i * (270 / 27)) * Math.PI / 180;
+        const r1 = R + 5;
+        const r2 = i % 3 === 0 ? R + 11 : R + 8;
+        return (
+          <line key={`gt${i}`}
+            x1={240 + r1 * Math.cos(angle)} y1={142 + r1 * Math.sin(angle)}
+            x2={240 + r2 * Math.cos(angle)} y2={142 + r2 * Math.sin(angle)}
+            stroke={textSecondary} strokeWidth={i % 3 === 0 ? "1.2" : "0.5"} opacity="0.3"
+            style={{ transition: "stroke 1.5s" }} />
+        );
+      })}
+      <circle cx="240" cy="142" r={R} fill="none"
+        stroke="url(#b-gaugeGrad)" strokeWidth="7" strokeLinecap="round"
+        strokeDasharray={`${filledLen} ${C}`} transform="rotate(135, 240, 142)"
+        filter="url(#b-cellGlow)"
+        style={{ transition: "stroke-dasharray 2s ease-in-out" }} />
+      <text x="240" y="250" textAnchor="middle" fill={isDay ? "#3B7A2A" : "#4ade80"} fontSize="11" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
+        {isDay ? "+4.5 kW" : "−2.1 kW"}
+      </text>
+      <text x="240" y="262" textAnchor="middle" fill={textSecondary} fontSize="7" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
+        {isDay ? "Скорост на зареждане" : "Разход на енергия"}
+      </text>
+
+      {/* ═══ BATTERY BODY ═══ */}
+      <rect x="222" y="54" width="36" height="9" rx="4" fill={isDay ? "#d1fae5" : "#1a3a2a"} stroke="#3B7A2A" strokeWidth="1.2" style={{ transition: "fill 1.5s" }} />
+      <rect x="204" y="62" width="72" height="138" rx="10" fill={isDay ? "#f0f4f8" : "#141e30"} stroke="#3B7A2A" strokeWidth="2.5" style={{ transition: "fill 1.5s" }} />
+      {[[207, 65], [273, 65], [207, 197], [273, 197]].map(([cx, cy], i) => (
+        <circle key={`cn${i}`} cx={cx} cy={cy} r="1.5" fill="#3B7A2A" opacity="0.35" />
+      ))}
+      <rect x="210" y="68" width="60" height="126" rx="6" fill={isDay ? "#f1f5f9" : "#070d18"} style={{ transition: "fill 1.5s" }} />
+
+      {/* Scan line */}
+      <clipPath id="b-cellClip"><rect x="210" y="68" width="60" height="126" rx="6" /></clipPath>
+      <rect x="210" y="68" width="60" height="2" fill="#4ade80" opacity="0.1" clipPath="url(#b-cellClip)">
+        <animate attributeName="y" values="68;192;68" dur="3s" repeatCount="indefinite" />
+      </rect>
+
+      {/* LFP Cells */}
+      {Array.from({ length: cellCount }, (_, i) => {
+        const cellH = 12;
+        const gap = 2.5;
+        const cellY = 186 - i * (cellH + gap);
+        const filled = i < filledCells;
+        return (
+          <g key={`cell${i}`}>
+            <rect x="214" y={cellY} width="52" height={cellH} rx="3"
+              fill={filled ? "url(#b-cellFill)" : (isDay ? "#e2e8f0" : "#151f30")}
+              stroke={filled ? "#3B7A2A" : (isDay ? "#cbd5e1" : "#1e293b")}
+              strokeWidth="0.7" opacity={filled ? 1 : 0.35}
+              style={{ transition: "all 1.8s ease-in-out" }} />
+            {filled && (
+              <>
+                <rect x="216" y={cellY + 2} width="48" height={cellH - 4} rx="2"
+                  fill="#4ade80" opacity="0.12" filter="url(#b-cellGlow)">
+                  <animate attributeName="opacity" values="0.08;0.22;0.08" dur={`${1.8 + i * 0.2}s`} repeatCount="indefinite" />
+                </rect>
+                <line x1="232" y1={cellY + 2} x2="232" y2={cellY + cellH - 2} stroke="#3B7A2A" strokeWidth="0.3" opacity="0.2" />
+                <line x1="248" y1={cellY + 2} x2="248" y2={cellY + cellH - 2} stroke="#3B7A2A" strokeWidth="0.3" opacity="0.2" />
+              </>
+            )}
+          </g>
+        );
+      })}
+
+      {/* Battery percentage */}
+      <text x="240" y="146" textAnchor="middle" fill={textPrimary} fontSize="26" fontWeight="900" fontFamily="system-ui"
+        stroke={isDay ? "#f0f4f8" : "#141e30"} strokeWidth="4" paintOrder="stroke"
+        style={{ transition: "fill 1.5s, stroke 1.5s" }}>
+        {level}%
+      </text>
+      <text x="240" y="160" textAnchor="middle" fill="#3B7A2A" fontSize="7.5" fontWeight="bold" fontFamily="system-ui" letterSpacing="0.8"
+        stroke={isDay ? "#f0f4f8" : "#141e30"} strokeWidth="3" paintOrder="stroke"
+        style={{ transition: "stroke 1.5s" }}>
+        LFP 13.5 kWh
+      </text>
+
+      {/* ═══ READOUT CARDS ═══ */}
+      <g transform="translate(90, 38)">
+        <rect x="0" y="0" width="76" height="34" rx="6" fill={cardBg} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
+        <text x="8" y="13" fill={textSecondary} fontSize="6.5" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>Температура</text>
+        <text x="8" y="28" fill={textPrimary} fontSize="13" fontWeight="900" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
+          {isDay ? "28" : "22"}°C
+        </text>
+        <circle cx="67" cy="17" r="3.5" fill={isDay ? "#fef3c7" : "#1e1b4b"} style={{ transition: "fill 1.5s" }}>
+          <animate attributeName="r" values="3;4;3" dur="3s" repeatCount="indefinite" />
+        </circle>
+      </g>
+      <g transform="translate(314, 38)">
+        <rect x="0" y="0" width="76" height="34" rx="6" fill={cardBg} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
+        <text x="8" y="13" fill={textSecondary} fontSize="6.5" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>Цикли</text>
+        <text x="8" y="28" fill={textPrimary} fontSize="13" fontWeight="900" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>342</text>
+      </g>
+      <g transform="translate(314, 78)">
+        <rect x="0" y="0" width="76" height="34" rx="6" fill={cardBg} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
+        <text x="8" y="13" fill={textSecondary} fontSize="6.5" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>SOH</text>
+        <text x="8" y="28" fill="#3B7A2A" fontSize="13" fontWeight="900" fontFamily="system-ui">{Math.round(soh)}%</text>
+        <rect x="56" y="8" width="14" height="18" rx="3" fill={isDay ? "#f0fdf4" : "#0f2a1a"} style={{ transition: "fill 1.5s" }} />
+        <rect x="58" y={8 + 18 - Math.round((soh / 100) * 14)} width="10" height={Math.round((soh / 100) * 14)} rx="2" fill="#3B7A2A" opacity="0.5" style={{ transition: "all 2s" }} />
+      </g>
+
+      {/* ═══ PANEL ICON (Left) ═══ */}
+      <g transform="translate(16, 118)" opacity={isDay ? 1 : 0.2} style={{ transition: "opacity 1.5s" }}>
+        <rect x="0" y="0" width="60" height="48" rx="6" fill={cardBg} stroke={isDay ? "#3B7A2A" : cardBorder} strokeWidth="1" style={{ transition: "all 1.5s" }} />
         {[0, 1, 2, 3].map((i) => (
-          <rect key={i} x={12 + (i % 2) * 40} y={26 + Math.floor(i / 2) * 17} width="36" height="13" rx="2"
-            fill={isDay ? "#f0fdf4" : "#1a2535"} stroke={isDay ? "#3B7A2A" : "#333"} strokeWidth="0.5" style={{ transition: "all 1.5s" }} />
+          <rect key={i} x={6 + (i % 2) * 25} y={6 + Math.floor(i / 2) * 14} width="21" height="10" rx="1.5"
+            fill={isDay ? "#1e3a5f" : "#1a2535"} stroke={isDay ? "#334155" : "#222"} strokeWidth="0.5" style={{ transition: "all 1.5s" }} />
         ))}
-        <text x="50" y="64" textAnchor="middle" fill={isDay ? "#3B7A2A" : textTertiary} fontSize="10" fontWeight="900" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
-          {isDay ? "4.5 kW" : "0 kW"}
+        <text x="30" y="44" textAnchor="middle" fill={isDay ? "#3B7A2A" : textSecondary} fontSize="7" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
+          {isDay ? "4.5kW" : "0kW"}
         </text>
       </g>
 
-      {/* Battery */}
-      <g transform="translate(175, 43)">
-        <rect x="0" y="0" width="130" height="78" rx="8" fill={cardBg} stroke="#3B7A2A" strokeWidth="2" style={{ transition: "fill 1.5s" }} />
-        <rect x="48" y="-5" width="34" height="7" rx="3" fill={isDay ? "#d1fae5" : "#2a4a2a"} style={{ transition: "fill 1.5s" }} />
-        <rect x="8" y="14" width="114" height="48" rx="4" fill={isDay ? "#f1f5f9" : "#0f172a"} style={{ transition: "fill 1.5s" }} />
-        <rect x="8" y={14 + 48 - (level / 100) * 48} width="114" height={(level / 100) * 48} rx="4" fill="url(#b-charge)" opacity="0.75" style={{ transition: "all 2s ease-in-out" }}>
-          <animate attributeName="opacity" values="0.65;0.85;0.65" dur="2s" repeatCount="indefinite" />
-        </rect>
-        <text x="65" y="46" textAnchor="middle" fill={textPrimary} fontSize="20" fontWeight="900" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>{level}%</text>
-        <text x="65" y="74" textAnchor="middle" fill="#3B7A2A" fontSize="7" fontWeight="bold" fontFamily="system-ui">13.5 kWh LFP</text>
+      {/* ═══ HOUSE ICON (Right) ═══ */}
+      <g transform="translate(404, 118)" opacity={!isDay ? 1 : 0.5} style={{ transition: "opacity 1.5s" }}>
+        <rect x="0" y="0" width="60" height="48" rx="6" fill={cardBg} stroke={!isDay ? "#3B7A2A" : cardBorder} strokeWidth="1" style={{ transition: "all 1.5s" }} />
+        <polygon points="30,6 12,20 48,20" fill={!isDay ? "#4ade80" : "#e2e8f0"} opacity="0.5" style={{ transition: "fill 1.5s" }} />
+        <rect x="16" y="20" width="28" height="16" fill={!isDay ? "#1a3a2a" : "#f1f5f9"} style={{ transition: "fill 1.5s" }} />
+        <rect x="26" y="22" width="10" height="10" fill={!isDay ? "#ffe0a0" : "#e2e8f0"} opacity={!isDay ? 0.9 : 0.3} style={{ transition: "all 1.5s" }} />
+        <text x="30" y="44" textAnchor="middle" fill={textPrimary} fontSize="7" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>2.1kW</text>
       </g>
 
-      {/* House */}
-      <g transform="translate(350, 48)">
-        <rect x="0" y="0" width="100" height="68" rx="8" fill={cardBg} stroke={!isDay ? "#3B7A2A" : cardBorder} strokeWidth="1.2" style={{ transition: "all 1.5s" }} />
-        <text x="50" y="18" textAnchor="middle" fill={!isDay ? "#3B7A2A" : textSecondary} fontSize="8" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>ДОМА</text>
-        <polygon points="50,26 28,42 72,42" fill={!isDay ? "#3B7A2A" : "#e2e8f0"} style={{ transition: "fill 1.5s" }} />
-        <rect x="32" y="42" width="36" height="16" fill={!isDay ? "#1a3a2a" : "#f1f5f9"} style={{ transition: "fill 1.5s" }} />
-        <rect x="43" y="44" width="14" height="14" fill={!isDay ? "#ffe0a0" : "#e2e8f0"} opacity={!isDay ? 0.8 : 0.4} style={{ transition: "all 1.5s" }} />
-        <text x="50" y="72" textAnchor="middle" fill={textPrimary} fontSize="9" fontWeight="bold" fontFamily="system-ui" opacity="0.7" style={{ transition: "fill 1.5s" }}>2.1 kW</text>
-      </g>
-
-      {/* Grid */}
-      <g transform="translate(350, 150)">
-        <rect x="0" y="0" width="100" height="50" rx="8" fill={cardBg} stroke={cardBorder} strokeWidth="1" style={{ transition: "all 1.5s" }} />
-        <text x="50" y="17" textAnchor="middle" fill={textTertiary} fontSize="8" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>МРЕЖА</text>
-        <line x1="40" y1="26" x2="40" y2="43" stroke={textTertiary} strokeWidth="1.5" style={{ transition: "stroke 1.5s" }} />
-        <line x1="60" y1="26" x2="60" y2="43" stroke={textTertiary} strokeWidth="1.5" style={{ transition: "stroke 1.5s" }} />
-        <line x1="35" y1="30" x2="65" y2="30" stroke={textTertiary} strokeWidth="1.2" style={{ transition: "stroke 1.5s" }} />
-        <line x1="37" y1="37" x2="63" y2="37" stroke={textTertiary} strokeWidth="0.8" style={{ transition: "stroke 1.5s" }} />
-      </g>
-
-      {/* Flow particles */}
-      {isDay && [0, 1, 2, 3, 4].map((i) => (
-        <circle key={`pb${i}`} r="3" fill="#FFD700" opacity="0" filter="url(#b-glow)">
-          <animateMotion dur="1.5s" repeatCount="indefinite" begin={`${i * 0.3}s`} path="M130,82 L175,82" />
-          <animate attributeName="opacity" values="0;0.8;0" dur="1.5s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
-        </circle>
+      {/* ═══ ENERGY FLOW PARTICLES ═══ */}
+      {isDay && Array.from({ length: 8 }, (_, i) => (
+        <g key={`pb${i}`}>
+          <circle r={2.5 + (i % 2)} fill="#FFD700" opacity="0" filter="url(#b-glow)">
+            <animateMotion dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12}s`}
+              path="M76,142 C115,142 168,132 204,132" />
+            <animate attributeName="opacity" values="0;0.85;0.85;0" dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12}s`} />
+          </circle>
+          <circle r="1.2" fill="#FFD700" opacity="0" filter="url(#b-softGlow)">
+            <animateMotion dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12 + 0.06}s`}
+              path="M76,142 C115,142 168,132 204,132" />
+            <animate attributeName="opacity" values="0;0.35;0.35;0" dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12 + 0.06}s`} />
+          </circle>
+        </g>
       ))}
-      {!isDay && [0, 1, 2, 3, 4].map((i) => (
-        <circle key={`bh${i}`} r="3" fill="#4ade80" opacity="0" filter="url(#b-glow)">
-          <animateMotion dur="1.5s" repeatCount="indefinite" begin={`${i * 0.3}s`} path="M305,82 L350,82" />
-          <animate attributeName="opacity" values="0;0.8;0" dur="1.5s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
-        </circle>
+      {!isDay && Array.from({ length: 8 }, (_, i) => (
+        <g key={`bh${i}`}>
+          <circle r={2.5 + (i % 2)} fill="#4ade80" opacity="0" filter="url(#b-glow)">
+            <animateMotion dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12}s`}
+              path="M276,132 C312,132 368,142 404,142" />
+            <animate attributeName="opacity" values="0;0.85;0.85;0" dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12}s`} />
+          </circle>
+          <circle r="1.2" fill="#6366f1" opacity="0" filter="url(#b-softGlow)">
+            <animateMotion dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12 + 0.06}s`}
+              path="M276,132 C312,132 368,142 404,142" />
+            <animate attributeName="opacity" values="0;0.35;0.35;0" dur={`${1 + (i % 3) * 0.15}s`} repeatCount="indefinite" begin={`${i * 0.12 + 0.06}s`} />
+          </circle>
+        </g>
       ))}
 
-      <line x1="130" y1="82" x2="175" y2="82" stroke={isDay ? "#FFD700" : cardBorder} strokeWidth="1" opacity={isDay ? 0.25 : 0.1} strokeDasharray="4 4" style={{ transition: "all 1.5s" }} />
-      <line x1="305" y1="82" x2="350" y2="82" stroke={!isDay ? "#4ade80" : cardBorder} strokeWidth="1" opacity={!isDay ? 0.25 : 0.1} strokeDasharray="4 4" style={{ transition: "all 1.5s" }} />
+      {/* Flow connection paths */}
+      <path d="M76,142 C115,142 168,132 204,132" fill="none" stroke={isDay ? "#FFD700" : cardBorder} strokeWidth="1" opacity={isDay ? 0.2 : 0.05} strokeDasharray="4 4" style={{ transition: "all 1.5s" }}>
+        {isDay && <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />}
+      </path>
+      <path d="M276,132 C312,132 368,142 404,142" fill="none" stroke={!isDay ? "#4ade80" : cardBorder} strokeWidth="1" opacity={!isDay ? 0.2 : 0.05} strokeDasharray="4 4" style={{ transition: "all 1.5s" }}>
+        {!isDay && <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />}
+      </path>
 
-      {/* 24h timeline */}
-      <g transform="translate(30, 240)">
-        <text x="0" y="0" fill={textSecondary} fontSize="8" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>24-часов цикъл на енергия</text>
-        <rect x="0" y="10" width="420" height="28" rx="6" fill={cardBg} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
-        <rect x="2" y="12" width="208" height="24" rx="5" fill={isDay ? "#fefce8" : (isDay ? "#f0fdf4" : "#1a3a1a")} opacity={isDay ? 0.7 : 0.2} style={{ transition: "all 1.5s" }} />
-        <rect x="210" y="12" width="208" height="24" rx="5" fill={!isDay ? "#1e1b4b" : "#f1f5f9"} opacity={!isDay ? 0.5 : 0.15} style={{ transition: "all 1.5s" }} />
-        {["06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "00:00", "03:00"].map((t, i) => (
-          <text key={t} x={i * 54 + 10} y="28" fill={textTertiary} fontSize="7" fontFamily="system-ui" textAnchor="middle" style={{ transition: "fill 1.5s" }}>{t}</text>
-        ))}
-        <rect x={isDay ? 100 : 310} y="10" width="3" height="28" rx="1.5" fill={isDay ? "#FFD700" : "#6366f1"} opacity="0.7" style={{ transition: "all 1.5s" }}>
-          <animate attributeName="opacity" values="0.5;0.9;0.5" dur="1s" repeatCount="indefinite" />
+      {/* ═══ POWER FLOW DIAGRAM (Bottom) ═══ */}
+      <g transform="translate(30, 274)">
+        <rect x="0" y="0" width="420" height="76" rx="10" fill={cardBg} stroke={cardBorder} strokeWidth="1" style={{ transition: "all 1.5s" }} />
+        <text x="210" y="15" textAnchor="middle" fill={textSecondary} fontSize="7.5" fontWeight="bold" fontFamily="system-ui" letterSpacing="1.5" style={{ transition: "fill 1.5s" }}>
+          ПОТОК НА ЕНЕРГИЯТА
+        </text>
+
+        {/* Panel node */}
+        <circle cx="48" cy="46" r="18" fill={isDay ? "#fffbeb" : "#0f172a"} stroke={isDay ? "#FFD700" : cardBorder} strokeWidth="1.5" style={{ transition: "all 1.5s" }} />
+        <text x="48" y="42" textAnchor="middle" fill={isDay ? "#d97706" : textSecondary} fontSize="13" style={{ transition: "fill 1.5s" }}>☀</text>
+        <text x="48" y="53" textAnchor="middle" fill={textPrimary} fontSize="6" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>
+          {isDay ? "4.5kW" : "0kW"}
+        </text>
+
+        {/* Arrow Panel → Battery */}
+        <line x1="72" y1="46" x2="148" y2="46" stroke={isDay ? "#FFD700" : cardBorder} strokeWidth="2" strokeDasharray="5 3" opacity={isDay ? 0.6 : 0.12} style={{ transition: "all 1.5s" }}>
+          {isDay && <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.4s" repeatCount="indefinite" />}
+        </line>
+        <polygon points="150,42 158,46 150,50" fill={isDay ? "#FFD700" : cardBorder} opacity={isDay ? 0.6 : 0.12} style={{ transition: "all 1.5s" }} />
+
+        {/* Battery node */}
+        <rect x="168" y="28" width="32" height="36" rx="5" fill={isDay ? "#f0fdf4" : "#0f2a1a"} stroke="#3B7A2A" strokeWidth="1.5" style={{ transition: "fill 1.5s" }} />
+        <rect x="178" y="25" width="12" height="5" rx="2" fill="#3B7A2A" />
+        <rect x="172" y="38" width="24" height="20" rx="2" fill="#3B7A2A" opacity="0.15" />
+        <rect x="172" y={38 + 20 - (level / 100) * 20} width="24" height={(level / 100) * 20} rx="2" fill="#3B7A2A" opacity="0.5" style={{ transition: "all 2s" }}>
+          <animate attributeName="opacity" values="0.4;0.65;0.4" dur="2s" repeatCount="indefinite" />
         </rect>
-      </g>
+        <text x="184" y="52" textAnchor="middle" fill={textPrimary} fontSize="7" fontWeight="900" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>{level}%</text>
 
-      {/* Bottom stats */}
-      <g transform="translate(30, 296)">
-        {[
-          { label: "Произведени днес", value: isDay ? "18.4 kWh" : "22.6 kWh", color: "#3B7A2A" },
-          { label: "Самоконсумация", value: "87%", color: "#3B7A2A" },
-          { label: "Спестени днес", value: "5.65 лв", color: "#b45309" },
-          { label: "CO₂ спестени", value: "9.2 кг", color: "#0891b2" },
-        ].map((stat, i) => (
-          <g key={stat.label} transform={`translate(${i * 112}, 0)`}>
-            <rect x="0" y="0" width="105" height="40" rx="6" fill={cardBg} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
-            <text x="8" y="15" fill={textTertiary} fontSize="7" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>{stat.label}</text>
-            <text x="8" y="32" fill={stat.color} fontSize="14" fontWeight="900" fontFamily="system-ui">{stat.value}</text>
-          </g>
-        ))}
+        {/* Arrow Battery → Home */}
+        <line x1="208" y1="46" x2="284" y2="46" stroke={!isDay ? "#4ade80" : cardBorder} strokeWidth="2" strokeDasharray="5 3" opacity={!isDay ? 0.6 : 0.12} style={{ transition: "all 1.5s" }}>
+          {!isDay && <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.4s" repeatCount="indefinite" />}
+        </line>
+        <polygon points="286,42 294,46 286,50" fill={!isDay ? "#4ade80" : cardBorder} opacity={!isDay ? 0.6 : 0.12} style={{ transition: "all 1.5s" }} />
+
+        {/* Home node */}
+        <circle cx="316" cy="46" r="18" fill={!isDay ? "#111827" : "#f8fafc"} stroke={!isDay ? "#4ade80" : cardBorder} strokeWidth="1.5" style={{ transition: "all 1.5s" }} />
+        <text x="316" y="42" textAnchor="middle" fill={!isDay ? "#ffe0a0" : textSecondary} fontSize="13" style={{ transition: "fill 1.5s" }}>⌂</text>
+        <text x="316" y="53" textAnchor="middle" fill={textPrimary} fontSize="6" fontWeight="bold" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>2.1kW</text>
+
+        {/* Grid badge */}
+        <rect x="358" y="32" width="50" height="28" rx="6" fill={isDay ? "#f0fdf4" : "#0f172a"} stroke={cardBorder} strokeWidth="0.8" style={{ transition: "all 1.5s" }} />
+        <text x="383" y="44" textAnchor="middle" fill={textSecondary} fontSize="6" fontFamily="system-ui" style={{ transition: "fill 1.5s" }}>МРЕЖА</text>
+        <text x="383" y="55" textAnchor="middle" fill="#3B7A2A" fontSize="7" fontWeight="bold" fontFamily="system-ui">
+          {isDay ? "Продава" : "Standby"}
+        </text>
       </g>
     </svg>
   );

@@ -80,21 +80,37 @@ function MiniBarChart({ inView }: { inView: boolean }) {
   const bars = [280, 240, 200, 160, 80, 56];
   const labels = ["Яну", "Фев", "Мар", "Апр", "Май", "Юни"];
   const max = 300;
+  const barH = 96;
   return (
-    <div className="flex items-end gap-2 h-24 mt-2">
-      {bars.map((val, i) => (
-        <div key={labels[i]} className="flex flex-col items-center gap-1 flex-1">
-          <motion.div
-            className="w-full rounded-t-sm"
-            style={{ backgroundColor: i < 3 ? "#ef4444" : "#3B7A2A" }}
-            initial={{ height: 0 }}
-            animate={inView ? { height: `${(val / max) * 100}%` } : {}}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
-          />
-          <span className="text-[8px] text-foreground-tertiary">{labels[i]}</span>
-        </div>
-      ))}
-    </div>
+    <svg viewBox={`0 0 ${bars.length * 36} ${barH + 16}`} className="w-full h-28 mt-2" fill="none">
+      {bars.map((val, i) => {
+        const h = (val / max) * barH;
+        const x = i * 36 + 6;
+        return (
+          <g key={labels[i]}>
+            <motion.rect
+              x={x}
+              y={barH - h}
+              width={24}
+              rx={3}
+              fill={i < 3 ? "#ef4444" : "#3B7A2A"}
+              initial={{ height: 0, y: barH }}
+              animate={inView ? { height: h, y: barH - h } : {}}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+            />
+            <text
+              x={x + 12}
+              y={barH + 12}
+              textAnchor="middle"
+              className="fill-foreground-tertiary"
+              fontSize={9}
+            >
+              {labels[i]}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
   );
 }
 

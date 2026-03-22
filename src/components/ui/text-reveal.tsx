@@ -24,8 +24,19 @@ export function TextReveal({
 
   const words = children.split(" ");
 
+  const resolvedClassName = (() => {
+    if (!className) return className;
+    if (className.includes("editorial-hero") && !className.includes("editorial-hero-sm")) {
+      const totalChars = children.length;
+      if (totalChars > 20 || words.length > 3) {
+        return className.replace("editorial-hero", "editorial-hero-sm");
+      }
+    }
+    return className;
+  })();
+
   return (
-    <Tag ref={ref as React.RefObject<never>} className={cn("flex flex-wrap", className?.includes("text-center") && "justify-center", className)} aria-label={children}>
+    <Tag ref={ref as React.RefObject<never>} className={cn("flex flex-wrap", resolvedClassName?.includes("text-center") && "justify-center", resolvedClassName)} aria-label={children}>
       {words.map((word, i) => (
         <span key={`${word}-${i}`} className="inline-block overflow-hidden mr-[0.25em] py-[0.05em]">
           <motion.span

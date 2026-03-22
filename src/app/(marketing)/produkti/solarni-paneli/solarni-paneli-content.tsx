@@ -235,43 +235,50 @@ export function SolarniPaneliContent() {
   const techRef = useRef<HTMLDivElement>(null);
   const techInView = useInView(techRef, { once: true, margin: "0px 0px -15% 0px" });
   const specsRef = useRef<HTMLDivElement>(null);
-  const specsInView = useInView(specsRef, { once: true, margin: "0px 0px -10% 0px" });
+  const specsInView = useInView(specsRef, { once: true, margin: "0px 0px -15% 0px" });
   const compRef = useRef<HTMLDivElement>(null);
-  const compInView = useInView(compRef, { once: true, margin: "0px 0px -10% 0px" });
+  const compInView = useInView(compRef, { once: true, margin: "0px 0px -15% 0px" });
   const warrantyRef = useRef<HTMLDivElement>(null);
-  const warrantyInView = useInView(warrantyRef, { once: true, margin: "0px 0px -10% 0px" });
+  const warrantyInView = useInView(warrantyRef, { once: true, margin: "0px 0px -15% 0px" });
   const quoteRef = useRef<HTMLDivElement>(null);
-  const quoteInView = useInView(quoteRef, { once: true, margin: "0px 0px -10% 0px" });
+  const quoteInView = useInView(quoteRef, { once: true, margin: "0px 0px -15% 0px" });
   const conditionsRef = useRef<HTMLDivElement>(null);
-  const conditionsInView = useInView(conditionsRef, { once: true, margin: "0px 0px -10% 0px" });
+  const conditionsInView = useInView(conditionsRef, { once: true, margin: "0px 0px -15% 0px" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-x-hidden">
       {/* ── 1 · Hero ──────────────────────────────────────── */}
-      <section className="relative min-h-[100vh] flex items-end">
+      <section className="relative min-h-[100vh] flex items-end overflow-hidden">
         <ImageEditorial
           src={PRODUCT_IMAGES.solarPanel}
           alt="Модерен дом със соларни панели"
           fill
           grain
           parallax
+          parallaxAmount={28}
           containerClassName="absolute inset-0"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-32">
-          <motion.div variants={blurIn} initial="hidden" animate="visible">
+          <motion.div
+            variants={blurIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
             <BadgeChip variant="hero">MWT Технология</BadgeChip>
           </motion.div>
-          <TextReveal as="h1" className="editorial-hero text-white mt-3">
+          <TextReveal as="h1" className="editorial-hero text-white mt-3" delay={0} staggerDelay={0.02}>
             Соларни Панели
           </TextReveal>
           <motion.p
             variants={blurIn}
             initial="hidden"
             animate="visible"
+            transition={{ duration: 0.35, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-3xl text-xl md:text-2xl lg:text-3xl text-white/80 font-body"
           >
             21.5% ефективност. 30 години гаранция. Без компромиси.
@@ -281,20 +288,32 @@ export function SolarniPaneliContent() {
             <StatNumber value={21.5} suffix="%" context="Ефективност" className="text-white" contextClassName="text-white/60" duration={1500} />
             <StatNumber value={30} suffix=" год." context="Гаранция" className="text-white" contextClassName="text-white/60" duration={1800} />
           </div>
-          <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
+          <motion.div
+            variants={blurIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.35, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 md:mt-10"
+          >
             <MagneticButton href="/konfigurator" variant="primary" size="xl">
               Безплатна оферта
             </MagneticButton>
           </motion.div>
         </div>
 
-        {/* Bouncing scroll indicator */}
+        {/* Bouncing scroll indicator — isolated loop so it doesn’t compete with hero entrance */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.4 }}
         >
-          <ChevronDown className="h-8 w-8 text-white/40" />
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          >
+            <ChevronDown className="h-8 w-8 text-white/40" />
+          </motion.div>
         </motion.div>
       </section>
 
@@ -348,10 +367,10 @@ export function SolarniPaneliContent() {
             Предимства
           </TextReveal>
           <motion.div
-            variants={createStagger(0.12, 0.15)}
+            variants={createStagger(0.06, 0.05)}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+            viewport={{ once: true, margin: "0px 0px -15% 0px" }}
             className="grid sm:grid-cols-2 gap-6"
           >
             {benefits.map((b) => (
@@ -379,9 +398,9 @@ export function SolarniPaneliContent() {
           <TextReveal as="h2" className="editorial-display text-white mt-2 mb-8">
             Разгледайте панела
           </TextReveal>
-          <div className="aspect-[16/9] max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10">
+          <div className="aspect-[16/9] min-h-[240px] md:min-h-[400px] max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10">
             <SceneCanvasDynamic
-              camera={{ position: [2, 1.5, 3], fov: 35 }}
+              camera={{ position: [2.5, 1.5, 3], fov: 35 }}
               autoRotate
             >
               <SolarPanel position={[0, 0.5, 0]} rotation={[-0.3, 0, 0]} scale={1.5} />
@@ -503,7 +522,7 @@ export function SolarniPaneliContent() {
                 variants={i % 2 === 0 ? revealFromBottom : scaleSpring}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+                viewport={{ once: true, margin: "0px 0px -15% 0px" }}
                 className="break-inside-avoid group"
               >
                 <div className="relative overflow-hidden rounded-lg">
@@ -569,7 +588,7 @@ export function SolarniPaneliContent() {
                   className="flex-1 flex flex-col items-center gap-2"
                   initial={{ scaleY: 0 }}
                   animate={warrantyInView ? { scaleY: 1 } : { scaleY: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.6, delay: i * 0.045, ease: [0.22, 1, 0.36, 1] }}
                   style={{ originY: 1 }}
                 >
                   <span className="text-xs font-display font-bold text-accent">{d.output}%</span>
@@ -593,7 +612,7 @@ export function SolarniPaneliContent() {
             При всякакви условия
           </TextReveal>
           <motion.div
-            variants={createStagger(0.1, 0.15)}
+            variants={createStagger(0.06, 0.05)}
             initial="hidden"
             animate={conditionsInView ? "visible" : "hidden"}
             className="grid grid-cols-2 lg:grid-cols-4 gap-6"
@@ -668,7 +687,7 @@ export function SolarniPaneliContent() {
                 variants={staggerItem}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -15% 0px" }}
                 className="border border-border rounded-xl overflow-hidden"
               >
                 <button
@@ -708,7 +727,7 @@ export function SolarniPaneliContent() {
             variants={blurIn}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "0px 0px -15% 0px" }}
             className="text-lg text-white/70 font-body mb-10 max-w-xl mx-auto"
           >
             Конфигурирайте вашата система онлайн и получете персонализирана оферта за минути.

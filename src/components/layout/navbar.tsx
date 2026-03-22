@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { SolaronLogo } from "@/components/ui/solaron-logo";
 
@@ -484,6 +485,7 @@ function MobileNavSheet({
 export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [langOverlayOpen, setLangOverlayOpen] = React.useState(false);
   const { isEn, bgHref, enHref } = useLocaleHref();
   const pathname = usePathname();
   const isHomepage = pathname === "/" || pathname === "/en";
@@ -498,6 +500,7 @@ export function Navbar() {
   const isTransparent = isHomepage && !scrolled;
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-out",
@@ -534,41 +537,19 @@ export function Navbar() {
             Безплатна Консултация
           </Link>
 
-          <div
-            className={cn(
-              "flex items-center rounded-lg p-0.5 transition-all duration-300",
-              isTransparent
-                ? "border border-white/20 bg-white/10 backdrop-blur-sm"
-                : "border border-border bg-background-secondary/60",
-            )}
-            role="group"
-            aria-label="Език"
+          <button
+            type="button"
+            onClick={() => setLangOverlayOpen(true)}
+            className="relative flex items-center justify-center size-8 rounded-full overflow-hidden border-2 border-white/20 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
+            aria-label="Change language"
           >
-            <Link
-              href={bgHref}
-              className={cn(
-                "min-h-9 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors",
-                isTransparent
-                  ? (!isEn ? "bg-white/20 text-white" : "text-white/60 hover:text-white")
-                  : (!isEn ? "bg-background text-foreground shadow-soft" : "text-foreground-secondary hover:text-foreground"),
-              )}
-              aria-current={!isEn ? "true" : undefined}
-            >
-              BG
-            </Link>
-            <Link
-              href={enHref}
-              className={cn(
-                "min-h-9 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors",
-                isTransparent
-                  ? (isEn ? "bg-white/20 text-white" : "text-white/60 hover:text-white")
-                  : (isEn ? "bg-background text-foreground shadow-soft" : "text-foreground-secondary hover:text-foreground"),
-              )}
-              aria-current={isEn ? "true" : undefined}
-            >
-              EN
-            </Link>
-          </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none z-10 rounded-full" />
+            <div className="w-full h-full flex flex-col">
+              <div className="flex-1 bg-white" />
+              <div className="flex-1 bg-[#00966E]" />
+              <div className="flex-1 bg-[#D62612]" />
+            </div>
+          </button>
         </div>
 
         <div className="ml-auto flex items-center lg:ml-0 lg:hidden">
@@ -592,5 +573,90 @@ export function Navbar() {
         </div>
       </div>
     </header>
+
+    <AnimatePresence>
+      {langOverlayOpen && (
+        <motion.div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 backdrop-blur-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <button
+            type="button"
+            onClick={() => setLangOverlayOpen(false)}
+            className="absolute top-6 right-6 flex size-10 items-center justify-center rounded-full bg-foreground/5 text-foreground hover:bg-foreground/10 transition-colors"
+            aria-label="Close"
+          >
+            <X className="size-5" />
+          </button>
+
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+          >
+            <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+              Изберете език
+            </h2>
+            <p className="text-foreground-secondary mb-12">Choose your language</p>
+
+            <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
+              <button
+                type="button"
+                onClick={() => setLangOverlayOpen(false)}
+                className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-8 transition-all duration-300 hover:border-accent hover:shadow-lg"
+              >
+                <div className="relative size-16 rounded-full overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent z-10 rounded-full" />
+                  <div className="w-full h-full flex flex-col">
+                    <div className="flex-1 bg-white" />
+                    <div className="flex-1 bg-[#00966E]" />
+                    <div className="flex-1 bg-[#D62612]" />
+                  </div>
+                </div>
+                <div>
+                  <p className="font-display text-lg font-bold text-foreground">Български</p>
+                  <p className="text-sm text-foreground-secondary">Bulgarian</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setLangOverlayOpen(false)}
+                className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-border p-8 transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+              >
+                <div className="relative size-16 rounded-full overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent z-10 rounded-full" />
+                  <svg viewBox="0 0 60 40" className="w-full h-full">
+                    <rect width="60" height="40" fill="#012169" />
+                    <polygon points="0,0 24,13.3 24,0" fill="#fff" />
+                    <polygon points="36,0 60,0 60,13.3 36,0" fill="#fff" />
+                    <polygon points="0,40 24,26.7 24,40" fill="#fff" />
+                    <polygon points="36,40 60,40 60,26.7" fill="#fff" />
+                    <polygon points="0,0 20,13.3" fill="#C8102E" />
+                    <polygon points="60,0 40,13.3" fill="#C8102E" />
+                    <polygon points="0,40 20,26.7" fill="#C8102E" />
+                    <polygon points="60,40 40,26.7" fill="#C8102E" />
+                    <rect x="25" width="10" height="40" fill="#fff" />
+                    <rect y="15" width="60" height="10" fill="#fff" />
+                    <rect x="27" width="6" height="40" fill="#C8102E" />
+                    <rect y="17" width="60" height="6" fill="#C8102E" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-display text-lg font-bold text-foreground">English</p>
+                  <p className="text-sm text-foreground-secondary">Английски</p>
+                </div>
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

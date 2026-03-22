@@ -15,9 +15,19 @@ export type SolarPanelArrayProps = {
 const GAP = 0.18;
 const BASE_W = 1.7;
 const BASE_D = 1.0;
+/** Inset from roof edges so panels stay inside the footprint. */
+const ROOF_INSET = 0.12;
 
 function depthForRows(rows: number, panelD: number, gap: number) {
   return rows * panelD + (rows - 1) * gap;
+}
+
+function maxColsForWidth(roofWidth: number, panelW: number, gap: number) {
+  return Math.max(1, Math.floor((roofWidth + gap) / (panelW + gap)));
+}
+
+function maxRowsForDepth(roofDepth: number, panelD: number, gap: number) {
+  return Math.max(1, Math.floor((roofDepth + gap) / (panelD + gap)));
 }
 
 function computeGrid(
@@ -27,21 +37,24 @@ function computeGrid(
   panelW: number,
   panelD: number,
   gap: number,
-): { cols: number; rows: number } {
-  if (count <= 0) return { cols: 0, rows: 0 };
-  let cols = Math.min(
-    count,
-    Math.max(1, Math.floor((roofWidth + gap) / (panelW + gap))),
-  );
-  let rows = Math.ceil(count / cols);
+): { cols: number; rows: number; placed: number } {
+  if (count <= 0) return { cols: 0, rows: 0, placed: 0 };
+  const effW = Math.max(0.2, roofWidth - 2 * ROOF_INSET);
+  const effD = Math.max(0.2, roofDepth - 2 * ROOF_INSET);
+  const maxCols = maxColsForWidth(effW, panelW, gap);
+  const maxRows = maxRowsForDepth(effD, panelD, gap);
+  const capacity = maxCols * maxRows;
+  const n = Math.min(count, capacity);
 
-  while (cols < count && depthForRows(rows, panelD, gap) > roofDepth) {
+  let cols = Math.min(n, maxCols);
+  let rows = Math.ceil(n / cols);
+
+  while (depthForRows(rows, panelD, gap) > effD && cols < maxCols) {
     cols += 1;
-    rows = Math.ceil(count / cols);
-    if (depthForRows(rows, panelD, gap) <= roofDepth) break;
+    rows = Math.ceil(n / cols);
   }
 
-  return { cols, rows };
+  return { cols, rows, placed: n };
 }
 
 function SolarPanelArrayInner({
@@ -54,7 +67,7 @@ function SolarPanelArrayInner({
   const positions = useMemo(() => {
     const pw = BASE_W * panelScale;
     const pd = BASE_D * panelScale;
-    const { cols, rows } = computeGrid(
+    const { cols, rows, placed } = computeGrid(
       count,
       roofWidth,
       roofDepth,
@@ -68,8 +81,8 @@ function SolarPanelArrayInner({
     const startZ = -totalD / 2 + pd / 2;
     const pos: [number, number, number][] = [];
     let n = 0;
-    for (let row = 0; row < rows && n < count; row++) {
-      for (let col = 0; col < cols && n < count; col++) {
+    for (let row = 0; row < rows && n < placed; row++) {
+      for (let col = 0; col < cols && n < placed; col++) {
         const x = startX + col * (pw + GAP);
         const z = startZ + row * (pd + GAP);
         pos.push([x, 0, z]);

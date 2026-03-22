@@ -138,7 +138,7 @@ export default function ZaDomaContent() {
             <span className="size-2 animate-pulse rounded-full bg-white" />
             Най-популярно
           </motion.div>
-          <TextReveal as="h1" className="text-editorial-hero max-w-3xl text-white">
+          <TextReveal as="h1" className="editorial-hero max-w-3xl text-white">
             Соларна Енергия За Дома
           </TextReveal>
           <motion.p
@@ -156,7 +156,7 @@ export default function ZaDomaContent() {
             animate={heroInView ? "visible" : "hidden"}
             className="mt-8 inline-flex items-baseline gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-4 backdrop-blur-md"
           >
-            <span className="text-editorial-stat text-4xl text-white md:text-5xl">80%</span>
+            <span className="editorial-stat text-4xl text-white md:text-5xl">80%</span>
             <span className="text-base text-white/70">спестявания от ток</span>
           </motion.div>
         </div>
@@ -170,11 +170,11 @@ export default function ZaDomaContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-overline text-accent mb-4"
+            className="editorial-overline text-accent mb-4"
           >
             Защо соларна система?
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Три причини да започнете
           </TextReveal>
           <motion.div
@@ -188,7 +188,7 @@ export default function ZaDomaContent() {
               <TiltCard className="h-full rounded-3xl border border-stone-200 bg-white p-8 md:p-10">
                 <PiggyBank className="mb-4 size-10 text-accent" strokeWidth={1.5} />
                 <StatNumber value={80} suffix="%" context="намалена сметка за ток" className="text-5xl md:text-6xl" />
-                <h3 className="text-editorial-heading mt-4">Сериозни Спестявания</h3>
+                <h3 className="editorial-heading mt-4">Сериозни Спестявания</h3>
                 <p className="mt-2 max-w-md text-stone-600">
                   Произвеждате собствена енергия и плащате минимални суми за ток.
                   Системата се изплаща за 4–6 години.
@@ -198,7 +198,7 @@ export default function ZaDomaContent() {
             <motion.div variants={staggerItem} className="md:col-span-2">
               <TiltCard className="h-full rounded-3xl border border-stone-200 bg-white p-8 md:p-10">
                 <Unplug className="mb-4 size-10 text-accent" strokeWidth={1.5} />
-                <h3 className="text-editorial-heading">Енергийна Независимост</h3>
+                <h3 className="editorial-heading">Енергийна Независимост</h3>
                 <p className="mt-2 text-stone-600">
                   По-малко зависимост от променливите цени на тока. С батерия
                   имате ток и при спиране на мрежата.
@@ -210,7 +210,7 @@ export default function ZaDomaContent() {
                 <div className="flex flex-col md:flex-row md:items-center md:gap-12">
                   <div className="flex-1">
                     <Leaf className="mb-4 size-10 text-accent" strokeWidth={1.5} />
-                    <h3 className="text-editorial-heading">Чиста Енергия</h3>
+                    <h3 className="editorial-heading">Чиста Енергия</h3>
                     <p className="mt-2 max-w-lg text-stone-600">
                       Една 5 kWp система спестява над 4 тона CO₂ годишно —
                       еквивалентно на 200 засадени дървета.
@@ -227,7 +227,7 @@ export default function ZaDomaContent() {
       {/* 3. PACKAGE TIERS */}
       <section className="bg-white px-6 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+          <TextReveal as="h2" className="editorial-display text-center mb-4">
             Изберете Вашия Пакет
           </TextReveal>
           <motion.p
@@ -261,9 +261,9 @@ export default function ZaDomaContent() {
                       {pkg.ideal}
                     </span>
                   )}
-                  <p className="text-editorial-overline text-stone-400">{pkg.kWp}</p>
-                  <h3 className="text-editorial-heading mt-1">{pkg.name}</h3>
-                  <p className="text-editorial-stat text-3xl mt-4">{pkg.price}</p>
+                  <p className="editorial-overline text-stone-400">{pkg.kWp}</p>
+                  <h3 className="editorial-heading mt-1">{pkg.name}</h3>
+                  <p className="editorial-stat text-3xl mt-4">{pkg.price}</p>
                   <p className="mt-2 text-accent font-semibold">{pkg.savings} спестявания</p>
                   {!pkg.highlight && (
                     <p className="mt-3 text-sm text-stone-500">{pkg.ideal}</p>
@@ -291,11 +291,11 @@ export default function ZaDomaContent() {
             variants={slideUp}
             initial="hidden"
             animate={billInView ? "visible" : "hidden"}
-            className="text-editorial-overline text-accent mb-6"
+            className="editorial-overline text-accent mb-6"
           >
             Преди и след
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display text-white mb-16">
+          <TextReveal as="h2" className="editorial-display text-white mb-16">
             Вашата сметка за ток се променя
           </TextReveal>
           <div className="flex flex-col items-center gap-8 md:flex-row md:justify-center md:gap-16">
@@ -306,7 +306,7 @@ export default function ZaDomaContent() {
               className="rounded-2xl border border-red-500/20 bg-red-950/30 px-10 py-8"
             >
               <p className="text-sm uppercase tracking-widest text-red-400 mb-2">Преди</p>
-              <p className="text-editorial-stat text-5xl text-red-400 md:text-6xl">250 лв.</p>
+              <p className="editorial-stat text-5xl text-red-400 md:text-6xl">250 лв.</p>
               <p className="text-red-400/60 mt-1">на месец</p>
             </motion.div>
             <motion.div
@@ -341,7 +341,7 @@ export default function ZaDomaContent() {
       {/* 5. MINI CONFIGURATOR */}
       <section ref={configRef} className="bg-background-warm px-6 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <TextReveal as="h2" className="text-editorial-display mb-4">
+          <TextReveal as="h2" className="editorial-display mb-4">
             Колко ще спестите?
           </TextReveal>
           <p className="text-stone-500 text-lg mb-12">
@@ -356,7 +356,7 @@ export default function ZaDomaContent() {
             <label className="block text-sm font-semibold text-stone-600 mb-6">
               Текуща месечна сметка за ток
             </label>
-            <p className="text-editorial-stat text-4xl mb-8">{monthlyBill[0]} лв./мес.</p>
+            <p className="editorial-stat text-4xl mb-8">{monthlyBill[0]} лв./мес.</p>
             <Slider.Root
               value={monthlyBill}
               onValueChange={setMonthlyBill}
@@ -379,7 +379,7 @@ export default function ZaDomaContent() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="text-editorial-stat text-3xl text-accent sm:text-4xl"
+                    className="editorial-stat text-3xl text-accent sm:text-4xl"
                   >
                     {solarCalc.systemKWp.toFixed(1)} kWp
                   </motion.p>
@@ -394,7 +394,7 @@ export default function ZaDomaContent() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="text-editorial-stat text-3xl text-accent sm:text-4xl"
+                    className="editorial-stat text-3xl text-accent sm:text-4xl"
                   >
                     ~{solarCalc.annualSavings.toLocaleString("bg-BG")} лв.
                   </motion.p>
@@ -408,7 +408,7 @@ export default function ZaDomaContent() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="text-editorial-stat text-3xl text-accent sm:text-4xl"
+                    className="editorial-stat text-3xl text-accent sm:text-4xl"
                   >
                     {solarCalc.paybackYears.toFixed(1)} г.
                   </motion.p>
@@ -428,11 +428,11 @@ export default function ZaDomaContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-overline text-accent mb-4"
+            className="editorial-overline text-accent mb-4"
           >
             Реални проекти
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Вашите съседи вече спестяват
           </TextReveal>
           <div className="grid gap-8 md:grid-cols-2">
@@ -477,9 +477,9 @@ export default function ZaDomaContent() {
                   </div>
                 </div>
                 <div className="p-8">
-                  <h3 className="text-editorial-heading">{project.title}</h3>
+                  <h3 className="editorial-heading">{project.title}</h3>
                   <p className="mt-1 text-accent font-semibold">{project.savings} спестявания</p>
-                  <blockquote className="text-editorial-pull-quote mt-4 text-stone-500 italic border-l-2 border-accent pl-4">
+                  <blockquote className="editorial-pull-quote mt-4 text-stone-500 italic border-l-2 border-accent pl-4">
                     &ldquo;{project.quote}&rdquo;
                   </blockquote>
                 </div>
@@ -493,7 +493,7 @@ export default function ZaDomaContent() {
       <section className="bg-stone-950 px-6 py-24 text-white md:px-8 md:py-32">
         <div className="grain pointer-events-none absolute inset-0 opacity-20" />
         <div className="relative z-10 mx-auto max-w-7xl">
-          <TextReveal as="h2" className="text-editorial-display text-white mb-4">
+          <TextReveal as="h2" className="editorial-display text-white mb-4">
             Гъвкаво Финансиране
           </TextReveal>
           <p className="text-white/50 text-lg mb-12 max-w-xl">
@@ -552,7 +552,7 @@ export default function ZaDomaContent() {
               className="flex-1"
             >
               <Home className="size-12 text-accent mb-4" strokeWidth={1.5} />
-              <TextReveal as="h2" className="text-editorial-display">
+              <TextReveal as="h2" className="editorial-display">
                 По-скъп имот
               </TextReveal>
               <p className="mt-4 text-stone-600 text-lg leading-relaxed max-w-md">
@@ -582,7 +582,7 @@ export default function ZaDomaContent() {
       {/* 9. FAQ */}
       <section className="bg-white px-6 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-3xl">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-12">
+          <TextReveal as="h2" className="editorial-display text-center mb-12">
             Често задавани въпроси
           </TextReveal>
           <Accordion.Root type="single" collapsible>
@@ -613,7 +613,7 @@ export default function ZaDomaContent() {
       <section className="relative bg-stone-950 px-6 py-28 text-white md:px-8 md:py-36 overflow-hidden">
         <div className="grain pointer-events-none absolute inset-0 opacity-20" />
         <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <TextReveal as="h2" className="text-editorial-hero text-white mb-6">
+          <TextReveal as="h2" className="editorial-hero text-white mb-6">
             Готови за промяната?
           </TextReveal>
           <motion.p

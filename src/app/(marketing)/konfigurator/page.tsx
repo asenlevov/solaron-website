@@ -84,26 +84,39 @@ function ConfiguratorScene({
   const roofDepth = 7 * scale;
   const mount = PANEL_MOUNT_Y[houseType];
   const batt = BATTERY_POS[houseType];
+  const scaledMount: [number, number, number] = [
+    mount[0] * scale,
+    mount[1],
+    mount[2] * scale,
+  ];
+  const scaledBatt: [number, number, number] = [
+    batt[0] * scale,
+    batt[1],
+    batt[2] * scale,
+  ];
 
   const showFlow = panelCount > 0;
 
   return (
     <group>
       <DioramaBase />
-      <HouseModel type={houseType} showRoof />
-      <group position={mount}>
+      <group scale={[scale, 1, scale]}>
+        <HouseModel type={houseType} showRoof />
+      </group>
+      <group position={scaledMount}>
         <SolarPanelArray
           count={panelCount}
           roofWidth={roofWidth}
           roofDepth={roofDepth}
         />
       </group>
-      <BatteryUnit visible={hasBattery} position={batt} />
+      <BatteryUnit visible={hasBattery} position={scaledBatt} />
       <EnergyFlow
         visible={showFlow}
-        panelPosition={[mount[0], mount[1] + 0.5, mount[2]]}
+        panelPosition={[scaledMount[0], scaledMount[1] + 0.5, scaledMount[2]]}
         housePosition={[0, 1.5, 0]}
-        batteryPosition={hasBattery ? batt : [batt[0], batt[1], batt[2]]}
+        inverterPosition={[4 * scale, 2, 3 * scale]}
+        batteryPosition={scaledBatt}
       />
       <Tree position={[-6, 0, 3]} scale={0.9} type="deciduous" />
       <Tree position={[6, 0, -2]} scale={0.8} type="conifer" />
@@ -211,10 +224,10 @@ export default function KonfiguratorPage() {
         </header>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
-          <div className="relative min-h-[320px] w-full overflow-hidden rounded-2xl border border-border bg-background-secondary/30 shadow-card lg:min-h-[min(72vh,640px)] lg:w-[60%]">
+          <div className="relative min-h-[480px] w-full overflow-hidden rounded-2xl border border-border bg-background-secondary/30 shadow-card lg:min-h-[min(72vh,640px)] lg:w-[60%]">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
             <SceneCanvasDynamic
-              className="h-full min-h-[320px] w-full lg:min-h-[min(72vh,640px)]"
+              className="h-full min-h-[480px] w-full lg:min-h-[min(72vh,640px)]"
               camera={{ position: [6.5, 3.8, 9.5], fov: 38 }}
               autoRotate
             >
@@ -273,6 +286,11 @@ export default function KonfiguratorPage() {
                 co2SavedKgPerYear={metrics.env.co2Saved}
                 treeEquivalent={metrics.env.treeEquivalent}
                 city={config.city}
+                roofOrientation={config.roofOrientation}
+                roofArea={config.roofArea}
+                roofPitch={config.roofPitch}
+                systemCost={metrics.systemCost}
+                monthlyBill={config.monthlyBill}
               />
             </div>
           </div>

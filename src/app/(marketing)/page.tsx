@@ -4,7 +4,7 @@ import { AnimatedHero } from "@/components/marketing/animated-hero";
 import { HeroMesh } from "@/components/effects/hero-mesh";
 import { HeroEnergyOverlay } from "@/components/marketing/hero-energy-overlay";
 import { TrustBadges } from "@/components/marketing/trust-badges";
-import { StatsBar } from "@/components/marketing/stats-bar";
+
 import { ProductDemoTabs } from "@/components/marketing/product-demo-tabs";
 import { BentoGrid } from "@/components/marketing/bento-grid";
 import { QuickEstimator } from "@/components/marketing/quick-estimator";
@@ -31,12 +31,7 @@ const HERO_STATS = [
   { value: "2100+", label: "MWh произведени" },
 ];
 
-const STATS_BAR = [
-  { value: "20+", label: "Години опит" },
-  { value: "384+", label: "Доволни клиенти" },
-  { value: "1500+", label: "kWp инсталирани" },
-  { value: "2100+", label: "MWh произведени" },
-];
+
 
 export default function HomePage() {
   return (
@@ -62,15 +57,12 @@ export default function HomePage() {
       {/* Partner Logos */}
       <TechPartners />
 
-      {/* Stats Bar */}
-      <StatsBar stats={STATS_BAR} />
-
       {/* Product Demo Tabs */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="text-editorial-overline mb-4">Продукти</p>
-            <h2 className="text-editorial-heading">
+            <p className="editorial-overline mb-4">Продукти</p>
+            <h2 className="editorial-heading">
               Премиум Компоненти за Максимална Ефективност
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
@@ -86,8 +78,8 @@ export default function HomePage() {
       <section className="py-20 md:py-28 bg-background-secondary/50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="text-editorial-overline mb-4">Възможности</p>
-            <h2 className="text-editorial-heading">
+            <p className="editorial-overline mb-4">Възможности</p>
+            <h2 className="editorial-heading">
               Всичко, от което се нуждаете
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
@@ -106,8 +98,8 @@ export default function HomePage() {
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="text-editorial-overline mb-4">Сравнение</p>
-            <h2 className="text-editorial-heading">Преди и След Solaron</h2>
+            <p className="editorial-overline mb-4">Сравнение</p>
+            <h2 className="editorial-heading">Преди и След Solaron</h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
               Вижте реалната разлика между конвенционалната енергия и
               соларното решение.
@@ -121,8 +113,8 @@ export default function HomePage() {
       <section className="py-20 md:py-28 bg-background-secondary/50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="text-editorial-overline mb-4">Процес</p>
-            <h2 className="text-editorial-heading">Как Работим</h2>
+            <p className="editorial-overline mb-4">Процес</p>
+            <h2 className="editorial-heading">Как Работим</h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
               От безплатната консултация до активиране на системата — прозрачен
               и ефективен процес.

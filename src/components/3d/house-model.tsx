@@ -11,14 +11,14 @@ export type HouseModelProps = {
   showRoof: boolean;
 };
 
-const WALL_COLOR = "#f0ece5";
-const ROOF_COLOR = "#3a3632";
-const DOOR_COLOR = "#5a4a3a";
-const FOUNDATION_COLOR = "#bab5ad";
+const WALL_COLOR = "#f5f0e8";
+const ROOF_COLOR = "#9B4D3A";
+const DOOR_COLOR = "#5D4037";
+const FOUNDATION_COLOR = "#e8e4dc";
 const TRIM_COLOR = "#f5f2ec";
 const SIDING_COLOR = "#e5e0d8";
 
-const OVERHANG = 0.5;
+const OVERHANG = 0.15;
 const FOUNDATION_H = 0.18;
 
 type Spec = {
@@ -106,11 +106,11 @@ function WindowUnit({
       <mesh position={[0, 0, 0.015]}>
         <boxGeometry args={[width, height, 0.01]} />
         <meshPhysicalMaterial
-          color="#fffbf0"
+          color="#87CEEB"
           transmission={0.6}
           ior={1.5}
           roughness={0.05}
-          metalness={0.05}
+          metalness={0.1}
           transparent
           opacity={0.9}
           polygonOffset
@@ -253,7 +253,7 @@ function FrontDoor({
       {/* Door panel */}
       <mesh castShadow position={[0, doorY, doorZ + 0.01]}>
         <boxGeometry args={[doorW, doorH, 0.04]} />
-        <meshStandardMaterial color={DOOR_COLOR} roughness={0.65} metalness={0.08} />
+        <meshStandardMaterial color={DOOR_COLOR} roughness={0.6} metalness={0.08} />
       </mesh>
 
       {/* Recessed upper panel */}
@@ -268,16 +268,26 @@ function FrontDoor({
         <meshStandardMaterial color="#5e5040" roughness={0.7} metalness={0.05} />
       </mesh>
 
-      {/* Handle */}
-      <mesh position={[doorW * 0.35, doorY, doorZ + 0.055]}>
-        <sphereGeometry args={[0.03, 10, 10]} />
-        <meshStandardMaterial color="#b0a090" metalness={0.8} roughness={0.2} />
+      {/* Handle plate */}
+      <mesh position={[doorW * 0.35, doorY, doorZ + 0.045]}>
+        <boxGeometry args={[0.05, 0.12, 0.008]} />
+        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
+      </mesh>
+      {/* Handle lever */}
+      <mesh position={[doorW * 0.35 + 0.01, doorY, doorZ + 0.06]}>
+        <boxGeometry args={[0.06, 0.015, 0.015]} />
+        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
+      </mesh>
+      {/* Handle knob */}
+      <mesh position={[doorW * 0.35 + 0.04, doorY, doorZ + 0.06]}>
+        <sphereGeometry args={[0.015, 8, 8]} />
+        <meshStandardMaterial color="#c0b090" metalness={0.85} roughness={0.15} />
       </mesh>
 
       {/* Porch awning */}
       <mesh castShadow position={[0, doorY + doorH / 2 + 0.1, doorZ + 0.25]}>
         <boxGeometry args={[doorW + 0.6, 0.04, 0.5]} />
-        <meshStandardMaterial color={ROOF_COLOR} roughness={0.5} metalness={0.05} />
+        <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
       </mesh>
       {/* Awning brackets */}
       {[-0.5, 0.5].map((side) => (
@@ -312,19 +322,19 @@ function Gutters({ w, d, h }: { w: number; d: number; h: number }) {
     <group>
       <mesh position={[0, h, -hd]}>
         <boxGeometry args={[w + OVERHANG * 2, 0.06, 0.05]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.6} roughness={0.3} />
+        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
       </mesh>
       <mesh position={[0, h, hd]}>
         <boxGeometry args={[w + OVERHANG * 2, 0.06, 0.05]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.6} roughness={0.3} />
+        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
       </mesh>
       <mesh position={[-hw + 0.05, h / 2, -hd]}>
         <boxGeometry args={[0.06, h, 0.06]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.6} roughness={0.3} />
+        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
       </mesh>
       <mesh position={[hw - 0.05, h / 2, -hd]}>
         <boxGeometry args={[0.06, h, 0.06]} />
-        <meshStandardMaterial color="#a1a1aa" metalness={0.6} roughness={0.3} />
+        <meshStandardMaterial color="#a1a1aa" metalness={0.7} roughness={0.25} />
       </mesh>
     </group>
   );
@@ -343,7 +353,7 @@ function RoofDetails({ w, d, h, rise }: { w: number; d: number; h: number; rise:
       {/* Ridge cap */}
       <mesh castShadow position={[0, ridgeY + 0.015, 0]}>
         <boxGeometry args={[w + OVERHANG * 2, 0.03, 0.12]} />
-        <meshStandardMaterial color="#3a3f44" roughness={0.45} metalness={0.08} />
+        <meshStandardMaterial color="#7A3D2E" roughness={0.5} metalness={0.08} />
       </mesh>
 
       {/* Fascia boards along eave lines */}
@@ -438,7 +448,7 @@ function BuildingBlock({
     <group>
       <mesh castShadow receiveShadow position={[0, wallY, 0]}>
         <boxGeometry args={[w, h, d]} />
-        <meshStandardMaterial color={color} roughness={0.75} metalness={0.02} />
+        <meshStandardMaterial color={color} roughness={0.85} metalness={0.02} />
       </mesh>
       <WallSiding w={w} h={h} d={d} y={wallY} />
       <CornerTrims w={w} h={h} d={d} y={wallY} />
@@ -577,7 +587,7 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
             position={[-spec.wing.w / 2 - 0.5, FOUNDATION_H + spec.wing.h - 0.05, 0]}
           >
             <boxGeometry args={[1, 0.06, spec.wing.d - 0.5]} />
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.5} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
           </mesh>
         </group>
       )}
@@ -587,7 +597,7 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
         <>
           <mesh castShadow receiveShadow position={[0, FOUNDATION_H + spec.h + spec.rise / 2, 0]}>
             <boxGeometry args={[spec.w + 0.5, spec.rise, spec.d + 0.5]} />
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.5} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
           </mesh>
           {isCommercial && (
             <>
@@ -603,11 +613,11 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
       {showRoof && spec.roof === "pitched" && pitchedRoofGeo && (
         <>
           <mesh castShadow receiveShadow geometry={pitchedRoofGeo} position={[0, FOUNDATION_H, 0]}>
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.5} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
           </mesh>
           <RoofDetails w={spec.w} d={spec.d} h={FOUNDATION_H + spec.h} rise={spec.rise} />
           <Gutters w={spec.w} d={spec.d} h={FOUNDATION_H + spec.h} />
-          {(type === "single-story" || isVilla) && (
+          {(type === "single-story" || isTwoStory || isVilla) && (
             <Chimney
               x={spec.w * 0.25}
               y={FOUNDATION_H + spec.h + spec.rise * 0.7}
@@ -621,7 +631,7 @@ export function HouseModel({ type, color = WALL_COLOR, showRoof }: HouseModelPro
       {showRoof && isVilla && spec.wing && wingRoofGeo && (
         <group position={[spec.wing.offset[0], FOUNDATION_H, spec.wing.offset[2]]}>
           <mesh castShadow receiveShadow geometry={wingRoofGeo}>
-            <meshStandardMaterial color={ROOF_COLOR} roughness={0.5} metalness={0.05} />
+            <meshStandardMaterial color={ROOF_COLOR} roughness={0.7} metalness={0.05} />
           </mesh>
           <RoofDetails w={spec.wing.w} d={spec.wing.d} h={spec.wing.h} rise={spec.rise * 0.8} />
         </group>

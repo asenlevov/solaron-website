@@ -3,7 +3,7 @@
 import * as Select from "@radix-ui/react-select";
 import * as Slider from "@radix-ui/react-slider";
 import * as Switch from "@radix-ui/react-switch";
-import { Building2, Castle, Check, ChevronDown, Factory, Home } from "lucide-react";
+import { Building2, Check, ChevronDown, Factory, Home, Landmark } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import type { HouseType } from "@/components/3d/house-model";
@@ -47,10 +47,10 @@ const SHADING_OPTIONS = [
 
 const HOUSE_OPTIONS: { type: HouseType; label: string; icon: typeof Building2 }[] =
   [
-    { type: "single-story", label: "Едноетажна", icon: Home },
-    { type: "two-story", label: "Двеетажна", icon: Building2 },
-    { type: "villa", label: "Вила", icon: Castle },
-    { type: "commercial", label: "Търговски", icon: Factory },
+    { type: "single-story", label: "Едноетажна Къща", icon: Home },
+    { type: "two-story", label: "Двуетажна Къща", icon: Building2 },
+    { type: "villa", label: "Бизнес Сграда", icon: Landmark },
+    { type: "commercial", label: "Индустриална Сграда", icon: Factory },
   ];
 
 const CITIES = Object.keys(CITY_IRRADIANCE).sort((a, b) =>

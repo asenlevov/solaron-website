@@ -2,12 +2,11 @@
 
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import { Sun, Cpu, Battery, Monitor, Zap, ArrowRight, Shield, Award } from "lucide-react";
+import { Sun, Cpu, Battery, Monitor, Zap, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlowCard } from "@/components/ui/glow-card";
-import Image from "next/image";
 import Link from "next/link";
-import { REAL_IMAGES, PRODUCT_IMAGES } from "@/data/images";
+import { PRODUCT_IMAGES } from "@/data/images";
 import {
   PanelAnimation,
   InverterAnimation,
@@ -106,7 +105,7 @@ const TABS: ProductTab[] = [
       { label: "Поддръжка", value: "Отдалечена" },
     ],
     highlight: "Пълен контрол над вашата система от телефона — реално време, алерти, ROI проследяване",
-    productImage: REAL_IMAGES.installations.nlProjectInstall1,
+    productImage: PRODUCT_IMAGES.monitoring,
     productHref: "/produkti/monitoring",
     productCta: "Виж мониторинга",
   },
@@ -172,16 +171,6 @@ export function ProductDemoTabs({ className }: { className?: string }) {
               <div className="aspect-[4/3]">
                 <Animation />
               </div>
-              {/* Bottom tag */}
-              <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-accent border border-accent/20 shadow-sm">
-                  <span className="size-1.5 rounded-full bg-accent animate-pulse" />
-                  Интерактивна визуализация
-                </span>
-                <span className="inline-flex items-center rounded-full bg-white/80 backdrop-blur-sm px-3 py-1 text-[10px] font-medium text-foreground-secondary border border-border shadow-sm">
-                  {tab.badge}
-                </span>
-              </div>
             </div>
           </div>
 
@@ -224,69 +213,32 @@ export function ProductDemoTabs({ className }: { className?: string }) {
               ))}
             </div>
 
-            {/* Highlight */}
+            {/* Key advantage */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="rounded-xl border border-accent/20 bg-accent/5 p-4"
+              transition={{ delay: 0.45, duration: 0.4 }}
+              className="flex items-start gap-2.5 text-sm text-foreground-secondary"
             >
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent/10">
-                  <Zap className="size-3.5 text-accent" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground mb-0.5">
-                    Ключово предимство
-                  </p>
-                  <p className="text-sm text-foreground-secondary leading-relaxed">
-                    {tab.highlight}
-                  </p>
-                </div>
-              </div>
+              <Zap className="size-4 shrink-0 text-accent mt-0.5" />
+              <p className="leading-relaxed">
+                <span className="font-semibold text-foreground">Ключово предимство: </span>
+                {tab.highlight}
+              </p>
             </motion.div>
 
-            {/* Product card CTA */}
+            {/* Product CTA */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.55, duration: 0.5 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
             >
-              <Link href={tab.productHref} className="group/card block">
-                <div className="relative overflow-hidden rounded-xl border border-border hover:border-accent/40 transition-all duration-300 bg-background-secondary">
-                  <div className="flex items-stretch">
-                    <div className="relative w-24 shrink-0 overflow-hidden">
-                      <Image
-                        src={tab.productImage}
-                        alt={tab.label}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover/card:scale-110"
-                        sizes="96px"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background-secondary/80" />
-                    </div>
-                    <div className="flex flex-1 items-center justify-between gap-3 p-4">
-                      <div>
-                        <p className="text-sm font-semibold text-foreground group-hover/card:text-accent transition-colors">
-                          {tab.productCta}
-                        </p>
-                        <div className="mt-1 flex items-center gap-3">
-                          <span className="inline-flex items-center gap-1 text-[10px] text-foreground-tertiary">
-                            <Shield className="size-3" />
-                            Гаранция
-                          </span>
-                          <span className="inline-flex items-center gap-1 text-[10px] text-foreground-tertiary">
-                            <Award className="size-3" />
-                            Сертифицирано
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent/10 group-hover/card:bg-accent transition-colors duration-300">
-                        <ArrowRight className="size-4 text-accent group-hover/card:text-white transition-colors duration-300" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <Link
+                href={tab.productHref}
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-accent-hover hover:shadow-lg hover:gap-3"
+              >
+                {tab.productCta}
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </motion.div>
           </div>

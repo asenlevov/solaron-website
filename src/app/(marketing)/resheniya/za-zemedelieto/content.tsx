@@ -122,11 +122,11 @@ export default function ZaZemedelietoContent() {
             variants={slideUp}
             initial="hidden"
             animate={heroInView ? "visible" : "hidden"}
-            className="text-editorial-overline text-accent mb-6"
+            className="editorial-overline text-accent mb-6"
           >
             За земеделието
           </motion.p>
-          <TextReveal as="h1" className="text-editorial-hero max-w-3xl text-white">
+          <TextReveal as="h1" className="editorial-hero max-w-3xl text-white">
             Слънцето Храни Земята
           </TextReveal>
           <motion.p
@@ -149,11 +149,11 @@ export default function ZaZemedelietoContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-overline text-accent mb-4"
+            className="editorial-overline text-accent mb-4"
           >
             Агроволтаици
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Две реколти от едно поле
           </TextReveal>
           <motion.div
@@ -166,7 +166,7 @@ export default function ZaZemedelietoContent() {
             <motion.div variants={staggerItem}>
               <TiltCard className="h-full rounded-3xl border border-stone-200 bg-white p-8 md:p-10">
                 <Sprout className="size-10 text-accent mb-4" strokeWidth={1.5} />
-                <h3 className="text-editorial-heading mb-4">Ползи за културите</h3>
+                <h3 className="editorial-heading mb-4">Ползи за културите</h3>
                 <p className="text-stone-600 leading-relaxed mb-6">
                   Повдигнатите соларни панели осигуряват частична сянка, намаляват
                   изпарението и защитават от градушка. Доказано увеличение на
@@ -190,7 +190,7 @@ export default function ZaZemedelietoContent() {
             <motion.div variants={staggerItem}>
               <TiltCard className="h-full rounded-3xl border border-stone-200 bg-white p-8 md:p-10">
                 <Sun className="size-10 text-accent mb-4" strokeWidth={1.5} />
-                <h3 className="text-editorial-heading mb-4">Ползи за фермата</h3>
+                <h3 className="editorial-heading mb-4">Ползи за фермата</h3>
                 <p className="text-stone-600 leading-relaxed mb-6">
                   Допълнителен приход от продажба на електроенергия или пълно
                   покриване на собствените нужди за ток — напояване, охлаждане,
@@ -226,7 +226,7 @@ export default function ZaZemedelietoContent() {
               animate={irrigInView ? "visible" : "hidden"}
             >
               <Droplets className="size-12 text-accent mb-4" strokeWidth={1.5} />
-              <TextReveal as="h2" className="text-editorial-display text-white">
+              <TextReveal as="h2" className="editorial-display text-white">
                 Напояване от Слънцето
               </TextReveal>
               <p className="mt-4 text-white/60 text-lg leading-relaxed">
@@ -257,7 +257,7 @@ export default function ZaZemedelietoContent() {
       {/* 4. SEASONAL CALENDAR */}
       <section className="bg-white px-6 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-6xl">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+          <TextReveal as="h2" className="editorial-display text-center mb-4">
             Соларно Производство по Сезони
           </TextReveal>
           <motion.p
@@ -312,11 +312,11 @@ export default function ZaZemedelietoContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-overline text-accent mb-4"
+            className="editorial-overline text-accent mb-4"
           >
             Финансиране
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display text-white mb-16">
+          <TextReveal as="h2" className="editorial-display text-white mb-16">
             Субсидии и Програми
           </TextReveal>
           <motion.div
@@ -331,7 +331,7 @@ export default function ZaZemedelietoContent() {
                 <TiltCard className="h-full rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
                   <Banknote className="size-8 text-accent mb-4" strokeWidth={1.5} />
                   <h3 className="text-lg font-semibold mb-2">{sub.name}</h3>
-                  <p className="text-editorial-stat text-3xl text-accent mb-4">{sub.amount}</p>
+                  <p className="editorial-stat text-3xl text-accent mb-4">{sub.amount}</p>
                   <p className="text-white/60 text-sm leading-relaxed mb-6">{sub.desc}</p>
                   <div className="space-y-2 border-t border-white/10 pt-4 text-sm">
                     <div className="flex justify-between">
@@ -353,7 +353,7 @@ export default function ZaZemedelietoContent() {
       {/* 6. CTA */}
       <section className="overflow-hidden bg-accent px-6 py-24 text-white md:px-8 md:py-32">
         <div className="mx-auto max-w-4xl text-center">
-          <TextReveal as="h2" className="text-editorial-hero text-white mb-6">
+          <TextReveal as="h2" className="editorial-hero text-white mb-6">
             Отгледайте Енергия
           </TextReveal>
           <motion.p

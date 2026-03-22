@@ -17,6 +17,11 @@ export type SummaryCardProps = {
   co2SavedKgPerYear: number;
   treeEquivalent: number;
   city: string;
+  roofOrientation?: string;
+  roofArea?: number;
+  roofPitch?: number;
+  systemCost?: number;
+  monthlyBill?: number;
   className?: string;
 };
 
@@ -32,6 +37,11 @@ export function SummaryCard({
   co2SavedKgPerYear,
   treeEquivalent,
   city,
+  roofOrientation,
+  roofArea,
+  roofPitch,
+  systemCost,
+  monthlyBill,
   className,
 }: SummaryCardProps) {
   const monthlySavings = annualSavings / 12;
@@ -168,6 +178,52 @@ export function SummaryCard({
             Заявка за Оферта
           </Link>
         </Button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            const { generateSolarOffer } = await import(
+              "@/lib/generate-pdf-offer"
+            );
+            await generateSolarOffer({
+              systemSizeKwp,
+              panelCount,
+              hasBattery,
+              batteryCapacityKwh,
+              annualProductionKwh,
+              annualSavings,
+              paybackYears,
+              savings25yr,
+              co2SavedKgPerYear,
+              treeEquivalent,
+              city,
+              roofOrientation: roofOrientation ?? "Юг",
+              roofArea: roofArea ?? 80,
+              roofPitch: roofPitch ?? 30,
+              systemCost: systemCost ?? panelCount * 1200,
+              monthlyBill: monthlyBill ?? 150,
+            });
+          }}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/30 bg-accent-light/20 px-4 py-3 font-body text-sm font-semibold text-accent transition-colors hover:bg-accent-light/40 active:scale-[0.98]"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Изтегли Оферта (PDF)
+        </button>
       </div>
     </div>
   );

@@ -93,11 +93,11 @@ export default function ZaBiznesaContent() {
             variants={slideUp}
             initial="hidden"
             animate={heroInView ? "visible" : "hidden"}
-            className="text-editorial-overline text-accent mb-6"
+            className="editorial-overline text-accent mb-6"
           >
             Решения за бизнеса
           </motion.p>
-          <TextReveal as="h1" className="text-editorial-hero max-w-3xl text-white">
+          <TextReveal as="h1" className="editorial-hero max-w-3xl text-white">
             Инвестиция с Гарантирана Възвръщаемост
           </TextReveal>
           <motion.p
@@ -116,10 +116,10 @@ export default function ZaBiznesaContent() {
             className="mt-10 inline-flex items-center gap-8 rounded-2xl border border-white/15 bg-white/5 px-8 py-6 backdrop-blur-md"
           >
             <div>
-              <p className="text-editorial-stat text-5xl text-accent md:text-6xl">ROI</p>
+              <p className="editorial-stat text-5xl text-accent md:text-6xl">ROI</p>
             </div>
             <div className="border-l border-white/20 pl-8">
-              <p className="text-editorial-stat text-5xl text-white md:text-6xl">&lt; 4</p>
+              <p className="editorial-stat text-5xl text-white md:text-6xl">&lt; 4</p>
               <p className="text-white/50 text-sm mt-1">години изплащане</p>
             </div>
           </motion.div>
@@ -134,11 +134,11 @@ export default function ZaBiznesaContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-editorial-overline text-accent mb-4"
+            className="editorial-overline text-accent mb-4"
           >
             Реализирани проекти
           </motion.p>
-          <TextReveal as="h2" className="text-editorial-display mb-16">
+          <TextReveal as="h2" className="editorial-display mb-16">
             Бизнеси, които вече спестяват
           </TextReveal>
           <motion.div
@@ -168,8 +168,8 @@ export default function ZaBiznesaContent() {
                   />
                 </div>
                 <div className={cn("p-8 md:p-12", i % 2 === 1 && "md:order-1")}>
-                  <p className="text-editorial-overline text-stone-400 mb-1">{cs.type}</p>
-                  <h3 className="text-editorial-heading">{cs.title}</h3>
+                  <p className="editorial-overline text-stone-400 mb-1">{cs.type}</p>
+                  <h3 className="editorial-heading">{cs.title}</h3>
                   <StatNumber
                     value={cs.kWp}
                     suffix=" kWp"
@@ -199,7 +199,7 @@ export default function ZaBiznesaContent() {
               animate={taxInView ? "visible" : "hidden"}
             >
               <Receipt className="size-12 text-accent mb-4" strokeWidth={1.5} />
-              <TextReveal as="h2" className="text-editorial-display text-white">
+              <TextReveal as="h2" className="editorial-display text-white">
                 Данъчни Предимства
               </TextReveal>
               <p className="mt-4 text-white/60 text-lg leading-relaxed max-w-lg">
@@ -251,7 +251,7 @@ export default function ZaBiznesaContent() {
       {/* 4. LEASE VS BUY */}
       <section className="bg-white px-6 py-24 md:px-8 md:py-32">
         <div className="mx-auto max-w-5xl">
-          <TextReveal as="h2" className="text-editorial-display text-center mb-4">
+          <TextReveal as="h2" className="editorial-display text-center mb-4">
             Лизинг или Покупка?
           </TextReveal>
           <motion.p
@@ -297,7 +297,7 @@ export default function ZaBiznesaContent() {
                       : "border-stone-200 bg-stone-50"
                   )}
                 >
-                  <h3 className="text-editorial-heading mb-6">{option.title}</h3>
+                  <h3 className="editorial-heading mb-6">{option.title}</h3>
                   <div className="space-y-5">
                     {[
                       ["Цена", option.monthCost],
@@ -321,7 +321,7 @@ export default function ZaBiznesaContent() {
       {/* 5. ENERGY AUDIT PROCESS — dark */}
       <section className="relative bg-stone-900 px-6 py-24 text-white md:px-8 md:py-32">
         <div className="mx-auto max-w-7xl">
-          <TextReveal as="h2" className="text-editorial-display text-white text-center mb-16">
+          <TextReveal as="h2" className="editorial-display text-white text-center mb-16">
             Нашият процес
           </TextReveal>
           <motion.div
@@ -340,7 +340,7 @@ export default function ZaBiznesaContent() {
                 <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl bg-accent/20 text-accent">
                   <step.icon className="size-8" strokeWidth={1.5} />
                 </div>
-                <p className="text-editorial-overline text-accent mb-2">0{i + 1}</p>
+                <p className="editorial-overline text-accent mb-2">0{i + 1}</p>
                 <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
                 <p className="text-sm text-white/50">{step.desc}</p>
                 {i < processSteps.length - 1 && (
@@ -355,7 +355,7 @@ export default function ZaBiznesaContent() {
       {/* 6. CTA */}
       <section className="overflow-hidden bg-accent px-6 py-24 text-white md:px-8 md:py-32">
         <div className="mx-auto max-w-4xl text-center">
-          <TextReveal as="h2" className="text-editorial-hero text-white mb-6">
+          <TextReveal as="h2" className="editorial-hero text-white mb-6">
             Намалете разходите сега
           </TextReveal>
           <motion.p

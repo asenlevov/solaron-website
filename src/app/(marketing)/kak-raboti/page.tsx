@@ -59,7 +59,7 @@ export default function KakRabotiPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 md:pb-28 pt-32">
           <p className="editorial-overline mb-4">Ресурси</p>
-          <h1 className="editorial-hero text-white">
+          <h1 className="editorial-hero-sm text-white">
             Как работи соларната енергия
           </h1>
           <p className="mt-6 max-w-2xl text-xl text-white/70 font-body">
