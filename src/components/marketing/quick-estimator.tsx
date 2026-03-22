@@ -476,7 +476,7 @@ export function QuickEstimator() {
             {/* Hero stat – monthly savings */}
             <div className="rounded-2xl border border-accent/20 bg-accent/5 px-6 py-8 text-center">
               <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                Месечна спестявка
+                Месечни спестявания
               </p>
               <AnimatedCounter
                 key={`m-${results.monthlySavings}`}

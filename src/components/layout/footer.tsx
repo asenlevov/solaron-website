@@ -177,11 +177,11 @@ export function Footer({ className }: { className?: string }) {
                 +359 88 432 1560
               </a>
               <a
-                href="mailto:info@solaron.pro"
+                href="mailto:hello@solaron.io"
                 className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
               >
                 <Mail className="size-4 shrink-0 text-accent" />
-                info@solaron.pro
+                hello@solaron.io
               </a>
             </div>
 

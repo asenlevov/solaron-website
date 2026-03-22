@@ -222,6 +222,39 @@ const installSteps = [
   { src: REAL_IMAGES.installations.stepOperation, title: "Експлоатация", desc: "Пускане в действие и мониторинг" },
 ];
 
+const mountingPartners = [
+  {
+    name: "Van Der Valk Solar Systems",
+    origin: "Нидерландия",
+    description: "Холандски производител с пълна европейска сертификация. Конструкциите покриват всички изисквания на европейския пазар с реални гаранции, подкрепени от тестове за издръжливост във вятърен тунел.",
+    highlight: "15-годишна гаранция. Тествани във вятърен тунел.",
+  },
+  {
+    name: "Sunbeam",
+    origin: "Нидерландия",
+    description: "Също европейска марка конструкция. Sunbeam покрива същите стандарти за качество и гаранции като Van der Valk. Предлага системи Supra (плоски покриви), Nova и Luna (скатни покриви).",
+    highlight: "Европейско качество. Климатично неутрален сертификат.",
+  },
+];
+
+const cablePartners = [
+  {
+    name: "Athilex",
+    category: "DC кабели",
+    description: "Специализиран производител на соларни кабели от 2010 г. Високо качество H1Z2Z2-K кабели с DCA сертификация за максимална безопасност.",
+  },
+  {
+    name: "KBE Elektrotechnik",
+    category: "DC кабели",
+    description: "Берлински производител с тройна сертификация (EN 50618, IEC 62930, TÜV). 25+ години гарантиран живот на кабелите, 2 милиона км продукция годишно.",
+  },
+  {
+    name: "Stäubli",
+    category: "DC конектори",
+    description: "Използваме само и единствено Stäubli MC4 конектори — най-високото качество на пазара. Постоянни изследвания и подобрения, осигуряват правилните инструменти за кримпване и затягане на щуцерите.",
+  },
+];
+
 const konstrukciiFaqs = [
   { q: "Колко тежи конструкцията върху покрива?", a: "Алуминиевата конструкция за скатен покрив тежи ~2.5 kg/m², а с панелите общо ~12 kg/m². Това е значително под допустимото натоварване на стандартен покрив (>100 kg/m²)." },
   { q: "Какъв е гаранционният срок на конструкцията?", a: "Конструкциите Van Der Valk имат 25-годишна гаранция. Анодираният алуминий серия 6000 не корозира и запазва структурната си цялост десетилетия." },
@@ -402,25 +435,37 @@ export function KonstrukciiContent() {
         </div>
       </section>
 
-      {/* 5 — Van Der Valk Partner */}
+      {/* 5 — Mounting Partners */}
       <section ref={partnerRef} className="py-24 md:py-32 bg-[#f8faf6]">
-        <div className="mx-auto max-w-5xl px-6">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Партньори</p>
+          <TextReveal as="h2" className="editorial-heading mt-2 mb-12">
+            Монтажни системи от водещи европейски марки
+          </TextReveal>
           <motion.div
-            variants={slideUp}
+            variants={createStagger(0.15, 0.2)}
             initial="hidden"
             animate={partnerInView ? "visible" : "hidden"}
-            className="bg-white rounded-3xl p-10 md:p-16 border border-border/50 text-center"
+            className="grid md:grid-cols-2 gap-6"
           >
-            <p className="editorial-overline text-accent mb-4">Партньор</p>
-            <h2 className="editorial-heading">Van Der Valk Solar Systems</h2>
-            <p className="mt-6 text-lg text-muted-foreground font-body leading-relaxed max-w-2xl mx-auto">
-              Работим с Van Der Valk — холандски производител на монтажни системи с над 15 години опит и инсталации в 40+ държави. Техните алуминиеви конструкции са сертифицирани по EN 1090 и оптимизирани за минимално време за монтаж с максимална сигурност.
-            </p>
-            <div className="mt-10 flex justify-center gap-12 flex-wrap">
-              <StatNumber value={15} suffix="+ г." context="Опит" />
-              <StatNumber value={40} suffix="+" context="Държави" />
-              <StatNumber value={3} suffix=" GW" context="Инсталиран капацитет" />
-            </div>
+            {mountingPartners.map((partner) => (
+              <motion.div
+                key={partner.name}
+                variants={staggerItem}
+                className="bg-white rounded-3xl p-10 md:p-12 border border-border/50"
+              >
+                <span className="inline-block text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-accent/10 text-accent mb-4">
+                  {partner.origin}
+                </span>
+                <h3 className="font-display font-bold text-2xl mb-3">{partner.name}</h3>
+                <p className="text-muted-foreground font-body leading-relaxed mb-6">
+                  {partner.description}
+                </p>
+                <p className="text-sm font-display font-semibold text-accent">
+                  {partner.highlight}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -525,6 +570,38 @@ export function KonstrukciiContent() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 rounded-lg">
                   <p className="text-white text-sm font-body">{img.alt}</p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cables & Connectors */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Кабели и конектори</p>
+          <TextReveal as="h2" className="editorial-heading mt-2 mb-4">
+            Качеството е във всеки детайл
+          </TextReveal>
+          <p className="text-lg text-muted-foreground font-body mb-12 max-w-2xl">
+            DC кабелите и конекторите са критични за безопасността и дълготрайността на системата. Работим само с утвърдени европейски производители.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {cablePartners.map((partner) => (
+              <motion.div
+                key={partner.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-border p-8"
+              >
+                <span className="inline-block text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-accent/10 text-accent mb-4">
+                  {partner.category}
+                </span>
+                <h3 className="font-display font-bold text-xl mb-3">{partner.name}</h3>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">
+                  {partner.description}
+                </p>
               </motion.div>
             ))}
           </div>

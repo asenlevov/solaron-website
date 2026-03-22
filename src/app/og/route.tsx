@@ -104,7 +104,7 @@ export async function GET(request: Request) {
               fontFamily: "system-ui, sans-serif",
             }}
           >
-            solaron.pro
+            solaron.io
           </div>
         </div>
       </div>

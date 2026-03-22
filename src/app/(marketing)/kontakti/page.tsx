@@ -80,10 +80,10 @@ export default function KontaktiPage() {
                         Имейл
                       </p>
                       <a
-                        href="mailto:info@solaron.pro"
+                        href="mailto:hello@solaron.io"
                         className="text-base font-medium text-foreground underline-offset-4 hover:underline"
                       >
-                        info@solaron.pro
+                        hello@solaron.io
                       </a>
                     </li>
                     <li>

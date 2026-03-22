@@ -217,10 +217,10 @@ export default function PoveritelnostPage() {
         <p>
           Въпроси относно обработката на лични данни:{" "}
           <a
-            href="mailto:privacy@solaron.bg"
+            href="mailto:hello@solaron.io"
             className="text-secondary underline-offset-4 hover:underline"
           >
-            privacy@solaron.bg
+            hello@solaron.io
           </a>
           . Общи запитвания: вижте страницата{" "}
           <Link

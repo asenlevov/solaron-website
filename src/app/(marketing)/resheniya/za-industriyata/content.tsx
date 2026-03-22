@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import {
   ChevronDown, Factory, Zap, TrendingUp, Shield,
-  BarChart3, Gauge, Settings, Activity, ArrowRight,
+  BarChart3, Gauge, Settings, Activity, ArrowRight, Battery,
 } from "lucide-react";
 import { ImageEditorial } from "@/components/ui/image-editorial";
 import { StatNumber } from "@/components/ui/stat-number";
@@ -88,7 +88,7 @@ const chartData = [
 
 const archNodes = [
   { x: 60, label: "PV Масив", sub: "100 kWp – MW" },
-  { x: 260, label: "Инвертори", sub: "String / Central" },
+  { x: 260, label: "Инвертори", sub: "On-grid / Хибридни" },
   { x: 460, label: "Трансформатор", sub: "СрН / НН" },
   { x: 660, label: "Консуматор", sub: "Завод / Мрежа" },
 ];
@@ -101,13 +101,18 @@ const archCards = [
   },
   {
     icon: Gauge,
-    title: "Централни Инвертори",
-    desc: "Huawei / SMA централни и string инвертори с 98.5%+ ефективност на преобразуване.",
+    title: "Индустриални Инвертори",
+    desc: "On-grid: SolarEdge, Kstar, Huawei, SMA — string и централни инвертори с 98.5%+ ефективност. Хибридни: Deye, Huawei за системи със съхранение.",
   },
   {
     icon: Activity,
     title: "SCADA Мониторинг",
     desc: "24/7 наблюдение на всеки стринг с автоматични аларми и отдалечена диагностика.",
+  },
+  {
+    icon: Battery,
+    title: "Съхранение на Енергия",
+    desc: "За индустриални хибридни системи работим с Kstar и CNTE кабинетни системи за съхранение на електроенергия.",
   },
   {
     icon: Shield,
@@ -127,7 +132,7 @@ const benefitCards = [
   {
     icon: Shield,
     title: "Мрежова Независимост",
-    desc: "С батерийно съхранение и интелигентно управление на товарите, вашето производство продължава дори при прекъсвания на захранването.",
+    desc: "С батерийно съхранение от Kstar и CNTE и интелигентно управление на товарите, вашето производство продължава дори при прекъсвания на захранването.",
     stat: "99.5%",
     statLabel: "uptime",
   },
@@ -384,7 +389,7 @@ export function ZaIndustriyataContent() {
             variants={staggerContainer}
             initial="hidden"
             animate={archInView ? "visible" : "hidden"}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
             {archCards.map((card) => (
               <motion.div key={card.title} variants={staggerItem}>

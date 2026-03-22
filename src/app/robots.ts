@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://solaron.pro/sitemap.xml",
+    sitemap: "https://solaron.io/sitemap.xml",
   };
 }

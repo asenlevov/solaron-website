@@ -137,28 +137,35 @@ const financingOptions = [
 
 const techComponents = [
   {
-    title: "SolarEdge HD-Wave Инвертори",
-    spec: "99.2% ефективност",
-    warranty: "12 год. гаранция",
-    logo: "/real/partners/solaredge-logo.png",
+    name: "SolarEdge HD-Wave Инвертори",
+    description: "99.2% ефективност, SafeDC™ безопасност, панелно ниво мониторинг. Най-високо качество на пазара.",
+    tier: "Премиум",
   },
   {
-    title: "Tier-1 Соларни Панели",
-    spec: "22%+ ефективност",
-    warranty: "25 год. гаранция",
-    logo: null,
+    name: "Kstar BluE-S Хибридни",
+    description: "All-in-one системи с CATL LFP клетки и елегантен дизайн. Над средното ниво качество.",
+    tier: "All-in-one",
   },
   {
-    title: "Мониторинг Платформа",
-    spec: "Ниво на отделен панел",
-    warranty: "Безплатен достъп",
-    logo: null,
+    name: "Deye Хибридни Инвертори",
+    description: "Бюджетно решение с максимална гъвкавост. Може би най-доброто решение за източноевропейския пазар.",
+    tier: "Стойност",
+  },
+  {
+    name: "Соларни Панели",
+    description: "DMEGC (Tier-1), AIKO и TENKA SOLAR (ABC технология, до 24% КПД) — панели от среден до премиум клас.",
+    tier: "Tier-1+",
+  },
+  {
+    name: "Конструкции",
+    description: "Van der Valk и Sunbeam — европейско качество с реални гаранции и тестове за издръжливост.",
+    tier: "Европейски",
   },
 ];
 
 const warranties = [
   { years: 25, label: "Производствена гаранция на панелите", icon: Sun },
-  { years: 12, label: "Гаранция на инвертора SolarEdge", icon: Zap },
+  { years: 12, label: "Гаранция на инвертора", icon: Zap },
   { years: 5, label: "Гаранция на монтажа от Соларон", icon: Wrench },
 ];
 
@@ -818,36 +825,41 @@ export default function ZaDomaContent() {
               Компоненти
             </motion.p>
             <TextReveal as="h2" className="editorial-display text-center">
-              Използваме само Tier-1 компоненти
+              Водещи марки, доказано качество
             </TextReveal>
+            <motion.p
+              variants={blurIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="mt-4 text-stone-500 text-lg max-w-2xl mx-auto"
+            >
+              Работим с три инверторни марки и Tier-1+ панели — от премиум до оптимално съотношение цена/качество
+            </motion.p>
           </div>
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid gap-6 md:grid-cols-3"
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
             {techComponents.map((comp) => (
-              <motion.div key={comp.title} variants={staggerItem}>
+              <motion.div key={comp.name} variants={staggerItem}>
                 <GlowCard className="h-full rounded-2xl">
                   <div className="p-8">
-                    <Zap className="size-8 text-accent mb-4" />
-                    <h3 className="font-display text-lg font-bold mb-3">
-                      {comp.title}
-                    </h3>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2">
-                        <Check className="size-4 text-accent shrink-0" />
-                        <span className="text-stone-600">{comp.spec}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="size-4 text-accent shrink-0" />
-                        <span className="text-stone-600">
-                          {comp.warranty}
-                        </span>
-                      </div>
+                    <div className="flex items-center justify-between mb-4">
+                      <Zap className="size-8 text-accent" />
+                      <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                        {comp.tier}
+                      </span>
                     </div>
+                    <h3 className="font-display text-lg font-bold mb-3">
+                      {comp.name}
+                    </h3>
+                    <p className="text-sm text-stone-600 leading-relaxed">
+                      {comp.description}
+                    </p>
                   </div>
                 </GlowCard>
               </motion.div>

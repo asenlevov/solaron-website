@@ -1,8 +1,27 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const SolarenKarportContent = dynamic(() => import("./content").then((m) => m.SolarenKarportContent), { ssr: true });
+
+import { SolarenKarportContent } from "./content";
+
 export const metadata: Metadata = {
-  title: "Соларен Карпорт | Solaron",
-  description: "Соларни навеси за паркинги с интегрирано EV зареждане. 270 kWp референтен проект. Двоен приход от паркиране и енергия.",
+  title: "Соларен Карпорт — Навес с Панели | Solaron",
+  description:
+    "Соларен карпорт и фотоволтаичен навес за паркинг — генерирайте чиста енергия от покрива на паркинга. Зареждане на електромобили и сянка.",
+  keywords: [
+    "соларен карпорт",
+    "фотоволтаичен навес",
+    "соларен паркинг",
+    "карпорт с панели",
+    "EV зареждане карпорт",
+    "Solaron",
+  ],
+  openGraph: {
+    title: "Соларен Карпорт — Навес с Панели | Solaron",
+    description:
+      "Соларен карпорт и фотоволтаичен навес за паркинг — генерирайте чиста енергия и заредете електромобила.",
+  },
+  alternates: { canonical: "/resheniya/solaren-karport" },
 };
-export default function SolarenKarportPage() { return <SolarenKarportContent />; }
+
+export default function SolarenKarportPage() {
+  return <SolarenKarportContent />;
+}

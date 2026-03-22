@@ -58,6 +58,7 @@ const comparison = [
   { tech: "MWT Mono", efficiency: "21.5%", degradation: "0.4%/год", bifacial: true, microcrack: true, best: true },
   { tech: "PERC Mono", efficiency: "20.5%", degradation: "0.55%/год", bifacial: false, microcrack: false, best: false },
   { tech: "HJT", efficiency: "22.0%", degradation: "0.4%/год", bifacial: true, microcrack: true, best: false },
+  { tech: "ABC (All Back Contact)", efficiency: "24.0%", degradation: "0.35%/год", bifacial: true, microcrack: true, best: false },
 ];
 
 const warrantyData = [
@@ -110,6 +111,49 @@ const galleryImages = [
   { src: REAL_IMAGES.installations.adoreenergyC1, alt: "Инсталация от близо", aspect: "aspect-[4/3]", desc: "Детайл от монтаж на MWT панели" },
   { src: REAL_IMAGES.projects.venelin63_hero, alt: "63 kWp инсталация", aspect: "aspect-[3/4]", desc: "63 kWp покривна система — с. Венелин" },
   { src: REAL_IMAGES.installations.nlProjectOverview1, alt: "Проект панорама", aspect: "aspect-[4/3]", desc: "Завършен търговски проект — панорамен изглед" },
+];
+
+const panelBrands = [
+  {
+    name: "Sunport Power",
+    tech: "MWT (Metal Wrap Through)",
+    badge: "Без микропукнатини",
+    efficiency: "21.5%",
+    power: "450 Wp",
+    warranty: "30 години",
+    description: "Монокристални MWT клетки с токопроводящи контакти, прекарани през задната страна. По-голяма активна площ и значително намален риск от микропукнатини.",
+    strengths: ["Без лицеви шини", "IP68 съединителна кутия", "Бифасиален дизайн", "0.4% годишна деградация"],
+  },
+  {
+    name: "DMEGC",
+    tech: "Tier-1 Mono PERC",
+    badge: "Tier-1 бранд",
+    efficiency: "21.0%",
+    power: "550 Wp",
+    warranty: "25 години",
+    description: "DMEGC е Tier-1 производител на соларни панели — среден клас с много добри резултати и доказана надеждност на глобалния пазар.",
+    strengths: ["Tier-1 по BNEF", "Много добро съотношение цена/качество", "Доказана производителност", "Глобална гаранция"],
+  },
+  {
+    name: "AIKO",
+    tech: "ABC (All Back Contact)",
+    badge: "Много високо качество",
+    efficiency: "23.6%",
+    power: "460 Wp",
+    warranty: "30 години",
+    description: "AIKO използва ABC технология (All Back Contact) — всички метални контакти са на гърба на клетката. Без метализация на лицето, без шини — максимална активна площ и рекордна ефективност.",
+    strengths: ["Без лицеви метални контакти", "Рекордна ефективност", "По-висока мощност/m²", "Отлична работа при слаба светлина"],
+  },
+  {
+    name: "TENKA SOLAR",
+    tech: "ABC, Стъкло-Стъкло",
+    badge: "24% КПД — рекорд",
+    efficiency: "24.0%",
+    power: "580 Wp",
+    warranty: "30 години",
+    description: "TENKA SOLAR е първият производител, достигнал 24% КПД с ABC технология и стъкло-стъкло конструкция. Максимална издръжливост и ефективност за най-взискателните проекти.",
+    strengths: ["Първият панел с 24% КПД", "Стъкло-стъкло конструкция", "ABC технология", "Максимална дълготрайност"],
+  },
 ];
 
 /* ── Circular Progress SVG ────────────────────────────────── */
@@ -388,6 +432,66 @@ export function SolarniPaneliContent() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── 3.5 · Panel Brands — Our Portfolio ──────────────── */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Нашето портфолио</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-4">
+            Четири марки, всяка технология
+          </TextReveal>
+          <p className="text-lg text-muted-foreground font-body mb-16 max-w-2xl">
+            Предлагаме панели от MWT до ABC технология — от надежден среден клас до рекордна ефективност от 24%.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {panelBrands.map((brand, i) => (
+              <motion.div
+                key={brand.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="rounded-2xl border border-border bg-gradient-to-br from-white to-muted/30 p-8"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <span className="inline-block text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-accent/10 text-accent mb-3">
+                      {brand.badge}
+                    </span>
+                    <h3 className="font-display font-bold text-xl">{brand.name}</h3>
+                    <p className="text-xs text-muted-foreground font-body mt-1">{brand.tech}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-display font-black text-accent">{brand.efficiency}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">ефективност</p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6">
+                  {brand.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {brand.strengths.map((s) => (
+                    <span key={s} className="inline-flex items-center gap-1 rounded-full bg-accent/5 px-3 py-1 text-xs font-body text-foreground-secondary">
+                      <Check className="h-3 w-3 text-accent" />
+                      {s}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-6 pt-4 border-t border-border/50">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Мощност</span>
+                    <p className="text-sm font-display font-semibold">{brand.power}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">Гаранция</span>
+                    <p className="text-sm font-display font-semibold">{brand.warranty}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

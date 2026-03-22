@@ -7,49 +7,146 @@ import { MagneticButton } from "@/components/ui/magnetic-button";
 export const metadata: Metadata = {
   title: "Партньори | Solaron",
   description:
-    "Технологичните партньори на Solaron — SolarEdge, Van Der Valk, Sunport Power и Pylontech.",
+    "Технологичните партньори на Solaron — SolarEdge, Kstar, Deye, Huawei, DMEGC, AIKO, TENKA SOLAR, Van Der Valk, Sunbeam и други.",
 };
 
-const PARTNERS = [
+const PARTNER_CATEGORIES = [
   {
-    name: "SolarEdge",
-    category: "Инвертори и оптимизатори",
-    experience: "25+ години",
-    description:
-      "Глобален лидер в интелигентните енергийни решения. Инверторите на SolarEdge с вграден мониторинг на ниво модул осигуряват максимален добив и пълна видимост на системата.",
-    highlight:
-      "Използваме SolarEdge в 90% от нашите проекти за домове и бизнеси.",
-    logo: REAL_IMAGES.partners.solaredge,
+    title: "Инвертори",
+    partners: [
+      {
+        name: "SolarEdge",
+        badge: "Най-високо качество",
+        description: "Глобален лидер в интелигентните енергийни решения. HD-Wave инвертори с 99.2% ефективност, SafeDC™ безопасност и панелно ниво мониторинг чрез оптимизатори P950.",
+        highlight: "99.2% ефективност. 25+ години на пазара.",
+        logo: REAL_IMAGES.partners.solaredge,
+      },
+      {
+        name: "Kstar",
+        badge: "All-in-one системи",
+        description: "All-in-one хибридни системи с CATL LFP клетки и елегантен дизайн. Над средното ниво качество с модулен дизайн, IP65 защита и монтаж за 30 минути.",
+        highlight: "CATL клетки. 10 000+ цикъла. 32 години история.",
+        logo: REAL_IMAGES.partners.kstar,
+      },
+      {
+        name: "Deye",
+        badge: "Най-добро съотношение цена/качество",
+        description: "Бюджетен бранд с множество решения — може би най-доброто решение за източноевропейския пазар. До 16 паралелни инвертора за мащабируемост до 800 kW.",
+        highlight: "Гъвкавост и достъпност за всеки бюджет.",
+        logo: REAL_IMAGES.partners.deye,
+      },
+      {
+        name: "Huawei",
+        badge: "Комерсиални системи",
+        description: "Стрингови и централни инвертори за средни и големи комерсиални проекти. FusionSolar платформа за интелигентно управление на енергията.",
+        highlight: "Водещ в комерсиални on-grid и хибридни системи.",
+        logo: REAL_IMAGES.partners.huawei,
+      },
+    ],
   },
   {
-    name: "Van Der Valk Solar Systems",
-    category: "Монтажни конструкции",
-    experience: "15 години гаранция",
-    description:
-      "Холандски производител на алуминиеви монтажни системи за всякакъв тип покриви — скатни, плоски и фасадни. Конструкциите издържат на натоварвания от вятър и сняг по европейските норми.",
-    highlight:
-      "15-годишна гаранция за конструкцията — повече от повечето конкуренти.",
-    logo: null,
+    title: "Соларни панели",
+    partners: [
+      {
+        name: "Sunport Power",
+        badge: "MWT технология",
+        description: "Производител на иновативни MWT (Metal Wrap Through) панели с по-висока ефективност и по-добра устойчивост на горещи точки. Безрамкова технология.",
+        highlight: "30-годишна гаранция. Без микропукнатини.",
+        logo: null,
+      },
+      {
+        name: "DMEGC",
+        badge: "Tier-1 бранд",
+        description: "Tier-1 производител по BNEF — среден клас панел с много добри резултати и доказана надеждност на глобалния пазар. Отлично съотношение цена/качество.",
+        highlight: "Tier-1 по Bloomberg NEF. Глобална гаранция.",
+        logo: REAL_IMAGES.partners.dmegc,
+      },
+      {
+        name: "AIKO",
+        badge: "ABC технология",
+        description: "ABC (All Back Contact) технология — всички метални контакти на гърба на клетката. Без метализация на лицето, рекордна ефективност от 23.6%.",
+        highlight: "Много високо качество. 170 GW+ доставени.",
+        logo: REAL_IMAGES.partners.aiko,
+      },
+      {
+        name: "TENKA SOLAR",
+        badge: "24% КПД — рекорд",
+        description: "Също ABC технология, стъкло-стъкло конструкция. Първият панел, достигнал 24% КПД — максимална ефективност и дълготрайност.",
+        highlight: "Първият панел с 24% ефективност.",
+        logo: REAL_IMAGES.partners.tenkaSolar,
+      },
+    ],
   },
   {
-    name: "Sunport Power",
-    category: "Соларни панели (MWT)",
-    experience: "30 години гаранция на продукта",
-    description:
-      "Производител на иновативни MWT (Metal Wrap Through) панели с по-висока ефективност и по-добра устойчивост на горещи точки. Безрамкова технология намалява натрупването на мръсотия.",
-    highlight:
-      "30-годишна линейна гаранция на мощността — доверие в дългосрочното представяне.",
-    logo: null,
+    title: "Батерии и съхранение",
+    partners: [
+      {
+        name: "Pylontech",
+        badge: "Доказано качество",
+        description: "Водещ производител на LFP акумулаторни системи. 6 000+ цикъла при 95% дълбочина на разряд — надеждност за десетилетия. Модулно мащабиране.",
+        highlight: "10+ години на пазара. Широка съвместимост.",
+        logo: null,
+      },
+      {
+        name: "Kstar (ESS)",
+        badge: "All-in-one съхранение",
+        description: "BluE-S серия — all-in-one кабинети с интегрирани CATL LFP батерии. До 20.4 kWh капацитет с тройна защита на модулно, пакетно и системно ниво.",
+        highlight: "CATL LFP клетки. IP65 защита.",
+        logo: REAL_IMAGES.partners.kstar,
+      },
+      {
+        name: "CNTE",
+        badge: "Комерсиално съхранение",
+        description: "STAR-H серия all-in-one ESS кабинети с течно охлаждане за комерсиални и индустриални приложения. 100–372 kWh капацитет.",
+        highlight: "Течно охлаждане. 8 000+ цикъла.",
+        logo: REAL_IMAGES.partners.cnte,
+      },
+    ],
   },
   {
-    name: "Pylontech",
-    category: "Батерии (LFP)",
-    experience: "10+ години на пазара",
-    description:
-      "Водещ производител на литиево-железо-фосфатни (LFP) акумулаторни системи за съхранение на енергия. LFP технологията е по-безопасна и с по-дълъг живот от конвенционалните литиево-йонни решения.",
-    highlight:
-      "Над 6000 цикъла при 95% дълбочина на разряд — надеждност за десетилетия.",
-    logo: null,
+    title: "Конструкции",
+    partners: [
+      {
+        name: "Van Der Valk Solar Systems",
+        badge: "Европейско качество",
+        description: "Холандски производител с пълна европейска сертификация. Покрива всички изисквания на европейския пазар с реални гаранции, подкрепени от тестове за издръжливост във вятърен тунел.",
+        highlight: "15-годишна гаранция. Вятърен тунел тестове.",
+        logo: null,
+      },
+      {
+        name: "Sunbeam",
+        badge: "Европейска марка",
+        description: "Също европейска марка конструкция с гаранции и качество като при Van der Valk. Системи Supra (плоски покриви), Nova и Luna (скатни покриви). Климатично неутрален сертификат.",
+        highlight: "CO₂ неутрален. Инсталации из цяла Европа.",
+        logo: REAL_IMAGES.partners.sunbeam,
+      },
+    ],
+  },
+  {
+    title: "Кабели и конектори",
+    partners: [
+      {
+        name: "Athilex",
+        badge: "DC кабели",
+        description: "Специализиран производител на високо качествени соларни кабели от 2010 г. H1Z2Z2-K кабели с DCA сертификация за максимална безопасност.",
+        highlight: "Много високо качество DC кабели.",
+        logo: REAL_IMAGES.partners.athilex,
+      },
+      {
+        name: "KBE Elektrotechnik",
+        badge: "DC кабели",
+        description: "Берлински производител с тройна сертификация (EN 50618, IEC 62930, TÜV). 25+ години гарантиран живот, 2 млн. км продукция годишно.",
+        highlight: "Тройна сертификация. 350+ служители.",
+        logo: REAL_IMAGES.partners.kbe,
+      },
+      {
+        name: "Stäubli",
+        badge: "DC конектори",
+        description: "Използваме само и единствено Stäubli MC4 конектори — най-високото качество. Постоянни изследвания и подобрения, осигуряват правилните инструменти за кримпване и затягане.",
+        highlight: "Единствените конектори, които използваме.",
+        logo: REAL_IMAGES.partners.staubli,
+      },
+    ],
   },
 ];
 
@@ -75,49 +172,52 @@ export default function PartnoriPage() {
         </div>
       </section>
 
-      {/* Partner sections */}
-      {PARTNERS.map((partner, i) => (
+      {/* Partner categories */}
+      {PARTNER_CATEGORIES.map((category, catIdx) => (
         <section
-          key={partner.name}
-          className={i % 2 === 0 ? "bg-[#f7f7f5] py-20 md:py-24" : "bg-white py-20 md:py-24"}
+          key={category.title}
+          className={catIdx % 2 === 0 ? "bg-[#f7f7f5] py-20 md:py-24" : "bg-white py-20 md:py-24"}
         >
           <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
-              <div>
-                <p className="editorial-overline text-accent mb-3">
-                  {partner.category}
-                </p>
-                <h2 className="editorial-display text-foreground mb-2">
-                  {partner.name}
-                </h2>
-                <p className="font-body text-sm uppercase tracking-widest text-foreground-secondary mb-6">
-                  {partner.experience}
-                </p>
-                <p className="font-body text-base leading-relaxed text-foreground-secondary md:text-lg">
-                  {partner.description}
-                </p>
-              </div>
-              <div className="flex flex-col gap-6">
-                {partner.logo && (
-                  <div className="relative h-16 w-48">
-                    <Image
-                      src={partner.logo}
-                      alt={`${partner.name} лого`}
-                      fill
-                      className="object-contain object-left"
-                      sizes="192px"
-                    />
+            <p className="editorial-overline text-accent mb-3">
+              {category.title}
+            </p>
+            <h2 className="editorial-heading text-foreground mb-12">
+              {category.title}
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {category.partners.map((partner) => (
+                <div
+                  key={partner.name}
+                  className="rounded-2xl border border-border bg-white p-8 flex flex-col"
+                >
+                  <span className="inline-block self-start text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-accent/10 text-accent mb-4">
+                    {partner.badge}
+                  </span>
+                  {partner.logo && (
+                    <div className="relative h-10 w-36 mb-4">
+                      <Image
+                        src={partner.logo}
+                        alt={`${partner.name} лого`}
+                        fill
+                        className="object-contain object-left"
+                        sizes="144px"
+                      />
+                    </div>
+                  )}
+                  <h3 className="font-display font-bold text-xl mb-3">
+                    {partner.name}
+                  </h3>
+                  <p className="font-body text-sm leading-relaxed text-foreground-secondary mb-6 flex-1">
+                    {partner.description}
+                  </p>
+                  <div className="rounded-xl border border-accent/20 bg-accent/5 p-4">
+                    <p className="font-body text-xs leading-relaxed text-foreground">
+                      {partner.highlight}
+                    </p>
                   </div>
-                )}
-                <div className="rounded-2xl border border-accent/20 bg-accent/5 p-6">
-                  <p className="editorial-overline text-accent mb-2">
-                    Акцент
-                  </p>
-                  <p className="font-body text-base leading-relaxed text-foreground">
-                    {partner.highlight}
-                  </p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>

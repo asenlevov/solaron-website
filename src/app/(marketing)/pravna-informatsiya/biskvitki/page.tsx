@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Политика за Бисквитки",
   description:
-    "Информация за бисквитките, които solaron.pro използва, и как да управлявате предпочитанията си.",
+    "Информация за бисквитките, които solaron.io използва, и как да управлявате предпочитанията си.",
 };
 
 export default function CookiesPage() {
@@ -130,10 +130,10 @@ export default function CookiesPage() {
             Ако имате въпроси относно нашата политика за бисквитки, моля
             свържете се с нас на{" "}
             <a
-              href="mailto:info@solaron.pro"
+              href="mailto:hello@solaron.io"
               className="text-accent underline underline-offset-4 hover:text-accent-hover"
             >
-              info@solaron.pro
+              hello@solaron.io
             </a>
             .
           </p>

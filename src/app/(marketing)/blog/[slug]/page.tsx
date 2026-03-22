@@ -99,11 +99,32 @@ export default async function BlogArticlePage({
   const headings = extractHeadings(post.content);
   const contentWithIds = addIdsToHeadings(post.content);
   const minutes = readingTime(post.content);
-  const shareUrl = `https://solaron.pro/blog/${post.slug}`;
+  const shareUrl = `https://solaron.io/blog/${post.slug}`;
   const shareText = encodeURIComponent(post.title);
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    author: { "@type": "Organization", name: "Solaron" },
+    publisher: {
+      "@type": "Organization",
+      name: "Solaron",
+      logo: { "@type": "ImageObject", url: "https://solaron.io/logo-solaron.png" },
+    },
+    datePublished: post.date,
+    dateModified: post.date,
+    image: post.coverImage ? `https://solaron.io${post.coverImage}` : undefined,
+    mainEntityOfPage: `https://solaron.io/blog/${post.slug}`,
+  };
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden bg-foreground pt-32 pb-20 md:pt-40 md:pb-28 grain">
         {post.coverImage && (

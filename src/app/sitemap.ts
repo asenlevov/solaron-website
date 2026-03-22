@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 import { getAllPosts } from "@/data/blog-posts";
 
-const BASE = "https://solaron.pro";
+const BASE = "https://solaron.io";
 
 function url(path: string): string {
   return `${BASE}${path.startsWith("/") ? path : `/${path}`}`;
@@ -32,10 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const kakRabotiSlugs = [
     "slancheva-energiya",
     "netno-metering",
+    "svurzvane-kum-mrezhata",
     "finansirane",
     "vuzvrashchaemost",
     "protsesa-na-montazh",
   ] as const;
+
 
   const instrumentiSlugs = ["rechnik", "sravnenie", "spestqvania", "roi-kalkulator"] as const;
 
@@ -69,6 +71,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     });
   }
+
+  entries.push({
+    url: url("/resheniya"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  });
+
+  entries.push({
+    url: url("/kak-raboti"),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  });
 
   entries.push({
     url: url("/konfigurator"),
@@ -107,7 +123,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: url(`/instrumenti/${slug}`),
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.75,
+      priority: 0.7,
     });
   }
 

@@ -171,8 +171,30 @@ export default async function ProjectDetailPage({
     ...(project.client ? [{ label: "Клиент", value: project.client }] : []),
   ];
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    description: project.description,
+    image: `https://solaron.io${project.image}`,
+    locationCreated: {
+      "@type": "Place",
+      name: `${project.location}, ${project.country}`,
+    },
+    creator: {
+      "@type": "Organization",
+      name: "Solaron",
+      url: "https://solaron.io",
+    },
+    mainEntityOfPage: `https://solaron.io/proekti/${project.slug}`,
+  };
+
   return (
     <main className="pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
       {/* ── Full-bleed hero ── */}
       <section className="grain relative overflow-hidden">
         <div className="relative aspect-[21/9] min-h-[420px] w-full overflow-hidden bg-background-secondary">

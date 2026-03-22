@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Често Задавани Въпроси | Solaron",
+  title: "Често Задавани Въпроси за Соларни Системи | Solaron",
   description:
-    "Отговори на често задавани въпроси за фотоволтаици, монтаж, цени, техника и административни стъпки в България.",
+    "Отговори на най-честите въпроси за фотоволтаични системи, инвертори, батерии, монтаж, нетно отчитане и възвращаемост на инвестицията. Всичко за соларната енергия на едно място.",
+  keywords: [
+    "често задавани въпроси соларни панели",
+    "фотоволтаици въпроси",
+    "соларна система FAQ",
+    "нетно отчитане въпроси",
+    "фотоволтаична система информация",
+  ],
+  alternates: { canonical: "/chesti-vuprosi" },
 };
 
-export default function ChestiVuprosiLayout({ children }: { children: React.ReactNode }) {
+export default function FAQLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return children;
 }

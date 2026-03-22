@@ -67,6 +67,33 @@ const mobileFeatures = [
   "Тъмен режим",
 ];
 
+const monitoringPlatforms = [
+  {
+    brand: "SolarEdge",
+    platform: "MySolarEdge / mySolarEdge App",
+    panelLevel: true,
+    refreshRate: "15 секунди",
+    dataRetention: "25 години",
+    highlight: "Панелно ниво мониторинг с оптимизатори",
+  },
+  {
+    brand: "Kstar",
+    platform: "SOLARMAN App",
+    panelLevel: false,
+    refreshRate: "5 минути",
+    dataRetention: "10 години",
+    highlight: "Интуитивен интерфейс с дистанционно управление",
+  },
+  {
+    brand: "Deye",
+    platform: "SOLARMAN / Deye Cloud",
+    panelLevel: false,
+    refreshRate: "5 минути",
+    dataRetention: "10 години",
+    highlight: "Мулти-инвертор мониторинг за мащабируеми системи",
+  },
+];
+
 const monitoringFaqs = [
   { q: "На кои устройства работи приложението?", a: "MySolarEdge приложението е достъпно за iOS (iPhone, iPad) и Android. Уеб платформата работи във всеки модерен браузър — Chrome, Safari, Firefox, Edge." },
   { q: "Колко дълго се съхраняват данните?", a: "SolarEdge съхранява пълна историческа информация за 25 години — дневни, месечни и годишни данни. Можете да експортирате в CSV/Excel по всяко време." },
@@ -346,6 +373,47 @@ export function MonitoringContent() {
                 <p className="text-xs text-muted-foreground font-body mb-4">{item.statCtx}</p>
                 <h3 className="font-display font-bold text-lg mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground font-body leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Monitoring Platform Comparison */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Всички платформи</p>
+          <TextReveal as="h2" className="editorial-heading mt-2 mb-12">
+            Мониторинг от всеки инвертор
+          </TextReveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {monitoringPlatforms.map((platform) => (
+              <motion.div
+                key={platform.brand}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-border p-8 flex flex-col"
+              >
+                <h3 className="font-display font-bold text-xl mb-2">{platform.brand}</h3>
+                <p className="text-sm text-accent font-display font-semibold mb-4">{platform.platform}</p>
+                <div className="space-y-3 flex-1">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Панелно ниво</span>
+                    <span className="text-sm font-display font-semibold">{platform.panelLevel ? "Да" : "Стрингово"}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Обновяване</span>
+                    <span className="text-sm font-display font-semibold">{platform.refreshRate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground font-body">Данни</span>
+                    <span className="text-sm font-display font-semibold">{platform.dataRetention}</span>
+                  </div>
+                </div>
+                <p className="mt-6 pt-4 border-t border-border/50 text-xs text-muted-foreground font-body italic">
+                  {platform.highlight}
+                </p>
               </motion.div>
             ))}
           </div>

@@ -139,10 +139,10 @@ export default function GarantsiyaPage() {
           <li>
             Подайте сигнал на{" "}
             <a
-              href="mailto:serviz@solaron.bg"
+              href="mailto:hello@solaron.io"
               className="text-secondary underline-offset-4 hover:underline"
             >
-              serviz@solaron.bg
+              hello@solaron.io
             </a>{" "}
             или чрез{" "}
             <Link

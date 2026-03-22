@@ -253,7 +253,7 @@ export default function KonfiguratorPage() {
         mounted ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       }`}
     >
-      <div className="mx-auto max-w-[1600px] px-4 pt-14 pb-10 md:px-6 md:pt-22 lg:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 pt-22 pb-10 md:px-6 md:pt-22 lg:px-8">
         <header className="mb-8 max-w-3xl">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Solaron

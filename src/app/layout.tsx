@@ -34,30 +34,55 @@ export const metadata: Metadata = {
     "слънчева енергия",
     "соларна система",
     "фотоволтаична система",
+    "соларни панели цена",
+    "фотоволтаична система за дома",
+    "соларна система за къща",
+    "слънчеви панели за дома",
+    "фотоволтаици цена България",
+    "соларни панели монтаж",
+    "соларна система цена",
+    "инвертор за соларни панели",
+    "соларна батерия",
+    "нетно отчитане",
+    "SolarEdge",
+    "Kstar",
+    "Deye",
     "solar panels Bulgaria",
     "Solaron",
   ],
   authors: [{ name: "Solaron" }],
   creator: "Solaron",
-  metadataBase: new URL("https://solaron.pro"),
+  metadataBase: new URL("https://solaron.io"),
   openGraph: {
     type: "website",
     locale: "bg_BG",
-    url: "https://solaron.pro",
+    url: "https://solaron.io",
     siteName: "Solaron",
     title: "Solaron — Соларни Решения за Дома и Бизнеса",
     description:
       "Проектиране и монтаж на фотоволтаични системи с 20+ години европейски опит. Спестете до 80% от сметката за ток.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 2684,
+        height: 1548,
+        alt: "Solaron — Соларни Решения",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Solaron — Соларни Решения за Дома и Бизнеса",
     description:
       "Проектиране и монтаж на фотоволтаични системи с 20+ години европейски опит.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: "https://solaron.io",
   },
 };
 

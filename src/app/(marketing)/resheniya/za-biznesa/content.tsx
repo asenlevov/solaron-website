@@ -68,6 +68,34 @@ const processSteps = [
   { icon: Settings, title: "Оптимизация", desc: "Мониторинг и поддръжка за пикова производителност" },
 ];
 
+const commercialEquipment = [
+  {
+    category: "On-Grid Системи",
+    description: "За бизнеси с висока дневна консумация, on-grid системите осигуряват директно намаляване на сметките за електричество без батерии.",
+    brands: [
+      { name: "SolarEdge", role: "Панелно ниво оптимизация, 99.2% ефективност" },
+      { name: "Kstar", role: "Стрингови инвертори с висока надеждност" },
+      { name: "Huawei", role: "Стрингови и централни инвертори за средни и големи системи" },
+    ],
+  },
+  {
+    category: "Хибридни Системи",
+    description: "Хибридните системи комбинират соларна генерация с батерийно съхранение за peak shaving и резервно захранване.",
+    brands: [
+      { name: "Deye", role: "До 16 паралелни инвертора, мащабируемост до 800 kW" },
+      { name: "Huawei", role: "Интелигентно управление на енергията с FusionSolar" },
+    ],
+  },
+  {
+    category: "Съхранение (ESS Кабинети)",
+    description: "Кабинетни системи за съхранение на електроенергия за големи комерсиални и индустриални обекти.",
+    brands: [
+      { name: "Kstar", role: "Модулни кабинети с CATL LFP клетки" },
+      { name: "CNTE", role: "STAR-H all-in-one кабинети с течно охлаждане" },
+    ],
+  },
+];
+
 export default function ZaBiznesaContent() {
   const heroRef = useRef<HTMLElement>(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -352,7 +380,47 @@ export default function ZaBiznesaContent() {
         </div>
       </section>
 
-      {/* 6. CTA */}
+      {/* 6. EQUIPMENT */}
+      <section className="py-24 md:py-32 bg-[#f8faf6]">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Оборудване</p>
+          <TextReveal as="h2" className="editorial-heading mt-2 mb-4">
+            Технологии за всяка бизнес нужда
+          </TextReveal>
+          <p className="text-lg text-muted-foreground font-body mb-16 max-w-2xl">
+            Подбираме оборудването спрямо конкретните нужди на всеки бизнес — от мощност и бюджет до специфични изисквания.
+          </p>
+          <div className="space-y-8">
+            {commercialEquipment.map((eq) => (
+              <motion.div
+                key={eq.category}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-border bg-white p-8"
+              >
+                <h3 className="font-display font-bold text-xl mb-2">{eq.category}</h3>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6">{eq.description}</p>
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {eq.brands.map((brand) => (
+                    <div key={brand.name} className="flex items-start gap-3 rounded-xl bg-muted/30 p-4">
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                        <span className="text-xs font-display font-bold">{brand.name[0]}</span>
+                      </div>
+                      <div>
+                        <p className="font-display font-semibold text-sm">{brand.name}</p>
+                        <p className="text-xs text-muted-foreground font-body mt-0.5">{brand.role}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CTA */}
       <section className="overflow-hidden bg-accent px-6 py-24 text-white md:px-8 md:py-32">
         <div className="mx-auto max-w-4xl text-center">
           <TextReveal as="h2" className="editorial-hero text-white mb-6">

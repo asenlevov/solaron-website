@@ -1,8 +1,26 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const AvtonomniSistemiContent = dynamic(() => import("./content").then((m) => m.AvtonomniSistemiContent), { ssr: true });
+
+import { AvtonomniSistemiContent } from "./content";
+
 export const metadata: Metadata = {
-  title: "Автономни Соларни Системи | Solaron",
-  description: "Off-grid соларни системи за 100% енергийна независимост. 3-7 дни автономия, 48V-400V системи, 99.9% uptime.",
+  title: "Автономни Соларни Системи — Off-Grid | Solaron",
+  description:
+    "Автономни фотоволтаични системи за обекти без достъп до мрежата. Off-grid решения с батерии за пълна енергийна независимост. Проектиране и монтаж.",
+  keywords: [
+    "автономна соларна система",
+    "off-grid фотоволтаична система",
+    "соларна система без мрежа",
+    "батерийна система off-grid",
+    "Solaron",
+  ],
+  openGraph: {
+    title: "Автономни Соларни Системи — Off-Grid | Solaron",
+    description:
+      "Автономни фотоволтаични системи за обекти без достъп до мрежата. Off-grid решения с батерии за пълна енергийна независимост.",
+  },
+  alternates: { canonical: "/resheniya/avtonomni-sistemi" },
 };
-export default function AvtonomniSistemiPage() { return <AvtonomniSistemiContent />; }
+
+export default function AvtonomniSistemiPage() {
+  return <AvtonomniSistemiContent />;
+}

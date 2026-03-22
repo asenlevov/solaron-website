@@ -1,11 +1,24 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 
-const ZaIndustriyataContent = dynamic(() => import("./content").then((m) => m.ZaIndustriyataContent), { ssr: true });
+import { ZaIndustriyataContent } from "./content";
 
 export const metadata: Metadata = {
-  title: "Соларни Системи за Индустрията | Solaron",
-  description: "Индустриални фотоволтаични системи от 100 kWp до MW мащаб. Пикова оптимизация, 50% намаление на пиковата мощност и 2-4 години ROI.",
+  title: "Соларна Система за Индустрията | Solaron",
+  description:
+    "Индустриални фотоволтаични системи до 1 MWp — проектиране, монтаж и поддръжка. SolarEdge, Kstar, Huawei инвертори. Намалете енергийните разходи на производството.",
+  keywords: [
+    "индустриална соларна система",
+    "фотоволтаична система за завод",
+    "соларни панели за индустрия",
+    "голяма фотоволтаична инсталация",
+    "Solaron",
+  ],
+  openGraph: {
+    title: "Соларна Система за Индустрията | Solaron",
+    description:
+      "Индустриални фотоволтаични системи до 1 MWp — проектиране, монтаж и поддръжка. Намалете енергийните разходи.",
+  },
+  alternates: { canonical: "/resheniya/za-industriyata" },
 };
 
 export default function ZaIndustriyataPage() {

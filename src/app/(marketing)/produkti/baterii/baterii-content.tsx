@@ -45,6 +45,53 @@ const faqs = [
   { q: "Мога ли да бъда напълно автономен?", a: "Да, с достатъчно голяма батерийна система и соларна инсталация можете да покриете 100% от потреблението си. За пълна автономия обикновено трябва 2-3 дни резервен капацитет." },
   { q: "Колко трае батерията?", a: "LFP батериите имат 6 000+ цикъла, което означава 15-20 години при ежедневно използване. SolarEdge предлага 10-годишна гаранция с опция за удължаване." },
   { q: "Безопасни ли са батериите?", a: "Да. LiFePO₄ (LFP) химията не се възпламенява и е значително по-безопасна от NMC алтернативите. Батериите имат множество защити — от претоварване, прегряване и късо съединение." },
+  { q: "Коя марка батерия е най-добра за мен?", a: "За домашна употреба с компактен дизайн препоръчваме Kstar BluE-S (all-in-one решение) или Pylontech (модулно мащабиране). За комерсиални обекти — CNTE кабинетните системи с течно охлаждане." },
+  { q: "Мога ли да разширя батерийната система по-късно?", a: "Да. И трите марки поддържат модулно разширяване. Pylontech позволява до 6 модула в стек, Kstar BluE-S до 20.4 kWh, а CNTE кабинетите са мащабируеми за големи комерсиални нужди." },
+];
+
+const storageBrands = [
+  {
+    name: "Kstar",
+    badge: "All-in-one",
+    description: "Kstar BluE-S серията предлага all-in-one хибридни системи с интегрирани CATL LFP батерии. Модулен дизайн с до 20.4 kWh капацитет, 10 000+ цикъла и IP65 защита за външен монтаж.",
+    specs: [
+      { label: "Капацитет", value: "5.1 – 20.4 kWh" },
+      { label: "Химия", value: "CATL LFP" },
+      { label: "Цикли", value: "10 000+" },
+      { label: "Защита", value: "IP65" },
+      { label: "Монтаж", value: "30 мин" },
+      { label: "Гаранция", value: "10 години" },
+    ],
+    useCase: "Битови и малки комерсиални системи",
+  },
+  {
+    name: "CNTE",
+    badge: "Комерсиално съхранение",
+    description: "CNTE STAR-H серията предлага all-in-one ESS кабинети с течно охлаждане за комерсиални и индустриални приложения. Високоефективно решение с интегриран BMS и пожароустойчив дизайн.",
+    specs: [
+      { label: "Капацитет", value: "100 – 372 kWh" },
+      { label: "Химия", value: "LFP" },
+      { label: "Цикли", value: "8 000+" },
+      { label: "Охлаждане", value: "Течно" },
+      { label: "Приложение", value: "C&I" },
+      { label: "Гаранция", value: "10 години" },
+    ],
+    useCase: "Комерсиални и индустриални системи за съхранение",
+  },
+  {
+    name: "Pylontech",
+    badge: "Доказано качество",
+    description: "Pylontech предлага модулни LFP батерийни системи с над 6 000 цикъла при 95% дълбочина на разряд. Компактен дизайн, широко разпространен и съвместим с множество инвертори.",
+    specs: [
+      { label: "Капацитет", value: "2.4 – 14.4 kWh" },
+      { label: "Химия", value: "LFP" },
+      { label: "Цикли", value: "6 000+" },
+      { label: "DoD", value: "95%" },
+      { label: "Разширяемост", value: "До 6 модула" },
+      { label: "Гаранция", value: "10 години" },
+    ],
+    useCase: "Битови системи с гъвкаво мащабиране",
+  },
 ];
 
 export function BateriiContent() {
@@ -292,6 +339,49 @@ export function BateriiContent() {
               </div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* 5.3 — Storage Solutions by Brand */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="editorial-overline text-accent">Нашите партньори</p>
+          <TextReveal as="h2" className="editorial-display mt-2 mb-4">
+            Решения за съхранение
+          </TextReveal>
+          <p className="text-lg text-muted-foreground font-body mb-12 max-w-2xl">
+            Работим с водещи производители на батерийни системи — от компактни решения за дома до мащабни комерсиални кабинети.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {storageBrands.map((brand) => (
+              <motion.div
+                key={brand.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-border bg-muted/20 p-8 flex flex-col"
+              >
+                <span className="inline-block self-start text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-accent/10 text-accent mb-4">
+                  {brand.badge}
+                </span>
+                <h3 className="font-display font-bold text-2xl mb-3">{brand.name}</h3>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed mb-6 flex-1">
+                  {brand.description}
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {brand.specs.map((s) => (
+                    <div key={s.label} className="flex flex-col">
+                      <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-body">{s.label}</span>
+                      <span className="text-sm font-display font-semibold">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-6 pt-4 border-t border-border/50 text-xs text-muted-foreground font-body italic">
+                  {brand.useCase}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
