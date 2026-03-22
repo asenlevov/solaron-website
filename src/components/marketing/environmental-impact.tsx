@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Car, TreePine, Home, Leaf } from "lucide-react";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
@@ -10,10 +10,10 @@ import { cn } from "@/lib/utils";
 
 const METRIC_ICONS = [Car, TreePine, Home] as const;
 const METRIC_VALUES = [847, 42350, 580] as const;
-const METRIC_SUFFIXES = [" т", undefined, undefined] as const;
+const METRIC_SUFFIX_KEYS = ["co2Suffix", null, null] as const;
 const METRIC_COLORS = ["text-emerald-600", "text-green-600", "text-teal-600"] as const;
 
-function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+function AnimatedNumber({ value, suffix = "", numLocale = "bg-BG" }: { value: number; suffix?: string; numLocale?: string }) {
   return (
     <motion.span
       className="tabular-nums"
@@ -21,7 +21,7 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      {value.toLocaleString("bg-BG")}{suffix}
+      {value.toLocaleString(numLocale)}{suffix}
     </motion.span>
   );
 }
@@ -32,12 +32,18 @@ export function EnvironmentalImpact() {
   const [expanded, setExpanded] = useState(false);
   const t = useTranslations("Home");
   const tc = useTranslations("Common");
+  const locale = useLocale();
+  const numLocale = locale === "bg" ? "bg-BG" : locale === "nl" ? "nl-NL" : "en-US";
+
+  const suffixes = METRIC_SUFFIX_KEYS.map((key) =>
+    key ? t(`environmentalImpact.${key}`) : undefined,
+  );
 
   const metrics = [
     {
       icon: METRIC_ICONS[0],
       value: METRIC_VALUES[0],
-      suffix: METRIC_SUFFIXES[0],
+      suffix: suffixes[0],
       label: t("environmentalImpact.co2Label"),
       context: t("environmentalImpact.co2Context"),
       comparison: t("environmentalImpact.co2Comparison"),
@@ -46,7 +52,7 @@ export function EnvironmentalImpact() {
     {
       icon: METRIC_ICONS[1],
       value: METRIC_VALUES[1],
-      suffix: METRIC_SUFFIXES[1],
+      suffix: suffixes[1],
       label: t("environmentalImpact.treesLabel"),
       context: t("environmentalImpact.treesContext"),
       comparison: t("environmentalImpact.treesComparison"),
@@ -55,7 +61,7 @@ export function EnvironmentalImpact() {
     {
       icon: METRIC_ICONS[2],
       value: METRIC_VALUES[2],
-      suffix: METRIC_SUFFIXES[2],
+      suffix: suffixes[2],
       label: t("environmentalImpact.householdsLabel"),
       context: t("environmentalImpact.householdsContext"),
       comparison: t("environmentalImpact.householdsComparison"),
@@ -98,7 +104,7 @@ export function EnvironmentalImpact() {
                       <Icon className="size-7" strokeWidth={1.5} />
                     </div>
                     <p className="text-4xl font-black text-foreground md:text-5xl">
-                      <AnimatedNumber value={m.value} suffix={m.suffix} />
+                      <AnimatedNumber value={m.value} suffix={m.suffix} numLocale={numLocale} />
                     </p>
                     <p className="mt-2 text-sm font-medium text-foreground-secondary">{m.context}</p>
                     <p className="mt-3 text-xs text-foreground-tertiary">{m.comparison}</p>

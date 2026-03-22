@@ -96,8 +96,7 @@ const COUNTRY_OPTIONS: {
 function useLocaleInfo() {
   const pathname = usePathname();
   const locale = useLocale();
-  const isEn = locale === "en";
-  return { isEn, pathname };
+  return { locale, pathname };
 }
 
 function RichMegaMenu({
@@ -343,7 +342,7 @@ function MobileNavSheet({
   directLinks: { label: string; href: string }[];
   t: (key: string) => string;
 }) {
-  const { isEn, pathname } = useLocaleInfo();
+  const { locale, pathname } = useLocaleInfo();
   const prevPathRef = React.useRef(pathname);
 
   React.useEffect(() => {
@@ -523,12 +522,12 @@ function MobileNavSheet({
                     locale="bg"
                     className={cn(
                       "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
-                      !isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
+                      locale === "bg" ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
                     )}
                   >
                     <CSSFlag stripes={["#fff", "#00966E", "#D62612"]} size="w-7 h-5" />
                     <span className="text-sm font-semibold text-foreground">Български</span>
-                    {!isEn && <div className="ml-auto size-2 rounded-full bg-accent" />}
+                    {locale === "bg" && <div className="ml-auto size-2 rounded-full bg-accent" />}
                   </Link>
                 </Dialog.Close>
                 <Dialog.Close asChild>
@@ -537,12 +536,26 @@ function MobileNavSheet({
                     locale="en"
                     className={cn(
                       "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
-                      isEn ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
+                      locale === "en" ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
                     )}
                   >
                     <UKFlag size="w-7 h-5" />
                     <span className="text-sm font-semibold text-foreground">English</span>
-                    {isEn && <div className="ml-auto size-2 rounded-full bg-accent" />}
+                    {locale === "en" && <div className="ml-auto size-2 rounded-full bg-accent" />}
+                  </Link>
+                </Dialog.Close>
+                <Dialog.Close asChild>
+                  <Link
+                    href={pathname as never}
+                    locale="nl"
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors",
+                      locale === "nl" ? "border-accent/30 bg-accent/5" : "border-border hover:bg-background-secondary",
+                    )}
+                  >
+                    <CSSFlag stripes={["#AE1C28", "#fff", "#21468B"]} size="w-7 h-5" />
+                    <span className="text-sm font-semibold text-foreground">Nederlands</span>
+                    {locale === "nl" && <div className="ml-auto size-2 rounded-full bg-accent" />}
                   </Link>
                 </Dialog.Close>
                 <p className="text-[11px] text-foreground-tertiary px-1">
@@ -562,7 +575,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [langOverlayOpen, setLangOverlayOpen] = React.useState(false);
-  const { isEn, pathname } = useLocaleInfo();
+  const { locale, pathname } = useLocaleInfo();
   const isHomepage = pathname === "/";
 
   const produkty = React.useMemo(() => [
@@ -669,11 +682,21 @@ export function Navbar() {
             aria-label={t("chooseCountry")}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none z-10 rounded-full" />
-            <div className="w-full h-full flex flex-col">
-              <div className="flex-1 bg-white" />
-              <div className="flex-1 bg-[#00966E]" />
-              <div className="flex-1 bg-[#D62612]" />
-            </div>
+            {locale === "en" ? (
+              <UKFlag size="w-full h-full" />
+            ) : locale === "nl" ? (
+              <div className="w-full h-full flex flex-col">
+                <div className="flex-1 bg-[#AE1C28]" />
+                <div className="flex-1 bg-white" />
+                <div className="flex-1 bg-[#21468B]" />
+              </div>
+            ) : (
+              <div className="w-full h-full flex flex-col">
+                <div className="flex-1 bg-white" />
+                <div className="flex-1 bg-[#00966E]" />
+                <div className="flex-1 bg-[#D62612]" />
+              </div>
+            )}
           </button>
         </div>
 
@@ -741,7 +764,7 @@ export function Navbar() {
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
               {COUNTRY_OPTIONS.map((country) => {
-                const isActive = country.code === "bg" ? !isEn : country.code === "en" ? isEn : false;
+                const isActive = country.code === locale;
 
                 if (country.comingSoon) {
                   return (

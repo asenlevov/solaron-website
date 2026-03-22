@@ -216,7 +216,8 @@
       "yearsExperience": "Jaar ervaring",
       "happyClients": "Tevreden klanten",
       "kWpInstalled": "kWp geïnstalleerd",
-      "mWhProduced": "MWh geproduceerd"
+      "mWhProduced": "MWh geproduceerd",
+      "altText": "651 kWp zonneproject Saedinenie"
     },
     "productDemoTabs": {
       "overline": "Producten",
@@ -303,6 +304,7 @@
       "overline": "Ecologische Impact",
       "title": "Onze Bijdrage aan de Planeet",
       "subtitle": "Een reële bijdrage, gemeten aan de hand van onze installaties in Bulgarije.",
+      "co2Suffix": " t",
       "co2Label": "CO₂ Bespaard",
       "co2Context": "ton CO₂ per jaar",
       "co2Comparison": "= 184 auto's van de weg gehaald",
@@ -359,7 +361,15 @@
       "paybackYears": "{value} jaar",
       "approximateCost": "Geschatte kosten",
       "financingFrom": "Financiering vanaf ~{value} BGN/mnd. met banklening",
-      "fullConfiguration": "Volledige Configuratie"
+      "fullConfiguration": "Volledige Configuratie",
+      "yearsShort": "jr",
+      "tonsShort": "t",
+      "co2PerYear": "CO₂/jr",
+      "treesEquiv": "bomen",
+      "ariaConsumption": "Maandelijks verbruik",
+      "defaultCity": "София",
+      "costRange": "€{min} – €{max}",
+      "envImpact": "{co2} {tonsLabel} {co2Label} = {trees} {treesLabel}"
     },
     "featuredProjects": {
       "badge": "Gerealiseerde Projecten",

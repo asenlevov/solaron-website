@@ -27,32 +27,32 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-const HERO_STATS = [
-  { value: "20+", label: "Години опит" },
-  { value: "384+", label: "Доволни клиенти" },
-  { value: "1500+", label: "kWp инсталирани" },
-  { value: "2100+", label: "MWh произведени" },
-];
-
-
-
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "Home" });
+
+  const heroStats = [
+    { value: "20+", label: t("stats.yearsExperience") },
+    { value: "400+", label: t("stats.happyClients") },
+    { value: "4400+", label: t("stats.kWpInstalled") },
+    { value: "2100+", label: t("stats.mWhProduced") },
+  ];
+
   return (
     <main className="overflow-x-hidden">
       {/* Hero */}
       <section className="relative">
         <HeroMesh />
         <AnimatedHero
-          badge="Соларни Решения от Ново Поколение"
-          title="Спестете до 80% от Сметката за Ток"
-          titleAccent="80%"
-          subtitle="Проектираме и монтираме фотоволтаични системи с 20+ години европейски опит. Премиум компоненти, професионален монтаж и пълна поддръжка — от консултацията до последния ват."
-          primaryCta={{ text: "Конфигурирай Система", href: "/konfigurator" }}
-          secondaryCta={{ text: "Безплатна Консултация", href: "/kontakti" }}
+          badge={t("hero.badge")}
+          title={t("hero.title")}
+          titleAccent={t("hero.titleAccent")}
+          subtitle={t("hero.subtitle")}
+          primaryCta={{ text: t("hero.primaryCta"), href: "/konfigurator" }}
+          secondaryCta={{ text: t("hero.secondaryCta"), href: "/kontakti" }}
           backgroundImage={REAL_IMAGES.hero.solarHome}
-          stats={HERO_STATS}
+          stats={heroStats}
           overlay={<HeroEnergyOverlay />}
         >
           <TrustBadges variant="hero" />
@@ -66,13 +66,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="editorial-overline mb-4">Продукти</p>
+            <p className="editorial-overline mb-4">{t("productDemoTabs.overline")}</p>
             <h2 className="editorial-heading">
-              Премиум Компоненти за Максимална Ефективност
+              {t("productDemoTabs.title")}
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
-              Работим само с водещи световни производители. Всеки компонент е
-              подбран за надеждност и дълголетие.
+              {t("productDemoTabs.subtitle")}
             </p>
           </div>
           <ProductDemoTabs />
@@ -83,13 +82,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="py-20 md:py-28 bg-background-secondary/50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="editorial-overline mb-4">Възможности</p>
+            <p className="editorial-overline mb-4">{t("bentoGrid.overline")}</p>
             <h2 className="editorial-heading">
-              Всичко, от което се нуждаете
+              {t("bentoGrid.title")}
             </h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
-              Пълна екосистема от продукти и услуги за вашата енергийна
-              независимост.
+              {t("bentoGrid.subtitle")}
             </p>
           </div>
           <BentoGrid />
@@ -103,11 +101,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="editorial-overline mb-4">Сравнение</p>
-            <h2 className="editorial-heading">Преди и След Solaron</h2>
+            <p className="editorial-overline mb-4">{t("beforeAfter.overline")}</p>
+            <h2 className="editorial-heading">{t("beforeAfter.title")}</h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
-              Вижте реалната разлика между конвенционалната енергия и
-              соларното решение.
+              {t("beforeAfter.subtitle")}
             </p>
           </div>
           <BeforeAfterComparison />
@@ -118,11 +115,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="py-20 md:py-28 bg-background-secondary/50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-12">
-            <p className="editorial-overline mb-4">Процес</p>
-            <h2 className="editorial-heading">Как Работим</h2>
+            <p className="editorial-overline mb-4">{t("howItWorks.overline")}</p>
+            <h2 className="editorial-heading">{t("howItWorks.title")}</h2>
             <p className="mt-4 text-lg text-foreground-secondary max-w-2xl mx-auto">
-              От безплатната консултация до активиране на системата — прозрачен
-              и ефективен процес.
+              {t("howItWorks.subtitle")}
             </p>
           </div>
           <HowItWorksSteps />

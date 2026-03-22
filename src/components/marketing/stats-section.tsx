@@ -8,7 +8,7 @@ import { ImageEditorial } from "@/components/ui/image-editorial";
 import { REAL_IMAGES } from "@/data/images";
 import { scaleSpring, createStagger } from "@/lib/animations";
 
-const STAT_VALUES = [20, 384, 1500, 2100] as const;
+const STAT_VALUES = [20, 400, 4400, 2100] as const;
 const STAT_SUFFIXES = ["+", "+", "+", "+"] as const;
 const STAT_KEYS = ["yearsExperience", "happyClients", "kWpInstalled", "mWhProduced"] as const;
 
@@ -23,7 +23,7 @@ export function StatsSection() {
       <div className="absolute inset-0">
         <ImageEditorial
           src={REAL_IMAGES.projects.saedinenie651_hero}
-          alt="651 kWp соларен проект Съединение"
+          alt={t("stats.altText")}
           fill
           duotone="rgba(45, 107, 31, 0.6)"
           grain

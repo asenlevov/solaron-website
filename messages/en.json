@@ -216,7 +216,8 @@
       "yearsExperience": "Years of experience",
       "happyClients": "Satisfied clients",
       "kWpInstalled": "kWp installed",
-      "mWhProduced": "MWh produced"
+      "mWhProduced": "MWh produced",
+      "altText": "651 kWp solar project Saedinenie"
     },
     "productDemoTabs": {
       "overline": "Products",
@@ -303,6 +304,7 @@
       "overline": "Environmental Impact",
       "title": "Our Contribution to the Planet",
       "subtitle": "Real impact, measured from our installations across Bulgaria.",
+      "co2Suffix": " t",
       "co2Label": "CO₂ Saved",
       "co2Context": "tonnes of CO₂ per year",
       "co2Comparison": "= 184 cars taken off the road",
@@ -359,7 +361,15 @@
       "paybackYears": "{value} years",
       "approximateCost": "Approximate cost",
       "financingFrom": "Financing from ~{value} BGN/mo. with a bank loan",
-      "fullConfiguration": "Full Configuration"
+      "fullConfiguration": "Full Configuration",
+      "yearsShort": "yrs",
+      "tonsShort": "t",
+      "co2PerYear": "CO₂/yr",
+      "treesEquiv": "trees",
+      "ariaConsumption": "Monthly consumption",
+      "defaultCity": "София",
+      "costRange": "€{min} – €{max}",
+      "envImpact": "{co2} {tonsLabel} {co2Label} = {trees} {treesLabel}"
     },
     "featuredProjects": {
       "badge": "Completed Projects",

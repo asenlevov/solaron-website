@@ -12,7 +12,7 @@ import {
   Compass,
   ChevronDown,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
@@ -220,9 +220,11 @@ export function QuickEstimator() {
   const isInView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
   const t = useTranslations("Home");
   const tc = useTranslations("Common");
+  const locale = useLocale();
+  const numLocale = locale === "bg" ? "bg-BG" : locale === "nl" ? "nl-NL" : "en-US";
 
   const [propertyType, setPropertyType] = useState<PropertyId>("house");
-  const [city, setCity] = useState("София");
+  const [city, setCity] = useState(t("quickEstimator.defaultCity"));
   const [monthlyConsumption, setMonthlyConsumption] = useState(450);
   const [showInLev, setShowInLev] = useState(false);
   const [orientation, setOrientation] = useState("south");
@@ -409,7 +411,7 @@ export function QuickEstimator() {
 
               <div className="mb-3 text-center">
                 <span className="text-3xl font-bold tabular-nums text-foreground">
-                  {sliderValue.toLocaleString("bg-BG")}
+                  {sliderValue.toLocaleString(numLocale)}
                 </span>
                 <span className="ml-1.5 text-lg text-foreground-secondary">
                   {showInLev ? t("quickEstimator.lvPerMonth") : t("quickEstimator.kWhPerMonth")}
@@ -423,7 +425,7 @@ export function QuickEstimator() {
                 min={sliderMin}
                 max={sliderMax}
                 step={sliderStep}
-                aria-label="Месечно потребление"
+                aria-label={t("quickEstimator.ariaConsumption")}
               >
                 <Slider.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-border">
                   <Slider.Range className="absolute h-full rounded-full bg-accent" />
@@ -433,10 +435,10 @@ export function QuickEstimator() {
 
               <div className="mt-1 flex justify-between text-xs text-foreground-tertiary">
                 <span>
-                  {sliderMin.toLocaleString("bg-BG")} {showInLev ? "лв." : "kWh"}
+                  {sliderMin.toLocaleString(numLocale)} {showInLev ? tc("lv") : tc("kWh")}
                 </span>
                 <span>
-                  {sliderMax.toLocaleString("bg-BG")} {showInLev ? "лв." : "kWh"}
+                  {sliderMax.toLocaleString(numLocale)} {showInLev ? tc("lv") : tc("kWh")}
                 </span>
               </div>
 
@@ -541,7 +543,7 @@ export function QuickEstimator() {
                   <span className="text-accent">
                     {results.actualKWp.toFixed(1)} kWp
                   </span>{" "}
-                  система
+                  {tc("system")}
                   <span className="mx-1.5 text-foreground-tertiary">•</span>
                   {results.panelCount} {tc("panels")}
                   <span className="mx-1.5 text-foreground-tertiary">•</span>
@@ -573,7 +575,7 @@ export function QuickEstimator() {
                 <span>4</span>
                 <span>6</span>
                 <span>8</span>
-                <span>10 г.</span>
+                <span>10 {t("quickEstimator.yearsShort")}</span>
               </div>
             </div>
 
@@ -583,10 +585,10 @@ export function QuickEstimator() {
                 {t("quickEstimator.approximateCost")}
               </p>
               <p className="text-lg font-bold tabular-nums text-foreground">
-                {Math.round(results.systemCost * 0.85).toLocaleString("bg-BG")}{" "}
-                –{" "}
-                {Math.round(results.systemCost * 1.15).toLocaleString("bg-BG")}{" "}
-                лв.
+                {t("quickEstimator.costRange", {
+                  min: Math.round(results.systemCost * 0.85).toLocaleString(numLocale),
+                  max: Math.round(results.systemCost * 1.15).toLocaleString(numLocale),
+                })}
               </p>
             </div>
 
@@ -594,13 +596,13 @@ export function QuickEstimator() {
             <div className="rounded-xl border border-accent/20 bg-accent/5 px-5 py-3">
               <p className="text-sm text-foreground-secondary">
                 <span className="font-semibold text-accent">
-                  {results.co2Saved.toFixed(1)} т
+                  {results.co2Saved.toFixed(1)} {t("quickEstimator.tonsShort")}
                 </span>{" "}
-                CO₂/год. ={" "}
+                {t("quickEstimator.co2PerYear")} ={" "}
                 <span className="font-semibold text-accent">
                   {results.treeEquivalent}
                 </span>{" "}
-                дървета
+                {t("quickEstimator.treesEquiv")}
               </p>
             </div>
 

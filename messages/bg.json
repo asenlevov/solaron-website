@@ -216,7 +216,8 @@
       "yearsExperience": "Години опит",
       "happyClients": "Доволни клиенти",
       "kWpInstalled": "kWp инсталирани",
-      "mWhProduced": "MWh произведени"
+      "mWhProduced": "MWh произведени",
+      "altText": "651 kWp соларен проект Съединение"
     },
     "productDemoTabs": {
       "overline": "Продукти",
@@ -303,6 +304,7 @@
       "overline": "Екологично Въздействие",
       "title": "Нашият Принос за Планетата",
       "subtitle": "Реален принос, измерен от нашите инсталации в България.",
+      "co2Suffix": " т",
       "co2Label": "CO₂ Спестени",
       "co2Context": "тона CO₂ годишно",
       "co2Comparison": "= 184 коли махнати от пътя",
@@ -359,7 +361,15 @@
       "paybackYears": "{value} години",
       "approximateCost": "Приблизителна стойност",
       "financingFrom": "Финансиране от ~{value} лв./мес. с банков кредит",
-      "fullConfiguration": "Пълна Конфигурация"
+      "fullConfiguration": "Пълна Конфигурация",
+      "yearsShort": "г.",
+      "tonsShort": "т",
+      "co2PerYear": "CO₂/год.",
+      "treesEquiv": "дървета",
+      "ariaConsumption": "Месечно потребление",
+      "defaultCity": "София",
+      "costRange": "{min} – {max} лв.",
+      "envImpact": "{co2} {tonsLabel} {co2Label} = {trees} {treesLabel}"
     },
     "featuredProjects": {
       "badge": "Реализирани Проекти",
