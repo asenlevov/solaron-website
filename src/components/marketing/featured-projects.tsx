@@ -76,9 +76,9 @@ export function FeaturedProjects() {
             </p>
           </div>
           <div className="flex gap-6 text-sm text-foreground-tertiary">
-            <span><strong className="text-accent font-semibold">651 kWp</strong> най-голям проект</span>
-            <span><strong className="text-foreground font-semibold">14</strong> завършени</span>
-            <span><strong className="text-foreground font-semibold">4</strong> държави</span>
+            <span><strong className="text-accent font-semibold">1 000 kWp</strong> най-голям проект</span>
+            <span><strong className="text-foreground font-semibold">26</strong> завършени</span>
+            <span><strong className="text-foreground font-semibold">2</strong> държави</span>
           </div>
         </div>
 

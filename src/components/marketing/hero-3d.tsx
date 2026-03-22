@@ -118,7 +118,7 @@ export function Hero3D() {
           >
             <span>20+ години</span>
             <span className="text-[#3B7A2A]">·</span>
-            <span>384+ клиенти</span>
+            <span>400+ клиенти</span>
             <span className="text-[#3B7A2A]">·</span>
             <span>EUPD 2024</span>
           </motion.div>

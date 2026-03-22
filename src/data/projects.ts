@@ -311,6 +311,200 @@ export const projects: Project[] = [
       "Надеждна комерсиална инсталация с доказани модули и предвидим добив за техническата компания.",
     client: "Hoppenbrouwers Techniek B.V.",
   },
+  {
+    slug: "albert-heijn-xl",
+    title: "Albert Heijn XL",
+    kWp: 330,
+    location: "Нидерландия",
+    country: "Нидерландия",
+    date: "2020-09",
+    category: "commercial",
+    image: "/real/installations/nl-ah-xl-ecorus.jpg",
+    description:
+      "825 соларни панела JA Solar 400Wp на покрива на Albert Heijn XL — голям търговски обект с висока дневна консумация.",
+    technologies: {
+      panels: "JA Solar 400Wp (825 бр.)",
+    },
+    benefits:
+      "Значително покриване на дневната консумация на супермаркета с чиста енергия и намаляване на оперативните разходи.",
+    client: "Ecorus",
+  },
+  {
+    slug: "hardeman-pijnacker",
+    title: "Hardeman Pijnacker",
+    kWp: 770,
+    location: "Pijnacker",
+    country: "Нидерландия",
+    date: "2020-08",
+    category: "industrial",
+    image: "/real/installations/nl-hardeman-pijnacker-1.jpg",
+    gallery: [
+      "/real/installations/nl-hardeman-pijnacker-2.jpg",
+      "/real/installations/nl-hardeman-pijnacker-3.jpg",
+    ],
+    description:
+      "2 332 панела JA Solar на индустриален обект в Pijnacker — един от най-мащабните проекти на екипа в Нидерландия.",
+    technologies: {
+      panels: "JA Solar (2 332 бр.)",
+    },
+    benefits:
+      "Мащабно покритие на енергийните нужди на индустриална сграда с бърза възвръщаемост.",
+    client: "Ecorus",
+  },
+  {
+    slug: "volta-solar-voorhout",
+    title: "Mare Group Voorhout",
+    kWp: 381,
+    location: "Voorhout",
+    country: "Нидерландия",
+    date: "2020-08",
+    category: "industrial",
+    image: "/real/installations/nl-volta-solar-voorhout.jpg",
+    description:
+      "965 панела в Изток-Запад ориентация с монтажна система Van der Valk на покрива на Mare Group.",
+    technologies: {
+      panels: "965 панела",
+      mounting: "Van Der Valk",
+    },
+    benefits:
+      "Оптимална Изток-Запад ориентация за равномерно производство през целия ден.",
+    client: "Volta Solar",
+  },
+  {
+    slug: "nen-delft",
+    title: "NEN Делфт",
+    kWp: 80,
+    location: "Делфт",
+    country: "Нидерландия",
+    date: "2018-12",
+    category: "commercial",
+    image: "/real/installations/nl-nen-delft.jpg",
+    description:
+      "226 соларни панела на централата на NEN в Делфт — офис сграда с фокус върху устойчивост.",
+    technologies: {
+      panels: "226 панела",
+    },
+    benefits:
+      "По-нисък въглероден отпечатък на централата и демонстрация на ангажимент към стандартите за устойчивост.",
+    client: "Mijn Onderneming Duurzaam",
+  },
+  {
+    slug: "hanover-solar-panningen",
+    title: "Hanover Solar Panningen",
+    kWp: 63,
+    location: "Panningen",
+    country: "Нидерландия",
+    date: "2020-07",
+    category: "commercial",
+    image: "/real/installations/nl-hanover-panningen.jpg",
+    description:
+      "196 панела Hanover Solar 320Wp с два SolarEdge SE25k инвертора. Включва два соларни навеса за инверторите с конструкция Van der Valk.",
+    technologies: {
+      panels: "Hanover Solar 320Wp (196 бр.)",
+      inverters: "SolarEdge SE25k (x2)",
+      mounting: "Van Der Valk",
+    },
+    benefits:
+      "Компактна търговска инсталация с оптимизатори за максимален добив и двоен навес от панели.",
+  },
+  {
+    slug: "fantastico-elin-pelin",
+    title: "Фантастико Елин Пелин",
+    kWp: 0,
+    location: "Елин Пелин",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-fantastico.png",
+    description:
+      "Покривна фотоволтаична инсталация на хипермаркет Фантастико в Елин Пелин — намаляване на енергийните разходи на голям търговски обект.",
+    technologies: {},
+    benefits:
+      "По-ниски оперативни разходи за ток и устойчив търговски обект с чиста енергия.",
+  },
+  {
+    slug: "grand-hotel-therme",
+    title: "Grand Hotel Therme",
+    kWp: 0,
+    location: "България",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-grand-hotel-therme.jpg",
+    description:
+      "Покривна соларна система на хотелски обект Grand Hotel Therme — покриване на базовата консумация за СПА, осветление и климатизация.",
+    technologies: {},
+    benefits:
+      "Намалени оперативни разходи за хотела и по-устойчив туристически бизнес.",
+  },
+  {
+    slug: "metalsnab-ilienci",
+    title: "Металснаб Илиенци",
+    kWp: 0,
+    location: "Илиенци",
+    country: "България",
+    category: "industrial",
+    image: "/real/projects/msp-metalsnab.jpg",
+    description:
+      "Индустриална покривна инсталация на складово-производствен обект Металснаб в района на Илиенци.",
+    technologies: {},
+    benefits:
+      "Значително намаляване на енергийните разходи за производство и складова дейност.",
+  },
+  {
+    slug: "hus",
+    title: "HUS",
+    kWp: 0,
+    location: "България",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-hus.png",
+    description:
+      "Покривна фотоволтаична система на комерсиален обект HUS — оптимизиране на енергийния профил на сградата.",
+    technologies: {},
+    benefits:
+      "По-ниски месечни разходи за електроенергия и по-малък въглероден отпечатък.",
+  },
+  {
+    slug: "lenox-stryama",
+    title: "Lenox Стряма",
+    kWp: 0,
+    location: "Стряма",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-lenox.jpg",
+    description:
+      "Покривна соларна инсталация на обект Lenox в Стряма — покриване на консумацията на търговски обект.",
+    technologies: {},
+    benefits:
+      "Стабилно производство на чиста енергия за собствени нужди на бизнеса.",
+  },
+  {
+    slug: "flair-haskovo",
+    title: "Flair Хасково",
+    kWp: 0,
+    location: "Хасково",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-flair.png",
+    description:
+      "Покривна фотоволтаична система на обект Flair в Хасково — намаляване на оперативните енергийни разходи.",
+    technologies: {},
+    benefits:
+      "По-ниски сметки за ток и по-устойчив бизнес модел с чиста енергия.",
+  },
+  {
+    slug: "citrus-building",
+    title: "Citrus Building",
+    kWp: 0,
+    location: "Царево",
+    country: "България",
+    category: "commercial",
+    image: "/real/projects/msp-citrus-building.jpg",
+    description:
+      "Покривна соларна система на жилищна сграда Citrus Building в Царево — споделено производство за общите части и апартаментите.",
+    technologies: {},
+    benefits:
+      "По-ниски такси за общите части и достъп до чиста енергия за собствениците.",
+  },
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

@@ -111,14 +111,14 @@ export default function ZaNasPage() {
               contextClassName="text-white/60"
             />
             <StatNumber
-              value={384}
+              value={400}
               suffix="+"
               context="доволни клиенти"
               className="text-white"
               contextClassName="text-white/60"
             />
             <StatNumber
-              value={1500}
+              value={4400}
               suffix="+ kWp"
               context="инсталирана мощност"
               className="text-white"

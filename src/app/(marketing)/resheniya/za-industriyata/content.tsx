@@ -576,6 +576,35 @@ export function ZaIndustriyataContent() {
         </div>
       </section>
 
+      {/* ─── 6.5 VIDEO ─── */}
+      <section className="bg-stone-950 px-6 py-24 md:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <BadgeChip variant="hero">На терен</BadgeChip>
+              <h2 className="editorial-display mt-4 text-white">
+                Вижте монтажа в действие
+              </h2>
+              <p className="mt-6 text-lg leading-relaxed text-white/60">
+                Нашият екип на индустриален покрив — от разгръщането на
+                панелите до завършената конструкция. Същият процес и стандарт
+                на всеки обект.
+              </p>
+            </div>
+            <div className="relative aspect-video overflow-hidden rounded-2xl">
+              <iframe
+                src="https://www.youtube.com/embed/Fjznvk88lfQ?rel=0&modestbranding=1"
+                title="Индустриален соларен монтаж"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── 7. FAQ ─── */}
       <section ref={faqRef} className="bg-white px-6 py-24 md:py-32">
         <div className="mx-auto max-w-3xl">

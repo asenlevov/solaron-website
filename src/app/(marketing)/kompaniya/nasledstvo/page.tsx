@@ -149,7 +149,7 @@ export default function NasledstvoPage() {
               contextClassName="text-white/60"
             />
             <StatNumber
-              value={384}
+              value={400}
               suffix="+"
               context="завършени проекта"
               className="text-white"
@@ -195,6 +195,37 @@ export default function NasledstvoPage() {
                 <div className="grain absolute inset-0" />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industrial Roof Video */}
+      <section className="bg-foreground py-20 md:py-28 grain">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="editorial-overline text-accent mb-3">
+                На терен
+              </p>
+              <h2 className="editorial-heading text-white mb-6">
+                Индустриален монтаж в действие
+              </h2>
+              <p className="font-body text-base leading-relaxed text-white/60 md:text-lg">
+                Вижте как нашият екип работи на мащабен индустриален покрив —
+                от логистиката на панелите до финалната конструкция. Същият
+                процес и стандарт, който прилагаме на всеки обект.
+              </p>
+            </div>
+            <div className="relative aspect-video overflow-hidden rounded-2xl">
+              <iframe
+                src="https://www.youtube.com/embed/Fjznvk88lfQ?rel=0&modestbranding=1"
+                title="Индустриален соларен монтаж"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>

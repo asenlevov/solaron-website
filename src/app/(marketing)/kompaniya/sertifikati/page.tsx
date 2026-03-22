@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { TiltCard } from "@/components/ui/tilt-card";
@@ -133,8 +134,42 @@ export default function SertifikatiPage() {
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* VCA Certificate Visual */}
       <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+            <div>
+              <p className="editorial-overline text-accent mb-3">
+                VCA* Сертификат
+              </p>
+              <h2 className="editorial-heading text-foreground mb-6">
+                Безопасност на всеки обект
+              </h2>
+              <p className="font-body text-base leading-relaxed text-foreground-secondary md:text-lg">
+                VCA* (Veiligheid, Gezondheid en Milieu Checklist Aannemers) е
+                международен стандарт за безопасност на строителни обекти,
+                широко признат в Нидерландия и Белгия. Сертификатът гарантира,
+                че всеки монтаж се изпълнява с организирана площадка, обучен
+                персонал и стриктни мерки за здраве и околна среда.
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <div className="relative w-64 h-56 md:w-80 md:h-72">
+                <Image
+                  src="/real/certifications/vca-certificate.png"
+                  alt="VCA* Сертификат"
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 256px, 320px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="bg-[#f7f7f5] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-10">
           <p className="editorial-overline text-accent mb-4">
             Хронология

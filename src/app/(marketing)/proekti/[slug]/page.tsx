@@ -76,6 +76,12 @@ const projectGallery: Record<string, string[]> = {
     REAL_IMAGES.installations.nlRefRooftop2,
     REAL_IMAGES.installations.nlRefRooftop3,
     REAL_IMAGES.installations.nlRefRooftop4,
+    REAL_IMAGES.installations.nlHoppenbrouwersBeest,
+  ],
+  "hardeman-pijnacker": [
+    REAL_IMAGES.installations.nlHardemanPijnacker1,
+    REAL_IMAGES.installations.nlHardemanPijnacker2,
+    REAL_IMAGES.installations.nlHardemanPijnacker3,
   ],
 };
 

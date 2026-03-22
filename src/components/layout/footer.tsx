@@ -133,7 +133,7 @@ export function Footer({ className }: { className?: string }) {
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-foreground-secondary">
             <span className="font-semibold text-foreground">20+ години опит</span>
             <span className="hidden sm:inline text-border-medium">|</span>
-            <span>384+ доволни клиенти</span>
+            <span>400+ доволни клиенти</span>
             <span className="hidden sm:inline text-border-medium">|</span>
             <span>EUPD Research Award 2024</span>
             <span className="hidden sm:inline text-border-medium">|</span>
