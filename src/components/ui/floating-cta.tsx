@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const WA_URL = "https://wa.me/359899639726";
+const WA_NUMBER = "359899639726";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -25,6 +25,7 @@ export function FloatingCTA() {
   const [hovered, setHovered] = useState(false);
   const pathname = usePathname();
   const tc = useTranslations("Common");
+  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(tc("waMessage"))}`;
 
   const hidden = ["/konfigurator", "/kontakti"].some((p) =>
     pathname.startsWith(p),
@@ -50,7 +51,7 @@ export function FloatingCTA() {
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
           <a
-            href={WA_URL}
+            href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-2.5 rounded-full bg-[#25D366] px-5 py-4 font-display text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.45)] hover:pr-7"

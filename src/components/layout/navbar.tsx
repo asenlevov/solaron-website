@@ -333,6 +333,7 @@ function MobileNavSheet({
   kakRaboti,
   directLinks,
   t,
+  waUrl,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -341,6 +342,7 @@ function MobileNavSheet({
   kakRaboti: { label: string; href: string; icon: LucideIcon; desc: string; isNew?: boolean }[];
   directLinks: { label: string; href: string }[];
   t: (key: string) => string;
+  waUrl: string;
 }) {
   const { locale, pathname } = useLocaleInfo();
   const prevPathRef = React.useRef(pathname);
@@ -500,7 +502,7 @@ function MobileNavSheet({
             <div className="mt-6 space-y-3">
               <Dialog.Close asChild>
                 <a
-                  href="https://wa.me/359899639726"
+                  href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -572,6 +574,8 @@ function MobileNavSheet({
 
 export function Navbar() {
   const t = useTranslations("Nav");
+  const tc = useTranslations("Common");
+  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [langOverlayOpen, setLangOverlayOpen] = React.useState(false);
@@ -660,7 +664,7 @@ export function Navbar() {
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
           <a
-            href="https://wa.me/359899639726"
+            href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -709,6 +713,7 @@ export function Navbar() {
             kakRaboti={kakRaboti}
             directLinks={directLinks}
             t={t}
+            waUrl={waUrl}
           />
           <button
             type="button"

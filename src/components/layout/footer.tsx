@@ -83,6 +83,8 @@ function NewsletterForm({ t }: { t: ReturnType<typeof useTranslations<"Footer">>
 
 export function Footer({ className }: { className?: string }) {
   const t = useTranslations("Footer");
+  const tc = useTranslations("Common");
+  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
 
   const products = [
     { href: "/produkti/solarni-paneli", label: t("solarPanels") },
@@ -193,7 +195,7 @@ export function Footer({ className }: { className?: string }) {
               {social.map(({ href, label, Icon }) => (
                 <NextLink
                   key={label}
-                  href={href}
+                  href={label === "WhatsApp" ? waUrl : href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}

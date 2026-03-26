@@ -14,6 +14,7 @@ export function CTASplit() {
   const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const t = useTranslations("Home");
   const tc = useTranslations("Common");
+  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
 
   const guarantees = [
     { icon: Shield, text: "30 год. гаранция панели" },
@@ -60,7 +61,7 @@ export function CTASplit() {
             <ArrowRight className="size-5" />
           </Link>
           <a
-            href="https://wa.me/359899639726"
+            href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/30 px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:border-white/50 hover:bg-white/10"

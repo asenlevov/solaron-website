@@ -26,6 +26,8 @@ function FormFallback() {
 export default async function KontaktiPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const tc = await getTranslations({ locale, namespace: "Common" });
+  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
   return (
     <main>
       {/* Hero */}
@@ -105,7 +107,7 @@ export default async function KontaktiPage({ params }: { params: Promise<{ local
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/359899639726"
+                  href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 rounded-2xl border border-[#25D366]/20 bg-[#25D366]/5 p-6 transition-colors hover:bg-[#25D366]/10"

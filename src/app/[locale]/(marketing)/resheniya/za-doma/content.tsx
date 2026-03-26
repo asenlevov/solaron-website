@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { motion, useInView } from "motion/react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
@@ -209,6 +210,8 @@ const faqs = [
 /* ------------------------------------------------------------------ */
 
 export default function ZaDomaContent() {
+  const tc = useTranslations("Common");
+  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
   const heroRef = useRef<HTMLElement>(null);
   const heroInView = useInView(heroRef, { once: true });
   const billRef = useRef<HTMLElement>(null);
@@ -288,7 +291,7 @@ export default function ZaDomaContent() {
             className="mt-8 md:mt-10 flex flex-wrap gap-4"
           >
             <MagneticButton
-              href="https://wa.me/359899639726"
+              href={waUrl}
               variant="primary"
               size="xl"
             >
@@ -651,7 +654,7 @@ export default function ZaDomaContent() {
           </div>
           <div className="mt-16 text-center">
             <MagneticButton
-              href="https://wa.me/359899639726"
+              href={waUrl}
               variant="primary"
               size="lg"
             >
