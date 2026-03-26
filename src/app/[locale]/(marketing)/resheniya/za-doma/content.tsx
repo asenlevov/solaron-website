@@ -288,7 +288,7 @@ export default function ZaDomaContent() {
             className="mt-8 md:mt-10 flex flex-wrap gap-4"
           >
             <MagneticButton
-              href="https://wa.me/359896699009"
+              href="https://wa.me/359899639726"
               variant="primary"
               size="xl"
             >
@@ -651,7 +651,7 @@ export default function ZaDomaContent() {
           </div>
           <div className="mt-16 text-center">
             <MagneticButton
-              href="https://wa.me/359896699009"
+              href="https://wa.me/359899639726"
               variant="primary"
               size="lg"
             >

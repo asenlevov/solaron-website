@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-const WA_URL = "https://wa.me/359896699009";
+const WA_URL = "https://wa.me/359899639726";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -23,6 +24,7 @@ export function FloatingCTA() {
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
   const pathname = usePathname();
+  const tc = useTranslations("Common");
 
   const hidden = ["/konfigurator", "/kontakti"].some((p) =>
     pathname.startsWith(p),
@@ -51,11 +53,11 @@ export function FloatingCTA() {
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 font-display text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.45)] hover:pr-6"
+            className="group flex items-center gap-2.5 rounded-full bg-[#25D366] px-5 py-4 font-display text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.45)] hover:pr-7"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-            <WhatsAppIcon className="size-5" />
+            <WhatsAppIcon className="size-6" />
             <AnimatePresence>
               {hovered && (
                 <motion.span
@@ -65,7 +67,7 @@ export function FloatingCTA() {
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden whitespace-nowrap"
                 >
-                  Пишете ни
+                  {tc("writeUs")}
                 </motion.span>
               )}
             </AnimatePresence>

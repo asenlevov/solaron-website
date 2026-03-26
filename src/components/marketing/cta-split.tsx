@@ -60,7 +60,7 @@ export function CTASplit() {
             <ArrowRight className="size-5" />
           </Link>
           <a
-            href="https://wa.me/359896699009"
+            href="https://wa.me/359899639726"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/30 px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:border-white/50 hover:bg-white/10"

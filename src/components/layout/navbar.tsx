@@ -500,7 +500,7 @@ function MobileNavSheet({
             <div className="mt-6 space-y-3">
               <Dialog.Close asChild>
                 <a
-                  href="https://wa.me/359896699009"
+                  href="https://wa.me/359899639726"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -660,7 +660,7 @@ export function Navbar() {
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
           <a
-            href="https://wa.me/359896699009"
+            href="https://wa.me/359899639726"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(

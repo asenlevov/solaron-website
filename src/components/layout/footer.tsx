@@ -18,7 +18,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 const social = [
-  { href: "https://wa.me/359896699009", label: "WhatsApp", Icon: WhatsAppIcon },
+  { href: "https://wa.me/359899639726", label: "WhatsApp", Icon: WhatsAppIcon },
   { href: "https://www.linkedin.com/company/solaron-energy", label: "LinkedIn", Icon: Linkedin },
   { href: "https://www.facebook.com/solaron.energy", label: "Facebook", Icon: Facebook },
   { href: "https://www.instagram.com/solaron.energy", label: "Instagram", Icon: Instagram },

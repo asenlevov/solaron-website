@@ -105,7 +105,7 @@ export default async function KontaktiPage({ params }: { params: Promise<{ local
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/359896699009"
+                  href="https://wa.me/359899639726"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 rounded-2xl border border-[#25D366]/20 bg-[#25D366]/5 p-6 transition-colors hover:bg-[#25D366]/10"
