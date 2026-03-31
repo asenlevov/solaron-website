@@ -165,7 +165,21 @@ export function Footer({ className }: { className?: string }) {
               {t("tagline")}
             </p>
 
-            <div className="space-y-2 mt-2">
+            <div className="space-y-2.5 mt-2">
+              <a
+                href="https://maps.google.com/?q=Henricuskade+97,+2497+NB+Den+Haag"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
+              >
+                <MapPin className="size-4 shrink-0 mt-0.5 text-accent" />
+                <span>
+                  {t("addressNL")}
+                  <span className="ml-1.5 inline-block rounded bg-foreground/8 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase tracking-wider text-foreground-tertiary">
+                    {t("addressNLCountry")}
+                  </span>
+                </span>
+              </a>
               <a
                 href="https://maps.google.com/?q=бул.+Черни+Връх+59Б,+ет.+3,+1407+София"
                 target="_blank"
@@ -173,7 +187,12 @@ export function Footer({ className }: { className?: string }) {
                 className="flex items-start gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
               >
                 <MapPin className="size-4 shrink-0 mt-0.5 text-accent" />
-                {t("address")}
+                <span>
+                  {t("addressBG")}
+                  <span className="ml-1.5 inline-block rounded bg-foreground/8 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase tracking-wider text-foreground-tertiary">
+                    {t("addressBGCountry")}
+                  </span>
+                </span>
               </a>
               <a
                 href="tel:+35988432156"

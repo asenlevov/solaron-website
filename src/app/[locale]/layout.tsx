@@ -5,6 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { JsonLd } from "@/components/seo/json-ld";
+import { FacebookPixel } from "@/components/seo/facebook-pixel";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -104,6 +105,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="min-h-full flex flex-col bg-background text-foreground font-body">
         <NextIntlClientProvider>
           <JsonLd />
+          <FacebookPixel />
           {children}
         </NextIntlClientProvider>
       </body>

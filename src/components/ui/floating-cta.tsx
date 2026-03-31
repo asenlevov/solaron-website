@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -22,7 +23,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function FloatingCTA() {
   const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const tc = useTranslations("Common");
   const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(tc("waMessage"))}`;
@@ -44,35 +45,93 @@ export function FloatingCTA() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-6 right-6 z-50 flex flex-col items-end"
           initial={{ opacity: 0, y: 20, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
-          <a
-            href={waUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2.5 rounded-full bg-[#25D366] px-5 py-4 font-display text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.45)] hover:pr-7"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-          >
-            <WhatsAppIcon className="size-6" />
-            <AnimatePresence>
-              {hovered && (
-                <motion.span
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: "auto", opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden whitespace-nowrap"
+          {/* Popup bubble */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 8 }}
+                transition={{ duration: 0.2 }}
+                className="mb-3 w-72 rounded-xl border border-[#25D366]/20 bg-white p-5 shadow-2xl dark:border-[#25D366]/30 dark:bg-[#111116]"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-[#25D366]">
+                      <WhatsAppIcon className="size-4 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-foreground">
+                        Solaron
+                      </h3>
+                      <p className="text-[11px] text-[#25D366]">
+                        {tc("waBubbleOnline")}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="text-foreground-tertiary transition-colors hover:text-foreground"
+                    aria-label="Close"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </div>
+
+                <p className="mb-4 text-sm leading-relaxed text-foreground-secondary">
+                  {tc("waBubbleGreeting")}
+                </p>
+
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
                 >
-                  {tc("writeUs")}
+                  <WhatsAppIcon className="size-4" />
+                  {tc("waBubbleCta")}
+                </a>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Pulsating circle button */}
+          <button
+            onClick={() => setOpen((o) => !o)}
+            className="group relative flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-110"
+            aria-label={tc("writeUs")}
+          >
+            <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-20" />
+            <AnimatePresence mode="wait">
+              {open ? (
+                <motion.span
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className="relative size-6" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="wa"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <WhatsAppIcon className="relative size-6" />
                 </motion.span>
               )}
             </AnimatePresence>
-          </a>
+          </button>
         </motion.div>
       )}
     </AnimatePresence>
