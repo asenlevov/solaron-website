@@ -1,0 +1,4401 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solaron — Оферта за {{CLIENT_NAME}}</title>
+
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  SOLARON · PRESENTATION (v3) — FIXED 16:9 ASPECT RATIO
+  ════════════════════════════════════════════════════════════════════════════
+
+  Това е истинска презентация като PowerPoint/Keynote — всеки слайд е с
+  фиксирани размери 1600×900 (16:9) и автоматично се scale-ва към viewport-а.
+
+  Никакъв скрол в слайдове. Всичко се побира в един екран.
+
+  --- КОНТРОЛИ ---
+  ← →  / PgUp PgDn / Space — навигация
+  F — fullscreen
+  P — print mode (за PDF)
+  Home / End — първи / последен слайд
+
+  --- PLACEHOLDERS ---
+  Виж документация в стария шаблон или използвай долния списък в `replacements`.
+  ════════════════════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #0B1220;
+    --navy-2: #131B2E;
+
+    --ink: #0F172A;
+    --ink-2: #1E293B;
+    --ink-3: #475569;
+    --ink-4: #64748B;
+    --ink-5: #94A3B8;
+
+    --line: #E2E8F0;
+    --line-soft: #F1F5F9;
+    --bg: #FFFFFF;
+    --bg-tint: #F8FAFC;
+
+    --green: #10B981;
+    --green-dark: #059669;
+    --green-light: #D1FAE5;
+    --green-glow: rgba(16, 185, 129, 0.12);
+
+    --solar: #F59E0B;
+    --solar-dark: #D97706;
+    --solar-light: #FEF3C7;
+    --solar-glow: rgba(245, 158, 11, 0.15);
+
+    --red: #EF4444;
+
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 4px 10px rgba(15, 23, 42, 0.06), 0 12px 28px rgba(15, 23, 42, 0.08);
+
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+    /* Slide dimensions — 16:9 at 1600×900 */
+    --slide-w: 1600px;
+    --slide-h: 900px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font);
+    color: var(--ink);
+    background: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     STAGE — fit viewport, center slide
+     ═════════════════════════════════════════════════════════════════════ */
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+  }
+
+  .deck {
+    position: relative;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    transform-origin: center center;
+    /* scale is set via JS */
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDES — fixed 1600×900, no scroll
+     ═════════════════════════════════════════════════════════════════════ */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0s 0.5s;
+    overflow: hidden; /* NO scrolling */
+  }
+
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0s;
+    z-index: 2;
+  }
+  .slide.prev { transform: translateX(-40px); }
+
+  .slide-inner {
+    width: 100%;
+    height: 100%;
+    padding: 56px 72px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide--dark { background: var(--navy); color: #fff; }
+  .slide--light { background: var(--bg); color: var(--ink); }
+  .slide--tint { background: var(--bg-tint); color: var(--ink); }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     PRINT MODE — Landscape A4, 1 slide per page
+     ═════════════════════════════════════════════════════════════════════ */
+  body.print-mode { overflow: auto; background: #e8e8e8; height: auto; }
+  body.print-mode .stage { position: static; display: block; height: auto; padding: 40px 20px; }
+  body.print-mode .deck {
+    width: var(--slide-w);
+    height: auto;
+    transform: scale(0.6);
+    transform-origin: top left;
+    margin: 0 auto;
+  }
+  body.print-mode .slide {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  body.print-mode .nav-ui,
+  body.print-mode .hint { display: none !important; }
+
+  @media print {
+    @page { size: 1600px 900px; margin: 0; }
+    body { background: #fff !important; overflow: visible; }
+    .stage {
+      position: static !important;
+      display: block !important;
+      padding: 0 !important;
+      background: #fff !important;
+    }
+    .deck {
+      position: static !important;
+      transform: none !important;
+      width: var(--slide-w) !important;
+      height: auto !important;
+      margin: 0 !important;
+    }
+    .slide {
+      position: relative !important;
+      inset: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      margin: 0 !important;
+      page-break-after: always;
+      page-break-inside: avoid;
+      box-shadow: none !important;
+    }
+    .nav-ui, .hint { display: none !important; }
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     TYPOGRAPHY
+     ═════════════════════════════════════════════════════════════════════ */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1.5px;
+    background: currentColor;
+  }
+  .slide--dark .eyebrow { color: var(--solar); }
+
+  h1 {
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  h1 .light {
+    display: block;
+    font-weight: 300;
+    color: var(--ink-4);
+    letter-spacing: -0.03em;
+  }
+  .slide--dark h1 .light { color: rgba(255,255,255,0.5); }
+
+  h2 {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  h2 .accent { color: var(--green); }
+  .slide--dark h2 .accent { color: var(--solar); }
+
+  h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+
+  .lead {
+    font-size: 19px;
+    color: var(--ink-4);
+    line-height: 1.55;
+    max-width: 720px;
+  }
+  .slide--dark .lead { color: rgba(255,255,255,0.7); }
+
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     NAV UI
+     ═════════════════════════════════════════════════════════════════════ */
+  .nav-ui {
+    position: fixed;
+    z-index: 100;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(11, 18, 32, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 10px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+
+  .nav-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    font-size: 15px;
+  }
+  .nav-btn:hover { background: var(--green); transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .nav-btn:disabled:hover { background: rgba(255,255,255,0.1); transform: none; }
+
+  .nav-counter {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .nav-counter span { color: var(--solar); font-weight: 700; }
+
+  .nav-dots {
+    display: flex;
+    gap: 6px;
+    padding: 0 4px;
+  }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    padding: 0;
+  }
+  .nav-dot:hover { background: rgba(255,255,255,0.5); }
+  .nav-dot.active {
+    background: var(--solar);
+    width: 22px;
+    border-radius: 4px;
+  }
+
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    z-index: 99;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--solar));
+    width: 0;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hint {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: rgba(11, 18, 32, 0.8);
+    backdrop-filter: blur(10px);
+    color: rgba(255,255,255,0.55);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    border: 1px solid rgba(255,255,255,0.08);
+    z-index: 100;
+    font-family: var(--mono);
+  }
+  .hint kbd {
+    background: rgba(255,255,255,0.12);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin: 0 2px;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SHARED HEADER (на всеки слайд — логото + клиент)
+     ═════════════════════════════════════════════════════════════════════ */
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+  .slide--dark .slide-header { border-bottom-color: rgba(255,255,255,0.1); }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .logo img { height: 30px; width: auto; }
+  .slide--dark .logo img { filter: brightness(1.6); }
+  .cover-slide .logo img { filter: brightness(1.6); }
+  .cta-slide .logo img { filter: brightness(1.6); }
+
+  .slide-meta {
+    font-size: 14px;
+    color: var(--ink-4);
+    text-align: right;
+    font-family: var(--mono);
+  }
+  .slide--dark .slide-meta { color: rgba(255,255,255,0.65); }
+  .cover-slide .slide-meta { color: rgba(255,255,255,0.7); }
+  .slide-meta strong {
+    color: var(--ink);
+    display: block;
+    font-size: 15px;
+    font-family: var(--font);
+    margin-bottom: 2px;
+  }
+  .cover-slide .slide-meta strong { color: #fff; }
+  .slide--dark .slide-meta strong, .cover-slide .slide-meta strong { color: #fff; }
+
+  .slide-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 1 · COVER
+     ═════════════════════════════════════════════════════════════════════ */
+  .cover-slide {
+    background: var(--navy);
+    overflow: hidden;
+  }
+  .cover-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('solaron/public/real/products/inverters-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .cover-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(11,18,32,0.88) 0%, rgba(11,18,32,0.68) 50%, rgba(11,18,32,0.82) 100%);
+    z-index: 1;
+  }
+  .cover-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 85%);
+    z-index: 2;
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 3;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cover-slide .slide-inner { position: relative; z-index: 3; }
+  .cover-slide .slide-header { position: relative; z-index: 3; }
+
+  .cover-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: var(--solar);
+    padding: 7px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-bottom: 32px;
+    width: fit-content;
+    text-transform: uppercase;
+  }
+  .cover-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--solar);
+    box-shadow: 0 0 8px var(--solar);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .cover-title {
+    color: #fff;
+    max-width: 1050px;
+    font-size: 72px;
+  }
+  .cover-sub {
+    font-size: 21px;
+    color: rgba(255,255,255,0.82);
+    max-width: 680px;
+    margin-top: 24px;
+    line-height: 1.55;
+  }
+
+  .cover-card {
+    margin-top: 48px;
+    padding: 28px 36px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 40px;
+    align-items: center;
+    max-width: 900px;
+  }
+  .cover-card-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+  }
+  .cover-card-name {
+    font-size: 24px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .cover-card-sub { color: rgba(255,255,255,0.78); font-size: 16px; }
+  .cover-card-div {
+    width: 1px;
+    height: 60px;
+    background: rgba(255,255,255,0.1);
+  }
+  .cover-card-number { text-align: center; }
+  .cover-card-num-val {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--solar);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .cover-card-num-lbl {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 6px;
+  }
+
+  .cover-footer {
+    margin-top: auto;
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .cover-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+  }
+  .cover-badges span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cover-badges span::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .cover-consultant {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px 10px 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+  }
+  .cover-consultant-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--solar), var(--solar-dark));
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .cover-consultant-info .lbl {
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 2px;
+  }
+  .cover-consultant-info strong { color: #fff; font-weight: 600; font-size: 13px; }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 2 · EXECUTIVE SUMMARY
+     ═════════════════════════════════════════════════════════════════════ */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .exec-hero {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 24px;
+    padding: 44px 48px 36px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .exec-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('solaron/public/real/products/constructions-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .exec-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,18,32,0.78) 0%, rgba(11,18,32,0.65) 50%, rgba(11,18,32,0.82) 100%);
+    z-index: 0;
+  }
+  .exec-hero > * { position: relative; z-index: 1; }
+
+  .exec-badge-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .exec-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: 1px solid;
+  }
+  .exec-pill.green {
+    background: var(--green-glow);
+    color: var(--green);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  .exec-pill.green::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+  }
+  .exec-pill.solar {
+    background: var(--solar-glow);
+    color: var(--solar);
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .exec-big {
+    font-size: 140px;
+    font-weight: 800;
+    color: var(--solar);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    margin-bottom: 10px;
+  }
+  .exec-big .unit {
+    font-size: 34px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 500;
+    margin-left: 14px;
+    letter-spacing: 0;
+  }
+  .exec-big-label {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .exec-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 28px 0 24px;
+  }
+
+  .exec-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 28px;
+  }
+  .exec-spec-lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .exec-spec-val {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .exec-side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .exec-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .exec-card.highlight {
+    background: linear-gradient(135deg, rgba(16,185,129,0.04) 0%, #fff 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  .exec-card.highlight::after {
+    content: 'ПРЕПОРЪЧАНО';
+    position: absolute;
+    top: 12px; right: 12px;
+    background: var(--green);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+  }
+  .exec-card-lbl {
+    font-size: 11px;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .exec-card-val {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .exec-card-val.green { color: var(--green-dark); }
+  .exec-card-val.solar { color: var(--solar-dark); }
+  .exec-card-sub {
+    font-size: 14px;
+    color: var(--ink-4);
+    margin-top: 6px;
+  }
+  .exec-card-strike {
+    font-size: 12px;
+    color: var(--ink-5);
+    text-decoration: line-through;
+    margin-top: 4px;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 3 · ВАШАТА СИСТЕМА
+     ═════════════════════════════════════════════════════════════════════ */
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: min-content;
+    gap: 18px;
+    flex: 1;
+    min-height: 0;
+    align-content: center;
+  }
+
+  .sys-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    gap: 16px;
+  }
+
+  .sys-card-panels { grid-column: span 5; }
+  .sys-card-inverter { grid-column: span 4; }
+  .sys-card-battery { grid-column: span 3; }
+  .sys-card-bos { grid-column: span 12; background: var(--bg-tint); padding: 20px 28px; }
+
+  .sys-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .sys-label {
+    font-size: 10px;
+    color: var(--ink-5);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+  .sys-selected {
+    font-size: 9px;
+    padding: 3px 8px;
+    background: var(--green-glow);
+    color: var(--green);
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sys-name {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .sys-count {
+    font-size: 15px;
+    color: var(--ink-4);
+    margin-bottom: 12px;
+  }
+  .sys-count strong { color: var(--solar-dark); font-weight: 700; }
+
+  .sys-content {
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    min-height: 0;
+  }
+  .sys-visual {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--bg-tint) 0%, #fff 100%);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sys-card-panels .sys-visual { width: 160px; height: 140px; }
+  .sys-card-inverter .sys-visual { width: 110px; height: 140px; }
+  .sys-card-battery .sys-visual { width: 80px; height: 140px; }
+
+  .sys-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .sys-why {
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: var(--solar-light);
+    border-left: 3px solid var(--solar);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 0;
+  }
+  .sys-why strong { color: var(--solar-dark); }
+
+  .sys-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    font-size: 11px;
+  }
+  .sys-specs div { color: var(--ink-4); }
+  .sys-specs strong { color: var(--ink); font-weight: 700; font-size: 13px; }
+
+  .sys-bos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .sys-bos-item {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+  .sys-bos-icon {
+    width: 32px; height: 32px;
+    background: var(--navy);
+    color: var(--solar);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .sys-bos-item h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+  .sys-bos-item p {
+    font-size: 11px;
+    color: var(--ink-4);
+    line-height: 1.35;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 4 · ФИНАНСОВА РАЗБИВКА
+     ═════════════════════════════════════════════════════════════════════ */
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 28px;
+    flex: 1;
+    min-height: 0;
+    align-items: start;
+  }
+
+  .breakdown-viz {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .breakdown-title {
+    font-size: 12px;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .breakdown-bar {
+    height: 50px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .breakdown-segment {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .breakdown-segment.s1 { background: linear-gradient(135deg, #F59E0B, #D97706); }
+  .breakdown-segment.s2 { background: linear-gradient(135deg, #10B981, #059669); }
+  .breakdown-segment.s3 { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+  .breakdown-segment.s4 { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+  .breakdown-segment.s5 { background: linear-gradient(135deg, #64748B, #334155); }
+
+  .breakdown-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+  }
+  .breakdown-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .breakdown-item-dot {
+    width: 12px; height: 12px;
+    border-radius: 4px;
+  }
+  .breakdown-item-dot.s1 { background: var(--solar); }
+  .breakdown-item-dot.s2 { background: var(--green); }
+  .breakdown-item-dot.s3 { background: #3B82F6; }
+  .breakdown-item-dot.s4 { background: #8B5CF6; }
+  .breakdown-item-dot.s5 { background: #64748B; }
+  .breakdown-item-label {
+    font-size: 15px;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .breakdown-item-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .breakdown-total {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .breakdown-total-lbl {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .breakdown-total-val {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .included-box {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .included-box h3 { margin-bottom: 14px; font-size: 16px; }
+
+  .included-list {
+    list-style: none;
+    flex: 1;
+  }
+  .included-list li {
+    padding: 7px 0;
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-size: 15px;
+    color: var(--ink-2);
+    border-bottom: 1px dashed var(--line);
+  }
+  .included-list li:last-child { border-bottom: none; }
+  .included-list li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .vat-banner {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--green-glow);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .vat-banner-icon {
+    width: 32px; height: 32px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .vat-banner-text {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+  .vat-banner-text strong { color: var(--green-dark); }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 5 · ROI TWIN
+     ═════════════════════════════════════════════════════════════════════ */
+  .roi-twin {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .roi-panel {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .roi-panel.highlight {
+    background: linear-gradient(135deg, rgba(16,185,129,0.04) 0%, #fff 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  .roi-panel.highlight::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--green), var(--green-dark));
+  }
+
+  .roi-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .roi-scenario {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .roi-scenario.nosub {
+    background: var(--solar-glow);
+    color: var(--solar-dark);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+  .roi-scenario.sub {
+    background: var(--green-glow);
+    color: var(--green-dark);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .roi-payback-big { text-align: right; }
+  .roi-payback-big .val {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .roi-payback-big .val.solar { color: var(--solar-dark); }
+  .roi-payback-big .val.green { color: var(--green-dark); }
+  .roi-payback-big .lbl {
+    font-size: 10px;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  .roi-panel-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .roi-panel-subtitle {
+    font-size: 15px;
+    color: var(--ink-4);
+    margin-bottom: 12px;
+  }
+
+  .roi-chart-svg {
+    width: 100%;
+    height: auto;
+    flex: 1;
+    margin: 4px 0;
+  }
+
+  .roi-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  .roi-mini-lbl {
+    font-size: 10px;
+    color: var(--ink-5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  .roi-mini-val {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .roi-mini-val.green { color: var(--green-dark); }
+  .roi-mini-val.solar { color: var(--solar-dark); }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 6 · СУБСИДИЯ
+     ═════════════════════════════════════════════════════════════════════ */
+  .subsidy-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 40px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .subsidy-left { display: flex; flex-direction: column; justify-content: center; }
+
+  .subsidy-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--solar);
+    width: fit-content;
+  }
+  .subsidy-status::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--solar);
+    box-shadow: 0 0 8px var(--solar);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .subsidy-status strong { color: #fff; }
+
+  .subsidy-copy {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .subsidy-copy strong { color: #fff; }
+
+  .subsidy-timeline {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: auto;
+  }
+
+  .timeline-title {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .timeline-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .timeline-steps::before {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 12%;
+    right: 12%;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  .timeline-step {
+    text-align: center;
+    position: relative;
+  }
+  .timeline-step-circle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: var(--navy);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-step.done .timeline-step-circle {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .timeline-step.current .timeline-step-circle {
+    background: var(--solar);
+    border-color: var(--solar);
+    color: var(--navy);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+  }
+  .timeline-step-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .timeline-step.current .timeline-step-label { color: #fff; font-weight: 600; }
+
+  .timeline-now {
+    padding: 12px 16px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+  }
+  .timeline-now strong { color: var(--green); }
+
+  .subsidy-numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .subsidy-number-row {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .subsidy-number-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .subsidy-number-row:first-child { padding-top: 0; }
+
+  .subsidy-num-lbl {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .subsidy-num-val {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+  .subsidy-num-val.strike {
+    color: rgba(255,255,255,0.45);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+  .subsidy-num-val.solar { color: var(--solar); }
+  .subsidy-save-tag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 14px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 7 · FINANCING
+     ═════════════════════════════════════════════════════════════════════ */
+  .fin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: min-content;
+    gap: 18px;
+    flex: 1;
+    min-height: 0;
+    align-content: center;
+  }
+
+  .fin-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .fin-card.featured {
+    background: linear-gradient(135deg, rgba(16,185,129,0.04) 0%, #fff 100%);
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+  .fin-card.featured::before {
+    content: 'НАЙ-ИЗБИРАН';
+    position: absolute;
+    top: 0; right: 24px;
+    background: var(--green);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 0 0 6px 6px;
+    letter-spacing: 0.12em;
+  }
+
+  .fin-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    width: fit-content;
+  }
+  .fin-tag.cash { background: var(--solar-light); color: #92400E; }
+  .fin-tag.loan { background: #DBEAFE; color: #1E40AF; }
+  .fin-tag.lease { background: #E0E7FF; color: #3730A3; }
+
+  .fin-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .fin-price {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .fin-price .small {
+    font-size: 14px;
+    color: var(--ink-4);
+    font-weight: 500;
+  }
+  .fin-price-sub {
+    font-size: 12px;
+    color: var(--ink-4);
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+
+  .fin-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 14px -24px;
+  }
+
+  .fin-points {
+    list-style: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .fin-points li {
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--ink-3);
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    align-items: start;
+    line-height: 1.5;
+  }
+  .fin-points li::before {
+    content: '→';
+    color: var(--green);
+    font-weight: 700;
+    font-family: var(--mono);
+  }
+
+  .fin-comparison {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--bg-tint);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .fin-comparison-item .lbl {
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+  .fin-comparison-item .val {
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 8 · SOCIAL PROOF
+     ═════════════════════════════════════════════════════════════════════ */
+  .social-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .social-quote {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .social-quote::before {
+    content: '"';
+    position: absolute;
+    top: 8px;
+    right: 24px;
+    font-size: 140px;
+    color: var(--green-glow);
+    font-family: Georgia, serif;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .social-quote-text {
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .social-quote-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .social-avatar {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .social-author-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .social-author-meta {
+    font-size: 12px;
+    color: var(--ink-4);
+    margin-top: 2px;
+  }
+
+  .social-stats {
+    display: flex;
+    gap: 14px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+  }
+  .social-stat { flex: 1; }
+  .social-stat-val {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .social-stat-lbl {
+    font-size: 10px;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  .social-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .social-project {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .social-project-power {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--green-dark);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    min-width: 70px;
+  }
+  .social-project-power .unit {
+    font-size: 12px;
+    color: var(--ink-4);
+    font-weight: 500;
+    margin-left: 2px;
+  }
+
+  .social-project-name {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 16px;
+    margin-bottom: 3px;
+  }
+  .social-project-desc {
+    font-size: 13px;
+    color: var(--ink-4);
+  }
+
+  .social-project-saves {
+    font-size: 11px;
+    color: var(--ink-4);
+    text-align: right;
+  }
+  .social-project-saves strong {
+    display: block;
+    color: var(--solar-dark);
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .social-bottom {
+    margin-top: auto;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    color: var(--ink-4);
+  }
+  .social-bottom strong {
+    display: block;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 9 · ГАРАНЦИИ
+     ═════════════════════════════════════════════════════════════════════ */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .trust-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 36px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .trust-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green);
+  }
+
+  .trust-years {
+    font-size: 88px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .trust-unit {
+    font-size: 11px;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .trust-what {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .risk-board {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 20px;
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 36px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .risk-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .risk-title em {
+    font-style: normal;
+    color: var(--solar);
+    font-weight: 800;
+  }
+  .risk-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 6px;
+  }
+
+  .risk-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .risk-list li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+  }
+  .risk-list li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .risk-list li strong { color: #fff; font-weight: 600; }
+
+  .certs-strip {
+    padding: 16px 28px;
+    background: var(--bg-tint);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: auto;
+  }
+  .certs-strip-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-4);
+    font-weight: 700;
+  }
+  .certs-strip-items {
+    display: flex;
+    gap: 28px;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     SLIDE 10 · CTA
+     ═════════════════════════════════════════════════════════════════════ */
+  .cta-slide {
+    background: var(--navy);
+    overflow: hidden;
+  }
+  .cta-slide::before,
+  .cta-slide::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+  .cta-slide::before {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--solar) 0%, transparent 70%);
+    opacity: 0.15;
+    top: 30%; right: -200px;
+  }
+  .cta-slide::after {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--green) 0%, transparent 70%);
+    opacity: 0.12;
+    bottom: -200px; left: -150px;
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-tag {
+    margin: 0 auto 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--green);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .cta-inner h1 {
+    color: #fff;
+    margin-bottom: 18px;
+    font-size: 54px;
+  }
+  .cta-inner h1 .light { color: var(--green); }
+
+  .cta-inner .lead {
+    color: rgba(255,255,255,0.7);
+    margin: 0 auto;
+    font-size: 17px;
+  }
+
+  .cta-next-steps {
+    margin: 32px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    max-width: 760px;
+  }
+  .cta-step {
+    padding: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    text-align: left;
+  }
+  .cta-step-num {
+    width: 26px; height: 26px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .cta-step-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .cta-step-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-solar {
+    background: var(--green);
+    color: #fff;
+    font-weight: 700;
+  }
+  .btn-solar:hover {
+    background: #fff;
+    color: var(--navy);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.25);
+  }
+  .btn-ghost:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .cta-urgency {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cta-urgency::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--solar);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .cta-bottom {
+    margin-top: auto;
+    padding-top: 24px;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 32px;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .cta-consultant {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .cta-consultant-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--solar), var(--solar-dark));
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .cta-consultant-info .lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 2px;
+  }
+  .cta-consultant-info .name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .cta-consultant-info .contact {
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+  }
+
+  .cta-copyright {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+
+/* ═════════════════════════════════════════════════════════════════════
+   NEW SLIDE 3 · BEFORE / AFTER сметка за ток
+   ═════════════════════════════════════════════════════════════════════ */
+.ba-layout {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.ba-side {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.ba-side.before {
+  background: linear-gradient(135deg, rgba(239,68,68,0.03) 0%, #fff 100%);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+.ba-side.after {
+  background: linear-gradient(135deg, rgba(16,185,129,0.04) 0%, #fff 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.ba-side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.ba-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ba-tag.before { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+.ba-tag.after { background: var(--green-glow); color: var(--green-dark); }
+
+.ba-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-top: 12px;
+}
+  .ba-subtitle {
+    font-size: 14px;
+    color: var(--ink-4);
+    margin-top: 2px;
+  }
+
+.ba-big-number {
+  margin: 20px 0 14px;
+}
+.ba-big-number .val {
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.ba-big-number .val.red { color: var(--red-dark); }
+.ba-big-number .val.green { color: var(--green-dark); }
+.ba-big-number .val .small { font-size: 16px; color: var(--ink-4); font-weight: 500; margin-left: 4px; }
+.ba-big-number .lbl {
+  font-size: 11px;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+.ba-chart {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 0;
+  min-height: 0;
+}
+.ba-chart svg { width: 100%; height: 100%; }
+
+.ba-footer-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px;
+}
+.ba-footer-row .lbl { color: var(--ink-4); }
+.ba-footer-row .val { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.ba-divider-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.ba-arrow {
+  background: var(--navy);
+  color: var(--solar);
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 300;
+  box-shadow: 0 10px 30px rgba(11, 18, 32, 0.2);
+  position: relative;
+  z-index: 2;
+}
+.ba-arrow::before,
+.ba-arrow::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.ba-arrow::before { bottom: 100%; height: 60px; }
+.ba-arrow::after { top: 100%; height: 60px; }
+
+.ba-summary {
+  margin-top: 18px;
+  padding: 16px 22px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.ba-summary-text { flex: 1; }
+.ba-summary-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.ba-summary-text p { font-size: 12px; color: rgba(255,255,255,0.7); }
+.ba-summary-num {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--solar);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.ba-summary-num .small { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 500; margin-left: 4px; }
+
+/* ═════════════════════════════════════════════════════════════════════
+   NEW SLIDE 4 · ВАШИЯТ ПОКРИВ / ANALYSIS
+   ═════════════════════════════════════════════════════════════════════ */
+.roof-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 28px;
+  flex: 1;
+  min-height: 0;
+}
+
+.roof-visual {
+  background: linear-gradient(135deg, var(--bg-tint) 0%, #fff 100%);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.roof-visual-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.roof-visual-title {
+  font-size: 11px;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+.roof-compass {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-4);
+  font-family: var(--mono);
+}
+
+.roof-svg-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  min-height: 0;
+}
+.roof-svg-wrap svg { width: 100%; height: 100%; max-height: 100%; }
+
+.roof-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.roof-metric {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 26px;
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.roof-metric-icon {
+  width: 46px; height: 46px;
+  background: var(--navy);
+  color: var(--solar);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+.roof-metric-label {
+  font-size: 13px;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 3px;
+}
+.roof-metric-label + div {
+  font-size: 15px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.roof-metric-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.roof-metric-value .small { font-size: 13px; color: var(--ink-4); font-weight: 500; display: block; margin-top: 3px; }
+
+.roof-score {
+  margin-top: auto;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+  color: #fff;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.roof-score-text .lbl {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+.roof-score-text .val {
+  font-size: 18px;
+  font-weight: 700;
+}
+.roof-score-big {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   NEW SLIDE · FAQ / OBJECTIONS
+   ═════════════════════════════════════════════════════════════════════ */
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  align-content: center;
+}
+
+.faq-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.faq-grid { align-content: stretch; }
+
+.faq-q-icon {
+  width: 40px; height: 40px;
+  background: var(--solar-light);
+  color: var(--solar-dark);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+
+.faq-content { flex: 1; min-width: 0; }
+
+  .faq-question {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .faq-answer {
+    font-size: 16px;
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+.faq-answer strong { color: var(--ink); }
+
+/* ═════════════════════════════════════════════════════════════════════
+   NEW SLIDE · КАКВО ВЕЧЕ СМЕ НАПРАВИЛИ
+   ═════════════════════════════════════════════════════════════════════ */
+.done-slide { position: relative; overflow: hidden; }
+.done-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('solaron/public/real/hero/hero-solar-home.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.done-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(11,18,32,0.88) 0%, rgba(11,18,32,0.72) 50%, rgba(11,18,32,0.85) 100%);
+  z-index: 1;
+}
+.done-slide .slide-inner { position: relative; z-index: 2; }
+
+.done-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 32px;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+}
+
+.done-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+  .done-intro p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+.done-intro strong { color: #fff; }
+
+.done-hours-box {
+  margin-top: 16px;
+  padding: 20px 24px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 14px;
+}
+.done-hours-num {
+  font-size: 54px;
+  font-weight: 800;
+  color: var(--solar);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.done-hours-num .small { font-size: 18px; color: rgba(255,255,255,0.6); font-weight: 500; margin-left: 6px; }
+.done-hours-lbl {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+.done-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.done-item {
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  transition: background 0.2s;
+}
+.done-item.done {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.done-item.pending {
+  background: rgba(245, 158, 11, 0.04);
+  border-color: rgba(245, 158, 11, 0.15);
+  border-style: dashed;
+}
+
+.done-check {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.done-item.done .done-check {
+  background: var(--green);
+  color: #fff;
+}
+.done-item.pending .done-check {
+  background: transparent;
+  color: var(--solar);
+  border: 1.5px dashed var(--solar);
+}
+
+  .done-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+.done-item.done .done-title { text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.3); }
+  .done-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+  }
+
+.done-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.done-badge.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--green);
+}
+.done-badge.next {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--solar);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   NEW SLIDE · SOFT URGENCY / ЗАЩО СЕГА
+   ═════════════════════════════════════════════════════════════════════ */
+.why-now-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.why-now-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.why-now-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.why-now-card.c1::before { background: var(--solar); }
+.why-now-card.c2::before { background: var(--green); }
+.why-now-card.c3::before { background: #3B82F6; }
+.why-now-card.c4::before { background: #8B5CF6; }
+
+.why-now-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.why-now-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+.why-now-card.c1 .why-now-icon { background: var(--solar-light); color: var(--solar-dark); }
+.why-now-card.c2 .why-now-icon { background: var(--green-light); color: var(--green-dark); }
+.why-now-card.c3 .why-now-icon { background: #DBEAFE; color: #1E40AF; }
+.why-now-card.c4 .why-now-icon { background: #EDE9FE; color: #6D28D9; }
+
+.why-now-trend {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+.why-now-trend.up {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--red-dark);
+}
+.why-now-trend.down {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--green-dark);
+}
+
+.why-now-big {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.why-now-big .small { font-size: 14px; color: var(--ink-4); font-weight: 500; margin-left: 4px; }
+
+  .why-now-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .why-now-desc {
+    font-size: 14px;
+    color: var(--ink-4);
+    line-height: 1.5;
+    flex: 1;
+  }
+.why-now-desc strong { color: var(--ink-2); }
+
+.why-now-source {
+  font-size: 10px;
+  color: var(--ink-5);
+  font-style: italic;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
+.why-now-footer {
+  margin-top: 16px;
+  padding: 14px 22px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.why-now-footer-text h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.why-now-footer-text p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+}
+.why-now-footer-date {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--solar);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="hint">
+  <kbd>←</kbd> <kbd>→</kbd> · <kbd>F</kbd> fullscreen · <kbd>P</kbd> print
+</div>
+
+<div class="stage">
+  <div class="deck" id="deck">
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE 1 · COVER
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide cover-slide" data-slide="1">
+      <div class="cover-grid"></div>
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo">
+            <img src="solaron/public/logo-solaron.png" alt="Solaron">
+          </div>
+          <div class="slide-meta">
+            <strong>Оферта №{{OFFER_NUMBER}}</strong>
+            {{OFFER_DATE}} · валидна до {{OFFER_VALID_UNTIL}}
+          </div>
+        </div>
+
+        <div class="cover-content">
+          <div class="cover-tag">Персонална оферта · За дома</div>
+
+          <h1 class="cover-title">
+            Ето системата,
+            <span class="light">която подготвихме за вас.</span>
+          </h1>
+
+          <p class="cover-sub">
+            Проектирана спрямо консумацията, покрива и целите ви. Компонентите, цените и сроковете — фиксирани в тази оферта за 30 дни.
+          </p>
+
+          <div class="cover-card">
+            <div>
+              <div class="cover-card-label">Оферта за</div>
+              <div class="cover-card-name">{{CLIENT_NAME}}</div>
+              <div class="cover-card-sub">{{CLIENT_ADDRESS}}</div>
+            </div>
+            <div class="cover-card-div"></div>
+            <div class="cover-card-number">
+              <div class="cover-card-num-val">{{SYSTEM_KWP}} kWp</div>
+              <div class="cover-card-num-lbl">Препоръчана мощност</div>
+            </div>
+          </div>
+
+          <div class="cover-footer">
+            <div class="cover-badges">
+              <span>20+ години опит</span>
+              <span>400+ клиенти</span>
+              <span>EUPD 2024</span>
+              <span>SolarEdge Certified</span>
+            </div>
+            <div class="cover-consultant">
+              <div class="cover-consultant-avatar">{{CONSULTANT_INITIALS}}</div>
+              <div class="cover-consultant-info">
+                <div class="lbl">Ваш консултант</div>
+                <strong>{{CONSULTANT_NAME}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE 2 · EXECUTIVE SUMMARY
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--tint" data-slide="2">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Резюме на офертата</div>
+          <h2 style="margin-bottom: 28px;">Числата <span class="accent">накратко</span></h2>
+
+          <div class="exec-grid">
+            <div class="exec-hero">
+              <div class="exec-badge-row">
+                <span class="exec-pill green">0% ДДС за домакинства</span>
+                <span class="exec-pill solar">Готова за субсидия</span>
+              </div>
+
+              <div class="exec-big">
+                {{SYSTEM_KWP}}<span class="unit">kWp</span>
+              </div>
+              <div class="exec-big-label">Обща мощност на системата</div>
+
+              <div class="exec-divider"></div>
+
+              <div class="exec-specs">
+                <div>
+                  <div class="exec-spec-lbl">Панели</div>
+                  <div class="exec-spec-val">{{PANEL_COUNT}} × {{PANEL_POWER}}W</div>
+                </div>
+                <div>
+                  <div class="exec-spec-lbl">Инвертор</div>
+                  <div class="exec-spec-val">{{INVERTER_BRAND}}</div>
+                </div>
+                <div>
+                  <div class="exec-spec-lbl">Батерия</div>
+                  <div class="exec-spec-val">{{BATTERY_KWH}} kWh</div>
+                </div>
+                <div>
+                  <div class="exec-spec-lbl">Годишно производство</div>
+                  <div class="exec-spec-val">{{ANNUAL_PRODUCTION}} kWh</div>
+                </div>
+                <div>
+                  <div class="exec-spec-lbl">Покривна площ</div>
+                  <div class="exec-spec-val">{{ROOF_AREA}} м²</div>
+                </div>
+                <div>
+                  <div class="exec-spec-lbl">Ориентация</div>
+                  <div class="exec-spec-val">{{ORIENTATION}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="exec-side">
+              <div class="exec-card">
+                <div class="exec-card-lbl">Инвестиция</div>
+                <div class="exec-card-val">{{PRICE_TOTAL}} €</div>
+                <div class="exec-card-sub">включва всичко · 0% ДДС</div>
+              </div>
+              <div class="exec-card highlight">
+                <div class="exec-card-lbl">Със субсидия (до {{SUBSIDY_PCT}}%)</div>
+                <div class="exec-card-val green">{{PRICE_AFTER_SUBSIDY}} €</div>
+                <div class="exec-card-strike">от {{PRICE_TOTAL}} €</div>
+              </div>
+              <div class="exec-card">
+                <div class="exec-card-lbl">Годишни спестявания</div>
+                <div class="exec-card-val solar">{{ANNUAL_SAVINGS}} €</div>
+                <div class="exec-card-sub">~{{SAVINGS_25Y}} € за 25 години</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE 3 · ВАШАТА СИСТЕМА
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="3">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Вашата сметка за ток</div>
+          <h2 style="margin-bottom: 22px;">Преди и <span class="accent">след</span></h2>
+
+          <div class="ba-layout">
+            <!-- BEFORE -->
+            <div class="ba-side before">
+              <div class="ba-side-header">
+                <span class="ba-tag before">Сега</span>
+                <div style="text-align: right;">
+                  <div style="font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.1em;">Тренд</div>
+                  <div style="font-size: 13px; color: var(--red-dark); font-weight: 700;">↑ +3%/год.</div>
+                </div>
+              </div>
+
+              <div class="ba-title">Зависими от мрежата</div>
+              <div class="ba-subtitle">Нарастваща цена на електроенергията</div>
+
+              <div class="ba-big-number">
+                <div class="val red">{{CURRENT_BILL}} <span class="small">€./мес.</span></div>
+                <div class="lbl">Текуща средна сметка</div>
+              </div>
+
+              <div class="ba-chart">
+                <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#EF4444" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="#EF4444" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <g stroke="#F1F5F9" stroke-width="1">
+                    <line x1="30" y1="20" x2="310" y2="20"/>
+                    <line x1="30" y1="60" x2="310" y2="60"/>
+                    <line x1="30" y1="100" x2="310" y2="100"/>
+                  </g>
+                  <g fill="#94A3B8" font-family="Inter" font-size="9" text-anchor="middle">
+                    <text x="30" y="115">2026</text>
+                    <text x="100" y="115">2031</text>
+                    <text x="170" y="115">2036</text>
+                    <text x="240" y="115">2041</text>
+                    <text x="310" y="115">2051</text>
+                  </g>
+                  <!-- Rising cost curve -->
+                  <path d="M 30,92 Q 100,85 170,72 T 310,50 L 310,100 L 30,100 Z" fill="url(#redGrad)"/>
+                  <path d="M 30,92 Q 100,85 170,72 T 310,50" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+                  <circle cx="30" cy="92" r="3.5" fill="#EF4444" stroke="#fff" stroke-width="1.5"/>
+                  <circle cx="310" cy="50" r="3.5" fill="#EF4444" stroke="#fff" stroke-width="1.5"/>
+                  <!-- End value -->
+                  <g transform="translate(280, 45)">
+                    <rect x="-26" y="-10" width="52" height="16" rx="8" fill="#EF4444"/>
+                    <text x="0" y="1" text-anchor="middle" fill="#fff" font-family="Inter" font-size="9" font-weight="700">~260 €</text>
+                  </g>
+                </svg>
+              </div>
+
+              <div class="ba-footer-row">
+                <span class="lbl">Общо за 25 години</span>
+                <span class="val">~{{BILL_25Y}} €</span>
+              </div>
+            </div>
+
+            <!-- ARROW DIVIDER -->
+            <div class="ba-divider-middle">
+              <div class="ba-arrow">→</div>
+            </div>
+
+            <!-- AFTER -->
+            <div class="ba-side after">
+              <div class="ba-side-header">
+                <span class="ba-tag after">Със Solaron</span>
+                <div style="text-align: right;">
+                  <div style="font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.1em;">Тренд</div>
+                  <div style="font-size: 13px; color: var(--green-dark); font-weight: 700;">— Фиксирано</div>
+                </div>
+              </div>
+
+              <div class="ba-title">Енергийна независимост</div>
+              <div class="ba-subtitle">Собствено производство + батерия</div>
+
+              <div class="ba-big-number">
+                <div class="val green">{{BILL_AFTER}} <span class="small">€./мес.</span></div>
+                <div class="lbl">Очаквана средна сметка</div>
+              </div>
+
+              <div class="ba-chart">
+                <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <g stroke="#F1F5F9" stroke-width="1">
+                    <line x1="30" y1="20" x2="310" y2="20"/>
+                    <line x1="30" y1="60" x2="310" y2="60"/>
+                    <line x1="30" y1="100" x2="310" y2="100"/>
+                  </g>
+                  <g fill="#94A3B8" font-family="Inter" font-size="9" text-anchor="middle">
+                    <text x="30" y="115">2026</text>
+                    <text x="100" y="115">2031</text>
+                    <text x="170" y="115">2036</text>
+                    <text x="240" y="115">2041</text>
+                    <text x="310" y="115">2051</text>
+                  </g>
+                  <!-- Flat low cost curve -->
+                  <path d="M 30,92 L 100,90 L 170,88 L 240,86 L 310,85 L 310,100 L 30,100 Z" fill="url(#greenGrad)"/>
+                  <path d="M 30,92 L 100,90 L 170,88 L 240,86 L 310,85" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"/>
+                  <circle cx="30" cy="92" r="3.5" fill="#10B981" stroke="#fff" stroke-width="1.5"/>
+                  <circle cx="310" cy="85" r="3.5" fill="#10B981" stroke="#fff" stroke-width="1.5"/>
+                  <!-- End value -->
+                  <g transform="translate(280, 78)">
+                    <rect x="-24" y="-10" width="48" height="16" rx="8" fill="#10B981"/>
+                    <text x="0" y="1" text-anchor="middle" fill="#fff" font-family="Inter" font-size="9" font-weight="700">~28 €</text>
+                  </g>
+                </svg>
+              </div>
+
+              <div class="ba-footer-row">
+                <span class="lbl">Общо за 25 години</span>
+                <span class="val" style="color: var(--green-dark);">~{{BILL_AFTER_25Y}} €</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ba-summary">
+            <div class="ba-summary-text">
+              <h4>Разликата в цифри — реални спестявания</h4>
+              <p>За 25 години спестявате {{SAVINGS_25Y}} € = цената на нов автомобил от среден клас или 3 години университетски такси.</p>
+            </div>
+            <div class="ba-summary-num">{{SAVINGS_25Y}} <span class="small">€.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide slide--tint" data-slide="4">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Анализ на вашия имот</div>
+          <h2 style="margin-bottom: 22px;">Огледахме <span class="accent">вашия конкретен покрив</span></h2>
+
+          <div class="roof-layout">
+            <div class="roof-visual">
+              <div class="roof-visual-header">
+                <div class="roof-visual-title">Разположение на панелите · {{CLIENT_ADDRESS}}</div>
+                <div class="roof-compass">
+                  <svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="7" cy="7" r="6" fill="none" stroke="#64748B" stroke-width="1"/>
+                    <path d="M 7 2 L 9 9 L 7 7.5 L 5 9 Z" fill="#EF4444"/>
+                    <text x="7" y="1" text-anchor="middle" fill="#64748B" font-size="3" font-weight="700">N</text>
+                  </svg>
+                  N ↑
+                </div>
+              </div>
+
+              <div class="roof-svg-wrap">
+                <svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <!-- South-facing slope (main, brighter — gets more sun) -->
+                    <linearGradient id="roofMain" x1="0.3" y1="0" x2="0.7" y2="1">
+                      <stop offset="0%" stop-color="#E2E8F0"/>
+                      <stop offset="100%" stop-color="#94A3B8"/>
+                    </linearGradient>
+                    <!-- North-facing slope (darker, back) -->
+                    <linearGradient id="roofNorth" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#64748B"/>
+                      <stop offset="100%" stop-color="#475569"/>
+                    </linearGradient>
+                    <!-- Solar panel gradient -->
+                    <linearGradient id="panelG" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#1E3A8A"/>
+                      <stop offset="100%" stop-color="#0F172A"/>
+                    </linearGradient>
+                    <!-- Sun glow -->
+                    <radialGradient id="sunCore">
+                      <stop offset="0%" stop-color="#FCD34D"/>
+                      <stop offset="60%" stop-color="#F59E0B"/>
+                      <stop offset="100%" stop-color="#D97706"/>
+                    </radialGradient>
+                  </defs>
+
+                  <!-- Background grid (ground reference) -->
+                  <g opacity="0.15">
+                    <line x1="60" y1="380" x2="580" y2="380" stroke="#64748B" stroke-width="1" stroke-dasharray="3,4"/>
+                    <line x1="60" y1="350" x2="580" y2="350" stroke="#64748B" stroke-width="1" stroke-dasharray="3,4"/>
+                  </g>
+
+                  <!-- Sun in top-left, with rays -->
+                  <g transform="translate(80, 70)">
+                    <circle cx="0" cy="0" r="26" fill="url(#sunCore)" opacity="0.95"/>
+                    <circle cx="0" cy="0" r="36" fill="#F59E0B" opacity="0.15"/>
+                    <g stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.7">
+                      <line x1="-38" y1="0" x2="-48" y2="0"/>
+                      <line x1="38" y1="0" x2="48" y2="0"/>
+                      <line x1="0" y1="-38" x2="0" y2="-48"/>
+                      <line x1="-27" y1="-27" x2="-34" y2="-34"/>
+                      <line x1="27" y1="-27" x2="34" y2="-34"/>
+                      <line x1="-27" y1="27" x2="-34" y2="34"/>
+                      <line x1="27" y1="27" x2="34" y2="34"/>
+                    </g>
+                  </g>
+
+                  <!-- Light rays hitting the south slope (diagonal lines suggesting solar incidence) -->
+                  <g stroke="#FCD34D" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,6">
+                    <line x1="120" y1="90" x2="220" y2="200"/>
+                    <line x1="150" y1="90" x2="280" y2="200"/>
+                    <line x1="180" y1="90" x2="340" y2="200"/>
+                    <line x1="210" y1="90" x2="400" y2="200"/>
+                  </g>
+
+                  <!-- HOUSE: drawn in 3/4 axonometric view -->
+                  <!-- Right-side wall (visible) -->
+                  <path d="M 490 260 L 520 230 L 520 360 L 490 380 Z" fill="#CBD5E1" stroke="#64748B" stroke-width="1.5"/>
+                  
+                  <!-- Front wall (facing viewer) -->
+                  <path d="M 150 260 L 490 260 L 490 380 L 150 380 Z" fill="#E2E8F0" stroke="#64748B" stroke-width="1.5"/>
+                  
+                  <!-- Front wall details: door and windows -->
+                  <rect x="300" y="310" width="40" height="70" fill="#334155"/>
+                  <rect x="303" y="313" width="34" height="64" fill="none" stroke="#1E293B" stroke-width="0.8"/>
+                  <circle cx="330" cy="345" r="2" fill="#F59E0B"/>
+                  <!-- Left window -->
+                  <rect x="200" y="300" width="60" height="45" fill="#FEF3C7" stroke="#92400E" stroke-width="1.5" opacity="0.9"/>
+                  <line x1="230" y1="300" x2="230" y2="345" stroke="#92400E" stroke-width="1"/>
+                  <line x1="200" y1="322" x2="260" y2="322" stroke="#92400E" stroke-width="1"/>
+                  <!-- Right window -->
+                  <rect x="400" y="300" width="60" height="45" fill="#FEF3C7" stroke="#92400E" stroke-width="1.5" opacity="0.9"/>
+                  <line x1="430" y1="300" x2="430" y2="345" stroke="#92400E" stroke-width="1"/>
+                  <line x1="400" y1="322" x2="460" y2="322" stroke="#92400E" stroke-width="1"/>
+
+                  <!-- ROOF: gable roof with south-facing slope prominently visible -->
+                  <!-- Back slope (north, barely visible — thin strip) -->
+                  <path d="M 150 260 L 320 110 L 520 230 L 490 260 Z" fill="url(#roofNorth)" stroke="#334155" stroke-width="1.5"/>
+                  
+                  <!-- Ridge line (top of roof) -->
+                  <!-- FRONT slope (south-facing — WHERE THE PANELS GO) -->
+                  <!-- This is a parallelogram viewed at an angle, showing the slope clearly -->
+                  <path d="M 150 260 L 320 110 L 490 260 Z" fill="url(#roofMain)" stroke="#475569" stroke-width="2"/>
+
+                  <!-- Ridge highlight line -->
+                  <line x1="150" y1="260" x2="320" y2="110" stroke="#1E293B" stroke-width="0.5" opacity="0.3"/>
+                  <line x1="320" y1="110" x2="490" y2="260" stroke="#1E293B" stroke-width="0.5" opacity="0.3"/>
+
+                  <!-- Subtle horizontal tile lines on the slope to show the roof surface -->
+                  <g stroke="#94A3B8" stroke-width="0.5" opacity="0.3">
+                    <path d="M 200 220 L 440 220"/>
+                    <path d="M 230 190 L 410 190"/>
+                    <path d="M 260 160 L 380 160"/>
+                  </g>
+
+                  <!-- SOLAR PANELS on the south-facing slope -->
+                  <!-- Arranged 4×3 grid, following the triangular slope perspective -->
+                  <!-- The panels sit ON the slope, not against it -->
+                  <g>
+                    <!-- Row 1 (top row — smaller, near ridge) -->
+                    <path d="M 265 165 L 295 165 L 292 182 L 262 182 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 298 165 L 328 165 L 328 182 L 295 182 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 331 165 L 361 165 L 364 182 L 331 182 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 364 165 L 378 165 L 382 182 L 367 182 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+
+                    <!-- Row 2 (middle) -->
+                    <path d="M 245 190 L 285 190 L 282 212 L 241 212 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 288 190 L 328 190 L 328 212 L 285 212 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 331 190 L 371 190 L 374 212 L 331 212 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 374 190 L 400 190 L 406 212 L 377 212 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+
+                    <!-- Row 3 (bottom — larger, near edge) -->
+                    <path d="M 225 220 L 275 220 L 272 248 L 220 248 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 278 220 L 328 220 L 328 248 L 275 248 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 331 220 L 381 220 L 384 248 L 331 248 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+                    <path d="M 384 220 L 420 220 L 428 248 L 387 248 Z" fill="url(#panelG)" stroke="#3B82F6" stroke-width="0.8"/>
+
+                    <!-- Sunlight reflection on panels -->
+                    <path d="M 260 165 L 340 165 L 335 200 L 250 200 Z" fill="white" opacity="0.1"/>
+                    <path d="M 240 190 L 320 190 L 315 215 L 230 215 Z" fill="white" opacity="0.06"/>
+
+                    <!-- Cell grid lines (horizontal bisector within each panel row) -->
+                    <g stroke="#60A5FA" stroke-width="0.3" opacity="0.4">
+                      <path d="M 265 174 L 378 174"/>
+                      <path d="M 245 201 L 400 201"/>
+                      <path d="M 225 234 L 420 234"/>
+                    </g>
+                  </g>
+
+                  <!-- Chimney (architectural detail, on back slope) -->
+                  <rect x="395" y="160" width="20" height="38" fill="#78716C" stroke="#44403C" stroke-width="1"/>
+                  <rect x="392" y="155" width="26" height="8" fill="#44403C"/>
+
+                  <!-- Ground / shadow under house -->
+                  <ellipse cx="335" cy="388" rx="210" ry="8" fill="#0F172A" opacity="0.15"/>
+
+                  <!-- Compass — bottom right -->
+                  <g transform="translate(560, 110)">
+                    <circle cx="0" cy="0" r="30" fill="white" stroke="#64748B" stroke-width="1.5"/>
+                    <path d="M 0 -22 L 5 -4 L 0 0 L -5 -4 Z" fill="#EF4444"/>
+                    <path d="M 0 22 L 5 4 L 0 0 L -5 4 Z" fill="#CBD5E1"/>
+                    <text x="0" y="-10" text-anchor="middle" fill="#1E293B" font-family="Inter" font-size="9" font-weight="800">N</text>
+                    <text x="0" y="20" text-anchor="middle" fill="#475569" font-family="Inter" font-size="9" font-weight="800">S</text>
+                    <text x="0" y="45" text-anchor="middle" fill="#64748B" font-family="Inter" font-size="9" font-weight="600">компас</text>
+                  </g>
+
+                  <!-- Label badge — panel count -->
+                  <g transform="translate(520, 285)">
+                    <path d="M 0 0 L -40 -30" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+                    <rect x="-2" y="-12" width="100" height="26" rx="13" fill="#10B981"/>
+                    <text x="48" y="5" text-anchor="middle" fill="#fff" font-family="Inter" font-size="11" font-weight="700">12 ПАНЕЛА</text>
+                  </g>
+
+                  <!-- South direction arrow -->
+                  <g transform="translate(335, 420)">
+                    <text x="0" y="0" text-anchor="middle" fill="#1E293B" font-family="Inter" font-size="13" font-weight="700">Южна ориентация · 30° наклон</text>
+                    <text x="0" y="15" text-anchor="middle" fill="#10B981" font-family="Inter" font-size="11" font-weight="600">✓ Оптимално за максимално производство</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <div class="roof-analysis">
+              <div class="roof-metric">
+                <div class="roof-metric-icon">↗</div>
+                <div>
+                  <div class="roof-metric-label">Ориентация</div>
+                  <div>{{ORIENTATION}} · оптимално</div>
+                </div>
+                <div class="roof-metric-value">★★★★★<span class="small">5/5</span></div>
+              </div>
+
+              <div class="roof-metric">
+                <div class="roof-metric-icon">∠</div>
+                <div>
+                  <div class="roof-metric-label">Наклон</div>
+                  <div>30° · идеален за България</div>
+                </div>
+                <div class="roof-metric-value">30°</div>
+              </div>
+
+              <div class="roof-metric">
+                <div class="roof-metric-icon">☼</div>
+                <div>
+                  <div class="roof-metric-label">Слънчеви часове</div>
+                  <div>Средногодишно на място</div>
+                </div>
+                <div class="roof-metric-value">1 250<span class="small">kWh/kWp</span></div>
+              </div>
+
+              <div class="roof-metric">
+                <div class="roof-metric-icon">▭</div>
+                <div>
+                  <div class="roof-metric-label">Използвана площ</div>
+                  <div>От общо ~40 m² свободни</div>
+                </div>
+                <div class="roof-metric-value">{{ROOF_AREA}}<span class="small">m²</span></div>
+              </div>
+
+              <div class="roof-score">
+                <div class="roof-score-text">
+                  <div class="lbl">Обща оценка на покрива</div>
+                  <div class="val">Отличен за фотоволтаици</div>
+                </div>
+                <div class="roof-score-big">94<span style="font-size: 16px; font-weight: 500;">/100</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide slide--light" data-slide="5">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Компонентите, които избрахме</div>
+          <h2 style="margin-bottom: 24px;">Защо <span class="accent">точно тези</span> за вашия проект</h2>
+
+          <div class="system-grid">
+
+            <!-- PANELS -->
+            <div class="sys-card sys-card-panels">
+              <div class="sys-header">
+                <div class="sys-label">01 · Панели</div>
+                <div class="sys-selected">За вас</div>
+              </div>
+              <div class="sys-name">{{PANEL_MODEL}}</div>
+              <div class="sys-count">{{PANEL_COUNT}} броя · <strong>{{SYSTEM_KWP}} kWp</strong></div>
+
+              <div class="sys-content">
+                <div class="sys-visual">
+                  <svg viewBox="0 0 130 110" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <defs>
+                      <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1E293B"/>
+                        <stop offset="100%" stop-color="#0B1220"/>
+                      </linearGradient>
+                      <linearGradient id="pg2" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#334155"/>
+                        <stop offset="100%" stop-color="#0F172A"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="4" y="4" width="122" height="102" rx="4" fill="url(#pg1)" stroke="#94A3B8" stroke-width="1.5"/>
+                    <rect x="8" y="8" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="38" y="8" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="68" y="8" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="98" y="8" width="24" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="8" y="32" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="38" y="32" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="68" y="32" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="98" y="32" width="24" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="8" y="56" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="38" y="56" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="68" y="56" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="98" y="56" width="24" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="8" y="80" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="38" y="80" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="68" y="80" width="28" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <rect x="98" y="80" width="24" height="22" rx="1.5" fill="url(#pg2)"/>
+                    <ellipse cx="32" cy="20" rx="18" ry="8" fill="white" opacity="0.08"/>
+                    <circle cx="110" cy="15" r="7" fill="#F59E0B" opacity="0.25"/>
+                    <circle cx="110" cy="15" r="3" fill="#F59E0B" opacity="0.6"/>
+                  </svg>
+                </div>
+
+                <div class="sys-details">
+                  <div class="sys-why">
+                    <strong>Защо тях:</strong> Tier-1+ MWT панели — до 15% повече при облачно време.
+                  </div>
+                  <div class="sys-specs">
+                    <div><strong>{{PANEL_POWER}}W</strong> мощност</div>
+                    <div><strong>21.5%</strong> ефективност</div>
+                    <div><strong>30 год.</strong> гаранция</div>
+                    <div><strong>&lt;0.4%</strong> деградация/год.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- INVERTER -->
+            <div class="sys-card sys-card-inverter">
+              <div class="sys-header">
+                <div class="sys-label">02 · Инвертор</div>
+                <div class="sys-selected">За вас</div>
+              </div>
+              <div class="sys-name">{{INVERTER_MODEL}}</div>
+              <div class="sys-count">5 kW · <strong>99.2% ефективност</strong></div>
+
+              <div class="sys-content">
+                <div class="sys-visual">
+                  <svg viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <rect x="12" y="12" width="66" height="86" rx="10" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+                    <circle cx="45" cy="40" r="11" fill="none" stroke="#10B981" stroke-width="1.5"/>
+                    <path d="M 40 40 Q 45 34 50 40 Q 45 46 40 40" fill="#10B981" stroke="#10B981" stroke-width="1"/>
+                    <rect x="22" y="62" width="14" height="2.5" fill="#10B981"/>
+                    <rect x="40" y="62" width="14" height="2.5" fill="#10B981"/>
+                    <rect x="58" y="62" width="6" height="2.5" fill="#10B981"/>
+                    <rect x="22" y="68" width="6" height="2.5" fill="#94A3B8"/>
+                    <rect x="32" y="68" width="12" height="2.5" fill="#94A3B8"/>
+                    <rect x="48" y="68" width="16" height="2.5" fill="#94A3B8"/>
+                    <text x="45" y="88" text-anchor="middle" font-family="Inter" font-size="6" font-weight="700" fill="#64748B">DC → AC</text>
+                  </svg>
+                </div>
+
+                <div class="sys-details">
+                  <div class="sys-why">
+                    <strong>Защо него:</strong> {{INVERTER_WHY_SHORT}}
+                  </div>
+                  <div class="sys-specs">
+                    <div><strong>99.2%</strong> ефективност</div>
+                    <div><strong>12 год.</strong> гаранция</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BATTERY -->
+            <div class="sys-card sys-card-battery">
+              <div class="sys-header">
+                <div class="sys-label">03 · Батерия</div>
+                <div class="sys-selected">За вас</div>
+              </div>
+              <div class="sys-name">{{BATTERY_MODEL}}</div>
+              <div class="sys-count"><strong>{{BATTERY_KWH}} kWh</strong> · LFP</div>
+
+              <div class="sys-content">
+                <div class="sys-visual">
+                  <svg viewBox="0 0 70 110" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <rect x="20" y="4" width="12" height="4" rx="1.5" fill="#94A3B8"/>
+                    <rect x="38" y="4" width="12" height="4" rx="1.5" fill="#94A3B8"/>
+                    <rect x="10" y="10" width="50" height="96" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+                    <rect x="14" y="16" width="42" height="12" rx="2.5" fill="#10B981"/>
+                    <rect x="14" y="32" width="42" height="12" rx="2.5" fill="#10B981"/>
+                    <rect x="14" y="48" width="42" height="12" rx="2.5" fill="#10B981"/>
+                    <rect x="14" y="64" width="34" height="12" rx="2.5" fill="#10B981" opacity="0.5"/>
+                    <rect x="14" y="80" width="18" height="12" rx="2.5" fill="#10B981" opacity="0.3"/>
+                  </svg>
+                </div>
+
+                <div class="sys-details">
+                  <div class="sys-why" style="font-size: 11px;">
+                    <strong>Защо нея:</strong> Ток при спиране + самопотребление.
+                  </div>
+                  <div class="sys-specs">
+                    <div><strong>10 год.</strong> гар.</div>
+                    <div><strong>6000</strong> цикъла</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOS -->
+            <div class="sys-card sys-card-bos">
+              <div class="sys-header" style="margin-bottom: 14px;">
+                <div class="sys-label">04 · Инфраструктура и услуги</div>
+                <div class="sys-selected">Включено в цената</div>
+              </div>
+
+              <div class="sys-bos-grid">
+                <div class="sys-bos-item">
+                  <div class="sys-bos-icon">⚙</div>
+                  <div>
+                    <h4>Конструкция</h4>
+                    <p>Van der Valk · 25 год. гаранция.</p>
+                  </div>
+                </div>
+                <div class="sys-bos-item">
+                  <div class="sys-bos-icon">◉</div>
+                  <div>
+                    <h4>Мониторинг 24/7</h4>
+                    <p>Panel-level · mobile app.</p>
+                  </div>
+                </div>
+                <div class="sys-bos-item">
+                  <div class="sys-bos-icon">⚡</div>
+                  <div>
+                    <h4>Монтаж</h4>
+                    <p>1–3 дни · 5 год. гаранция.</p>
+                  </div>
+                </div>
+                <div class="sys-bos-item">
+                  <div class="sys-bos-icon">✓</div>
+                  <div>
+                    <h4>Документи + ЕРП</h4>
+                    <p>Пълно съгласуване.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · СПЕЦИФИКАЦИЯ (BOM)
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="6">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Пълна спецификация</div>
+          <h2 style="margin-bottom: 20px;">Компоненти и <span class="accent">материали</span></h2>
+
+          <div style="flex: 1; min-height: 0; display: flex; flex-direction: column;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--ink); text-align: left;">
+                  <th style="padding: 12px 16px; font-weight: 700; color: var(--ink); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;">Компонент</th>
+                  <th style="padding: 12px 16px; font-weight: 700; color: var(--ink); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;">Модел / Описание</th>
+                  <th style="padding: 12px 16px; font-weight: 700; color: var(--ink); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;">Гаранция</th>
+                  <th style="padding: 12px 16px; font-weight: 700; color: var(--ink); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; text-align: center;">Бр.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Соларни панели</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">{{PANEL_MODEL}} {{PANEL_POWER}}W</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">{{PANEL_WARRANTY_PRODUCT}} г. продукт / {{PANEL_WARRANTY_PERFORMANCE}} г. производителност</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">{{PANEL_COUNT}}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Инвертор</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">{{INVERTER_MODEL}}</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">{{INVERTER_WARRANTY}} г.</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">{{INVERTER_COUNT}}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Батерия</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">{{BATTERY_MODEL}} · {{BATTERY_KWH}} kWh</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">{{BATTERY_WARRANTY}} г.</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">{{BATTERY_COUNT}}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Конструкция</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">{{MOUNTING_MODEL}}</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">{{MOUNTING_WARRANTY}} г.</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Кабелно трасе</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">DC/AC кабели, конектори, защити</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">—</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Умен електромер</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">За мониторинг на производство и потребление</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">—</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">{{SMART_METER_COUNT}}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Монтаж и настройка</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">Монтаж, свързване, тестване, пускане</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">{{INSTALL_WARRANTY}} г. монтажна</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Проект + ЕРП</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">Технически проект, документация, съгласуване с ЕРП</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">—</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Транспорт</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">Доставка до обекта</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">—</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top: auto; padding: 16px 20px; background: var(--navy); border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-size: 14px; color: rgba(255,255,255,0.7);">Всички компоненти са сертифицирани и с оригинална гаранция от производителя.</div>
+              <div style="display: flex; gap: 24px; align-items: baseline;">
+                <div style="text-align: right;">
+                  <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em;">Общо позиции</div>
+                  <div style="font-size: 22px; font-weight: 800; color: #fff;">{{BOM_TOTAL_ITEMS}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · ФИНАНСОВА РАЗБИВКА
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--tint" data-slide="7">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Прозрачно ценообразуване</div>
+          <h2 style="margin-bottom: 24px;">Какво точно <span class="accent">плащате</span></h2>
+
+          <div class="breakdown-grid">
+            <div class="breakdown-viz">
+              <div class="breakdown-title">Разбивка на цената</div>
+
+              <div class="breakdown-bar">
+                <div class="breakdown-segment s1" style="flex: {{PRICE_PANELS_PCT}};">{{PRICE_PANELS_PCT}}%</div>
+                <div class="breakdown-segment s2" style="flex: {{PRICE_INVERTER_PCT}};">{{PRICE_INVERTER_PCT}}%</div>
+                <div class="breakdown-segment s3" style="flex: {{PRICE_BATTERY_PCT}};">{{PRICE_BATTERY_PCT}}%</div>
+                <div class="breakdown-segment s4" style="flex: {{PRICE_MOUNTING_PCT}};">{{PRICE_MOUNTING_PCT}}%</div>
+                <div class="breakdown-segment s5" style="flex: {{PRICE_INSTALL_PCT}};">{{PRICE_INSTALL_PCT}}%</div>
+              </div>
+
+              <div class="breakdown-legend">
+                <div class="breakdown-item">
+                  <div class="breakdown-item-dot s1"></div>
+                  <div class="breakdown-item-label">Панели · {{PANEL_COUNT}} × {{PANEL_POWER}}W</div>
+                  <div class="breakdown-item-value">{{PRICE_PANELS}} €</div>
+                </div>
+                <div class="breakdown-item">
+                  <div class="breakdown-item-dot s2"></div>
+                  <div class="breakdown-item-label">Инвертор · {{INVERTER_BRAND}}</div>
+                  <div class="breakdown-item-value">{{PRICE_INVERTER}} €</div>
+                </div>
+                <div class="breakdown-item">
+                  <div class="breakdown-item-dot s3"></div>
+                  <div class="breakdown-item-label">Батерия · {{BATTERY_KWH}} kWh</div>
+                  <div class="breakdown-item-value">{{PRICE_BATTERY}} €</div>
+                </div>
+                <div class="breakdown-item">
+                  <div class="breakdown-item-dot s4"></div>
+                  <div class="breakdown-item-label">Конструкция + кабели</div>
+                  <div class="breakdown-item-value">{{PRICE_MOUNTING}} €</div>
+                </div>
+                <div class="breakdown-item" style="grid-column: span 2;">
+                  <div class="breakdown-item-dot s5"></div>
+                  <div class="breakdown-item-label">Монтаж + проект + документи + ЕРП</div>
+                  <div class="breakdown-item-value">{{PRICE_INSTALL}} €</div>
+                </div>
+              </div>
+
+              <div style="margin-top: 14px; border-top: 2px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; font-size: 15px;">
+                  <span style="color: var(--ink-3);">Сума без ДДС</span>
+                  <span style="color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;">{{PRICE_TOTAL}} €</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 15px;">
+                  <span style="color: var(--ink-3);">ДДС ({{VAT_RATE}}%)</span>
+                  <span style="color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;">{{VAT_AMOUNT}} €</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 18px; padding-top: 8px; border-top: 2px solid var(--ink);">
+                  <span style="color: var(--ink); font-weight: 800;">Сума с ДДС</span>
+                  <span style="color: var(--green-dark); font-weight: 800; font-variant-numeric: tabular-nums;">{{PRICE_WITH_VAT}} €</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="included-box">
+                <h3>Какво получавате</h3>
+                <ul class="included-list">
+                  <li>Всички компоненти доставени до обекта</li>
+                  <li>Пълен технически проект</li>
+                  <li>Монтаж от сертифициран екип</li>
+                  <li>Съгласуване с ЕРП и нетно отчитане</li>
+                  <li>Мобилно приложение за мониторинг</li>
+                  <li>Обучение за ползване на системата</li>
+                  <li>Активиране и тест на системата</li>
+                </ul>
+              </div>
+
+              <div class="vat-banner">
+                <div class="vat-banner-icon">0%</div>
+                <div class="vat-banner-text">
+                  <strong>Без ДДС за домакинства.</strong> Цените са финални — без скрити такси.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · ROI
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="8">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Възвръщаемост за 25 години</div>
+          <h2 style="margin-bottom: 24px;">Вашата <span class="accent">инвестиция във времето</span></h2>
+
+          <div class="roi-panel" style="border-radius: 20px; flex: 1; min-height: 0; display: flex; flex-direction: column;">
+            <div class="roi-panel-head">
+              <span class="roi-scenario nosub">Кумулативни спестявания · без субсидия</span>
+              <div class="roi-payback-big">
+                <div class="val solar">{{PAYBACK_YEARS}} г.</div>
+                <div class="lbl">Payback</div>
+              </div>
+            </div>
+
+            <svg class="roi-chart-svg" viewBox="0 0 960 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="flex: 1; min-height: 0;">
+              <defs>
+                <linearGradient id="roiNoSubGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g stroke="#F1F5F9" stroke-width="1">
+                <line x1="44" y1="30" x2="920" y2="30"/>
+                <line x1="44" y1="80" x2="920" y2="80"/>
+                <line x1="44" y1="130" x2="920" y2="130"/>
+                <line x1="44" y1="175" x2="920" y2="175"/>
+              </g>
+              <line x1="44" y1="175" x2="920" y2="175" stroke="#CBD5E1" stroke-width="1.5"/>
+              <g fill="#94A3B8" font-family="Inter" font-size="11" font-weight="500" text-anchor="end">
+                <text x="38" y="34">+50k</text>
+                <text x="38" y="84">+35k</text>
+                <text x="38" y="134">+15k</text>
+                <text x="38" y="178">0</text>
+                <text x="38" y="210" fill="#EF4444">−10k</text>
+              </g>
+              <g fill="#94A3B8" font-family="Inter" font-size="11" font-weight="500">
+                <text x="44" y="202" text-anchor="middle">0</text>
+                <text x="219" y="202" text-anchor="middle">5</text>
+                <text x="395" y="202" text-anchor="middle">10</text>
+                <text x="570" y="202" text-anchor="middle">15</text>
+                <text x="745" y="202" text-anchor="middle">20</text>
+                <text x="920" y="202" text-anchor="middle">25 г.</text>
+              </g>
+              <line x1="44" y1="175" x2="44" y2="210" stroke="#EF4444" stroke-width="2"/>
+              <circle cx="44" cy="210" r="4" fill="#EF4444"/>
+              <path d="M 44,210 L 219,168 L 395,128 L 570,85 L 745,48 L 920,18 L 920,175 L 44,175 Z" fill="url(#roiNoSubGrad)"/>
+              <path d="M 44,210 L 219,168 L 395,128 L 570,85 L 745,48 L 920,18"
+                    fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="44" cy="210" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="219" cy="168" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="395" cy="128" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="570" cy="85" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="745" cy="48" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="920" cy="18" r="4" fill="#F59E0B" stroke="#fff" stroke-width="1.5"/>
+              <line x1="254" y1="30" x2="254" y2="175" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,4"/>
+              <circle cx="254" cy="175" r="5" fill="#10B981" stroke="#fff" stroke-width="2"/>
+              <g transform="translate(254, 22)">
+                <rect x="-34" y="-10" width="68" height="20" rx="10" fill="#10B981"/>
+                <text x="0" y="4" text-anchor="middle" fill="#fff" font-family="Inter" font-size="10" font-weight="700">PAYBACK</text>
+              </g>
+            </svg>
+
+            <div class="roi-bottom" style="grid-template-columns: repeat(5, 1fr);">
+              <div>
+                <div class="roi-mini-lbl">Инвестиция</div>
+                <div class="roi-mini-val">{{PRICE_TOTAL}}</div>
+              </div>
+              <div>
+                <div class="roi-mini-lbl">Год. спестявания</div>
+                <div class="roi-mini-val green">{{ANNUAL_SAVINGS}}</div>
+              </div>
+              <div>
+                <div class="roi-mini-lbl">За 25 години</div>
+                <div class="roi-mini-val solar">{{SAVINGS_25Y}}</div>
+              </div>
+              <div>
+                <div class="roi-mini-lbl">Год. производство</div>
+                <div class="roi-mini-val">{{ANNUAL_PRODUCTION}} kWh</div>
+              </div>
+              <div>
+                <div class="roi-mini-lbl">Деградация панели</div>
+                <div class="roi-mini-val">~0.4%/год.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · FAQ
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="9">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Често задавани въпроси</div>
+          <h2 style="margin-bottom: 22px;">Това, което <span class="accent">обикновено питат</span></h2>
+
+          <div class="faq-grid">
+            <div class="faq-card">
+              <div class="faq-q-icon">01</div>
+              <div class="faq-content">
+                <div class="faq-question">А ако реша да продам къщата?</div>
+                <div class="faq-answer">Имоти с фотоволтаична система се продават <strong>по-бързо и с 5–8% по-висока цена</strong> според изследвания на европейския пазар. Системата не ви ограничава — тя е добавена стойност.</div>
+              </div>
+            </div>
+
+            <div class="faq-card">
+              <div class="faq-q-icon">02</div>
+              <div class="faq-content">
+                <div class="faq-question">Какво ако технологията остарее?</div>
+                <div class="faq-answer">Соларната технология не "остарява" — само се подобрява. Вашата система има <strong>30 години гаранция</strong> и ще произвежда минимум 80% от номинала дори след 25 години.</div>
+              </div>
+            </div>
+
+            <div class="faq-card">
+              <div class="faq-q-icon">03</div>
+              <div class="faq-content">
+                <div class="faq-question">Градушка, сняг, бури — издържат ли?</div>
+                <div class="faq-answer">Панелите са тествани за <strong>градушка до 25 мм</strong> при 90 km/h, снегови натоварвания до 5400 Pa и ветрове до 2400 Pa. Много по-издръжливи от керемидите отдолу.</div>
+              </div>
+            </div>
+
+            <div class="faq-card">
+              <div class="faq-q-icon">04</div>
+              <div class="faq-content">
+                <div class="faq-question">А ако Solaron фалира?</div>
+                <div class="faq-answer">Гаранциите на компонентите са <strong>директно с производителите</strong> — SolarEdge (инвертор), DMEGC (панели), Pylontech (батерия). Монтажната гаранция е застрахована.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide slide--tint" data-slide="10">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Портфолио · реални проекти</div>
+          <h2 style="margin-bottom: 20px;">Други вече <span class="accent">го направиха</span></h2>
+
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; gap: 12px; flex: 1; min-height: 0;">
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/5kw-kran-1.jpg" alt="Кръна" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Кръна</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">5.04 kWp · покрив</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/15kw-vratsa-1.jpg" alt="Враца" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Враца</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">15 kWp · + 16 kWh батерия</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/30kwp-kazanlak-1.jpg" alt="Казанлък" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Казанлък</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">30 kWp · покрив</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/39kwp-varna-hero.jpg" alt="Варна" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Варна</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">39 kWp · плосък покрив</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/63kwp-venelin-draganov-hero.jpg" alt="В. Драганов" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">В. Драганов</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">63 kWp · бизнес</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/108kwp-sedem-bg-hero.jpg" alt="Седем БГ" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Седем БГ</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">108 kWp · индустриален</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/270kwp-carport-kazanlak-hero.jpg" alt="Карпорт Казанлък" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Карпорт Казанлък</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">270 kWp · карпорт</div>
+              </div>
+            </div>
+
+            <div style="border-radius: 14px; overflow: hidden; position: relative;">
+              <img src="solaron/public/real/projects/651kwp-saedinenie-hero.jpg" alt="Съединение" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 50%);"></div>
+              <div style="position: absolute; bottom: 12px; left: 14px; right: 14px;">
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Съединение</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px;">651 kWp · наземна</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 32px; font-size: 14px; color: var(--ink-4);">
+              <div><strong style="color: var(--ink); font-size: 17px;">400+</strong> клиенти</div>
+              <div><strong style="color: var(--ink); font-size: 17px;">4 400+</strong> kWp</div>
+              <div><strong style="color: var(--ink); font-size: 17px;">2 100+</strong> MWh</div>
+              <div><strong style="color: var(--ink); font-size: 17px;">20+</strong> г. опит</div>
+            </div>
+            <div style="font-size: 13px; color: var(--green-dark); font-weight: 600;">от 5 kWp до 651 kWp · домове, бизнес, индустрия</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE 9 · ГАРАНЦИИ
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="11">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Вашата инвестиция е защитена</div>
+          <h2 style="margin-bottom: 22px;">Нулев риск, <span class="accent">максимално спокойствие</span></h2>
+
+          <div class="trust-grid">
+            <div class="trust-card">
+              <div class="trust-years">30</div>
+              <div class="trust-unit">години</div>
+              <div class="trust-what">Производствена гаранция<br>на панелите</div>
+            </div>
+            <div class="trust-card">
+              <div class="trust-years">12</div>
+              <div class="trust-unit">години</div>
+              <div class="trust-what">Гаранция на инвертора<br>SolarEdge</div>
+            </div>
+            <div class="trust-card">
+              <div class="trust-years">5</div>
+              <div class="trust-unit">години</div>
+              <div class="trust-what">Гаранция на монтажа<br>от Solaron</div>
+            </div>
+          </div>
+
+          <div class="risk-board">
+            <div>
+              <div class="risk-title">Защо <em>Solaron</em> е сигурен избор?</div>
+              <div class="risk-subtitle">Това, което премахва риска от инвестицията ви</div>
+            </div>
+            <ul class="risk-list">
+              <li><span><strong>20+ години</strong> опит на пазара</span></li>
+              <li><span>Фиксирана цена <strong>без скрити такси</strong></span></li>
+              <li><span>Гаранция <strong>по спесификация</strong></span></li>
+              <li><span>Сертифициран <strong>монтаж + проект</strong></span></li>
+              <li><span>Мониторинг <strong>24/7 от нас</strong></span></li>
+              <li><span><strong>Безплатен сервиз</strong> в гаранцията</span></li>
+            </ul>
+          </div>
+
+          <div class="certs-strip">
+            <div class="certs-strip-label">Международни сертификати</div>
+            <div class="certs-strip-items">
+              <span>EUPD Research Award 2024</span>
+              <span>SolarEdge Certified Partner</span>
+              <span>TUV Rheinland</span>
+              <span>IEC 61215</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE 10 · CTA
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark done-slide" data-slide="12">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Вашият проект до момента</div>
+          <h2 style="margin-bottom: 24px;">Какво вече <span class="accent">сме направили за вас</span></h2>
+
+          <div class="done-layout">
+            <div class="done-intro">
+              <p>Тази оферта не е автоматично генериран шаблон. Зад нея стоят <strong>часове реална работа</strong> от нашия инженерен екип — анализ, изчисления, подбор на компоненти и 3D моделиране.</p>
+
+              <p style="color: rgba(255,255,255,0.6);">Всичко това — напълно безплатно за вас, защото вярваме в прозрачност преди ангажимент.</p>
+
+              <div class="done-hours-box">
+                <div class="done-hours-num">12<span class="small">часа</span></div>
+                <div class="done-hours-lbl">Работа на екипа до момента</div>
+              </div>
+            </div>
+
+            <div class="done-checklist">
+              <div class="done-item done">
+                <div class="done-check">✓</div>
+                <div>
+                  <div class="done-title">Консултация и оглед</div>
+                  <div class="done-desc">Персонално посещение на място · 2 часа</div>
+                </div>
+                <span class="done-badge completed">Готово</span>
+              </div>
+
+              <div class="done-item done">
+                <div class="done-check">✓</div>
+                <div>
+                  <div class="done-title">Анализ на консумацията</div>
+                  <div class="done-desc">Последните 12 месеца · почасов профил</div>
+                </div>
+                <span class="done-badge completed">Готово</span>
+              </div>
+
+              <div class="done-item done">
+                <div class="done-check">✓</div>
+                <div>
+                  <div class="done-title">Изчисление на системата</div>
+                  <div class="done-desc">Оптимален размер за вашия случай</div>
+                </div>
+                <span class="done-badge completed">Готово</span>
+              </div>
+
+              <div class="done-item done">
+                <div class="done-check">✓</div>
+                <div>
+                  <div class="done-title">Подбор на компоненти</div>
+                  <div class="done-desc">Балансирани за вашия бюджет и нужди</div>
+                </div>
+                <span class="done-badge completed">Готово</span>
+              </div>
+
+              <div class="done-item done">
+                <div class="done-check">✓</div>
+                <div>
+                  <div class="done-title">Тази персонална оферта</div>
+                  <div class="done-desc">Прецизно изчислени цени, ROI, графики</div>
+                </div>
+                <span class="done-badge completed">Готово</span>
+              </div>
+
+              <div class="done-item pending">
+                <div class="done-check">→</div>
+                <div>
+                  <div class="done-title">Технически проект + ЕРП</div>
+                  <div class="done-desc">Следва при потвърждение на офертата</div>
+                </div>
+                <span class="done-badge next">Следва</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · МОНИТОРИНГ
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--tint" data-slide="13">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Мониторинг · включен безплатно</div>
+          <h2 style="margin-bottom: 20px;">Пълен контрол <span class="accent">24/7</span></h2>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex: 1; min-height: 0;">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px; flex: 1; display: flex; flex-direction: column; gap: 18px;">
+                <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
+                  <div style="width: 42px; height: 42px; background: var(--green-light); color: var(--green-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
+                  <div>
+                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Данни в реално време</div>
+                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Мощност, напрежение и ток от всеки панел — обновяване на всеки 15 секунди.</div>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
+                  <div style="width: 42px; height: 42px; background: var(--solar-light); color: var(--solar-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">▦</div>
+                  <div>
+                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Панелен мониторинг</div>
+                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Визуална карта на покрива с цветово кодиране по производителност на всеки модул.</div>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
+                  <div style="width: 42px; height: 42px; background: #DBEAFE; color: #1E40AF; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">🔔</div>
+                  <div>
+                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Автоматични известия</div>
+                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Email и push нотификации при спад в производство, грешки или аномалии.</div>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
+                  <div style="width: 42px; height: 42px; background: #EDE9FE; color: #6D28D9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">📱</div>
+                  <div>
+                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Мобилно приложение</div>
+                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Пълен контрол от телефона — статистики и известия навсякъде по света.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div style="background: var(--navy); border-radius: 16px; padding: 28px; flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, var(--green) 0%, transparent 70%); opacity: 0.1; border-radius: 50%; filter: blur(40px);"></div>
+                <div style="position: relative; z-index: 1;">
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">Мониторинг платформа</div>
+                  <div style="font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px;">{{MONITORING_PLATFORM}}</div>
+                  <div style="font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.5; margin-bottom: 24px;">Безплатен достъп за целия живот на системата. Web + iOS + Android.</div>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+                    <div style="text-align: center; padding: 14px; background: rgba(255,255,255,0.06); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                      <div style="font-size: 24px; font-weight: 800; color: var(--solar);">15 с.</div>
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px;">обновяване</div>
+                    </div>
+                    <div style="text-align: center; padding: 14px; background: rgba(255,255,255,0.06); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                      <div style="font-size: 24px; font-weight: 800; color: var(--green);">25 г.</div>
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px;">архив данни</div>
+                    </div>
+                    <div style="text-align: center; padding: 14px; background: rgba(255,255,255,0.06); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                      <div style="font-size: 24px; font-weight: 800; color: #fff;">99.9%</div>
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px;">uptime</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); border-radius: 14px; padding: 20px 24px; color: #fff;">
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Мониторингът спестява пари</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: 13px; margin-top: 10px;">
+                  <div><span style="font-size: 18px; font-weight: 800; display: block;">~15%</span> по-малко загуби с ранно откриване</div>
+                  <div><span style="font-size: 18px; font-weight: 800; display: block;">+8%</span> производство чрез оптимизация</div>
+                  <div><span style="font-size: 18px; font-weight: 800; display: block;">3×</span> по-бързо решаване при гаранция</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide slide--light" data-slide="14">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Времето има значение</div>
+          <h2 style="margin-bottom: 22px;">Защо <span class="accent">сега</span> е добрият момент</h2>
+
+          <div class="why-now-grid">
+            <div class="why-now-card c1">
+              <div class="why-now-header">
+                <div class="why-now-icon">📈</div>
+                <span class="why-now-trend up">↑ +12%</span>
+              </div>
+              <div class="why-now-big">+12<span class="small">%</span></div>
+              <div class="why-now-title">Цена на компонентите — 2025</div>
+              <div class="why-now-desc">Соларните панели и инвертори се поскъпнаха с около 12% за последната година поради глобалното търсене. <strong>Фиксираната цена в тази оферта е валидна 30 дни.</strong></div>
+              <div class="why-now-source">Източник: SolarPowerEurope Market Outlook 2025</div>
+            </div>
+
+            <div class="why-now-card c2">
+              <div class="why-now-header">
+                <div class="why-now-icon">☀</div>
+                <span class="why-now-trend down">→ Сезон</span>
+              </div>
+              <div class="why-now-big">~7<span class="small">месеца</span></div>
+              <div class="why-now-title">Пиков сезон на производство</div>
+              <div class="why-now-desc">Март–септември са месеците с максимално производство. Монтаж сега = <strong>цял сезон на максимални спестявания</strong>. Всеки пропуснат месец = загубена енергия.</div>
+              <div class="why-now-source">Базирано на слънчевите часове за София/Казанлък</div>
+            </div>
+
+            <div class="why-now-card c3">
+              <div class="why-now-header">
+                <div class="why-now-icon">📋</div>
+                <span class="why-now-trend up">Очаква се</span>
+              </div>
+              <div class="why-now-big">70<span class="small">%</span></div>
+              <div class="why-now-title">Субсидия при Покана 2</div>
+              <div class="why-now-desc">Покана 1 (2023) беше изчерпана за 3 месеца. За новата покана <strong>кандидатите с готова документация имат предимство</strong> — проектирането отнема 2–4 седмици.</div>
+              <div class="why-now-source">НПВУ · Министерство на енергетиката</div>
+            </div>
+
+            <div class="why-now-card c4">
+              <div class="why-now-header">
+                <div class="why-now-icon">🗓</div>
+                <span class="why-now-trend up">73% заети</span>
+              </div>
+              <div class="why-now-big">Q2<span class="small">2026</span></div>
+              <div class="why-now-title">Монтажни слотове</div>
+              <div class="why-now-desc">Нашият монтажен капацитет за второто тримесечие е <strong>заеет на 73%</strong>. При потвърждение до 20.05.2026 — запазваме слот в първата свободна седмица.</div>
+              <div class="why-now-source">Вътрешни данни · Solaron</div>
+            </div>
+          </div>
+
+          <div class="why-now-footer">
+            <div class="why-now-footer-text">
+              <h4>Вашата оферта — с фиксирана цена</h4>
+              <p>Защитени сте от пазарните промени. Цените, компонентите и сроковете — заключени до</p>
+            </div>
+            <div class="why-now-footer-date">{{OFFER_VALID_UNTIL}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide cta-slide" data-slide="15">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="cta-inner">
+          <div class="cta-tag">Следваща стъпка</div>
+
+          <h1>
+            Един разговор ви дели
+            <span class="light">от първия kWh собствена енергия.</span>
+          </h1>
+
+          <p class="lead">
+            Потвърдете офертата до {{OFFER_VALID_UNTIL}}. Ние поемаме всичко останало.
+          </p>
+
+          <div class="cta-next-steps">
+            <div class="cta-step">
+              <div class="cta-step-num">1</div>
+              <div class="cta-step-title">Потвърдете</div>
+              <div class="cta-step-desc">Обадете се или ми пишете, за да обсъдим детайлите.</div>
+            </div>
+            <div class="cta-step">
+              <div class="cta-step-num">2</div>
+              <div class="cta-step-title">Проектиране</div>
+              <div class="cta-step-desc">Финален оглед и технически проект за ЕРП.</div>
+            </div>
+            <div class="cta-step">
+              <div class="cta-step-num">3</div>
+              <div class="cta-step-title">Монтаж</div>
+              <div class="cta-step-desc">1–3 дни на място. Системата работи от последния ден.</div>
+            </div>
+          </div>
+
+          <div class="cta-btns">
+            <a href="tel:{{CONSULTANT_PHONE}}" class="btn btn-solar">📞 Обадете се</a>
+            <a href="https://wa.me/359899639726" class="btn btn-ghost">WhatsApp</a>
+            <a href="mailto:{{CONSULTANT_EMAIL}}" class="btn btn-ghost">Email</a>
+          </div>
+
+          <div class="cta-urgency">Офертата е валидна до {{OFFER_VALID_UNTIL}}</div>
+        </div>
+
+        <div class="cta-bottom">
+          <div class="cta-consultant">
+            <div class="cta-consultant-avatar">{{CONSULTANT_INITIALS}}</div>
+            <div class="cta-consultant-info">
+              <div class="lbl">Ваш консултант</div>
+              <div class="name">{{CONSULTANT_NAME}}</div>
+              <div class="contact">{{CONSULTANT_PHONE}} · {{CONSULTANT_EMAIL}}</div>
+            </div>
+          </div>
+          <div></div>
+          <div class="cta-copyright">
+            Solaron · бул. Черни Връх 59Б, София<br>
+            © 2026 Solaron. Всички права запазени.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SLIDE · ПОТВЪРЖДЕНИЕ НА ПОРЪЧКА
+         ══════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--light" data-slide="16">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="logo"><img src="solaron/public/logo-solaron.png" alt="Solaron"></div>
+          <div class="slide-meta"><strong>{{CLIENT_NAME}}</strong>Оферта №{{OFFER_NUMBER}}</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="eyebrow">Потвърждение на поръчка</div>
+          <h2 style="margin-bottom: 28px;">Приемане на <span class="accent">офертата</span></h2>
+
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 20px; min-height: 0;">
+            <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 28px 32px;">
+              <div style="font-size: 15px; color: var(--ink-2); line-height: 1.65;">
+                С настоящото потвърждавам, че съм запознат/а с условията на оферта <strong style="color: var(--ink);">№{{OFFER_NUMBER}}</strong> от <strong style="color: var(--ink);">{{DATE}}</strong> за доставка и монтаж на фотоволтаична система с мощност <strong style="color: var(--ink);">{{SYSTEM_KWP}} kWp</strong> на обект <strong style="color: var(--ink);">{{CLIENT_ADDRESS}}</strong>.
+              </div>
+
+              <div style="margin-top: 20px; padding: 18px 24px; background: var(--solar-light); border-left: 4px solid var(--solar); border-radius: 0 10px 10px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-size: 13px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">Обща стойност</div>
+                    <div style="font-size: 15px; color: var(--ink-2);">Без ДДС: <strong style="color: var(--ink);">{{PRICE_TOTAL}} €</strong> · ДДС ({{VAT_RATE}}%): <strong style="color: var(--ink);">{{VAT_AMOUNT}} €</strong></div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div style="font-size: 13px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">С ДДС</div>
+                    <div style="font-size: 26px; font-weight: 800; color: var(--green-dark);">{{PRICE_WITH_VAT}} €</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 16px; font-size: 14px; color: var(--ink-3); line-height: 1.6;">
+                <p style="margin-bottom: 8px;">• При подписване на офертата, тя се смята за сключен договор между страните.</p>
+                <p style="margin-bottom: 8px;">• Офертата е валидна до <strong style="color: var(--ink);">{{OFFER_VALID_UNTIL}}</strong>.</p>
+                <p>• Всички цени включват доставка, монтаж, пускане в експлоатация и регистрация пред ЕРП.</p>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 0 8px;">
+              <div>
+                <div style="font-size: 13px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px;">За Solaron</div>
+                <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px; min-height: 50px;"></div>
+                <div style="font-size: 15px; color: var(--ink); font-weight: 600;">{{CONSULTANT_NAME}}</div>
+                <div style="font-size: 14px; color: var(--ink-4);">Solaron · {{CONSULTANT_PHONE}}</div>
+                <div style="font-size: 14px; color: var(--ink-4); margin-top: 4px;">Дата: {{DATE}}</div>
+              </div>
+              <div>
+                <div style="font-size: 13px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px;">Клиент</div>
+                <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px; min-height: 50px;"></div>
+                <div style="font-size: 15px; color: var(--ink); font-weight: 600;">{{CLIENT_NAME}}</div>
+                <div style="font-size: 14px; color: var(--ink-4);">{{CLIENT_ADDRESS}}</div>
+                <div style="font-size: 14px; color: var(--ink-4); margin-top: 4px;">Дата: ................</div>
+              </div>
+            </div>
+
+            <div style="margin-top: auto; text-align: center; font-size: 12px; color: var(--ink-4); padding-top: 12px; border-top: 1px solid var(--line);">
+              Solaron · бул. Черни Връх 59Б, София · {{CONSULTANT_PHONE}} · {{CONSULTANT_EMAIL}} · solaron.bg
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="nav-ui">
+  <button class="nav-btn" id="prevBtn" aria-label="Предишен">‹</button>
+  <div class="nav-dots" id="navDots"></div>
+  <div class="nav-counter"><span id="currentSlide">1</span> / <span id="totalSlides">16</span></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Следващ">›</button>
+</div>
+
+<script>
+(function() {
+  const deck = document.getElementById('deck');
+  const stage = document.querySelector('.stage');
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const currentSlideEl = document.getElementById('currentSlide');
+  const totalSlidesEl = document.getElementById('totalSlides');
+  const progressBar = document.getElementById('progressBar');
+  const navDots = document.getElementById('navDots');
+
+  let currentIndex = 0;
+
+  // ═══ Auto-scale: fit 1600×900 to viewport ═══
+  const SLIDE_W = 1600;
+  const SLIDE_H = 900;
+
+  function fit() {
+    if (document.body.classList.contains('print-mode')) return;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    // Leave 10% padding for nav UI
+    const scale = Math.min(vw / SLIDE_W, (vh - 90) / SLIDE_H);
+    deck.style.transform = `scale(${scale})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ═══ Setup dots ═══
+  totalSlidesEl.textContent = totalSlides;
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.setAttribute('aria-label', `Слайд ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    navDots.appendChild(dot);
+  }
+  const dots = navDots.querySelectorAll('.nav-dot');
+
+  function render() {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'prev');
+      if (i === currentIndex) slide.classList.add('active');
+      else if (i < currentIndex) slide.classList.add('prev');
+    });
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+    currentSlideEl.textContent = currentIndex + 1;
+    progressBar.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === totalSlides - 1;
+  }
+
+  function goTo(i) {
+    if (i < 0 || i >= totalSlides) return;
+    currentIndex = i;
+    render();
+  }
+
+  function next() { goTo(currentIndex + 1); }
+  function prev() { goTo(currentIndex - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  document.addEventListener('keydown', (e) => {
+    if (document.body.classList.contains('print-mode')) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(totalSlides - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+    else if (e.key === 'p' || e.key === 'P') {
+      document.body.classList.toggle('print-mode');
+      if (document.body.classList.contains('print-mode')) {
+        deck.style.transform = '';
+      } else {
+        fit();
+      }
+    }
+    else if (e.key === 'Escape' && document.body.classList.contains('print-mode')) {
+      document.body.classList.remove('print-mode');
+      fit();
+    }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const delta = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) < 60) return;
+    if (delta > 0) prev(); else next();
+  }, { passive: true });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

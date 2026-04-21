@@ -253,5 +253,8 @@ export const routing = defineRouting({
       en: "/lp/solar-new-home",
       nl: "/lp/zonne-nieuwbouw",
     },
+
+    // ── Internal ──
+    "/offer-maker": "/offer-maker",
   },
 });

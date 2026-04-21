@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/"],
+      disallow: ["/api/", "/*/offer-maker"],
     },
     sitemap: "https://solaron.io/sitemap.xml",
   };
