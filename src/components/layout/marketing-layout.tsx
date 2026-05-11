@@ -22,7 +22,7 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
       <SocialProofToast />
       <CookieConsent />
       <Script
-        src="https://app.sellinger.ai/api/live-chat/widget/8ad59adc-ffe5-44a1-bdc2-ab8f1621deff.js"
+        src="https://v2.sellinger.io/api/live-chat/widget/8ad59adc-ffe5-44a1-bdc2-ab8f1621deff.js"
         strategy="lazyOnload"
       />
     </>
