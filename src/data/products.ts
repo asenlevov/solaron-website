@@ -9,6 +9,7 @@ export type PanelBrand = {
   warrantyPerformance: number;
   degradation: number;
   strengths: string[];
+  datasheetUrl?: string;
 };
 
 export type InverterModel = {
@@ -23,6 +24,7 @@ export type InverterModel = {
   type: 'string' | 'hybrid';
   warrantyYears: number;
   monitoringPlatform: string;
+  datasheetUrl?: string;
 };
 
 export type BatteryModel = {
@@ -34,6 +36,7 @@ export type BatteryModel = {
   cycles: number;
   warrantyYears: number;
   useCase: 'residential' | 'commercial' | 'both';
+  datasheetUrl?: string;
 };
 
 export type MountingType = {

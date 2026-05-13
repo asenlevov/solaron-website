@@ -1,7 +1,7 @@
 import type { OfferState } from "@/components/offer-maker/offer-types";
 import { resolvePanel, resolveInverter, resolveBattery } from "@/components/offer-maker/offer-types";
 import type { ComputedValues } from "@/components/offer-maker/offer-wizard";
-import { getMonitoringForBrand, mountingTypes } from "@/data/products";
+import { getMonitoringForBrand, getPanelById, getInverterById, getBatteryById, mountingTypes } from "@/data/products";
 
 function fmt(n: number, decimals = 0): string {
   return n.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -17,6 +17,10 @@ export function generateOfferHtml(
   const battery = resolveBattery(state.system);
   const mounting = mountingTypes.find((m) => m.id === state.system.mountingType);
   const monitoring = getMonitoringForBrand(inverter.brand);
+
+  const rawPanel = getPanelById(state.system.panelId);
+  const rawInverter = getInverterById(state.system.inverterId);
+  const rawBattery = state.system.hasBattery ? getBatteryById(state.system.batteryId) : undefined;
 
   const totalPrice = computed.totalPriceEur || 1;
   const pricePct = (v: number) => Math.round((v / totalPrice) * 100);
@@ -109,12 +113,39 @@ export function generateOfferHtml(
     PRICE_BATTERY_PCT: String(pricePct(state.pricing.battery)),
     PRICE_MOUNTING_PCT: String(pricePct(state.pricing.mounting)),
     PRICE_INSTALL_PCT: String(pricePct(state.pricing.installation)),
+
+    SAVINGS_25Y: fmt(computed.savings25Year),
+    INVERTER_WHY_SHORT: inverter.brand === "SolarEdge"
+      ? "HD-Wave технология с 99.2% ефективност и панелно ниво мониторинг"
+      : `${inverter.brand} хибриден инвертор с ${inverter.efficiency}% ефективност`,
+    SUBSIDY_PCT: "0",
+    PRICE_AFTER_SUBSIDY: fmt(computed.totalWithVat),
+    BILL_25Y: fmt(state.site.currentMonthlyBill * 12 * 25),
+    BILL_AFTER_25Y: fmt(computed.newMonthlyBill * 12 * 25),
+
+    PANEL_DATASHEET_URL: rawPanel?.datasheetUrl ?? "",
+    INVERTER_DATASHEET_URL: rawInverter?.datasheetUrl ?? "",
+    BATTERY_DATASHEET_URL: rawBattery?.datasheetUrl ?? "",
+
+    CONSULTANT_SIGNATURE_URL: state.consultant.signatureUrl || "",
   };
 
   let html = templateHtml;
   for (const [key, value] of Object.entries(replacements)) {
     html = html.replaceAll(`{{${key}}}`, value);
   }
+
+  const disabledSlideNumbers = new Set<number>();
+  state.slides.forEach((s, i) => {
+    if (!s.enabled) disabledSlideNumbers.add(i + 1);
+  });
+  if (disabledSlideNumbers.size > 0) {
+    html = html.replace(
+      /<section\s+class="slide[^"]*"\s+data-slide="(\d+)"[\s\S]*?<\/section>/g,
+      (match, num) => (disabledSlideNumbers.has(Number(num)) ? "" : match),
+    );
+  }
+
   return html;
 }
 

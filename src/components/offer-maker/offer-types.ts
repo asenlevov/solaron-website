@@ -42,6 +42,7 @@ export interface ConsultantInfo {
   phone: string;
   email: string;
   initials: string;
+  signatureUrl: string;
 }
 
 export interface OfferMeta {
@@ -134,11 +135,13 @@ export const ALL_SLIDE_DEFS: { id: string; label: string }[] = [
   { id: "confirmation", label: "Потвърждение" },
 ];
 
+const DISABLED_BY_DEFAULT = new Set(["bill", "roof", "pricing", "faq", "whynow", "cta"]);
+
 export function getDefaultSlides(offerType: OfferType): SlideConfig[] {
   return ALL_SLIDE_DEFS.map((s, i) => ({
     id: s.id,
     label: s.label,
-    enabled: true,
+    enabled: !DISABLED_BY_DEFAULT.has(s.id),
     order: i,
   }));
 }
@@ -163,7 +166,7 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
   return {
     type: offerType,
     client: { name: "", address: "", phone: "", email: "" },
-    consultant: { name: "", phone: "", email: "", initials: "" },
+    consultant: { name: "Емил Солаков", phone: "+359 899 639 726", email: "emil@solaron.io", initials: "ЕС", signatureUrl: "" },
     offer: {
       number: generateOfferNumber(),
       date: formatDate(now),

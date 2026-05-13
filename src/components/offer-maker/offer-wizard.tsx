@@ -269,6 +269,21 @@ export function OfferWizard({
                 />
               </div>
             </div>
+            <div>
+              <label className={labelClass}>Подпис (URL на изображение)</label>
+              <input
+                type="url"
+                className={inputClass}
+                value={state.consultant.signatureUrl}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_CONSULTANT",
+                    payload: { signatureUrl: e.target.value },
+                  })
+                }
+                placeholder="https://..."
+              />
+            </div>
           </fieldset>
 
           <fieldset className="space-y-3">
