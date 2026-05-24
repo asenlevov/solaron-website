@@ -76,21 +76,39 @@ export interface SiteDetails {
   city: string;
 }
 
-export interface ExtraItem {
+export interface PricingLineItem {
   id: string;
-  name: string;
+  label: string;
   amount: number;
+  isDefault: boolean;
 }
 
 export interface PricingConfig {
-  panels: number;
-  inverter: number;
-  battery: number;
-  mounting: number;
-  installation: number;
-  design: number;
-  extras: ExtraItem[];
+  lineItems: PricingLineItem[];
   vatRate: number;
+}
+
+export const DEFAULT_LINE_ITEMS: { id: string; label: string }[] = [
+  { id: "panels", label: "Панели" },
+  { id: "inverter", label: "Инвертор" },
+  { id: "battery", label: "Батерия" },
+  { id: "mounting", label: "Монтажна конструкция" },
+  { id: "installation", label: "Монтаж" },
+  { id: "design", label: "Проектиране" },
+  { id: "construction", label: "Конструкция" },
+  { id: "dc-cables", label: "DC Кабели, Конектори" },
+  { id: "ac-panel", label: "AC Табло" },
+  { id: "nyy-cable", label: "NYY AC Кабел" },
+  { id: "cables-scaffolding", label: "Кабели и временни скари" },
+];
+
+export function createDefaultLineItems(): PricingLineItem[] {
+  return DEFAULT_LINE_ITEMS.map((item) => ({
+    id: item.id,
+    label: item.label,
+    amount: 0,
+    isDefault: true,
+  }));
 }
 
 export interface SlideConfig {
@@ -118,10 +136,13 @@ export type OfferAction =
   | { type: "SET_OFFER_META"; payload: Partial<OfferMeta> }
   | { type: "SET_SYSTEM"; payload: Partial<SystemConfig> }
   | { type: "SET_SITE"; payload: Partial<SiteDetails> }
-  | { type: "SET_PRICING"; payload: Partial<Omit<PricingConfig, "extras">> }
-  | { type: "ADD_EXTRA" }
-  | { type: "REMOVE_EXTRA"; payload: string }
-  | { type: "UPDATE_EXTRA"; payload: { id: string } & Partial<Omit<ExtraItem, "id">> }
+  | { type: "SET_VAT_RATE"; payload: number }
+  | { type: "SET_LINE_ITEM_AMOUNT"; payload: { id: string; amount: number } }
+  | { type: "RENAME_LINE_ITEM"; payload: { id: string; label: string } }
+  | { type: "REMOVE_LINE_ITEM"; payload: string }
+  | { type: "ADD_LINE_ITEM" }
+  | { type: "ADD_LINE_ITEM_WITH_DATA"; payload: { name: string; amount: number } }
+  | { type: "RESTORE_DEFAULTS" }
   | { type: "SET_SLIDES"; payload: SlideConfig[] }
   | { type: "TOGGLE_SLIDE"; payload: string }
   | { type: "RESET"; payload: OfferState };
@@ -206,13 +227,7 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
       city: "София",
     },
     pricing: {
-      panels: 0,
-      inverter: 0,
-      battery: 0,
-      mounting: 0,
-      installation: 0,
-      design: 0,
-      extras: [],
+      lineItems: createDefaultLineItems(),
       vatRate: offerType === "home" ? 0 : 20,
     },
     slides: getDefaultSlides(offerType),
@@ -273,7 +288,7 @@ export function resolveBattery(system: SystemConfig): ResolvedBattery | null {
   return { brand: b.brandName, capacityKwh: b.capacityKwh.max, chemistry: b.chemistry, warrantyYears: b.warrantyYears };
 }
 
-let extraIdCounter = 0;
+let lineItemCounter = 0;
 
 export function offerReducer(state: OfferState, action: OfferAction): OfferState {
   switch (action.type) {
@@ -297,34 +312,69 @@ export function offerReducer(state: OfferState, action: OfferAction): OfferState
       return { ...state, system: { ...state.system, ...action.payload } };
     case "SET_SITE":
       return { ...state, site: { ...state.site, ...action.payload } };
-    case "SET_PRICING":
-      return { ...state, pricing: { ...state.pricing, ...action.payload } };
-    case "ADD_EXTRA":
+    case "SET_VAT_RATE":
+      return { ...state, pricing: { ...state.pricing, vatRate: action.payload } };
+    case "SET_LINE_ITEM_AMOUNT":
       return {
         ...state,
         pricing: {
           ...state.pricing,
-          extras: [...state.pricing.extras, { id: `extra-${++extraIdCounter}`, name: "", amount: 0 }],
-        },
-      };
-    case "REMOVE_EXTRA":
-      return {
-        ...state,
-        pricing: {
-          ...state.pricing,
-          extras: state.pricing.extras.filter((e) => e.id !== action.payload),
-        },
-      };
-    case "UPDATE_EXTRA":
-      return {
-        ...state,
-        pricing: {
-          ...state.pricing,
-          extras: state.pricing.extras.map((e) =>
-            e.id === action.payload.id ? { ...e, ...action.payload } : e,
+          lineItems: state.pricing.lineItems.map((item) =>
+            item.id === action.payload.id ? { ...item, amount: action.payload.amount } : item,
           ),
         },
       };
+    case "RENAME_LINE_ITEM":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: state.pricing.lineItems.map((item) =>
+            item.id === action.payload.id ? { ...item, label: action.payload.label } : item,
+          ),
+        },
+      };
+    case "REMOVE_LINE_ITEM":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: state.pricing.lineItems.filter((item) => item.id !== action.payload),
+        },
+      };
+    case "ADD_LINE_ITEM":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: [
+            ...state.pricing.lineItems,
+            { id: `custom-${++lineItemCounter}`, label: "", amount: 0, isDefault: false },
+          ],
+        },
+      };
+    case "ADD_LINE_ITEM_WITH_DATA":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: [
+            ...state.pricing.lineItems,
+            { id: `custom-${++lineItemCounter}`, label: action.payload.name, amount: action.payload.amount, isDefault: false },
+          ],
+        },
+      };
+    case "RESTORE_DEFAULTS": {
+      const existingIds = new Set(state.pricing.lineItems.map((i) => i.id));
+      const missingDefaults = createDefaultLineItems().filter((d) => !existingIds.has(d.id));
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: [...state.pricing.lineItems, ...missingDefaults],
+        },
+      };
+    }
     case "SET_SLIDES":
       return { ...state, slides: action.payload };
     case "TOGGLE_SLIDE":

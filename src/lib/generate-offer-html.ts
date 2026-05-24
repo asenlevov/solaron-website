@@ -24,6 +24,7 @@ export function generateOfferHtml(
 
   const totalPrice = computed.totalPriceEur || 1;
   const pricePct = (v: number) => Math.round((v / totalPrice) * 100);
+  const getLineItemAmount = (id: string) => state.pricing.lineItems.find((i) => i.id === id)?.amount ?? 0;
 
   const bomTotal =
     state.system.panelCount +
@@ -96,26 +97,30 @@ export function generateOfferHtml(
     CITY: state.site.city,
     ROOF_AREA: String(state.site.roofArea),
 
-    PRICE_PANELS: fmt(state.pricing.panels),
-    PRICE_INVERTER: fmt(state.pricing.inverter),
-    PRICE_BATTERY: fmt(state.pricing.battery),
-    PRICE_MOUNTING: fmt(state.pricing.mounting),
-    PRICE_INSTALLATION: fmt(state.pricing.installation),
-    PRICE_INSTALL: fmt(state.pricing.installation),
-    PRICE_DESIGN: fmt(state.pricing.design),
-    PRICE_OTHER: fmt(state.pricing.extras.reduce((sum, e) => sum + e.amount, 0)),
+    PRICE_PANELS: fmt(getLineItemAmount("panels")),
+    PRICE_INVERTER: fmt(getLineItemAmount("inverter")),
+    PRICE_BATTERY: fmt(getLineItemAmount("battery")),
+    PRICE_MOUNTING: fmt(getLineItemAmount("mounting")),
+    PRICE_INSTALLATION: fmt(getLineItemAmount("installation")),
+    PRICE_INSTALL: fmt(getLineItemAmount("installation")),
+    PRICE_DESIGN: fmt(getLineItemAmount("design")),
+    PRICE_OTHER: fmt(
+      state.pricing.lineItems
+        .filter((i) => !["panels", "inverter", "battery", "mounting", "installation", "design"].includes(i.id))
+        .reduce((sum, i) => sum + i.amount, 0),
+    ),
     PRICE_TOTAL: fmt(computed.totalPriceEur),
 
     VAT_RATE: String(state.pricing.vatRate),
     VAT_AMOUNT: fmt(computed.vatAmount),
     PRICE_WITH_VAT: fmt(computed.totalWithVat),
 
-    PRICE_PANELS_PCT: String(pricePct(state.pricing.panels)),
-    PRICE_INVERTER_PCT: String(pricePct(state.pricing.inverter)),
-    PRICE_BATTERY_PCT: String(pricePct(state.pricing.battery)),
-    PRICE_MOUNTING_PCT: String(pricePct(state.pricing.mounting)),
-    PRICE_INSTALL_PCT: String(pricePct(state.pricing.installation)),
-    PRICE_DESIGN_PCT: String(pricePct(state.pricing.design)),
+    PRICE_PANELS_PCT: String(pricePct(getLineItemAmount("panels"))),
+    PRICE_INVERTER_PCT: String(pricePct(getLineItemAmount("inverter"))),
+    PRICE_BATTERY_PCT: String(pricePct(getLineItemAmount("battery"))),
+    PRICE_MOUNTING_PCT: String(pricePct(getLineItemAmount("mounting"))),
+    PRICE_INSTALL_PCT: String(pricePct(getLineItemAmount("installation"))),
+    PRICE_DESIGN_PCT: String(pricePct(getLineItemAmount("design"))),
 
     SAVINGS_25Y: fmt(computed.savings25Year),
     INVERTER_WHY_SHORT: inverter.brand === "SolarEdge"

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { OfferState, OfferAction, OfferType } from "./offer-types";
+import { DEFAULT_LINE_ITEMS } from "./offer-types";
 import {
   panels,
   inverters,
@@ -11,7 +12,7 @@ import {
 } from "@/data/products";
 import { ORIENTATIONS } from "@/lib/offer-calculations";
 import { CITY_IRRADIANCE } from "@/lib/electricity-prices";
-import { Sun, Building2, Tractor, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
+import { Sun, Building2, Tractor, Plus, X } from "lucide-react";
 
 export interface ComputedValues {
   systemKwp: number;
@@ -948,105 +949,71 @@ export function OfferWizard({
             4. Ценообразуване
           </h2>
 
-          <div className="space-y-3 mb-6">
-            {(
-              [
-                ["panels", "Панели"],
-                ["inverter", "Инвертор"],
-                ["battery", "Батерия"],
-                ["mounting", "Монтажна конструкция"],
-                ["installation", "Монтаж"],
-                ["design", "Проектиране"],
-              ] as const
-            ).map(([key, label]) => (
-              <div
-                key={key}
-                className="flex items-center justify-between gap-4"
-              >
-                <label className="font-body text-sm text-foreground-secondary flex-1">
-                  {label}
-                </label>
+          <div className="space-y-2 mb-4">
+            {state.pricing.lineItems.map((item) => (
+              <div key={item.id} className="flex items-center gap-2">
+                {item.isDefault ? (
+                  <span className="font-body text-sm text-foreground-secondary flex-1 truncate">
+                    {item.label}
+                  </span>
+                ) : (
+                  <input
+                    type="text"
+                    className={inputClass + " flex-1"}
+                    placeholder="Наименование"
+                    value={item.label}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "RENAME_LINE_ITEM",
+                        payload: { id: item.id, label: e.target.value },
+                      })
+                    }
+                  />
+                )}
                 <div className="flex items-center gap-1">
                   <input
                     type="number"
                     min={0}
                     className={numberClass}
-                    value={state.pricing[key]}
+                    value={item.amount}
                     onChange={(e) =>
                       dispatch({
-                        type: "SET_PRICING",
-                        payload: { [key]: Number(e.target.value) },
+                        type: "SET_LINE_ITEM_AMOUNT",
+                        payload: { id: item.id, amount: Number(e.target.value) },
                       })
                     }
                   />
-                  <span className="font-body text-xs text-foreground-secondary">
-                    €
-                  </span>
+                  <span className="font-body text-xs text-foreground-secondary">€</span>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: "REMOVE_LINE_ITEM", payload: item.id })}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-foreground-secondary transition-colors hover:bg-red-50 hover:text-red-500"
+                  title="Премахни"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
               </div>
             ))}
           </div>
 
-          <div className="space-y-3 mb-6">
-            <div className="flex items-center justify-between">
-              <span className="font-display text-sm font-semibold text-foreground">
-                Други
-              </span>
+          <div className="flex items-center gap-2 mb-6">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "ADD_LINE_ITEM" })}
+              className="flex items-center gap-1 rounded-lg border border-accent/40 bg-accent/5 px-2.5 py-1.5 font-body text-xs font-medium text-accent transition-colors hover:bg-accent/10"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Добави позиция
+            </button>
+            {state.pricing.lineItems.length < DEFAULT_LINE_ITEMS.length && (
               <button
                 type="button"
-                onClick={() => dispatch({ type: "ADD_EXTRA" })}
-                className="flex items-center gap-1 rounded-lg border border-accent/40 bg-accent/5 px-2.5 py-1 font-body text-xs font-medium text-accent transition-colors hover:bg-accent/10"
+                onClick={() => dispatch({ type: "RESTORE_DEFAULTS" })}
+                className="rounded-lg border border-border px-2.5 py-1.5 font-body text-xs font-medium text-foreground-secondary transition-colors hover:bg-muted"
               >
-                <Plus className="h-3.5 w-3.5" />
-                Добави
+                Възстанови стандартни
               </button>
-            </div>
-
-            {state.pricing.extras.map((extra) => (
-              <div key={extra.id} className="flex items-center gap-2">
-                <input
-                  type="text"
-                  className={inputClass + " flex-1"}
-                  placeholder="Наименование"
-                  value={extra.name}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "UPDATE_EXTRA",
-                      payload: { id: extra.id, name: e.target.value },
-                    })
-                  }
-                />
-                <div className="flex items-center gap-1">
-                  <input
-                    type="number"
-                    min={0}
-                    className={numberClass}
-                    value={extra.amount}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "UPDATE_EXTRA",
-                        payload: { id: extra.id, amount: Number(e.target.value) },
-                      })
-                    }
-                  />
-                  <span className="font-body text-xs text-foreground-secondary">
-                    €
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => dispatch({ type: "REMOVE_EXTRA", payload: extra.id })}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-secondary transition-colors hover:bg-red-50 hover:text-red-500"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-
-            {state.pricing.extras.length === 0 && (
-              <p className="font-body text-xs text-foreground-secondary italic">
-                Натиснете „Добави" за допълнителни позиции
-              </p>
             )}
           </div>
 
@@ -1062,8 +1029,8 @@ export function OfferWizard({
               value={state.pricing.vatRate}
               onChange={(e) =>
                 dispatch({
-                  type: "SET_PRICING",
-                  payload: { vatRate: Number(e.target.value) },
+                  type: "SET_VAT_RATE",
+                  payload: Number(e.target.value),
                 })
               }
             />
