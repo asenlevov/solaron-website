@@ -92,7 +92,6 @@ export const DEFAULT_LINE_ITEMS: { id: string; label: string }[] = [
   { id: "panels", label: "Панели" },
   { id: "inverter", label: "Инвертор" },
   { id: "battery", label: "Батерия" },
-  { id: "mounting", label: "Монтажна конструкция" },
   { id: "installation", label: "Монтаж" },
   { id: "design", label: "Проектиране" },
   { id: "construction", label: "Конструкция" },
