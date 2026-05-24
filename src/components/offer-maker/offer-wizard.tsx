@@ -975,11 +975,11 @@ export function OfferWizard({
                     type="number"
                     min={0}
                     className={numberClass}
-                    value={item.amount}
+                    value={item.amount || ""}
                     onChange={(e) =>
                       dispatch({
                         type: "SET_LINE_ITEM_AMOUNT",
-                        payload: { id: item.id, amount: Number(e.target.value) },
+                        payload: { id: item.id, amount: e.target.value === "" ? 0 : Number(e.target.value) },
                       })
                     }
                   />
@@ -1026,11 +1026,11 @@ export function OfferWizard({
               min={0}
               max={100}
               className={numberClass}
-              value={state.pricing.vatRate}
+              value={state.pricing.vatRate || ""}
               onChange={(e) =>
                 dispatch({
                   type: "SET_VAT_RATE",
-                  payload: Number(e.target.value),
+                  payload: e.target.value === "" ? 0 : Number(e.target.value),
                 })
               }
             />
