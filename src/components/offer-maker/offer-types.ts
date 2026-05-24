@@ -207,7 +207,7 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
       panelId: "sunport-mwt-450",
       panelCount: 14,
       customPanel: { name: "", wattage: 450, efficiency: 21, warrantyProduct: 12, warrantyPerformance: 25, degradation: 0.5 },
-      inverterId: "solaredge-se5000h",
+      inverterId: "se5000h",
       inverterCount: 1,
       customInverter: { brand: "", model: "", powerKw: 5, efficiency: 97, phases: 3, warrantyYears: 10, monitoringPlatform: "" },
       hasBattery: false,

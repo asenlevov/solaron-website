@@ -76,7 +76,8 @@ export default function OfferMakerPage() {
       let html = generateOfferHtml(templateHtml, state, computed);
       html = fixImagePaths(html);
 
-      const printScript = `<script>
+      const printScript = `<style>@page { size: landscape; margin: 0; }</style>
+<script>
 window.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('print-mode');
   var deck = document.getElementById('deck');
