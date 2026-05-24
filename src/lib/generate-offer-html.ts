@@ -7,6 +7,14 @@ function fmt(n: number, decimals = 0): string {
   return n.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+function computeBill25Y(monthlyBill: number, annualGrowth: number): number {
+  let total = 0;
+  for (let year = 1; year <= 25; year++) {
+    total += monthlyBill * 12 * Math.pow(1 + annualGrowth, year - 1);
+  }
+  return total;
+}
+
 function generateBreakdownBar(state: OfferState, totalPrice: number): string {
   const items = state.pricing.lineItems.filter((i) => i.amount > 0);
   if (items.length === 0) return '<div class="breakdown-bar"></div>';
@@ -161,8 +169,8 @@ export function generateOfferHtml(
       : `${inverter.brand} хибриден инвертор с ${inverter.efficiency}% ефективност`,
     SUBSIDY_PCT: "0",
     PRICE_AFTER_SUBSIDY: fmt(computed.totalWithVat),
-    BILL_25Y: fmt(state.site.currentMonthlyBill * 12 * 25),
-    BILL_AFTER_25Y: fmt(computed.newMonthlyBill * 12 * 25),
+    BILL_25Y: fmt(computeBill25Y(state.site.currentMonthlyBill, 0.03)),
+    BILL_AFTER_25Y: fmt(computeBill25Y(computed.newMonthlyBill, 0.03)),
 
     PANEL_DATASHEET_URL: rawPanel?.datasheetUrl ?? "",
     INVERTER_DATASHEET_URL: rawInverter?.datasheetUrl ?? "",
