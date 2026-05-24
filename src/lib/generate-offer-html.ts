@@ -102,6 +102,8 @@ export function generateOfferHtml(
     PRICE_MOUNTING: fmt(state.pricing.mounting),
     PRICE_INSTALLATION: fmt(state.pricing.installation),
     PRICE_INSTALL: fmt(state.pricing.installation),
+    PRICE_DESIGN: fmt(state.pricing.design),
+    PRICE_OTHER: fmt(state.pricing.extras.reduce((sum, e) => sum + e.amount, 0)),
     PRICE_TOTAL: fmt(computed.totalPriceEur),
 
     VAT_RATE: String(state.pricing.vatRate),
@@ -113,6 +115,7 @@ export function generateOfferHtml(
     PRICE_BATTERY_PCT: String(pricePct(state.pricing.battery)),
     PRICE_MOUNTING_PCT: String(pricePct(state.pricing.mounting)),
     PRICE_INSTALL_PCT: String(pricePct(state.pricing.installation)),
+    PRICE_DESIGN_PCT: String(pricePct(state.pricing.design)),
 
     SAVINGS_25Y: fmt(computed.savings25Year),
     INVERTER_WHY_SHORT: inverter.brand === "SolarEdge"

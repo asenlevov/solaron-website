@@ -76,13 +76,20 @@ export interface SiteDetails {
   city: string;
 }
 
+export interface ExtraItem {
+  id: string;
+  name: string;
+  amount: number;
+}
+
 export interface PricingConfig {
   panels: number;
   inverter: number;
   battery: number;
   mounting: number;
   installation: number;
-  other: number;
+  design: number;
+  extras: ExtraItem[];
   vatRate: number;
 }
 
@@ -111,7 +118,10 @@ export type OfferAction =
   | { type: "SET_OFFER_META"; payload: Partial<OfferMeta> }
   | { type: "SET_SYSTEM"; payload: Partial<SystemConfig> }
   | { type: "SET_SITE"; payload: Partial<SiteDetails> }
-  | { type: "SET_PRICING"; payload: Partial<PricingConfig> }
+  | { type: "SET_PRICING"; payload: Partial<Omit<PricingConfig, "extras">> }
+  | { type: "ADD_EXTRA" }
+  | { type: "REMOVE_EXTRA"; payload: string }
+  | { type: "UPDATE_EXTRA"; payload: { id: string } & Partial<Omit<ExtraItem, "id">> }
   | { type: "SET_SLIDES"; payload: SlideConfig[] }
   | { type: "TOGGLE_SLIDE"; payload: string }
   | { type: "RESET"; payload: OfferState };
@@ -201,7 +211,8 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
       battery: 0,
       mounting: 0,
       installation: 0,
-      other: 0,
+      design: 0,
+      extras: [],
       vatRate: offerType === "home" ? 0 : 20,
     },
     slides: getDefaultSlides(offerType),
@@ -262,6 +273,8 @@ export function resolveBattery(system: SystemConfig): ResolvedBattery | null {
   return { brand: b.brandName, capacityKwh: b.capacityKwh.max, chemistry: b.chemistry, warrantyYears: b.warrantyYears };
 }
 
+let extraIdCounter = 0;
+
 export function offerReducer(state: OfferState, action: OfferAction): OfferState {
   switch (action.type) {
     case "SET_OFFER_TYPE":
@@ -286,6 +299,32 @@ export function offerReducer(state: OfferState, action: OfferAction): OfferState
       return { ...state, site: { ...state.site, ...action.payload } };
     case "SET_PRICING":
       return { ...state, pricing: { ...state.pricing, ...action.payload } };
+    case "ADD_EXTRA":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          extras: [...state.pricing.extras, { id: `extra-${++extraIdCounter}`, name: "", amount: 0 }],
+        },
+      };
+    case "REMOVE_EXTRA":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          extras: state.pricing.extras.filter((e) => e.id !== action.payload),
+        },
+      };
+    case "UPDATE_EXTRA":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          extras: state.pricing.extras.map((e) =>
+            e.id === action.payload.id ? { ...e, ...action.payload } : e,
+          ),
+        },
+      };
     case "SET_SLIDES":
       return { ...state, slides: action.payload };
     case "TOGGLE_SLIDE":

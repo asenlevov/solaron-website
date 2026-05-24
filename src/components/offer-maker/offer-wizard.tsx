@@ -11,7 +11,7 @@ import {
 } from "@/data/products";
 import { ORIENTATIONS } from "@/lib/offer-calculations";
 import { CITY_IRRADIANCE } from "@/lib/electricity-prices";
-import { Sun, Building2, Tractor, ChevronDown, ChevronUp } from "lucide-react";
+import { Sun, Building2, Tractor, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 
 export interface ComputedValues {
   systemKwp: number;
@@ -956,7 +956,7 @@ export function OfferWizard({
                 ["battery", "Батерия"],
                 ["mounting", "Монтажна конструкция"],
                 ["installation", "Монтаж"],
-                ["other", "Други"],
+                ["design", "Проектиране"],
               ] as const
             ).map(([key, label]) => (
               <div
@@ -985,6 +985,69 @@ export function OfferWizard({
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center justify-between">
+              <span className="font-display text-sm font-semibold text-foreground">
+                Други
+              </span>
+              <button
+                type="button"
+                onClick={() => dispatch({ type: "ADD_EXTRA" })}
+                className="flex items-center gap-1 rounded-lg border border-accent/40 bg-accent/5 px-2.5 py-1 font-body text-xs font-medium text-accent transition-colors hover:bg-accent/10"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Добави
+              </button>
+            </div>
+
+            {state.pricing.extras.map((extra) => (
+              <div key={extra.id} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  className={inputClass + " flex-1"}
+                  placeholder="Наименование"
+                  value={extra.name}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "UPDATE_EXTRA",
+                      payload: { id: extra.id, name: e.target.value },
+                    })
+                  }
+                />
+                <div className="flex items-center gap-1">
+                  <input
+                    type="number"
+                    min={0}
+                    className={numberClass}
+                    value={extra.amount}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "UPDATE_EXTRA",
+                        payload: { id: extra.id, amount: Number(e.target.value) },
+                      })
+                    }
+                  />
+                  <span className="font-body text-xs text-foreground-secondary">
+                    €
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: "REMOVE_EXTRA", payload: extra.id })}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-secondary transition-colors hover:bg-red-50 hover:text-red-500"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+
+            {state.pricing.extras.length === 0 && (
+              <p className="font-body text-xs text-foreground-secondary italic">
+                Натиснете „Добави" за допълнителни позиции
+              </p>
+            )}
           </div>
 
           <div className="flex items-center justify-between gap-4 mb-6">

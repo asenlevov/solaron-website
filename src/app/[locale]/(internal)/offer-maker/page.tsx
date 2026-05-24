@@ -40,13 +40,15 @@ export default function OfferMakerPage() {
 
     const annualSavingsEur = calculateAnnualSavings(annualProductionKwh, 0.25);
 
+    const extrasTotal = state.pricing.extras.reduce((sum, e) => sum + e.amount, 0);
     const totalPriceEur =
       state.pricing.panels +
       state.pricing.inverter +
       state.pricing.battery +
       state.pricing.mounting +
       state.pricing.installation +
-      state.pricing.other;
+      state.pricing.design +
+      extrasTotal;
 
     const vat = calculateVAT(totalPriceEur, state.pricing.vatRate);
     const paybackYears = calculatePaybackYears(vat.total, annualSavingsEur);
