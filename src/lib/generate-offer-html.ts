@@ -7,6 +7,36 @@ function fmt(n: number, decimals = 0): string {
   return n.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+function generateBreakdownBar(state: OfferState, totalPrice: number): string {
+  const items = state.pricing.lineItems.filter((i) => i.amount > 0);
+  if (items.length === 0) return '<div class="breakdown-bar"></div>';
+
+  const segments = items.map((item, idx) => {
+    const pct = Math.round((item.amount / totalPrice) * 100);
+    const colorClass = `s${(idx % 11) + 1}`;
+    return `<div class="breakdown-segment ${colorClass}" style="flex: ${pct};">${pct}%</div>`;
+  });
+
+  return `<div class="breakdown-bar">${segments.join("\n                ")}</div>`;
+}
+
+function generateBreakdownLegend(state: OfferState, totalPrice: number): string {
+  const items = state.pricing.lineItems.filter((i) => i.amount > 0);
+  if (items.length === 0) return '<div class="breakdown-legend"></div>';
+
+  const rows = items.map((item, idx) => {
+    const colorClass = `s${(idx % 11) + 1}`;
+    const amount = item.amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return `<div class="breakdown-item">
+                  <div class="breakdown-item-dot ${colorClass}"></div>
+                  <div class="breakdown-item-label">${item.label}</div>
+                  <div class="breakdown-item-value">${amount} €</div>
+                </div>`;
+  });
+
+  return `<div class="breakdown-legend">${rows.join("\n                ")}</div>`;
+}
+
 export function generateOfferHtml(
   templateHtml: string,
   state: OfferState,
@@ -121,6 +151,9 @@ export function generateOfferHtml(
     PRICE_MOUNTING_PCT: String(pricePct(getLineItemAmount("mounting"))),
     PRICE_INSTALL_PCT: String(pricePct(getLineItemAmount("installation"))),
     PRICE_DESIGN_PCT: String(pricePct(getLineItemAmount("design"))),
+
+    BREAKDOWN_BAR: generateBreakdownBar(state, totalPrice),
+    BREAKDOWN_LEGEND: generateBreakdownLegend(state, totalPrice),
 
     SAVINGS_25Y: fmt(computed.savings25Year),
     INVERTER_WHY_SHORT: inverter.brand === "SolarEdge"

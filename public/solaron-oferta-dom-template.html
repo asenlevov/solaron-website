@@ -986,6 +986,12 @@
   .breakdown-segment.s3 { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
   .breakdown-segment.s4 { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
   .breakdown-segment.s5 { background: linear-gradient(135deg, #64748B, #334155); }
+  .breakdown-segment.s6 { background: linear-gradient(135deg, #EC4899, #BE185D); }
+  .breakdown-segment.s7 { background: linear-gradient(135deg, #14B8A6, #0D9488); }
+  .breakdown-segment.s8 { background: linear-gradient(135deg, #F97316, #C2410C); }
+  .breakdown-segment.s9 { background: linear-gradient(135deg, #6366F1, #4338CA); }
+  .breakdown-segment.s10 { background: linear-gradient(135deg, #84CC16, #4D7C0F); }
+  .breakdown-segment.s11 { background: linear-gradient(135deg, #EF4444, #B91C1C); }
 
   .breakdown-legend {
     display: grid;
@@ -1008,6 +1014,12 @@
   .breakdown-item-dot.s3 { background: #3B82F6; }
   .breakdown-item-dot.s4 { background: #8B5CF6; }
   .breakdown-item-dot.s5 { background: #64748B; }
+  .breakdown-item-dot.s6 { background: #EC4899; }
+  .breakdown-item-dot.s7 { background: #14B8A6; }
+  .breakdown-item-dot.s8 { background: #F97316; }
+  .breakdown-item-dot.s9 { background: #6366F1; }
+  .breakdown-item-dot.s10 { background: #84CC16; }
+  .breakdown-item-dot.s11 { background: #EF4444; }
   .breakdown-item-label {
     font-size: 15px;
     color: var(--ink-2);
@@ -3509,41 +3521,9 @@ img.consultant-signature[src=""] {
             <div class="breakdown-viz">
               <div class="breakdown-title">Разбивка на цената</div>
 
-              <div class="breakdown-bar">
-                <div class="breakdown-segment s1" style="flex: {{PRICE_PANELS_PCT}};">{{PRICE_PANELS_PCT}}%</div>
-                <div class="breakdown-segment s2" style="flex: {{PRICE_INVERTER_PCT}};">{{PRICE_INVERTER_PCT}}%</div>
-                <div class="breakdown-segment s3" style="flex: {{PRICE_BATTERY_PCT}};">{{PRICE_BATTERY_PCT}}%</div>
-                <div class="breakdown-segment s4" style="flex: {{PRICE_MOUNTING_PCT}};">{{PRICE_MOUNTING_PCT}}%</div>
-                <div class="breakdown-segment s5" style="flex: {{PRICE_INSTALL_PCT}};">{{PRICE_INSTALL_PCT}}%</div>
-              </div>
+              {{BREAKDOWN_BAR}}
 
-              <div class="breakdown-legend">
-                <div class="breakdown-item">
-                  <div class="breakdown-item-dot s1"></div>
-                  <div class="breakdown-item-label">Панели · {{PANEL_COUNT}} × {{PANEL_POWER}}W</div>
-                  <div class="breakdown-item-value">{{PRICE_PANELS}} €</div>
-                </div>
-                <div class="breakdown-item">
-                  <div class="breakdown-item-dot s2"></div>
-                  <div class="breakdown-item-label">Инвертор · {{INVERTER_BRAND}}</div>
-                  <div class="breakdown-item-value">{{PRICE_INVERTER}} €</div>
-                </div>
-                <div class="breakdown-item">
-                  <div class="breakdown-item-dot s3"></div>
-                  <div class="breakdown-item-label">Батерия · {{BATTERY_KWH}} kWh</div>
-                  <div class="breakdown-item-value">{{PRICE_BATTERY}} €</div>
-                </div>
-                <div class="breakdown-item">
-                  <div class="breakdown-item-dot s4"></div>
-                  <div class="breakdown-item-label">Конструкция + кабели</div>
-                  <div class="breakdown-item-value">{{PRICE_MOUNTING}} €</div>
-                </div>
-                <div class="breakdown-item" style="grid-column: span 2;">
-                  <div class="breakdown-item-dot s5"></div>
-                  <div class="breakdown-item-label">Монтаж + проект + документи + ЕРП</div>
-                  <div class="breakdown-item-value">{{PRICE_INSTALL}} €</div>
-                </div>
-              </div>
+              {{BREAKDOWN_LEGEND}}
 
               <div style="margin-top: 14px; border-top: 2px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 15px;">
