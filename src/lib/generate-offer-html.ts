@@ -1,10 +1,14 @@
 import type { OfferState } from "@/components/offer-maker/offer-types";
 import { resolvePanel, resolveInverter, resolveBattery } from "@/components/offer-maker/offer-types";
 import type { ComputedValues } from "@/components/offer-maker/offer-wizard";
-import { getMonitoringForBrand, getPanelById, getInverterById, getBatteryById, mountingTypes } from "@/data/products";
+import { getMonitoringForBrand, getPanelById, getInverterById, getBatteryById, mountingTypes, evChargerTiers } from "@/data/products";
 
 function fmt(n: number, decimals = 0): string {
   return n.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+function phasesLabel(phases: number): string {
+  return phases === 1 ? "Монофазен" : "Трифазен";
 }
 
 function computeBill25Y(monthlyBill: number, annualGrowth: number): number {
@@ -15,12 +19,16 @@ function computeBill25Y(monthlyBill: number, annualGrowth: number): number {
   return total;
 }
 
+function lineTotal(item: { amount: number; quantity: number }): number {
+  return item.amount * item.quantity;
+}
+
 function generateBreakdownBar(state: OfferState, totalPrice: number): string {
-  const items = state.pricing.lineItems.filter((i) => i.amount > 0);
+  const items = state.pricing.lineItems.filter((i) => lineTotal(i) > 0);
   if (items.length === 0) return '<div class="breakdown-bar"></div>';
 
   const segments = items.map((item, idx) => {
-    const pct = Math.round((item.amount / totalPrice) * 100);
+    const pct = Math.round((lineTotal(item) / totalPrice) * 100);
     const colorClass = `s${(idx % 11) + 1}`;
     return `<div class="breakdown-segment ${colorClass}" style="flex: ${pct};">${pct}%</div>`;
   });
@@ -29,16 +37,17 @@ function generateBreakdownBar(state: OfferState, totalPrice: number): string {
 }
 
 function generateBreakdownLegend(state: OfferState, totalPrice: number): string {
-  const items = state.pricing.lineItems.filter((i) => i.amount > 0);
+  const items = state.pricing.lineItems.filter((i) => lineTotal(i) > 0);
   if (items.length === 0) return '<div class="breakdown-legend"></div>';
 
   const rows = items.map((item, idx) => {
     const colorClass = `s${(idx % 11) + 1}`;
-    const amount = item.amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const total = lineTotal(item).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const qtyUnit = `${item.quantity} ${item.unit}`.trim();
     return `<div class="breakdown-item">
                   <div class="breakdown-item-dot ${colorClass}"></div>
-                  <div class="breakdown-item-label">${item.label}</div>
-                  <div class="breakdown-item-value">${amount} €</div>
+                  <div class="breakdown-item-label">${item.label} <span style="color: var(--ink-4); font-weight: 400;">· ${qtyUnit}</span></div>
+                  <div class="breakdown-item-value">${total} €</div>
                 </div>`;
   });
 
@@ -60,15 +69,38 @@ export function generateOfferHtml(
   const rawInverter = getInverterById(state.system.inverterId);
   const rawBattery = state.system.hasBattery ? getBatteryById(state.system.batteryId) : undefined;
 
+  const evCharger = state.system.hasEvCharger
+    ? evChargerTiers.find((e) => e.id === state.system.evChargerId)
+    : undefined;
+  const evChargerRow = evCharger
+    ? `<tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 14px 16px; font-weight: 600; color: var(--ink);">Зарядна станция</td>
+                  <td style="padding: 14px 16px; color: var(--ink-2);">${evCharger.powerKw} kW · ${phasesLabel(evCharger.phases)} · ${evCharger.useCase}</td>
+                  <td style="padding: 14px 16px; color: var(--ink-3);">—</td>
+                  <td style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--ink);">1</td>
+                  <td style="padding: 14px 16px; text-align: center; color: var(--ink-3);">бр.</td>
+                </tr>`
+    : "";
+
   const totalPrice = computed.totalPriceEur || 1;
   const pricePct = (v: number) => Math.round((v / totalPrice) * 100);
-  const getLineItemAmount = (id: string) => state.pricing.lineItems.find((i) => i.id === id)?.amount ?? 0;
+  const getLineItemAmount = (id: string) => {
+    const item = state.pricing.lineItems.find((i) => i.id === id);
+    return item ? item.amount * item.quantity : 0;
+  };
+  const getLineItemUnit = (id: string, fallback = "бр.") => {
+    const item = state.pricing.lineItems.find((i) => i.id === id);
+    return item && item.unit ? item.unit : fallback;
+  };
+  const getLineItemQty = (id: string, fallback = "1") => {
+    const item = state.pricing.lineItems.find((i) => i.id === id);
+    return item ? String(item.quantity) : fallback;
+  };
 
   const bomTotal =
     state.system.panelCount +
     state.system.inverterCount +
-    (state.system.hasBattery ? state.system.batteryCount : 0) +
-    state.system.smartMeterCount;
+    (state.system.hasBattery ? state.system.batteryCount : 0);
 
   const replacements: Record<string, string> = {
     CLIENT_NAME: state.client.name,
@@ -92,6 +124,7 @@ export function generateOfferHtml(
     PANEL_MODEL: panel.name || "—",
     PANEL_POWER: String(panel.wattage),
     PANEL_WATTAGE: String(panel.wattage),
+    PANEL_EFFICIENCY: String(panel.efficiency),
     PANEL_WARRANTY_PRODUCT: String(panel.warrantyProduct),
     PANEL_WARRANTY_PERFORMANCE: String(panel.warrantyPerformance),
     DEGRADATION: String(panel.degradation),
@@ -101,12 +134,17 @@ export function generateOfferHtml(
     INVERTER_COUNT: String(state.system.inverterCount),
     INVERTER_POWER: String(inverter.powerKw),
     INVERTER_WARRANTY: String(inverter.warrantyYears),
+    INVERTER_EFFICIENCY: String(inverter.efficiency),
+    INVERTER_PHASES: phasesLabel(inverter.phases),
 
     BATTERY_MODEL: battery ? battery.brand : "—",
     BATTERY_COUNT: state.system.hasBattery ? String(state.system.batteryCount) : "—",
     BATTERY_KWH: battery ? String(battery.capacityKwh) : "—",
     BATTERY_CAPACITY: battery ? String(battery.capacityKwh) : "—",
     BATTERY_WARRANTY: battery ? String(battery.warrantyYears) : "—",
+    BATTERY_CHEMISTRY: battery ? battery.chemistry : "—",
+
+    EV_CHARGER_ROW: evChargerRow,
 
     MOUNTING_TYPE: mounting?.label ?? "—",
     MOUNTING_MODEL: mounting ? mounting.brands.join(" / ") : "—",
@@ -114,6 +152,16 @@ export function generateOfferHtml(
 
     SMART_METER_COUNT: String(state.system.smartMeterCount),
     MONITORING_PLATFORM: monitoring?.platform ?? (inverter.monitoringPlatform || "—"),
+
+    PANEL_UNIT: getLineItemUnit("panels"),
+    INVERTER_UNIT: getLineItemUnit("inverter"),
+    BATTERY_UNIT: getLineItemUnit("battery"),
+    CONSTRUCTION_QTY: getLineItemQty("construction"),
+    CONSTRUCTION_UNIT: getLineItemUnit("construction", "компл."),
+    CABLES_QTY: getLineItemQty("dc-cables"),
+    CABLES_UNIT: getLineItemUnit("dc-cables", "компл."),
+    INSTALL_QTY: getLineItemQty("installation"),
+    INSTALL_UNIT: getLineItemUnit("installation", "компл."),
 
     INSTALL_WARRANTY: "5",
     BOM_TOTAL_ITEMS: String(bomTotal),
@@ -145,7 +193,7 @@ export function generateOfferHtml(
     PRICE_OTHER: fmt(
       state.pricing.lineItems
         .filter((i) => !["panels", "inverter", "battery", "mounting", "installation", "design"].includes(i.id))
-        .reduce((sum, i) => sum + i.amount, 0),
+        .reduce((sum, i) => sum + i.amount * i.quantity, 0),
     ),
     PRICE_TOTAL: fmt(computed.totalPriceEur),
 
@@ -184,16 +232,16 @@ export function generateOfferHtml(
     html = html.replaceAll(`{{${key}}}`, value);
   }
 
-  const disabledSlideNumbers = new Set<number>();
-  state.slides.forEach((s, i) => {
-    if (!s.enabled) disabledSlideNumbers.add(i + 1);
-  });
-  if (disabledSlideNumbers.size > 0) {
-    html = html.replace(
-      /<section\s+class="slide[^"]*"\s+data-slide="(\d+)"[\s\S]*?<\/section>/g,
-      (match, num) => (disabledSlideNumbers.has(Number(num)) ? "" : match),
-    );
-  }
+  // Keep only the template sections whose data-slide number is present AND
+  // enabled in the offer's slide config. Sections with no matching config
+  // (e.g. the removed bill/roof slides) are dropped automatically.
+  const enabledSlideNumbers = new Set<number>(
+    state.slides.filter((s) => s.enabled).map((s) => s.slide),
+  );
+  html = html.replace(
+    /<section\s+class="slide[^"]*"\s+data-slide="(\d+)"[\s\S]*?<\/section>/g,
+    (match, num) => (enabledSlideNumbers.has(Number(num)) ? match : ""),
+  );
 
   return html;
 }

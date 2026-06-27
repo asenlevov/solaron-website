@@ -11,14 +11,10 @@ interface OfferPreviewProps {
   computed: ComputedValues;
 }
 
-const TEMPLATE_CACHE: { html: string | null } = { html: null };
-
 async function getTemplate(): Promise<string> {
-  if (TEMPLATE_CACHE.html) return TEMPLATE_CACHE.html;
-  const res = await fetch("/solaron-oferta-dom-template.html");
-  const html = await res.text();
-  TEMPLATE_CACHE.html = html;
-  return html;
+  // Always fetch fresh so edits to the template are reflected in the preview.
+  const res = await fetch("/solaron-oferta-dom-template.html", { cache: "no-store" });
+  return res.text();
 }
 
 export function OfferPreview({ state, computed }: OfferPreviewProps) {
