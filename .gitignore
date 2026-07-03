@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# video-ad generated/heavy artifacts
+video-ad/output/
+video-ad/assets/
+video-ad/__pycache__/

@@ -1,0 +1,6 @@
+google-genai>=1.11.0
+yt-dlp
+moviepy>=2.0.0
+Pillow
+python-dotenv
+requests
