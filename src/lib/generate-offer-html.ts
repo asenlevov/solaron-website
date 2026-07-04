@@ -102,7 +102,58 @@ export function generateOfferHtml(
     state.system.inverterCount +
     (state.system.hasBattery ? state.system.batteryCount : 0);
 
+  const offerTypeLabels: Record<OfferState["type"], string> = {
+    home: "За дома",
+    business: "За бизнеса",
+    agriculture: "За земеделието",
+  };
+
+  // The "0% VAT" pill and banner only apply to household offers.
+  const vatPill =
+    state.type === "home"
+      ? '<span class="exec-pill green">0% ДДС за домакинства</span>'
+      : "";
+  const vatBanner =
+    state.type === "home"
+      ? `<div class="vat-banner">
+                <div class="vat-banner-icon">0%</div>
+                <div class="vat-banner-text">
+                  <strong>Без ДДС за домакинства.</strong> Цените са финални — без скрити такси.
+                </div>
+              </div>`
+      : "";
+
+  const panelWhyShort =
+    state.system.panelId === "sunport-mwt-450"
+      ? "Tier-1+ MWT панели — до 15% повече при облачно време."
+      : rawPanel
+        ? `${rawPanel.tech} — ${rawPanel.strengths[0] ?? rawPanel.badge}.`
+        : "Подбрани спрямо вашия покрив и консумация.";
+
+  // Panel-level data is a SolarEdge-only feature; other platforms report at
+  // system level, so the realtime bullet is dropped entirely for them.
+  const monitoringRealtimeItem = monitoring?.panelLevel
+    ? `<div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
+                  <div style="width: 42px; height: 42px; background: var(--green-light); color: var(--green-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
+                  <div>
+                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Данни в реално време</div>
+                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Мощност, напрежение и ток от всеки панел — обновяване на всеки ${monitoring.refreshRate}.</div>
+                  </div>
+                </div>`
+    : "";
+
+  const monitoringLevelDesc = monitoring?.panelLevel
+    ? "Panel-level · mobile app."
+    : "Mobile app · 24/7.";
+
   const replacements: Record<string, string> = {
+    OFFER_TYPE_LABEL: offerTypeLabels[state.type],
+    VAT_PILL: vatPill,
+    VAT_BANNER: vatBanner,
+    PANEL_WHY_SHORT: panelWhyShort,
+    MONITORING_REALTIME_ITEM: monitoringRealtimeItem,
+    MONITORING_LEVEL_DESC: monitoringLevelDesc,
+
     CLIENT_NAME: state.client.name,
     CLIENT_ADDRESS: state.client.address,
     CLIENT_PHONE: state.client.phone,

@@ -919,7 +919,7 @@
 
   .sys-bos-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
   }
   .sys-bos-item {
@@ -2740,7 +2740,7 @@ img.consultant-signature[src=""] {
         </div>
 
         <div class="cover-content">
-          <div class="cover-tag">Персонална оферта · За дома</div>
+          <div class="cover-tag">Персонална оферта · {{OFFER_TYPE_LABEL}}</div>
 
           <h1 class="cover-title">
             Ето системата,
@@ -2802,7 +2802,7 @@ img.consultant-signature[src=""] {
           <div class="exec-grid">
             <div class="exec-hero">
               <div class="exec-badge-row">
-                <span class="exec-pill green">0% ДДС за домакинства</span>
+                {{VAT_PILL}}
                 <span class="exec-pill solar">Готова за субсидия</span>
               </div>
 
@@ -3284,13 +3284,13 @@ img.consultant-signature[src=""] {
 
                 <div class="sys-details">
                   <div class="sys-why">
-                    <strong>Защо тях:</strong> Tier-1+ MWT панели — до 15% повече при облачно време.
+                    <strong>Защо тях:</strong> {{PANEL_WHY_SHORT}}
                   </div>
                   <div class="sys-specs">
                     <div><strong>{{PANEL_POWER}}W</strong> мощност</div>
                     <div><strong>{{PANEL_EFFICIENCY}}%</strong> ефективност</div>
-                    <div><strong>30 год.</strong> гаранция</div>
-                    <div><strong>&lt;0.4%</strong> деградация/год.</div>
+                    <div><strong>{{PANEL_WARRANTY_PERFORMANCE}} год.</strong> гаранция</div>
+                    <div><strong>{{DEGRADATION}}%</strong> деградация/год.</div>
                   </div>
                 </div>
               </div>
@@ -3381,14 +3381,14 @@ img.consultant-signature[src=""] {
                   <div class="sys-bos-icon">⚙</div>
                   <div>
                     <h4>Конструкция</h4>
-                    <p>Van der Valk · 25 год. гаранция.</p>
+                    <p>{{MOUNTING_MODEL}} · {{MOUNTING_WARRANTY}} год. гаранция.</p>
                   </div>
                 </div>
                 <div class="sys-bos-item">
                   <div class="sys-bos-icon">◉</div>
                   <div>
                     <h4>Мониторинг 24/7</h4>
-                    <p>Panel-level · mobile app.</p>
+                    <p>{{MONITORING_LEVEL_DESC}}</p>
                   </div>
                 </div>
                 <div class="sys-bos-item">
@@ -3396,13 +3396,6 @@ img.consultant-signature[src=""] {
                   <div>
                     <h4>Монтаж</h4>
                     <p>1–3 дни · 5 год. гаранция.</p>
-                  </div>
-                </div>
-                <div class="sys-bos-item">
-                  <div class="sys-bos-icon">✓</div>
-                  <div>
-                    <h4>Документи + ЕРП</h4>
-                    <p>Пълно съгласуване.</p>
                   </div>
                 </div>
               </div>
@@ -3574,12 +3567,7 @@ img.consultant-signature[src=""] {
                 </ul>
               </div>
 
-              <div class="vat-banner">
-                <div class="vat-banner-icon">0%</div>
-                <div class="vat-banner-text">
-                  <strong>Без ДДС за домакинства.</strong> Цените са финални — без скрити такси.
-                </div>
-              </div>
+              {{VAT_BANNER}}
             </div>
           </div>
         </div>
@@ -3717,7 +3705,7 @@ img.consultant-signature[src=""] {
               <div class="faq-q-icon">02</div>
               <div class="faq-content">
                 <div class="faq-question">Какво ако технологията остарее?</div>
-                <div class="faq-answer">Соларната технология не "остарява" — само се подобрява. Вашата система има <strong>30 години гаранция</strong> и ще произвежда минимум 80% от номинала дори след 25 години.</div>
+                <div class="faq-answer">Соларната технология не "остарява" — само се подобрява. Вашата система има <strong>{{PANEL_WARRANTY_PERFORMANCE}} години гаранция</strong> и ще произвежда минимум 80% от номинала дори след 25 години.</div>
               </div>
             </div>
 
@@ -3860,12 +3848,12 @@ img.consultant-signature[src=""] {
 
           <div class="trust-grid">
             <div class="trust-card">
-              <div class="trust-years">30</div>
+              <div class="trust-years">{{PANEL_WARRANTY_PERFORMANCE}}</div>
               <div class="trust-unit">години</div>
               <div class="trust-what">Производствена гаранция<br>на панелите</div>
             </div>
             <div class="trust-card">
-              <div class="trust-years">12</div>
+              <div class="trust-years">{{INVERTER_WARRANTY}}</div>
               <div class="trust-unit">години</div>
               <div class="trust-what">Гаранция на инвертора<br>{{INVERTER_BRAND}}</div>
             </div>
@@ -3993,13 +3981,7 @@ img.consultant-signature[src=""] {
           <div style="display: grid; grid-template-columns: 1fr; gap: 24px; flex: 1; min-height: 0;">
             <div style="display: flex; flex-direction: column; gap: 16px;">
               <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px; flex: 1; display: flex; flex-direction: column; gap: 18px;">
-                <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
-                  <div style="width: 42px; height: 42px; background: var(--green-light); color: var(--green-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
-                  <div>
-                    <div style="font-size: 16px; font-weight: 700; color: var(--ink);">Данни в реално време</div>
-                    <div style="font-size: 14px; color: var(--ink-4); margin-top: 3px; line-height: 1.5;">Мощност, напрежение и ток от всеки панел — обновяване на всеки 10 минути.</div>
-                  </div>
-                </div>
+                {{MONITORING_REALTIME_ITEM}}
                 <div style="display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;">
                   <div style="width: 42px; height: 42px; background: #EDE9FE; color: #6D28D9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">📱</div>
                   <div>

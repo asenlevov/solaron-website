@@ -141,10 +141,10 @@ export const batteries: BatteryModel[] = [
 ];
 
 export const mountingTypes: MountingType[] = [
-  { id: 'roof', label: 'Покрив', brands: ['Van Der Valk', 'Sunbeam'], warrantyYears: 20 },
-  { id: 'ground', label: 'Земя', brands: ['Van Der Valk', 'Sunbeam'], warrantyYears: 20 },
-  { id: 'carport', label: 'Карпорт', brands: ['Van Der Valk'], warrantyYears: 20 },
-  { id: 'facade', label: 'Фасада', brands: ['Sunbeam'], warrantyYears: 15 },
+  { id: 'roof', label: 'Покрив', brands: ['Van Der Valk'], warrantyYears: 10 },
+  { id: 'ground', label: 'Земя', brands: ['Van Der Valk'], warrantyYears: 10 },
+  { id: 'carport', label: 'Карпорт', brands: ['Van Der Valk'], warrantyYears: 10 },
+  { id: 'facade', label: 'Фасада', brands: ['Sunbeam'], warrantyYears: 10 },
 ];
 
 export const monitoringPlatforms: MonitoringPlatform[] = [
