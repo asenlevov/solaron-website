@@ -143,6 +143,54 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(1); opacity: 1; }
 }
 
+/* JS-free hero entrance: content is server-rendered and animates via CSS,
+   so the LCP text paints before hydration. */
+.hero-fade-up {
+  opacity: 0;
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Transform-only entrance (no opacity) so the element still counts as
+   painted for LCP. */
+@keyframes rise-up {
+  from { transform: translateY(20px); }
+  to { transform: translateY(0); }
+}
+
+.hero-rise {
+  animation: rise-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
+
+/* Cookie banner: hidden unless the inline consent-check script adds the
+   class to <html> before first paint. */
+.cookie-banner {
+  display: none;
+}
+
+.show-cookie-banner .cookie-banner {
+  display: block;
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .show-cookie-banner .cookie-banner {
+    animation: none;
+  }
+}
+
 .editorial-hero {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 700;

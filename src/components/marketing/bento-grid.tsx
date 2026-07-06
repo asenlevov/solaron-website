@@ -181,7 +181,7 @@ function MiniFinancingVisual() {
       {[
         { label: "0% разсрочка", value: "24 мес." },
         { label: "Банков кредит", value: "от 3.9%" },
-        { label: "Лизинг", value: "от 89 лв./мес." },
+        { label: "Лизинг", value: "от 45 €/мес." },
       ].map((item) => (
         <div key={item.label} className="flex justify-between text-xs">
           <span className="text-foreground-secondary">{item.label}</span>

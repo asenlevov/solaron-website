@@ -1,8 +1,9 @@
 const DEFAULT_PANEL_WATTAGE = 450;
 const DEFAULT_IRRADIANCE_FACTOR = 1300;
-const DEFAULT_ELECTRICITY_PRICE = 0.25;
-const PANEL_UNIT_COST_BGN = 1200;
-const BATTERY_COST_PER_KWH_BGN = 800;
+/* All monetary values are in EUR. */
+const DEFAULT_ELECTRICITY_PRICE = 0.13;
+const PANEL_UNIT_COST_EUR = 615;
+const BATTERY_COST_PER_KWH_EUR = 410;
 const CO2_KG_PER_KWH = 0.4;
 const TREE_CO2_KG_PER_YEAR = 22;
 const HOME_KWH_PER_YEAR = 4000;
@@ -39,10 +40,10 @@ export function calculateSystemCost(
   hasBattery: boolean,
   batteryCapacity: number = 0,
 ): number {
-  const panels = panelCount * PANEL_UNIT_COST_BGN;
+  const panels = panelCount * PANEL_UNIT_COST_EUR;
   const battery =
     hasBattery && batteryCapacity > 0
-      ? batteryCapacity * BATTERY_COST_PER_KWH_BGN
+      ? batteryCapacity * BATTERY_COST_PER_KWH_EUR
       : 0;
   return panels + battery;
 }

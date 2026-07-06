@@ -281,7 +281,7 @@ export function ZaIndustriyataContent() {
             >
               <p className="text-lg leading-relaxed text-stone-600">
                 Индустриалните предприятия в България плащат средно{" "}
-                <strong className="text-stone-900">0.22–0.28 лв./kWh</strong>,
+                <strong className="text-stone-900">0.11–0.14 €/kWh</strong>,
                 като пиковата компонента може да достигне{" "}
                 <strong className="text-stone-900">40% от сметката</strong>.
               </p>
@@ -305,7 +305,7 @@ export function ZaIndustriyataContent() {
               <svg viewBox="0 0 400 240" className="w-full" fill="none">
                 <rect x="0" y="0" width="400" height="240" rx="16" fill="#fafaf9" stroke="#e7e5e4" strokeWidth="1" />
                 <text x="200" y="28" textAnchor="middle" className="fill-stone-500 text-[11px] font-medium">
-                  Месечни Енергийни Разходи (хил. лв.)
+                  Месечни Енергийни Разходи (хил. €)
                 </text>
                 {chartData.map((d, i) => (
                   <g key={d.month} transform={`translate(${30 + i * 30}, 0)`}>

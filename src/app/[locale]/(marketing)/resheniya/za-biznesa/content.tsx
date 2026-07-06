@@ -40,7 +40,7 @@ const caseStudies = [
     title: "Седем БГ — София",
     kWp: 108,
     type: "Търговски обект",
-    savings: "~48 000 лв./год.",
+    savings: "~24 500 €/год.",
     description: "Покривна инсталация на търговска сграда в София. Системата покрива над 65% от дневното потребление.",
   },
   {
@@ -48,7 +48,7 @@ const caseStudies = [
     title: "Среден бизнес — Казанлък",
     kWp: 30,
     type: "Производствен цех",
-    savings: "~14 000 лв./год.",
+    savings: "~7 200 €/год.",
     description: "Оптимизирана система за производствено предприятие с висок дневен консумация.",
   },
   {
@@ -56,7 +56,7 @@ const caseStudies = [
     title: "Търговски обект — Варна",
     kWp: 39,
     type: "Офис сграда",
-    savings: "~18 000 лв./год.",
+    savings: "~9 200 €/год.",
     description: "Покривна система на офис сграда с интелигентно управление на енергията.",
   },
 ];
@@ -267,7 +267,7 @@ export default function ZaBiznesaContent() {
                 />
                 <div className="mt-6 border-t border-white/10 pt-6">
                   <p className="text-white/40 text-sm">
-                    При система 100 kWp на стойност ~120 000 лв. → ~40 000 лв. данъчно облекчение
+                    При система 100 kWp на стойност ~61 000 € → ~20 500 € данъчно облекчение
                   </p>
                 </div>
               </div>
@@ -301,16 +301,16 @@ export default function ZaBiznesaContent() {
             {[
               {
                 title: "Покупка",
-                monthCost: "Еднократно: ~60 000 лв.",
-                totalCost: "~60 000 лв.",
+                monthCost: "Еднократно: ~31 000 €",
+                totalCost: "~31 000 €",
                 taxBenefit: "Пълна ускорена амортизация",
                 ownership: "Собственост от ден 1",
                 highlight: true,
               },
               {
                 title: "Оперативен лизинг",
-                monthCost: "~1 200 лв./мес.",
-                totalCost: "~144 000 лв. за 10 г.",
+                monthCost: "~610 €/мес.",
+                totalCost: "~74 000 € за 10 г.",
                 taxBenefit: "Лизинговите вноски са разход",
                 ownership: "Собственост след изплащане",
                 highlight: false,

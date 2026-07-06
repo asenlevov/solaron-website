@@ -137,7 +137,7 @@
     "days": "dagen",
     "kWp": "kWp",
     "kWh": "kWh",
-    "lv": "BGN",
+    "lv": "EUR",
     "perMonth": "/mnd.",
     "perYear": "/jaar",
     "co2PerYear": "CO₂/jaar",
@@ -279,11 +279,11 @@
       "owner": "Eigenaar",
       "manager": "Directeur",
       "testimonial1": {
-        "quote": "Het systeem werkt vlekkeloos vanaf de eerste dag. In 8 maanden hebben we al meer dan 4.000 BGN bespaard. Solaron ging uiterst professioneel te werk — van het eerste gesprek tot de laatste test.",
+        "quote": "Het systeem werkt vlekkeloos vanaf de eerste dag. In 8 maanden hebben we al meer dan € 2.000 bespaard. Solaron ging uiterst professioneel te werk — van het eerste gesprek tot de laatste test.",
         "name": "Ivan Petrov",
         "location": "Kazanlak",
         "project": "5 kW systeem",
-        "savings": "4.000+ BGN"
+        "savings": "€ 2.000+"
       },
       "testimonial2": {
         "quote": "Professionele aanpak van begin tot eind. De installatie was in 2 dagen klaar en het systeem presteert boven verwachting. Ik heb Solaron al bij drie buren aanbevolen.",
@@ -349,9 +349,9 @@
       "locationLabel": "Locatie",
       "solarEnergyPerYear": "~{value} kWh/kWp zonne-energie per jaar",
       "monthlyConsumption": "Maandelijks verbruik",
-      "preferLev": "Ik geef de voorkeur aan BGN",
-      "inLev": "In BGN ✓",
-      "lvPerMonth": "BGN/mnd.",
+      "preferLev": "Ik geef de voorkeur aan EUR",
+      "inLev": "In EUR ✓",
+      "lvPerMonth": "EUR/mnd.",
       "kWhPerMonth": "kWh/mnd.",
       "avgHousehold": "Weet u het niet? Gemiddeld huishouden: ~380 kWh/mnd.",
       "roofOrientation": "Dakoriëntatie",
@@ -361,13 +361,13 @@
       "east": "Oost",
       "west": "West",
       "monthlySavings": "Maandelijkse besparingen",
-      "lvPerMonthUnit": "BGN/mnd.",
-      "lvPerYear": "BGN/jaar",
+      "lvPerMonthUnit": "EUR/mnd.",
+      "lvPerYear": "EUR/jaar",
       "in25Years": "in 25 jaar",
       "payback": "Terugverdientijd",
       "paybackYears": "{value} jaar",
       "approximateCost": "Geschatte kosten",
-      "financingFrom": "Financiering vanaf ~{value} BGN/mnd. met banklening",
+      "financingFrom": "Financiering vanaf ~€ {value}/mnd. met banklening",
       "fullConfiguration": "Volledige Configuratie",
       "yearsShort": "jr",
       "tonsShort": "t",
@@ -408,7 +408,7 @@
       "notFoundSubtitle": "Neem contact met ons op voor een gratis adviesgesprek.",
       "seeAll": "Bekijk Alle Vragen",
       "q1": "Wat kost de installatie van een zonne-energiesysteem?",
-      "a1": "De prijs hangt af van het vermogen en het type systeem. Voor residentiële systemen van 3 tot 10 kWp variëren de prijzen tussen 5.000 en 18.000 BGN. Wij bieden een gratis adviesgesprek en een gepersonaliseerde offerte.",
+      "a1": "De prijs hangt af van het vermogen en het type systeem. Voor residentiële systemen van 3 tot 10 kWp variëren de prijzen tussen € 2.500 en € 9.200. Wij bieden een gratis adviesgesprek en een gepersonaliseerde offerte.",
       "q2": "Hoe snel verdient de investering zich terug?",
       "a2": "Bij de huidige elektriciteitsprijzen verdient een typisch residentieel systeem zich terug in 3-5 jaar. Met saldering en een optimale oriëntatie kan deze termijn nog korter zijn.",
       "q3": "Wat is saldering?",
@@ -514,7 +514,7 @@
       "monthlyLabel": "Maandelijks",
       "annualLabel": "Jaarlijks",
       "in25YearsLabel": "In 25 jaar",
-      "beforeAfterNote": "Voorbeeld voor een huishouden met een 5 kWp systeem bij een rekening van 250 BGN/mnd.",
+      "beforeAfterNote": "Voorbeeld voor een huishouden met een 5 kWp systeem bij een rekening van € 130/mnd.",
       "processOverline": "Het proces",
       "processTitle": "Vier stappen naar besparingen",
       "processStep1Title": "Gratis Adviesgesprek",
@@ -540,15 +540,15 @@
       "financingSubtitle": "Drie manieren om uw systeem te financieren — kies wat bij u past",
       "financingCash": "Contant",
       "financingCashDesc": "Eenmalige betaling met maximale korting. Laagste totaalprijs.",
-      "financingCashDetail": "vanaf 5.500 BGN",
+      "financingCashDetail": "vanaf € 2.800",
       "financingCashNote": "Beste prijs",
       "financingCredit": "Lening",
       "financingCreditDesc": "Banklening met lage rente. De maandelijkse termijn is lager dan de besparingen.",
-      "financingCreditDetail": "vanaf 95 BGN/mnd.",
+      "financingCreditDetail": "vanaf € 49/mnd.",
       "financingCreditNote": "De maandelijkse termijn is vergelijkbaar met of lager dan uw huidige energierekening",
       "financingLeasing": "Leasing",
       "financingLeasingDesc": "Operationele leasing — zonder aanbetaling. U betaalt minder dan uw huidige rekening.",
-      "financingLeasingDetail": "vanaf 120 BGN/mnd.",
+      "financingLeasingDetail": "vanaf € 61/mnd.",
       "financingLeasingNote": "Zonder aanbetaling",
       "componentsOverline": "Componenten",
       "componentsTitle": "Toonaangevende merken, bewezen kwaliteit",
@@ -595,10 +595,10 @@
       "requestAudit": "Vraag een Energieaudit aan",
       "challengeOverline": "De uitdaging",
       "challengeTitle": "Het energieprobleem in de industrie",
-      "challengeDesc1": "Industriële bedrijven in Bulgarije betalen gemiddeld 0.22–0.28 BGN/kWh, waarbij de piekcomponent tot 40% van de rekening kan bedragen.",
+      "challengeDesc1": "Industriële bedrijven in Bulgarije betalen gemiddeld € 0,11–0,14/kWh, waarbij de piekcomponent tot 40% van de rekening kan bedragen.",
       "challengeDesc2": "Een zonnesysteem verlaagt niet alleen de prijs per kWh, maar 'kapt' ook de pieken in het verbruik af — precies wanneer de zon het sterkst schijnt, draait uw productie op volle kracht.",
       "challengeTags": ["Hoge tarieven", "Piektoeslagen", "Regulatoire druk", "Koolstofheffingen"],
-      "chartTitle": "Maandelijkse Energiekosten (duizend BGN)",
+      "chartTitle": "Maandelijkse Energiekosten (duizend EUR)",
       "chartWithout": "Zonder zonnesysteem",
       "chartWith": "Met zonnesysteem",
       "archOverline": "Architectuur",
@@ -729,7 +729,7 @@
       "electricityCost": "Stroomkosten",
       "installedCapacity": "Geïnstalleerd vermogen",
       "annualProduction": "Jaarlijkse productie",
-      "savingsPerYear": "BGN besparingen/jaar",
+      "savingsPerYear": "EUR besparingen/jaar",
       "roiLabel": "ROI"
     },
     "avtonomniSistemi": {
@@ -1100,7 +1100,7 @@
     "formCity": "Stad",
     "formPropertyType": "Type woning",
     "formRoofArea": "Geschatte dakoppervlakte (m²)",
-    "formMonthlyBill": "Maandelijkse energierekening (BGN)",
+    "formMonthlyBill": "Maandelijkse energierekening (EUR)",
     "formMessage": "Bericht",
     "formSubmit": "Verstuur aanvraag",
     "formSubmitting": "Verzenden...",
@@ -1138,7 +1138,7 @@
       "panelCountLabel": "Aantal panelen",
       "batteryLabel": "Batterij",
       "batteryCapacityLabel": "Batterijcapaciteit (kWh)",
-      "monthlyBillLabel": "Maandelijkse rekening (BGN)",
+      "monthlyBillLabel": "Maandelijkse rekening (EUR)",
       "cityLabel": "Stad",
       "orientationLabel": "Dakoriëntatie",
       "orientationSouth": "Zuid",
@@ -1172,7 +1172,7 @@
       "savingsLine": "Cumulatieve besparingen",
       "breakEvenPoint": "Break-even punt",
       "yearLabel": "Jaar",
-      "savingsLabel": "Besparingen (BGN)"
+      "savingsLabel": "Besparingen (EUR)"
     }
   },
   "FAQ": {
@@ -1446,7 +1446,7 @@
     },
     "finansiraneSolar": {
       "title": "Financiering van een Zonnesysteem | Solaron",
-      "heroTitle": "Zonnesysteem met 0 BGN Aanbetaling",
+      "heroTitle": "Zonnesysteem met € 0 Aanbetaling",
       "heroSubtitle": "Financiering met een maandtermijn die lager is dan uw huidige energierekening."
     },
     "solarSreshtuTok": {
@@ -1478,7 +1478,7 @@
   "FinancingPreview": {
     "title": "Financiering",
     "subtitle": "Flexibele financiële oplossingen voor elk budget",
-    "fromPerMonth": "vanaf {amount} BGN/mnd.",
+    "fromPerMonth": "vanaf € {amount}/mnd.",
     "learnMore": "Meer informatie over financiering"
   },
   "BeforeAfterComparison": {
@@ -1608,7 +1608,7 @@
     },
     "savings": {
       "title": "Tot 80% Besparingen",
-      "description": "Het gemiddelde huishouden bespaart tussen 150 en 400 BGN per maand."
+      "description": "Het gemiddelde huishouden bespaart tussen € 75 en € 200 per maand."
     },
     "battery": {
       "title": "Batterijopslag",
@@ -1925,7 +1925,7 @@
       "leasing": {
         "title": "Financiële Leasing",
         "desc": "Leasing zonder aanbetaling.",
-        "pros": ["0 BGN aanbetaling", "Vaste termijnen", "Fiscaal efficiënt voor bedrijven"],
+        "pros": ["€ 0 aanbetaling", "Vaste termijnen", "Fiscaal efficiënt voor bedrijven"],
         "cons": ["Eigendom na volledige betaling"]
       }
     },

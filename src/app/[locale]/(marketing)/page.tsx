@@ -1,7 +1,6 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { AnimatedHero } from "@/components/marketing/animated-hero";
-import { HeroMesh } from "@/components/effects/hero-mesh";
 import { HeroEnergyOverlay } from "@/components/marketing/hero-energy-overlay";
 import { TrustBadges } from "@/components/marketing/trust-badges";
 
@@ -42,8 +41,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <main className="overflow-x-hidden">
       {/* Hero */}
+      {/* HeroMesh intentionally omitted: the opaque hero image covers it fully,
+          so its six animated blur layers were invisible GPU work. */}
       <section className="relative">
-        <HeroMesh />
         <AnimatedHero
           badge={t("hero.badge")}
           title={t("hero.title")}

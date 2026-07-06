@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
+import { submitConsultationLandingForm } from "@/lib/actions/contact-form";
 
 export async function generateMetadata({
   params,
@@ -27,11 +28,6 @@ export async function generateMetadata({
     title: t("title"),
     description: t("heroSubtitle"),
   };
-}
-
-async function submitConsultationForm(formData: FormData) {
-  "use server";
-  void formData;
 }
 
 export default async function BezplatnaKonsultatsiyaPage({
@@ -127,7 +123,7 @@ export default async function BezplatnaKonsultatsiyaPage({
             </div>
           </div>
           <Card>
-            <form action={submitConsultationForm} className="space-y-4">
+            <form action={submitConsultationLandingForm} className="space-y-4">
               <div>
                 <label
                   htmlFor="bc-name"

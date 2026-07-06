@@ -1,72 +1,69 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "motion/react";
 
 const STORAGE_KEY = "cookie-consent";
 
 type ConsentValue = "all" | "essential";
 
+/*
+ * The banner is server-rendered and shown via a synchronous inline script that
+ * checks localStorage before first paint. This way it appears together with
+ * the initial page render instead of popping in after hydration (which made
+ * it the LCP element on slow mobile connections).
+ */
 export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
-  const bannerRef = useRef<HTMLDivElement>(null);
+  const [dismissed, setDismissed] = useState(false);
   const t = useTranslations("Common");
-
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      setVisible(true);
-    }
-  }, []);
 
   function accept(value: ConsentValue) {
     localStorage.setItem(STORAGE_KEY, value);
-    setVisible(false);
+    setDismissed(true);
   }
 
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          ref={bannerRef}
-          role="dialog"
-          aria-label={t("cookieConsent")}
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-xl border border-border bg-background p-5 shadow-elevated sm:bottom-6 sm:left-6 sm:right-6"
-        >
-          <p className="text-sm leading-relaxed text-foreground-secondary">
-            {t("cookieText")}{" "}
-            <Link
-              href={"/pravna-informatsiya/biskvitki" as never}
-              className="underline underline-offset-4 transition-colors hover:text-foreground"
-            >
-              {t("cookiePolicy")}
-            </Link>
-          </p>
+  if (dismissed) return null;
 
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
-            <button
-              type="button"
-              onClick={() => accept("essential")}
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-border bg-transparent px-4 text-sm font-medium text-foreground transition-colors hover:bg-background-secondary"
-            >
-              {t("essentialOnly")}
-            </button>
-            <button
-              type="button"
-              onClick={() => accept("all")}
-              className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
-            >
-              {t("acceptAll")}
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `try{if(!localStorage.getItem("${STORAGE_KEY}"))document.documentElement.classList.add("show-cookie-banner")}catch(e){}`,
+        }}
+      />
+      <div
+        role="dialog"
+        aria-label={t("cookieConsent")}
+        className="cookie-banner fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-xl border border-border bg-background p-5 shadow-elevated sm:bottom-6 sm:left-6 sm:right-6"
+      >
+        <p className="text-sm leading-relaxed text-foreground-secondary">
+          {t("cookieText")}{" "}
+          <Link
+            href={"/pravna-informatsiya/biskvitki" as never}
+            className="underline underline-offset-4 transition-colors hover:text-foreground"
+          >
+            {t("cookiePolicy")}
+          </Link>
+        </p>
+
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={() => accept("essential")}
+            className="inline-flex h-9 items-center justify-center rounded-lg border border-border bg-transparent px-4 text-sm font-medium text-foreground transition-colors hover:bg-background-secondary"
+          >
+            {t("essentialOnly")}
+          </button>
+          <button
+            type="button"
+            onClick={() => accept("all")}
+            className="inline-flex h-9 items-center justify-center rounded-lg bg-accent px-4 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+          >
+            {t("acceptAll")}
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

@@ -2,6 +2,7 @@ export interface ProjectMetrics {
   annualKwh?: number;
   co2SavedTons?: number;
   treesEquivalent?: number;
+  /** EUR per year */
   savingsPerYear?: number;
 }
 
@@ -64,7 +65,7 @@ export const projects: Project[] = [
       annualKwh: 780000,
       co2SavedTons: 312,
       treesEquivalent: 15600,
-      savingsPerYear: 195000,
+      savingsPerYear: 100000,
     },
   },
   {
@@ -95,7 +96,7 @@ export const projects: Project[] = [
       annualKwh: 324000,
       co2SavedTons: 129,
       treesEquivalent: 6480,
-      savingsPerYear: 81000,
+      savingsPerYear: 41000,
     },
   },
   {
@@ -212,7 +213,7 @@ export const projects: Project[] = [
       annualKwh: 19500,
       co2SavedTons: 7.8,
       treesEquivalent: 390,
-      savingsPerYear: 8400,
+      savingsPerYear: 4300,
     },
     testimonial: {
       quote: "Професионален подход от начало до край. Монтажът приключи за 2 дни.",
@@ -242,10 +243,10 @@ export const projects: Project[] = [
       annualKwh: 6800,
       co2SavedTons: 2.7,
       treesEquivalent: 135,
-      savingsPerYear: 4200,
+      savingsPerYear: 2150,
     },
     testimonial: {
-      quote: "Системата работи безупречно от първия ден. За 8 месеца вече сме спестили над 4000 лв.",
+      quote: "Системата работи безупречно от първия ден. За 8 месеца вече сме спестили над 2000 €.",
       name: "Иван Петров",
       role: "Домакинство",
     },
