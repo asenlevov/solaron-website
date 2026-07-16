@@ -1,18 +1,35 @@
 "use client";
 
 import { useState, useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import { Sun, Cpu, Battery, Monitor, Zap, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlowCard } from "@/components/ui/glow-card";
 import Link from "next/link";
 import { PRODUCT_IMAGES } from "@/data/images";
-import {
-  PanelAnimation,
-  InverterAnimation,
-  BatteryAnimation,
-  MonitoringAnimation,
-} from "@/components/marketing/product-animations";
+
+/* The four SVG demo scenes (~800 lines) load on demand instead of shipping
+   with the homepage bundle. */
+function AnimationPlaceholder() {
+  return <div className="h-full w-full bg-background-secondary" />;
+}
+const PanelAnimation = dynamic(
+  () => import("@/components/marketing/product-animations").then((m) => m.PanelAnimation),
+  { ssr: false, loading: AnimationPlaceholder },
+);
+const InverterAnimation = dynamic(
+  () => import("@/components/marketing/product-animations").then((m) => m.InverterAnimation),
+  { ssr: false, loading: AnimationPlaceholder },
+);
+const BatteryAnimation = dynamic(
+  () => import("@/components/marketing/product-animations").then((m) => m.BatteryAnimation),
+  { ssr: false, loading: AnimationPlaceholder },
+);
+const MonitoringAnimation = dynamic(
+  () => import("@/components/marketing/product-animations").then((m) => m.MonitoringAnimation),
+  { ssr: false, loading: AnimationPlaceholder },
+);
 
 interface ProductTab {
   id: string;

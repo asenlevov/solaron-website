@@ -770,7 +770,7 @@ export function MonitoringAnimation() {
         <rect x="89" y="60" width="83" height="52" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="1" />
         <text x="97" y="77" fill="#64748b" fontSize="7" fontFamily="system-ui">Спестени</text>
         <text x="97" y="100" fill="#3B7A2A" fontSize="18" fontWeight="900" fontFamily="system-ui">6.15</text>
-        <text x="143" y="100" fill="#3B7A2A" fontSize="8" fontFamily="system-ui" opacity="0.6">лв</text>
+        <text x="143" y="100" fill="#3B7A2A" fontSize="8" fontFamily="system-ui" opacity="0.6">€</text>
       </g>
 
       {/* Panel grid */}

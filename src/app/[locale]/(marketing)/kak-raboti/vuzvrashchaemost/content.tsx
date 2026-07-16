@@ -48,8 +48,8 @@ const ROI_FACTORS = [
   {
     icon: TrendingUp,
     title: "Цени на тока",
-    highlight: "0.25 лв → 5.2 г. | 0.30 лв → 4.3 г.",
-    desc: "При 0.25 лв/kWh payback е 5.2 години. При 0.30 лв/kWh — само 4.3. Всяко поскъпване на тока ускорява изплащането на инвестицията.",
+    highlight: "0.13 € → 5.2 г. | 0.15 € → 4.3 г.",
+    desc: "При 0.13 €/kWh payback е 5.2 години. При 0.15 €/kWh — само 4.3. Всяко поскъпване на тока ускорява изплащането на инвестицията.",
   },
 ] as const;
 
@@ -61,12 +61,12 @@ const PVGIS_STATS = [
 
 const CASE_STUDY = {
   system: "5 kWp — 10× LONGi Hi-MO 6 + SolarEdge SE5000H",
-  investment: 12500,
+  investment: 6400,
   annualProduction: 6500,
-  annualSavings: 1625,
+  annualSavings: 830,
   payback: 5.2,
-  return25yr: 35000,
-  pricePerKwh: 0.25,
+  return25yr: 17900,
+  pricePerKwh: 0.13,
 } as const;
 
 const CUMULATIVE_SAVINGS = [
@@ -87,31 +87,31 @@ const MAX_SAVINGS = 16250;
 const PAYBACK_TABLE = [
   {
     system: "3 kWp",
-    investment: "7 500 лв.",
+    investment: "3 800 €",
     production: "3 900 kWh",
-    savings: "975 лв.",
+    savings: "500 €",
     payback: "7.7 г.",
   },
   {
     system: "5 kWp",
-    investment: "12 500 лв.",
+    investment: "6 400 €",
     production: "6 500 kWh",
-    savings: "1 625 лв.",
+    savings: "830 €",
     payback: "5.2 г.",
     highlighted: true,
   },
   {
     system: "10 kWp",
-    investment: "22 000 лв.",
+    investment: "11 200 €",
     production: "13 000 kWh",
-    savings: "3 250 лв.",
+    savings: "1 660 €",
     payback: "4.5 г.",
   },
   {
     system: "15 kWp",
-    investment: "30 000 лв.",
+    investment: "15 300 €",
     production: "19 500 kWh",
-    savings: "4 875 лв.",
+    savings: "2 500 €",
     payback: "4.1 г.",
   },
 ] as const;
@@ -119,7 +119,7 @@ const PAYBACK_TABLE = [
 const FAQS = [
   {
     q: "Колко точно пари ще спестя с фотоволтаична система?",
-    a: "Спестяванията зависят от консумацията, ориентацията на покрива, цената на тока и дела на самопотреблението. За типична 5 kWp система в България — около 1 600 лв. годишно при 0.25 лв/kWh. Нашият калкулатор дава персонализирана 25-годишна прогноза.",
+    a: "Спестяванията зависят от консумацията, ориентацията на покрива, цената на тока и дела на самопотреблението. За типична 5 kWp система в България — около 820 € годишно при 0.13 €/kWh. Нашият калкулатор дава персонализирана 25-годишна прогноза.",
   },
   {
     q: "Какво е PVGIS и мога ли да му вярвам?",
@@ -135,7 +135,7 @@ const FAQS = [
   },
   {
     q: "Включена ли е батерията в тези изчисления?",
-    a: "Не. Цифрите тук са за мрежови системи без батерия. Добавянето на батерия увеличава инвестицията с 4 000–8 000 лв., но повишава самопотреблението. За домакинства с голяма вечерна консумация батерията може да подобри ROI.",
+    a: "Не. Цифрите тук са за мрежови системи без батерия. Добавянето на батерия увеличава инвестицията с 2 000–4 100 €, но повишава самопотреблението. За домакинства с голяма вечерна консумация батерията може да подобри ROI.",
   },
 ] as const;
 
@@ -412,8 +412,8 @@ export function VuzvrashchaemostContent() {
             </motion.div>
             <motion.div variants={staggerItem}>
               <StatNumber
-                value={1625}
-                suffix=" лв."
+                value={830}
+                suffix=" €"
                 context="Год. спестяване"
                 className="text-4xl text-white md:text-5xl"
                 contextClassName="text-white/50"
@@ -605,7 +605,7 @@ export function VuzvrashchaemostContent() {
                   <div className="p-5 text-center">
                     <StatNumber
                       value={CASE_STUDY.investment}
-                      suffix=" лв."
+                      suffix=" €"
                       context="Инвестиция"
                       className="text-2xl text-foreground md:text-3xl"
                       contextClassName="text-foreground-secondary"
@@ -627,7 +627,7 @@ export function VuzvrashchaemostContent() {
                   <div className="p-5 text-center">
                     <StatNumber
                       value={CASE_STUDY.annualSavings}
-                      suffix=" лв."
+                      suffix=" €"
                       context="Год. спестяване"
                       className="text-2xl text-accent md:text-3xl"
                       contextClassName="text-foreground-secondary"
@@ -639,7 +639,7 @@ export function VuzvrashchaemostContent() {
                     <StatNumber
                       value={CASE_STUDY.return25yr}
                       prefix="+"
-                      suffix=" лв."
+                      suffix=" €"
                       context="Доход за 25 год."
                       className="text-2xl text-foreground md:text-3xl"
                       contextClassName="text-foreground-secondary"
@@ -654,7 +654,7 @@ export function VuzvrashchaemostContent() {
                     Цена на kWh
                   </span>
                   <span className="font-semibold text-foreground">
-                    {CASE_STUDY.pricePerKwh} лв.
+                    {CASE_STUDY.pricePerKwh} €
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -781,7 +781,7 @@ export function VuzvrashchaemostContent() {
             viewport={{ once: true }}
             className="mt-6 text-sm text-white/30"
           >
-            * Стойностите са ориентировъчни при 0.25 лв/kWh и южен покрив без
+            * Стойностите са ориентировъчни при 0.13 €/kWh и южен покрив без
             засенчване. Реалните числа зависят от конкретните условия.
           </motion.p>
         </div>

@@ -84,7 +84,7 @@ export default async function SolarSreshtuTokPage({
               </li>
               <li className="flex gap-2">
                 <ArrowDownRight className="mt-0.5 size-4 shrink-0 text-foreground-tertiary" />
-                При по-високо потребление ефектът в лева се усеща по-силно.
+                При по-високо потребление ефектът в евро се усеща по-силно.
               </li>
             </ul>
           </Card>
@@ -132,7 +132,7 @@ export default async function SolarSreshtuTokPage({
               Без солар (купуван ток)
             </p>
             <p className="mt-2 font-display text-3xl font-semibold text-foreground md:text-4xl">
-              ~75 000 лв.
+              ~38 000 €
             </p>
             <p className="mt-3 font-body text-sm leading-relaxed text-foreground-secondary">
               Натрупан разход за закупена енергия за 25 години при примерни
@@ -145,7 +145,7 @@ export default async function SolarSreshtuTokPage({
               Със солар (инвестиция + поддръжка)
             </p>
             <p className="mt-2 font-display text-3xl font-semibold text-foreground md:text-4xl">
-              ~25 000 лв.
+              ~13 000 €
             </p>
             <p className="mt-3 font-body text-sm leading-relaxed text-foreground-secondary">
               Ориентировъчна сума, обхващаща инвестиция в инсталация и

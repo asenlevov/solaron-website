@@ -20,7 +20,8 @@ import { CITY_IRRADIANCE } from "@/lib/electricity-prices";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 
-const ELECTRICITY_PRICE = 0.25;
+/* EUR per kWh */
+const ELECTRICITY_PRICE = 0.13;
 
 type PropertyId = "house" | "apartment" | "business" | "industry";
 
@@ -260,7 +261,7 @@ export function QuickEstimator() {
       propertyType === "business" || propertyType === "industry" ? 0.85 : 0.7;
     const usefulProduction = annualProduction * selfConsumptionRate;
     const annualSavings = usefulProduction * ELECTRICITY_PRICE;
-    const systemCost = panelCount * 1200;
+    const systemCost = panelCount * 615;
     const paybackYears = annualSavings > 0 ? systemCost / annualSavings : 99;
     const co2Saved = (annualProduction * 0.4) / 1000;
     const treeEquivalent = Math.round((annualProduction * 0.4) / 22);

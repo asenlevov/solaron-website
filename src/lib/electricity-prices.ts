@@ -1,4 +1,5 @@
-export const BULGARIA_ELECTRICITY_PRICE = 0.25;
+/* EUR per kWh */
+export const BULGARIA_ELECTRICITY_PRICE = 0.13;
 
 export const CITY_IRRADIANCE: Record<string, number> = {
   София: 1250,

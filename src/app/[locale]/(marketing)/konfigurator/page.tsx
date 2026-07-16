@@ -1,20 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 
-import { SceneCanvasDynamic } from "@/components/3d/scene-container";
-import { BatteryUnit } from "@/components/3d/battery-unit";
-import { DioramaBase } from "@/components/3d/diorama-base";
-import { EnergyFlow } from "@/components/3d/energy-flow";
-import type { HouseType } from "@/components/3d/house-model";
-import { HouseModel } from "@/components/3d/house-model";
-import { SolarPanelArray } from "@/components/3d/solar-panel-array";
-import { Tree } from "@/components/3d/tree";
+import { SceneLoadingFallback } from "@/components/3d/scene-container";
 import {
   ControlPanel,
   type SolarConfiguratorConfig,
 } from "@/components/configurator/control-panel";
-import { RoiVisualization } from "@/components/configurator/roi-visualization";
 import { SummaryCard } from "@/components/configurator/summary-card";
 import { getIrradianceForCity } from "@/lib/electricity-prices";
 import {
@@ -26,21 +19,20 @@ import {
   calculateSystemCost,
 } from "@/lib/solar-calculations";
 
-const FOUNDATION_H = 0.18;
+/* three.js and recharts only download when this page renders — keeps them out
+   of chunks that get prefetched from other pages. */
+const KonfiguratorScene = dynamic(() => import("./konfigurator-scene"), {
+  ssr: false,
+  loading: () => <SceneLoadingFallback />,
+});
 
-const HOUSE_SPECS: Record<HouseType, { w: number; h: number; d: number }> = {
-  "single-story": { w: 8, h: 3.4, d: 7 },
-  "two-story": { w: 8, h: 6.0, d: 7 },
-  villa: { w: 10, h: 4.4, d: 9 },
-  commercial: { w: 12, h: 4.8, d: 13 },
-};
-
-const BATTERY_POS: Record<HouseType, [number, number, number]> = {
-  "single-story": [4.5, 1.4, 3],
-  "two-story": [4.5, 1.4, 3],
-  villa: [5.5, 1.4, 4],
-  commercial: [6.5, 1.4, 6],
-};
+const RoiVisualization = dynamic(
+  () =>
+    import("@/components/configurator/roi-visualization").then(
+      (m) => m.RoiVisualization,
+    ),
+  { ssr: false },
+);
 
 const ORIENTATION_MULTIPLIERS: Record<string, number> = {
   "Юг": 1.0,
@@ -63,110 +55,12 @@ const DEFAULT_CONFIG: SolarConfiguratorConfig = {
   panelCount: 27,
   hasBattery: true,
   batteryCapacity: 10,
-  monthlyBill: 150,
+  monthlyBill: 75,
   city: "София",
   roofOrientation: "Юг",
   roofPitch: 30,
   shadingLevel: "Без",
 };
-
-function ConfiguratorScene({
-  houseType,
-  roofArea,
-  panelCount,
-  hasBattery,
-  roofPitchDeg,
-}: {
-  houseType: HouseType;
-  roofArea: number;
-  panelCount: number;
-  hasBattery: boolean;
-  roofPitchDeg: number;
-}) {
-  const scale = Math.sqrt(roofArea / 80);
-  const spec = HOUSE_SPECS[houseType];
-  const isFlat = houseType === "commercial";
-
-  const pitchRad = (roofPitchDeg * Math.PI) / 180;
-  const rise = isFlat ? 0.25 : Math.tan(pitchRad) * (spec.d / 2);
-
-  const wallTop = FOUNDATION_H + spec.h;
-
-  // The house geometry is rendered with scale=[scale, 1, scale].
-  // Y stays 1:1 but Z is multiplied by scale, changing the apparent pitch.
-  const apparentPitchRad = isFlat ? 0 : Math.atan2(rise, (spec.d / 2) * scale);
-
-  const midSlopeY = wallTop + rise * 0.5;
-  const halfSlopeZ = (spec.d / 4) * scale;
-
-  const NORMAL_OFFSET = 0.15;
-  const nOffY = NORMAL_OFFSET * Math.cos(apparentPitchRad);
-  const nOffZ = NORMAL_OFFSET * Math.sin(apparentPitchRad);
-
-  const backMountY = isFlat ? wallTop + 0.3 : midSlopeY + nOffY;
-  const backMountZ = isFlat ? 0 : -halfSlopeZ - nOffZ;
-  const frontMountY = backMountY;
-  const frontMountZ = isFlat ? 0 : halfSlopeZ + nOffZ;
-
-  const roofWidth = spec.w * scale * 0.85;
-  const slopeDepth = isFlat ? spec.d * scale * 0.85 : (spec.d / 2) * scale * 0.85;
-
-  const backCount = isFlat ? panelCount : Math.ceil(panelCount / 2);
-  const frontCount = isFlat ? 0 : panelCount - backCount;
-
-  const backMount: [number, number, number] = [0, backMountY, backMountZ];
-  const frontMount: [number, number, number] = [0, frontMountY, frontMountZ];
-
-  const batt = BATTERY_POS[houseType];
-  const scaledBatt: [number, number, number] = [
-    batt[0] * scale,
-    batt[1],
-    batt[2] * scale,
-  ];
-
-  const showFlow = panelCount > 0;
-  const backPitchRad = isFlat ? 0 : -apparentPitchRad;
-  const frontPitchRad = isFlat ? 0 : apparentPitchRad;
-
-  return (
-    <group>
-      <DioramaBase />
-      <group scale={[scale, 1, scale]}>
-        <HouseModel type={houseType} showRoof roofPitchDeg={isFlat ? undefined : roofPitchDeg} />
-      </group>
-      {backCount > 0 && (
-        <group position={backMount}>
-          <SolarPanelArray
-            count={backCount}
-            roofWidth={roofWidth}
-            roofDepth={slopeDepth}
-            roofPitchRad={backPitchRad}
-          />
-        </group>
-      )}
-      {frontCount > 0 && (
-        <group position={frontMount}>
-          <SolarPanelArray
-            count={frontCount}
-            roofWidth={roofWidth}
-            roofDepth={slopeDepth}
-            roofPitchRad={frontPitchRad}
-          />
-        </group>
-      )}
-      <BatteryUnit visible={hasBattery} position={scaledBatt} />
-      <EnergyFlow
-        visible={showFlow}
-        panelPosition={[0, backMountY + 0.5, backMountZ]}
-        housePosition={[0, 1.5, 0]}
-        inverterPosition={[4 * scale, 2, 3 * scale]}
-        batteryPosition={scaledBatt}
-      />
-      <Tree position={[-6, 0, 3]} scale={0.9} type="deciduous" />
-      <Tree position={[6, 0, -2]} scale={0.8} type="conifer" />
-    </group>
-  );
-}
 
 function useBounceKey(deps: unknown[]): number {
   const [key, setKey] = useState(0);
@@ -270,20 +164,13 @@ export default function KonfiguratorPage() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
           <div className="relative h-[500px] w-full overflow-hidden rounded-2xl border border-border bg-background-secondary/30 shadow-card lg:sticky lg:top-28 lg:h-[min(75vh,700px)] lg:w-[60%]">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30 pointer-events-none z-10" />
-            <SceneCanvasDynamic
-              className="h-full w-full"
-              camera={{ position: [14, 7, 16], fov: 38 }}
-              target={[0, 2, 0]}
-              autoRotate
-            >
-              <ConfiguratorScene
-                houseType={config.houseType}
-                roofArea={config.roofArea}
-                panelCount={config.panelCount}
-                hasBattery={config.hasBattery}
-                roofPitchDeg={config.roofPitch}
-              />
-            </SceneCanvasDynamic>
+            <KonfiguratorScene
+              houseType={config.houseType}
+              roofArea={config.roofArea}
+              panelCount={config.panelCount}
+              hasBattery={config.hasBattery}
+              roofPitchDeg={config.roofPitch}
+            />
           </div>
 
           <div className="flex w-full flex-col gap-6 lg:w-[40%]">

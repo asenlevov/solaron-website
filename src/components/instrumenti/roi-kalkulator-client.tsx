@@ -5,8 +5,8 @@ import * as Slider from "@radix-ui/react-slider";
 import * as Switch from "@radix-ui/react-switch";
 import { Check, ChevronDown, Sun, Cpu, Battery, Monitor, Zap } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
-import { RoiVisualization } from "@/components/configurator/roi-visualization";
 import { SummaryCard } from "@/components/configurator/summary-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
@@ -21,6 +21,15 @@ import {
   calculateSystemCost,
 } from "@/lib/solar-calculations";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
+
+/* recharts (~120 KB) loads on demand instead of inflating the route chunk. */
+const RoiVisualization = dynamic(
+  () =>
+    import("@/components/configurator/roi-visualization").then(
+      (m) => m.RoiVisualization,
+    ),
+  { ssr: false },
+);
 
 const CITIES = Object.keys(CITY_IRRADIANCE).sort((a, b) =>
   a.localeCompare(b, "bg"),
@@ -43,16 +52,17 @@ const PANEL_WATTAGES = [
   { value: 500, label: "500W" },
 ] as const;
 
+/* Add-on costs in EUR */
 const INVERTER_TYPES = [
   { value: "string", label: "String", cost: 0 },
-  { value: "micro", label: "Micro", cost: 1200 },
-  { value: "hybrid", label: "Хибриден", cost: 2400 },
+  { value: "micro", label: "Micro", cost: 615 },
+  { value: "hybrid", label: "Хибриден", cost: 1230 },
 ] as const;
 
 const EV_CHARGER_TYPES = [
-  { value: "7", label: "7 kW", cost: 1800 },
-  { value: "11", label: "11 kW", cost: 2800 },
-  { value: "22", label: "22 kW", cost: 4500 },
+  { value: "7", label: "7 kW", cost: 920 },
+  { value: "11", label: "11 kW", cost: 1430 },
+  { value: "22", label: "22 kW", cost: 2300 },
 ] as const;
 
 function pitchFactorDeg(deg: number): number {
@@ -196,7 +206,7 @@ export function RoiKalkulatorClient() {
   const [pitch, setPitch] = useState(30);
   const [shading, setShading] = useState(0);
   const [monthlyConsumption, setMonthlyConsumption] = useState(400);
-  const [electricityRate, setElectricityRate] = useState(0.25);
+  const [electricityRate, setElectricityRate] = useState(0.13);
 
   const [panelWattage, setPanelWattage] = useState(450);
   const [hasBattery, setHasBattery] = useState(false);
@@ -220,7 +230,7 @@ export function RoiKalkulatorClient() {
 
     const baseCost = calculateSystemCost(recommendedPanels, hasBattery, hasBattery ? batteryCapacity : 0);
     const inverterAddon = INVERTER_TYPES.find((t) => t.value === inverterType)?.cost ?? 0;
-    const monitoringCost = hasMonitoring ? 400 : 0;
+    const monitoringCost = hasMonitoring ? 205 : 0;
     const evCost = hasEvCharger ? (EV_CHARGER_TYPES.find((t) => t.value === evChargerType)?.cost ?? 0) : 0;
     const systemCost = baseCost + inverterAddon + monitoringCost + evCost;
 
@@ -231,9 +241,9 @@ export function RoiKalkulatorClient() {
     const systemSizeKwp = (recommendedPanels * panelWattage) / 1000;
 
     const costBreakdown = {
-      panels: recommendedPanels * 1200,
+      panels: recommendedPanels * 615,
       inverter: inverterAddon,
-      battery: hasBattery ? batteryCapacity * 800 : 0,
+      battery: hasBattery ? batteryCapacity * 410 : 0,
       monitoring: monitoringCost,
       ev: evCost,
     };
@@ -474,7 +484,7 @@ export function RoiKalkulatorClient() {
                 </div>
                 <div>
                   <label htmlFor="rate" className="mb-2 block font-body text-xs font-semibold uppercase tracking-wider text-foreground-tertiary">
-                    Цена ток (лв./kWh)
+                    Цена ток (€/kWh)
                   </label>
                   <input
                     id="rate"

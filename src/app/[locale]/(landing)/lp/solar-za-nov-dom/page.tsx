@@ -17,6 +17,7 @@ import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
 import { cn } from "@/lib/utils";
+import { submitSolarNewHomeLandingForm } from "@/lib/actions/contact-form";
 
 export async function generateMetadata({
   params,
@@ -36,29 +37,24 @@ const PACKAGES = [
     name: "Стартер",
     kWp: "3 kWp",
     panels: "~8 панела",
-    savings: "~180 лв./мес.",
-    price: "~8 500 лв.",
+    savings: "~90 €/мес.",
+    price: "~4 300 €",
   },
   {
     name: "Стандарт",
     kWp: "5 kWp",
     panels: "~12 панела",
-    savings: "~300 лв./мес.",
-    price: "~12 000 лв.",
+    savings: "~150 €/мес.",
+    price: "~6 100 €",
   },
   {
     name: "Премиум",
     kWp: "10 kWp",
     panels: "~24 панела",
-    savings: "~550 лв./мес.",
-    price: "~20 000 лв.",
+    savings: "~280 €/мес.",
+    price: "~10 200 €",
   },
 ] as const;
-
-async function submitSolarNewHomeForm(formData: FormData) {
-  "use server";
-  void formData;
-}
 
 export default async function SolarZaNovDomPage({
   params,
@@ -202,7 +198,7 @@ export default async function SolarZaNovDomPage({
             </ul>
           </div>
           <Card>
-            <form action={submitSolarNewHomeForm} className="space-y-4">
+            <form action={submitSolarNewHomeLandingForm} className="space-y-4">
               <div>
                 <label
                   htmlFor="snh-name"

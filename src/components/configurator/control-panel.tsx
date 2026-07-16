@@ -72,7 +72,7 @@ export function ControlPanel({ onChange, className }: ControlPanelProps) {
   const [panelCount, setPanelCount] = useState(() => panelsFromRoof(ROOF_DEFAULT));
   const [hasBattery, setHasBattery] = useState(false);
   const [batteryCapacity, setBatteryCapacity] = useState<BatteryCapacity>(10);
-  const [monthlyBill, setMonthlyBill] = useState(150);
+  const [monthlyBill, setMonthlyBill] = useState(75);
   const [city, setCity] = useState(
     CITIES.includes("София") ? "София" : (CITIES[0] ?? "София"),
   );
@@ -317,7 +317,7 @@ export function ControlPanel({ onChange, className }: ControlPanelProps) {
             htmlFor="monthly-bill"
             className="mb-2 block font-body text-xs font-semibold uppercase tracking-wider text-foreground-tertiary"
           >
-            Месечна сметка (лв.)
+            Месечна сметка (€)
           </label>
           <input
             id="monthly-bill"

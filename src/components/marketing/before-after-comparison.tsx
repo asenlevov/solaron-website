@@ -14,10 +14,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const OLD_COSTS = [
-  { name: "Електричество", cost: "280 лв./мес.", rotate: -3, x: 0, y: 0 },
-  { name: "Отопление", cost: "150 лв./мес.", rotate: 2, x: 15, y: -8 },
-  { name: "Климатизация", cost: "120 лв./мес.", rotate: -1.5, x: -10, y: 5 },
-  { name: "Бойлер", cost: "80 лв./мес.", rotate: 3, x: 20, y: -3 },
+  { name: "Електричество", cost: "140 €/мес.", rotate: -3, x: 0, y: 0 },
+  { name: "Отопление", cost: "75 €/мес.", rotate: 2, x: 15, y: -8 },
+  { name: "Климатизация", cost: "60 €/мес.", rotate: -1.5, x: -10, y: 5 },
+  { name: "Бойлер", cost: "40 €/мес.", rotate: 3, x: 20, y: -3 },
   { name: "Покачване", cost: "+10%/год.", rotate: -2, x: 5, y: 8 },
   { name: "Зависимост", cost: "100% мрежа", rotate: 1, x: -15, y: -5 },
 ];
@@ -83,7 +83,7 @@ export function BeforeAfterComparison({ className }: { className?: string }) {
           </div>
 
           <div className="text-center mb-3">
-            <span className="text-2xl font-bold text-red-500">630+ лв.</span>
+            <span className="text-2xl font-bold text-red-500">315+ €</span>
             <span className="text-sm text-foreground-secondary">/месец</span>
           </div>
 
@@ -151,7 +151,7 @@ export function BeforeAfterComparison({ className }: { className?: string }) {
 
           <div className="text-center mb-3">
             <span className="text-xs text-foreground-secondary">от </span>
-            <span className="text-2xl font-bold text-accent">126 лв.</span>
+            <span className="text-2xl font-bold text-accent">63 €</span>
             <span className="text-sm text-foreground-secondary">/месец</span>
           </div>
 
@@ -179,7 +179,7 @@ export function BeforeAfterComparison({ className }: { className?: string }) {
           </div>
           <div>
             <p className="text-sm font-semibold text-foreground">
-              Домакинствата спестяват средно <span className="text-accent">6,000 лв./година</span> и
+              Домакинствата спестяват средно <span className="text-accent">3,000 €/година</span> и
               намаляват CO2 с <span className="text-accent">4.2 тона/година</span>
             </p>
             <p className="text-xs text-foreground-secondary mt-0.5">

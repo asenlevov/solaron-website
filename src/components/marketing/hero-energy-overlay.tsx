@@ -7,6 +7,11 @@ function useAnimatedCounter(target: number, duration = 2000, delay = 1500) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
+    // The overlay is hidden below md, so skip the rAF loops on mobile.
+    if (!window.matchMedia("(min-width: 768px)").matches) {
+      setValue(target);
+      return;
+    }
     const timeout = setTimeout(() => {
       const start = performance.now();
       let raf: number;
@@ -256,8 +261,9 @@ export function HeroEnergyOverlay() {
   const homeConsumption = useAnimatedCounter(2.1, 2200, 3100);
 
   return (
-    <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden">
-      {/* ── Energy flow particles (visible on all screens) ── */}
+    <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden hidden md:block">
+      {/* ── Energy flow particles (desktop only — the blur-filtered SMIL
+            animations are too expensive for mobile GPUs) ── */}
       <svg
         viewBox="0 0 1600 900"
         className="absolute inset-0 w-full h-full"

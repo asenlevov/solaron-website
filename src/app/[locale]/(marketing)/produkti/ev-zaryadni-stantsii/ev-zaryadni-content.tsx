@@ -68,7 +68,7 @@ const evFaqs = [
   { q: "Колко време отнема зареждането?", a: "Зависи от мощността на зарядната станция и капацитета на батерията. При 11 kW AC зареждане, типичен EV (60 kWh) се зарежда напълно за ~5.5 часа. При нощно зареждане от соларна батерия, автомобилът е готов сутринта." },
   { q: "Кои автомобили са съвместими?", a: "Нашите зарядни станции поддържат всички EV марки с Type 2 конектор — Tesla, BMW, VW, Hyundai, Kia, Mercedes, Audi, Porsche и др. Мощността се адаптира автоматично към всеки модел." },
   { q: "Нужна ли е специална инсталация?", a: "Да, зарядната станция изисква отделна електрическа линия и автоматичен прекъсвач. Нашият екип извършва пълната инсталация, включително проектиране и пускане в експлоатация." },
-  { q: "Колко струва зареждането вкъщи?", a: "При зареждане от соларни панели цената е ~0.15 лв/kWh, или ~3.00 лв за 100 km. Това е 4-5 пъти по-евтино от бензинов автомобил и 4 пъти по-евтино от обществена зарядна станция." },
+  { q: "Колко струва зареждането вкъщи?", a: "При зареждане от соларни панели цената е ~0.08 €/kWh, или ~1.50 € за 100 km. Това е 4-5 пъти по-евтино от бензинов автомобил и 4 пъти по-евтино от обществена зарядна станция." },
 ];
 
 export function EvZaryadniContent() {
@@ -108,7 +108,7 @@ export function EvZaryadniContent() {
           <div className="mt-8 md:mt-12 flex flex-wrap gap-12 md:gap-20">
             <StatNumber value={22} suffix=" kW" context="Макс. мощност" className="text-white" contextClassName="text-white/60" />
             <StatNumber value={77} suffix="%" context="Спестяване" className="text-accent" contextClassName="text-white/60" />
-            <StatNumber value={0.15} suffix=" лв/kWh" context="Цена от слънце" className="text-white" contextClassName="text-white/60" duration={1500} />
+            <StatNumber value={0.08} suffix=" €/kWh" context="Цена от слънце" className="text-white" contextClassName="text-white/60" duration={1500} />
           </div>
           <motion.div variants={blurIn} initial="hidden" animate="visible" className="mt-8 md:mt-10">
             <MagneticButton href="/konfigurator" variant="primary" size="xl">
@@ -213,10 +213,10 @@ export function EvZaryadniContent() {
             >
               <Home className="h-10 w-10 text-accent mx-auto mb-4" strokeWidth={1.5} />
               <p className="text-sm font-display font-semibold text-accent uppercase tracking-wider mb-2">Вкъщи със соларни панели</p>
-              <p className="text-6xl font-display font-black text-accent">0.15</p>
-              <p className="text-lg text-muted-foreground font-body mt-1">лв/kWh</p>
+              <p className="text-6xl font-display font-black text-accent">0.08</p>
+              <p className="text-lg text-muted-foreground font-body mt-1">€/kWh</p>
               <div className="mt-6 pt-6 border-t border-accent/20">
-                <p className="text-sm text-muted-foreground font-body">100 km ≈ 3.00 лв</p>
+                <p className="text-sm text-muted-foreground font-body">100 km ≈ 1.50 €</p>
               </div>
             </motion.div>
             <motion.div
@@ -227,10 +227,10 @@ export function EvZaryadniContent() {
             >
               <Plug className="h-10 w-10 text-muted-foreground mx-auto mb-4" strokeWidth={1.5} />
               <p className="text-sm font-display font-semibold text-muted-foreground uppercase tracking-wider mb-2">Обществена станция</p>
-              <p className="text-6xl font-display font-black text-muted-foreground">0.65</p>
-              <p className="text-lg text-muted-foreground font-body mt-1">лв/kWh</p>
+              <p className="text-6xl font-display font-black text-muted-foreground">0.33</p>
+              <p className="text-lg text-muted-foreground font-body mt-1">€/kWh</p>
               <div className="mt-6 pt-6 border-t border-border">
-                <p className="text-sm text-muted-foreground font-body">100 km ≈ 13.00 лв</p>
+                <p className="text-sm text-muted-foreground font-body">100 km ≈ 6.60 €</p>
               </div>
             </motion.div>
           </div>
@@ -335,20 +335,20 @@ export function EvZaryadniContent() {
               <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6 text-center">
                 <Fuel className="h-6 w-6 mx-auto mb-2 text-red-500" />
                 <p className="text-xs text-red-600 font-body mb-1">Бензин (8л/100km)</p>
-                <p className="text-3xl font-display font-black text-red-600">{Math.round(monthlyKm * 0.08 * 2.8)} лв</p>
+                <p className="text-3xl font-display font-black text-red-600">{Math.round(monthlyKm * 0.08 * 1.43)} €</p>
                 <p className="text-xs text-red-500 mt-1 font-body">/ месец</p>
               </div>
               <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-6 text-center">
                 <Zap className="h-6 w-6 mx-auto mb-2 text-green-600" />
                 <p className="text-xs text-green-600 font-body mb-1">EV от соларни панели</p>
-                <p className="text-3xl font-display font-black text-green-600">{Math.round(monthlyKm * 0.2 * 0.15)} лв</p>
+                <p className="text-3xl font-display font-black text-green-600">{Math.round(monthlyKm * 0.2 * 0.08)} €</p>
                 <p className="text-xs text-green-500 mt-1 font-body">/ месец</p>
               </div>
             </div>
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground font-body">Годишно спестявате</p>
               <p className="text-4xl font-display font-black text-accent mt-1">
-                {Math.round((monthlyKm * 0.08 * 2.8 - monthlyKm * 0.2 * 0.15) * 12)} лв
+                {Math.round((monthlyKm * 0.08 * 1.43 - monthlyKm * 0.2 * 0.08) * 12)} €
               </p>
             </div>
           </motion.div>
@@ -402,7 +402,7 @@ export function EvZaryadniContent() {
             viewport={{ once: true }}
             className="editorial-pull-quote text-foreground relative z-10"
           >
-            Зареждам колата от покрива всяка нощ. Сметката за гориво падна от 400 лв на под 50 лв месечно.
+            Зареждам колата от покрива всяка нощ. Сметката за гориво падна от 200 € на под 25 € месечно.
           </motion.blockquote>
           <motion.p
             variants={blurIn}
