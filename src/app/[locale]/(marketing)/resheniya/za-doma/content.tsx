@@ -87,7 +87,7 @@ const caseStudies = [
     image: REAL_IMAGES.projects.kran5_1,
     title: "5 kW — Кран, Велинград",
     stat: 5,
-    savings: "~100 лв./мес.",
+    savings: "~50 €/мес.",
     quote:
       "Системата се вписа перфектно в покрива и от първия месец виждаме разликата в сметките.",
     slug: "5-kwp-kran",
@@ -96,7 +96,7 @@ const caseStudies = [
     image: REAL_IMAGES.projects.vratsa15_1,
     title: "15 kW + батерия — Враца",
     stat: 15,
-    savings: "~280 лв./мес.",
+    savings: "~140 €/мес.",
     quote:
       "С батерията имаме ток и при спиране на мрежата. Пълна независимост.",
     slug: "15-kwp-vratsa",
@@ -105,7 +105,7 @@ const caseStudies = [
     image: REAL_IMAGES.projects.kazanlak30_1,
     title: "30 kW — Казанлък",
     stat: 30,
-    savings: "~520 лв./мес.",
+    savings: "~270 €/мес.",
     quote:
       "Инвестицията се изплати за по-малко от 4 години. Качеството е безкомпромисно.",
     slug: "30-kwp-kazanlak",
@@ -117,21 +117,21 @@ const financingOptions = [
     icon: HandCoins,
     title: "Кеш",
     desc: "Еднократно плащане с максимална отстъпка. Най-ниска обща цена.",
-    detail: "от 5 500 лв.",
+    detail: "от 2 800 €",
     note: "Най-добра цена",
   },
   {
     icon: CreditCard,
     title: "Кредит",
     desc: "Банков кредит с ниска лихва. Месечната вноска е по-малка от спестяванията.",
-    detail: "от 95 лв./мес.",
+    detail: "от 49 €/мес.",
     note: "Месечната вноска е съпоставима или по-ниска от текущата ви сметка за ток",
   },
   {
     icon: Landmark,
     title: "Лизинг",
     desc: "Оперативен лизинг — без начална вноска. Плащате по-малко от текущата сметка.",
-    detail: "от 120 лв./мес.",
+    detail: "от 61 €/мес.",
     note: "Без начална вноска",
   },
 ];
@@ -512,7 +512,7 @@ export default function ZaDomaContent() {
                 Преди
               </p>
               <p className="editorial-stat text-5xl text-red-400 md:text-6xl">
-                250 лв.
+                130 €
               </p>
               <p className="text-red-400/60 mt-1">на месец</p>
             </motion.div>
@@ -534,8 +534,8 @@ export default function ZaDomaContent() {
                 След
               </p>
               <StatNumber
-                value={50}
-                suffix=" лв."
+                value={25}
+                suffix=" €"
                 context="на месец"
                 className="text-5xl md:text-6xl text-accent"
                 contextClassName="text-accent/60"
@@ -552,19 +552,19 @@ export default function ZaDomaContent() {
               <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
                 Месечно
               </p>
-              <p className="text-2xl font-bold text-accent">~200 лв.</p>
+              <p className="text-2xl font-bold text-accent">~105 €</p>
             </div>
             <div className="text-center">
               <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
                 Годишно
               </p>
-              <p className="text-2xl font-bold text-accent">~2 400 лв.</p>
+              <p className="text-2xl font-bold text-accent">~1 250 €</p>
             </div>
             <div className="text-center">
               <p className="text-white/40 text-xs uppercase tracking-widest mb-1">
                 За 25 години
               </p>
-              <p className="text-2xl font-bold text-accent">~60 000 лв.</p>
+              <p className="text-2xl font-bold text-accent">~30 000 €</p>
             </div>
           </motion.div>
           <motion.p
@@ -573,7 +573,7 @@ export default function ZaDomaContent() {
             animate={billInView ? "visible" : "hidden"}
             className="mt-6 text-white/40 text-sm"
           >
-            Пример за домакинство с 5 kWp система при 250 лв./мес. сметка
+            Пример за домакинство с 5 kWp система при 130 €/мес. сметка
           </motion.p>
         </div>
       </section>

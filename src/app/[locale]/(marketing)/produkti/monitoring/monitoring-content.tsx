@@ -265,7 +265,7 @@ export function MonitoringContent() {
                       </div>
                       <div className="bg-white/5 rounded-lg p-3">
                         <p className="text-[9px] text-white/40 font-body">Спестено</p>
-                        <p className="text-sm font-display font-bold text-accent">12.40 лв</p>
+                        <p className="text-sm font-display font-bold text-accent">6.30 €</p>
                       </div>
                     </div>
                   </div>
@@ -336,7 +336,7 @@ export function MonitoringContent() {
           >
             {[
               { val: 10500, sfx: " kWh", ctx: "Годишно производство" },
-              { val: 4200, sfx: " лв", ctx: "Годишни спестявания" },
+              { val: 2150, sfx: " €", ctx: "Годишни спестявания" },
               { val: 7, sfx: " т", ctx: "Спестен CO₂" },
               { val: 99, sfx: "%", ctx: "Системен uptime" },
             ].map((s) => (

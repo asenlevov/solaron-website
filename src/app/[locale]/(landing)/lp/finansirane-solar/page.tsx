@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
+import { submitFinancingLandingForm } from "@/lib/actions/contact-form";
 
 export async function generateMetadata({
   params,
@@ -28,11 +29,6 @@ export async function generateMetadata({
     title: t("title"),
     description: t("heroSubtitle"),
   };
-}
-
-async function submitFinancingForm(formData: FormData) {
-  "use server";
-  void formData;
 }
 
 export default async function FinansiraneSolarPage({
@@ -183,7 +179,7 @@ export default async function FinansiraneSolarPage({
             subtitle="Опишете имота и очаквания бюджет — ще върнем обратно с варианти и следващи стъпки."
           />
           <Card>
-            <form action={submitFinancingForm} className="space-y-4">
+            <form action={submitFinancingLandingForm} className="space-y-4">
               <div>
                 <label
                   htmlFor="fin-name"

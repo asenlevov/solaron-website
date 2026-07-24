@@ -137,7 +137,7 @@
     "days": "days",
     "kWp": "kWp",
     "kWh": "kWh",
-    "lv": "BGN",
+    "lv": "EUR",
     "perMonth": "/mo.",
     "perYear": "/yr.",
     "co2PerYear": "CO₂/yr.",
@@ -279,11 +279,11 @@
       "owner": "Owner",
       "manager": "Manager",
       "testimonial1": {
-        "quote": "The system has been running flawlessly since day one. In just 8 months, we've already saved over 4,000 BGN. Solaron was exceptionally professional — from the first meeting to the final test.",
+        "quote": "The system has been running flawlessly since day one. In just 8 months, we've already saved over €2,000. Solaron was exceptionally professional — from the first meeting to the final test.",
         "name": "Ivan Petrov",
         "location": "Kazanlak",
         "project": "5 kW system",
-        "savings": "4,000+ BGN"
+        "savings": "€2,000+"
       },
       "testimonial2": {
         "quote": "Professional approach from start to finish. The installation was completed in 2 days, and the system is performing above expectations. I've already recommended Solaron to three neighbors.",
@@ -349,9 +349,9 @@
       "locationLabel": "Location",
       "solarEnergyPerYear": "~{value} kWh/kWp solar energy per year",
       "monthlyConsumption": "Monthly consumption",
-      "preferLev": "Prefer in BGN",
-      "inLev": "In BGN ✓",
-      "lvPerMonth": "BGN/mo.",
+      "preferLev": "Prefer in EUR",
+      "inLev": "In EUR ✓",
+      "lvPerMonth": "EUR/mo.",
       "kWhPerMonth": "kWh/mo.",
       "avgHousehold": "Not sure? Average household: ~380 kWh/mo.",
       "roofOrientation": "Roof orientation",
@@ -361,13 +361,13 @@
       "east": "East",
       "west": "West",
       "monthlySavings": "Monthly savings",
-      "lvPerMonthUnit": "BGN/mo.",
-      "lvPerYear": "BGN/year",
+      "lvPerMonthUnit": "EUR/mo.",
+      "lvPerYear": "EUR/year",
       "in25Years": "over 25 years",
       "payback": "Payback",
       "paybackYears": "{value} years",
       "approximateCost": "Approximate cost",
-      "financingFrom": "Financing from ~{value} BGN/mo. with a bank loan",
+      "financingFrom": "Financing from ~€{value}/mo. with a bank loan",
       "fullConfiguration": "Full Configuration",
       "yearsShort": "yrs",
       "tonsShort": "t",
@@ -408,7 +408,7 @@
       "notFoundSubtitle": "Contact us for a free consultation.",
       "seeAll": "See All Questions",
       "q1": "How much does a solar system installation cost?",
-      "a1": "The price depends on the capacity and system type. For residential systems from 3 to 10 kWp, prices range between 5,000 and 18,000 BGN. We offer a free consultation and personalized quote.",
+      "a1": "The price depends on the capacity and system type. For residential systems from 3 to 10 kWp, prices range between €2,500 and €9,200. We offer a free consultation and personalized quote.",
       "q2": "How long does it take for the investment to pay off?",
       "a2": "At current electricity prices, a typical residential system pays for itself in 3–5 years. With net metering and optimal orientation, this period can be even shorter.",
       "q3": "What is net metering?",
@@ -514,7 +514,7 @@
       "monthlyLabel": "Monthly",
       "annualLabel": "Annual",
       "in25YearsLabel": "Over 25 years",
-      "beforeAfterNote": "Example for a household with a 5 kWp system at 250 BGN/mo. bill",
+      "beforeAfterNote": "Example for a household with a 5 kWp system at a €130/mo. bill",
       "processOverline": "The process",
       "processTitle": "Four steps to savings",
       "processStep1Title": "Free Consultation",
@@ -540,15 +540,15 @@
       "financingSubtitle": "Three ways to finance your system — choose the one that works for you",
       "financingCash": "Cash",
       "financingCashDesc": "One-time payment with maximum discount. Lowest total price.",
-      "financingCashDetail": "from 5,500 BGN",
+      "financingCashDetail": "from €2,800",
       "financingCashNote": "Best price",
       "financingCredit": "Loan",
       "financingCreditDesc": "Bank loan with low interest. Monthly payment is less than the savings.",
-      "financingCreditDetail": "from 95 BGN/mo.",
+      "financingCreditDetail": "from €49/mo.",
       "financingCreditNote": "Monthly payment is comparable to or less than your current electricity bill",
       "financingLeasing": "Leasing",
       "financingLeasingDesc": "Operating lease — no down payment. Pay less than your current bill.",
-      "financingLeasingDetail": "from 120 BGN/mo.",
+      "financingLeasingDetail": "from €61/mo.",
       "financingLeasingNote": "No down payment",
       "componentsOverline": "Components",
       "componentsTitle": "Leading brands, proven quality",
@@ -595,10 +595,10 @@
       "requestAudit": "Request an Energy Audit",
       "challengeOverline": "The challenge",
       "challengeTitle": "The energy problem in industry",
-      "challengeDesc1": "Industrial enterprises in Bulgaria pay an average of 0.22–0.28 BGN/kWh, with the peak component reaching up to 40% of the bill.",
+      "challengeDesc1": "Industrial enterprises in Bulgaria pay an average of €0.11–0.14/kWh, with the peak component reaching up to 40% of the bill.",
       "challengeDesc2": "A solar system not only reduces the cost per kWh but also 'shaves' peak consumption — exactly when the sun is strongest, your production is running at full capacity.",
       "challengeTags": ["High tariffs", "Peak surcharges", "Regulatory pressure", "Carbon taxes"],
-      "chartTitle": "Monthly Energy Costs (thousands BGN)",
+      "chartTitle": "Monthly Energy Costs (thousands EUR)",
       "chartWithout": "Without solar",
       "chartWith": "With solar",
       "archOverline": "Architecture",
@@ -729,7 +729,7 @@
       "electricityCost": "Electricity costs",
       "installedCapacity": "Installed capacity",
       "annualProduction": "Annual production",
-      "savingsPerYear": "BGN savings/yr.",
+      "savingsPerYear": "EUR savings/yr.",
       "roiLabel": "ROI"
     },
     "avtonomniSistemi": {
@@ -1100,7 +1100,7 @@
     "formCity": "City",
     "formPropertyType": "Property type",
     "formRoofArea": "Approximate roof area (m²)",
-    "formMonthlyBill": "Monthly electricity bill (BGN)",
+    "formMonthlyBill": "Monthly electricity bill (EUR)",
     "formMessage": "Message",
     "formSubmit": "Submit inquiry",
     "formSubmitting": "Submitting...",
@@ -1138,7 +1138,7 @@
       "panelCountLabel": "Number of panels",
       "batteryLabel": "Battery",
       "batteryCapacityLabel": "Battery capacity (kWh)",
-      "monthlyBillLabel": "Monthly bill (BGN)",
+      "monthlyBillLabel": "Monthly bill (EUR)",
       "cityLabel": "City",
       "orientationLabel": "Roof orientation",
       "orientationSouth": "South",
@@ -1172,7 +1172,7 @@
       "savingsLine": "Cumulative savings",
       "breakEvenPoint": "Break-even point",
       "yearLabel": "Year",
-      "savingsLabel": "Savings (BGN)"
+      "savingsLabel": "Savings (EUR)"
     }
   },
   "FAQ": {
@@ -1446,7 +1446,7 @@
     },
     "finansiraneSolar": {
       "title": "Solar System Financing | Solaron",
-      "heroTitle": "Solar System with 0 BGN Down Payment",
+      "heroTitle": "Solar System with €0 Down Payment",
       "heroSubtitle": "Financing with a monthly payment lower than your current electricity bill."
     },
     "solarSreshtuTok": {
@@ -1478,7 +1478,7 @@
   "FinancingPreview": {
     "title": "Financing",
     "subtitle": "Flexible financing solutions for every budget",
-    "fromPerMonth": "from {amount} BGN/mo.",
+    "fromPerMonth": "from €{amount}/mo.",
     "learnMore": "Learn more about financing"
   },
   "BeforeAfterComparison": {
@@ -1608,7 +1608,7 @@
     },
     "savings": {
       "title": "Up to 80% Savings",
-      "description": "The average household saves between 150 and 400 BGN per month."
+      "description": "The average household saves between €75 and €200 per month."
     },
     "battery": {
       "title": "Battery Storage",
@@ -1925,7 +1925,7 @@
       "leasing": {
         "title": "Financial Leasing",
         "desc": "Leasing with no down payment.",
-        "pros": ["0 BGN down payment", "Fixed installments", "Tax-efficient for businesses"],
+        "pros": ["€0 down payment", "Fixed installments", "Tax-efficient for businesses"],
         "cons": ["Ownership after full payment"]
       }
     },

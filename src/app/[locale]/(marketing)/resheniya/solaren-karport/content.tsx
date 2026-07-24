@@ -476,9 +476,9 @@ export function SolarenKarportContent() {
                   </div>
                   <div className="rounded-xl bg-accent/10 p-5 text-center">
                     <StatNumber
-                      value={58}
+                      value={30}
                       suffix=" хил."
-                      context="лв. спестявания/год."
+                      context="€ спестявания/год."
                       className="text-2xl text-accent"
                     />
                   </div>

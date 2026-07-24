@@ -102,6 +102,7 @@ export function FeaturedProjects() {
                   fill
                   grain
                   parallax
+                  sizes="(min-width: 1024px) 60vw, 100vw"
                   containerClassName="absolute inset-0"
                 />
               </div>
@@ -184,6 +185,7 @@ export function FeaturedProjects() {
                       alt={project.title}
                       fill
                       grain
+                      sizes="(min-width: 768px) 50vw, 100vw"
                       className="transition-transform duration-700 ease-out group-hover:scale-105"
                       containerClassName="absolute inset-0"
                     />

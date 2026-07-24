@@ -120,7 +120,7 @@ const TEXTS: Record<string, PdfTexts> = {
   bg: {
     numberLocale: "bg-BG",
     dateLocale: "bg-BG",
-    currency: (v) => `${new Intl.NumberFormat("bg-BG").format(Math.round(v))} лв.`,
+    currency: (v) => `${new Intl.NumberFormat("bg-BG").format(Math.round(v))} €`,
     orientations: { "Юг": "Юг", "Югоизток": "Югоизток", "Югозапад": "Югозапад", "Изток": "Изток", "Запад": "Запад" },
     fileName: "Solaron-Оферта.pdf",
 

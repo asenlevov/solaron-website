@@ -79,7 +79,10 @@ export interface SiteDetails {
 export interface PricingLineItem {
   id: string;
   label: string;
+  /** Unit price (per single unit). The line total is amount * quantity. */
   amount: number;
+  quantity: number;
+  unit: string;
   isDefault: boolean;
 }
 
@@ -88,25 +91,29 @@ export interface PricingConfig {
   vatRate: number;
 }
 
-export const DEFAULT_LINE_ITEMS: { id: string; label: string }[] = [
-  { id: "panels", label: "Панели" },
-  { id: "inverter", label: "Инвертор" },
-  { id: "battery", label: "Батерия" },
-  { id: "mounting", label: "Монтажна конструкция" },
-  { id: "installation", label: "Монтаж" },
-  { id: "design", label: "Проектиране" },
-  { id: "construction", label: "Конструкция" },
-  { id: "dc-cables", label: "DC Кабели, Конектори" },
-  { id: "ac-panel", label: "AC Табло" },
-  { id: "nyy-cable", label: "NYY AC Кабел" },
-  { id: "cables-scaffolding", label: "Кабели и временни скари" },
+export const DEFAULT_LINE_ITEMS: { id: string; label: string; unit: string }[] = [
+  { id: "panels", label: "Панели", unit: "бр." },
+  { id: "inverter", label: "Инвертор", unit: "бр." },
+  { id: "battery", label: "Батерия", unit: "бр." },
+  { id: "installation", label: "Монтаж", unit: "компл." },
+  { id: "design", label: "Проектиране", unit: "компл." },
+  { id: "construction", label: "Конструкция", unit: "компл." },
+  { id: "dc-cables", label: "DC Кабели, Конектори", unit: "компл." },
+  { id: "ac-panel", label: "AC Табло", unit: "бр." },
+  { id: "nyy-cable", label: "NYY AC Кабел", unit: "м" },
+  { id: "cables-scaffolding", label: "Кабели и Телени скари", unit: "м" },
 ];
+
+// Selectable measurement units for pricing line items.
+export const UNIT_OPTIONS = ["бр.", "компл.", "м", "м²", "кг", "л.м.", "пакет", "услуга"];
 
 export function createDefaultLineItems(): PricingLineItem[] {
   return DEFAULT_LINE_ITEMS.map((item) => ({
     id: item.id,
     label: item.label,
     amount: 0,
+    quantity: 1,
+    unit: item.unit,
     isDefault: true,
   }));
 }
@@ -114,6 +121,8 @@ export function createDefaultLineItems(): PricingLineItem[] {
 export interface SlideConfig {
   id: string;
   label: string;
+  /** The data-slide number in the HTML template this config controls. */
+  slide: number;
   enabled: boolean;
   order: number;
 }
@@ -138,6 +147,8 @@ export type OfferAction =
   | { type: "SET_SITE"; payload: Partial<SiteDetails> }
   | { type: "SET_VAT_RATE"; payload: number }
   | { type: "SET_LINE_ITEM_AMOUNT"; payload: { id: string; amount: number } }
+  | { type: "SET_LINE_ITEM_QUANTITY"; payload: { id: string; quantity: number } }
+  | { type: "SET_LINE_ITEM_UNIT"; payload: { id: string; unit: string } }
   | { type: "RENAME_LINE_ITEM"; payload: { id: string; label: string } }
   | { type: "REMOVE_LINE_ITEM"; payload: string }
   | { type: "ADD_LINE_ITEM" }
@@ -147,33 +158,36 @@ export type OfferAction =
   | { type: "TOGGLE_SLIDE"; payload: string }
   | { type: "RESET"; payload: OfferState };
 
-export const ALL_SLIDE_DEFS: { id: string; label: string }[] = [
-  { id: "cover", label: "Заглавна страница" },
-  { id: "executive", label: "Обобщение" },
-  { id: "bill", label: "Сметка преди/след" },
-  { id: "roof", label: "Анализ на покрива" },
-  { id: "system", label: "Системно решение" },
-  { id: "bom", label: "Спецификация (BOM)" },
-  { id: "pricing", label: "Ценово предложение" },
-  { id: "roi", label: "Възвръщаемост" },
-  { id: "faq", label: "Често задавани въпроси" },
-  { id: "portfolio", label: "Наши проекти" },
-  { id: "warranty", label: "Гаранции" },
-  { id: "progress", label: "Какво сме направили" },
-  { id: "monitoring", label: "Мониторинг" },
-  { id: "whynow", label: "Защо точно сега" },
-  { id: "cta", label: "Следващи стъпки" },
-  { id: "confirmation", label: "Потвърждение" },
+// `slide` is the data-slide="N" number in solaron-oferta-dom-template.html.
+// Numbers 3 (bill) and 4 (roof) are intentionally absent — those sections were
+// removed from the offer. The remaining numbers keep their original template
+// values so no HTML renumbering is required.
+export const ALL_SLIDE_DEFS: { id: string; label: string; slide: number }[] = [
+  { id: "cover", label: "Заглавна страница", slide: 1 },
+  { id: "executive", label: "Обобщение", slide: 2 },
+  { id: "system", label: "Системно решение", slide: 5 },
+  { id: "bom", label: "Спецификация (BOM)", slide: 6 },
+  { id: "pricing", label: "Ценово предложение", slide: 7 },
+  { id: "roi", label: "Възвръщаемост", slide: 8 },
+  { id: "faq", label: "Често задавани въпроси", slide: 9 },
+  { id: "portfolio", label: "Наши проекти", slide: 10 },
+  { id: "warranty", label: "Гаранции", slide: 11 },
+  { id: "progress", label: "Какво сме направили", slide: 12 },
+  { id: "monitoring", label: "Мониторинг", slide: 13 },
+  { id: "whynow", label: "Защо точно сега", slide: 14 },
+  { id: "cta", label: "Следващи стъпки", slide: 15 },
+  { id: "confirmation", label: "Потвърждение", slide: 16 },
 ];
 
-const DISABLED_BY_DEFAULT = new Set(["bill", "roof", "pricing", "faq", "whynow", "cta"]);
+const DISABLED_BY_DEFAULT = new Set(["pricing", "faq", "whynow", "cta"]);
 
 export function getDefaultSlides(offerType: OfferType): SlideConfig[] {
-  return ALL_SLIDE_DEFS.map((s, i) => ({
+  return ALL_SLIDE_DEFS.map((s) => ({
     id: s.id,
     label: s.label,
+    slide: s.slide,
     enabled: !DISABLED_BY_DEFAULT.has(s.id),
-    order: i,
+    order: s.slide,
   }));
 }
 
@@ -193,6 +207,13 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
   const now = new Date();
   const validUntil = new Date(now);
   validUntil.setDate(validUntil.getDate() + 30);
+
+  // Component counts are edited in the pricing table; seed the matching line
+  // item quantities from the system defaults so they start in sync.
+  const initialCounts: Record<string, number> = { panels: 14, inverter: 1, battery: 1 };
+  const lineItems = createDefaultLineItems().map((item) =>
+    item.id in initialCounts ? { ...item, quantity: initialCounts[item.id] } : item,
+  );
 
   return {
     type: offerType,
@@ -227,7 +248,7 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
       city: "София",
     },
     pricing: {
-      lineItems: createDefaultLineItems(),
+      lineItems,
       vatRate: offerType === "home" ? 0 : 20,
     },
     slides: getDefaultSlides(offerType),
@@ -324,6 +345,35 @@ export function offerReducer(state: OfferState, action: OfferAction): OfferState
           ),
         },
       };
+    case "SET_LINE_ITEM_QUANTITY": {
+      const lineItems = state.pricing.lineItems.map((item) =>
+        item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item,
+      );
+      // Quantity is now edited only in the pricing table — keep the matching
+      // component counts in sync so system sizing / BOM stay correct.
+      const countKey =
+        action.payload.id === "panels"
+          ? "panelCount"
+          : action.payload.id === "inverter"
+            ? "inverterCount"
+            : action.payload.id === "battery"
+              ? "batteryCount"
+              : null;
+      const system = countKey
+        ? { ...state.system, [countKey]: action.payload.quantity }
+        : state.system;
+      return { ...state, system, pricing: { ...state.pricing, lineItems } };
+    }
+    case "SET_LINE_ITEM_UNIT":
+      return {
+        ...state,
+        pricing: {
+          ...state.pricing,
+          lineItems: state.pricing.lineItems.map((item) =>
+            item.id === action.payload.id ? { ...item, unit: action.payload.unit } : item,
+          ),
+        },
+      };
     case "RENAME_LINE_ITEM":
       return {
         ...state,
@@ -349,7 +399,7 @@ export function offerReducer(state: OfferState, action: OfferAction): OfferState
           ...state.pricing,
           lineItems: [
             ...state.pricing.lineItems,
-            { id: `custom-${++lineItemCounter}`, label: "", amount: 0, isDefault: false },
+            { id: `custom-${++lineItemCounter}`, label: "", amount: 0, quantity: 1, unit: "бр.", isDefault: false },
           ],
         },
       };
@@ -360,7 +410,7 @@ export function offerReducer(state: OfferState, action: OfferAction): OfferState
           ...state.pricing,
           lineItems: [
             ...state.pricing.lineItems,
-            { id: `custom-${++lineItemCounter}`, label: action.payload.name, amount: action.payload.amount, isDefault: false },
+            { id: `custom-${++lineItemCounter}`, label: action.payload.name, amount: action.payload.amount, quantity: 1, unit: "бр.", isDefault: false },
           ],
         },
       };

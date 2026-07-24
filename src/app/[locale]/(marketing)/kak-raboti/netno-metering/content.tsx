@@ -391,8 +391,8 @@ function MarketPricingSection() {
                   месеци може да свали цените значително в обедните часове (12:00–16:00).
                 </p>
                 <div className="mt-6 flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-foreground">0.10–0.25</span>
-                  <span className="text-sm text-foreground-secondary">лв./kWh</span>
+                  <span className="text-3xl font-bold text-foreground">0.05–0.13</span>
+                  <span className="text-sm text-foreground-secondary">€/kWh</span>
                 </div>
                 <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-stone-200">
                   <motion.div
@@ -418,8 +418,8 @@ function MarketPricingSection() {
                   но обикновено по-ниски. Потреблението в тези часове идва от мрежата.
                 </p>
                 <div className="mt-6 flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-foreground">0.05–0.12</span>
-                  <span className="text-sm text-foreground-secondary">лв./kWh</span>
+                  <span className="text-3xl font-bold text-foreground">0.03–0.06</span>
+                  <span className="text-sm text-foreground-secondary">€/kWh</span>
                 </div>
                 <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-stone-200">
                   <motion.div
@@ -512,8 +512,8 @@ function FsesFeeSection() {
               <div className="rounded-2xl bg-accent/10 p-6 text-center">
                 <TrendingUp className="mx-auto mb-3 size-8 text-accent" strokeWidth={1.5} />
                 <p className="text-sm font-medium text-accent">Годишна такса ФСЕС</p>
-                <p className="mt-1 font-display text-3xl font-bold text-accent">~45 лв.</p>
-                <p className="mt-1 text-xs text-accent/70">~3.75 лв./мес.</p>
+                <p className="mt-1 font-display text-3xl font-bold text-accent">~23 €</p>
+                <p className="mt-1 text-xs text-accent/70">~1.90 €/мес.</p>
               </div>
             </div>
           </TiltCard>
@@ -532,7 +532,7 @@ function FsesFeeSection() {
           </motion.div>
           <motion.div variants={staggerItem}>
             <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center">
-              <StatNumber value={45} suffix=" лв." context="типична годишна такса (5kWp)" className="text-4xl" />
+              <StatNumber value={23} suffix=" €" context="типична годишна такса (5kWp)" className="text-4xl" />
             </div>
           </motion.div>
           <motion.div variants={staggerItem}>
@@ -549,8 +549,8 @@ function FsesFeeSection() {
           className="mt-8 text-center text-foreground-secondary"
         >
           Таксата се начислява върху цялото производство, не само върху излишъка.
-          При 5 kWp система и средна борсова цена от 0.15 лв./kWh, годишният разход е минимален
-          спрямо спестяванията от 1 500–2 000 лв.
+          При 5 kWp система и средна борсова цена от 0.08 €/kWh, годишният разход е минимален
+          спрямо спестяванията от 770–1 000 €.
         </motion.p>
       </div>
     </section>

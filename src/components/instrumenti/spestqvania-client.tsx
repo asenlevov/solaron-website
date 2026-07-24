@@ -28,7 +28,7 @@ function cumulativeUtilitySpend(
 }
 
 export function SpestqvaniaClient() {
-  const [monthlyBill, setMonthlyBill] = useState(150);
+  const [monthlyBill, setMonthlyBill] = useState(75);
   const [withBattery, setWithBattery] = useState(false);
 
   const savingsRate = withBattery ? 0.85 : 0.7;
@@ -77,7 +77,7 @@ export function SpestqvaniaClient() {
               htmlFor="bill"
               className="mb-2 block text-center font-body text-sm font-medium text-foreground-secondary"
             >
-              Месечна сметка (лв.)
+              Месечна сметка (€)
             </label>
             <input
               id="bill"
@@ -126,7 +126,7 @@ export function SpestqvaniaClient() {
                 key={`${savings25}-${withBattery}`}
                 value={Math.round(savings25)}
                 duration={1200}
-                suffix=" лв."
+                suffix=" €"
               />
             </p>
           </div>

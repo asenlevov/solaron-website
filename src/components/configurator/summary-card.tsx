@@ -204,7 +204,7 @@ export function SummaryCard({
                 roofArea: roofArea ?? 80,
                 roofPitch: roofPitch ?? 30,
                 systemCost: systemCost ?? panelCount * 1200,
-                monthlyBill: monthlyBill ?? 150,
+                monthlyBill: monthlyBill ?? 75,
               },
               locale,
             );

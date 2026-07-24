@@ -14,7 +14,7 @@ const FINANCING_OPTIONS = [
   {
     icon: Wallet,
     title: "Собствени Средства",
-    monthly: "~120 лв./мес. спестявания",
+    monthly: "~60 €/мес. спестявания",
     benefit: "Максимална възвръщаемост",
     timeline: "Изплащане за 3-5 години",
     detail:
@@ -23,7 +23,7 @@ const FINANCING_OPTIONS = [
   {
     icon: Building2,
     title: "Банков Кредит",
-    monthly: "~89 лв./мес. вноска",
+    monthly: "~45 €/мес. вноска",
     benefit: "Ниска лихва от 3.5%",
     timeline: "Спестявания от ден 1",
     detail:
@@ -32,7 +32,7 @@ const FINANCING_OPTIONS = [
   {
     icon: FileText,
     title: "Лизинг",
-    monthly: "~99 лв./мес.",
+    monthly: "~50 €/мес.",
     benefit: "Без начална инвестиция",
     timeline: "Гъвкави условия",
     detail:
@@ -62,7 +62,7 @@ export function FinancingPreview() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          За система 5 kWp (~8,500 лв.)
+          За система 5 kWp (~4,300 €)
         </motion.p>
 
         <motion.div

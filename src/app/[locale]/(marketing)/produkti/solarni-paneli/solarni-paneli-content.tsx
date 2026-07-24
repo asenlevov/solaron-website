@@ -12,9 +12,9 @@ import { StatNumber } from "@/components/ui/stat-number";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { GlowCard } from "@/components/ui/glow-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
+import dynamic from "next/dynamic";
 import { ProductPageProjects, RelatedProducts } from "@/components/marketing/product-page-shared";
-import { SceneCanvasDynamic } from "@/components/3d/scene-container";
-import { SolarPanel } from "@/components/3d/solar-panel";
+import { SceneLoadingFallback } from "@/components/3d/scene-container";
 import { REAL_IMAGES, PRODUCT_IMAGES } from "@/data/images";
 import {
   revealFromBottom,
@@ -40,6 +40,11 @@ import {
   Thermometer,
   ChevronDown,
 } from "lucide-react";
+
+const PanelViewer3D = dynamic(() => import("@/components/3d/panel-viewer-3d"), {
+  ssr: false,
+  loading: () => <SceneLoadingFallback />,
+});
 
 /* ── Data ─────────────────────────────────────────────────── */
 
@@ -503,12 +508,7 @@ export function SolarniPaneliContent() {
             Разгледайте панела
           </TextReveal>
           <div className="aspect-[16/9] min-h-[240px] md:min-h-[400px] max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10">
-            <SceneCanvasDynamic
-              camera={{ position: [0, 1.5, 3.5], fov: 35 }}
-              autoRotate
-            >
-              <SolarPanel position={[0, 0.5, 0]} rotation={[-0.3, Math.PI, 0]} scale={1.5} />
-            </SceneCanvasDynamic>
+            <PanelViewer3D />
           </div>
           <p className="mt-4 text-center text-sm text-white/50 font-body">
             Завъртете с мишката за да разгледате от всеки ъгъл

@@ -40,7 +40,7 @@ export default function OfferMakerPage() {
 
     const annualSavingsEur = calculateAnnualSavings(annualProductionKwh, 0.25);
 
-    const totalPriceEur = state.pricing.lineItems.reduce((sum, item) => sum + item.amount, 0);
+    const totalPriceEur = state.pricing.lineItems.reduce((sum, item) => sum + item.amount * item.quantity, 0);
 
     const vat = calculateVAT(totalPriceEur, state.pricing.vatRate);
     const paybackYears = calculatePaybackYears(vat.total, annualSavingsEur);
@@ -71,12 +71,12 @@ export default function OfferMakerPage() {
 
   const handleExport = useCallback(async () => {
     try {
-      const res = await fetch("/solaron-oferta-dom-template.html");
+      const res = await fetch("/solaron-oferta-dom-template.html", { cache: "no-store" });
       const templateHtml = await res.text();
       let html = generateOfferHtml(templateHtml, state, computed);
       html = fixImagePaths(html);
 
-      const printScript = `<style>@page { size: landscape; margin: 0; }</style>
+      const printScript = `<style>@page { size: 1600px 900px; margin: 0; }</style>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('print-mode');
@@ -86,7 +86,21 @@ window.addEventListener('DOMContentLoaded', function() {
   if (nav) nav.style.display = 'none';
   var hint = document.querySelector('.hint');
   if (hint) hint.style.display = 'none';
-  setTimeout(function() { window.print(); }, 500);
+  var images = document.querySelectorAll('img');
+  var loaded = 0;
+  var total = images.length;
+  function tryPrint() {
+    loaded++;
+    if (loaded >= total) setTimeout(function() { window.print(); }, 300);
+  }
+  if (total === 0) { setTimeout(function() { window.print(); }, 300); }
+  else {
+    images.forEach(function(img) {
+      if (img.complete) tryPrint();
+      else { img.onload = tryPrint; img.onerror = tryPrint; }
+    });
+    setTimeout(function() { window.print(); }, 3000);
+  }
 });
 <\/script>`;
 

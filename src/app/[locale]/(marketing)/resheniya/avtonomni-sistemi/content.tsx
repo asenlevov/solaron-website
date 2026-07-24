@@ -213,7 +213,7 @@ export function AvtonomniSistemiContent() {
                 <rect x="180" y="40" width="120" height="80" rx="12" className="fill-accent/10 stroke-accent" strokeWidth="1.5" />
                 <text x="240" y="72" textAnchor="middle" className="fill-accent text-[11px] font-semibold">Off-Grid</text>
                 <text x="240" y="90" textAnchor="middle" className="fill-accent/70 text-[9px]">100% автономия</text>
-                <text x="240" y="105" textAnchor="middle" className="fill-accent/70 text-[9px]">0 лв./мес.</text>
+                <text x="240" y="105" textAnchor="middle" className="fill-accent/70 text-[9px]">0 €/мес.</text>
                 <circle cx="240" cy="170" r="30" className="fill-accent/10 stroke-accent" strokeWidth="1.5" />
                 <text x="240" y="168" textAnchor="middle" className="fill-accent text-[10px] font-bold">☀</text>
                 <text x="240" y="182" textAnchor="middle" className="fill-accent/70 text-[8px]">Свободна</text>

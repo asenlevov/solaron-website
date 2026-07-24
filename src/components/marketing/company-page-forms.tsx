@@ -1,11 +1,18 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useActionState, useMemo } from "react";
 import { CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  submitCareersForm,
+  submitContactForm,
+  type FormActionState,
+} from "@/lib/actions/contact-form";
 import { cn } from "@/lib/utils";
+
+const initialState: FormActionState = { ok: false };
 
 export function ContactPageForm() {
   const searchParams = useSearchParams();
@@ -18,7 +25,10 @@ export function ContactPageForm() {
     };
   }, [searchParams]);
 
-  const [submitted, setSubmitted] = useState(false);
+  const [state, formAction, pending] = useActionState(
+    submitContactForm,
+    initialState,
+  );
 
   const defaultMessage = useMemo(() => {
     if (
@@ -53,20 +63,17 @@ export function ContactPageForm() {
         </p>
       ) : null}
 
-      <form
-        className="space-y-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSubmitted(true);
-        }}
-      >
+      <form className="space-y-5" action={formAction}>
+        <input type="hidden" name="source" value="Контакти" />
+
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block space-y-2 font-body text-sm font-medium text-foreground">
             Име
             <input
               name="name"
               required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
               autoComplete="name"
             />
           </label>
@@ -76,7 +83,8 @@ export function ContactPageForm() {
               name="phone"
               type="tel"
               required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
               autoComplete="tel"
             />
           </label>
@@ -88,7 +96,8 @@ export function ContactPageForm() {
             name="email"
             type="email"
             required
-            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+            disabled={pending || state.ok}
+            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             autoComplete="email"
           />
         </label>
@@ -98,7 +107,8 @@ export function ContactPageForm() {
           <select
             name="projectType"
             required
-            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+            disabled={pending || state.ok}
+            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             defaultValue=""
           >
             <option value="" disabled>
@@ -119,17 +129,19 @@ export function ContactPageForm() {
               type="number"
               min={0}
               step={1}
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
           <label className="block space-y-2 font-body text-sm font-medium text-foreground">
-            Месечна сметка за ток (лв., по избор)
+            Месечна сметка за ток (€, по избор)
             <input
               name="monthlyBill"
               type="number"
               min={0}
               step={1}
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             />
           </label>
         </div>
@@ -141,21 +153,37 @@ export function ContactPageForm() {
             name="message"
             rows={5}
             defaultValue={defaultMessage}
-            className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+            disabled={pending || state.ok}
+            className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           />
         </label>
 
-        <Button type="submit" size="lg" variant="primary" className="w-full sm:w-auto">
-          Изпрати запитване
+        <Button
+          type="submit"
+          size="lg"
+          variant="primary"
+          className="w-full sm:w-auto"
+          disabled={pending || state.ok}
+        >
+          {pending ? "Изпращане..." : "Изпрати запитване"}
         </Button>
       </form>
+
+      {state.error ? (
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 font-body text-sm text-destructive"
+        >
+          {state.error}
+        </div>
+      ) : null}
 
       <div
         role="status"
         aria-live="polite"
         className={cn(
           "flex items-start gap-3 rounded-lg border border-success/30 bg-success-light px-4 py-3 font-body text-sm text-success",
-          !submitted && "hidden",
+          !state.ok && "hidden",
         )}
       >
         <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden />
@@ -168,24 +196,22 @@ export function ContactPageForm() {
 }
 
 export function CareersApplicationForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [state, formAction, pending] = useActionState(
+    submitCareersForm,
+    initialState,
+  );
 
   return (
     <div className="space-y-6">
-      <form
-        className="space-y-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSubmitted(true);
-        }}
-      >
+      <form className="space-y-5" action={formAction}>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block space-y-2 font-body text-sm font-medium text-foreground">
             Име и фамилия
             <input
               name="name"
               required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
               autoComplete="name"
             />
           </label>
@@ -195,7 +221,8 @@ export function CareersApplicationForm() {
               name="email"
               type="email"
               required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+              disabled={pending || state.ok}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
               autoComplete="email"
             />
           </label>
@@ -206,7 +233,8 @@ export function CareersApplicationForm() {
           <select
             name="position"
             required
-            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+            disabled={pending || state.ok}
+            className="w-full rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             defaultValue=""
           >
             <option value="" disabled>
@@ -224,22 +252,32 @@ export function CareersApplicationForm() {
             name="message"
             rows={5}
             required
+            disabled={pending || state.ok}
             placeholder="Кратко представяне, опит и мотивация"
-            className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring"
+            className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 font-body text-foreground outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           />
         </label>
 
-        <Button type="submit" size="lg" variant="primary">
-          Изпрати кандидатура
+        <Button type="submit" size="lg" variant="primary" disabled={pending || state.ok}>
+          {pending ? "Изпращане..." : "Изпрати кандидатура"}
         </Button>
       </form>
+
+      {state.error ? (
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 font-body text-sm text-destructive"
+        >
+          {state.error}
+        </div>
+      ) : null}
 
       <div
         role="status"
         aria-live="polite"
         className={cn(
           "flex items-start gap-3 rounded-lg border border-success/30 bg-success-light px-4 py-3 font-body text-sm text-success",
-          !submitted && "hidden",
+          !state.ok && "hidden",
         )}
       >
         <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden />

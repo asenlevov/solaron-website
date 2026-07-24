@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { OfferState, OfferAction, OfferType } from "./offer-types";
-import { DEFAULT_LINE_ITEMS } from "./offer-types";
+import { DEFAULT_LINE_ITEMS, UNIT_OPTIONS } from "./offer-types";
 import {
   panels,
   inverters,
@@ -10,8 +10,6 @@ import {
   mountingTypes,
   evChargerTiers,
 } from "@/data/products";
-import { ORIENTATIONS } from "@/lib/offer-calculations";
-import { CITY_IRRADIANCE } from "@/lib/electricity-prices";
 import { Sun, Building2, Tractor, Plus, X } from "lucide-react";
 
 export interface ComputedValues {
@@ -38,9 +36,8 @@ interface OfferWizardProps {
 const STEPS = [
   { num: 1, label: "Тип и клиент" },
   { num: 2, label: "Система" },
-  { num: 3, label: "Обект" },
-  { num: 4, label: "Ценообразуване" },
-  { num: 5, label: "Слайдове" },
+  { num: 3, label: "Ценообразуване" },
+  { num: 4, label: "Слайдове" },
 ];
 
 const OFFER_TYPES: { value: OfferType; label: string; icon: typeof Sun }[] = [
@@ -345,42 +342,25 @@ export function OfferWizard({
           </h2>
 
           <div className="space-y-4">
-            <div className="grid grid-cols-[1fr_auto] gap-3 items-end">
-              <div>
-                <label className={labelClass}>Панел</label>
-                <select
-                  className={selectClass}
-                  value={state.system.panelId}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "SET_SYSTEM",
-                      payload: { panelId: e.target.value },
-                    })
-                  }
-                >
-                  {panels.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} — {p.wattage}W ({p.tech})
-                    </option>
-                  ))}
-                  <option value="custom">✎ Друг (ръчно)</option>
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Брой</label>
-                <input
-                  type="number"
-                  min={1}
-                  className={numberClass}
-                  value={state.system.panelCount}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "SET_SYSTEM",
-                      payload: { panelCount: Number(e.target.value) },
-                    })
-                  }
-                />
-              </div>
+            <div>
+              <label className={labelClass}>Панел</label>
+              <select
+                className={selectClass}
+                value={state.system.panelId}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_SYSTEM",
+                    payload: { panelId: e.target.value },
+                  })
+                }
+              >
+                {panels.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name} — {p.wattage}W ({p.tech})
+                  </option>
+                ))}
+                <option value="custom">✎ Друг (ръчно)</option>
+              </select>
             </div>
 
             {state.system.panelId === "custom" && (
@@ -478,47 +458,30 @@ export function OfferWizard({
               </div>
             )}
 
-            <div className="grid grid-cols-[1fr_auto] gap-3 items-end">
-              <div>
-                <label className={labelClass}>Инвертор</label>
-                <select
-                  className={selectClass}
-                  value={state.system.inverterId}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "SET_SYSTEM",
-                      payload: { inverterId: e.target.value },
-                    })
-                  }
-                >
-                  {Object.entries(invertersByBrand).map(([brand, models]) => (
-                    <optgroup key={brand} label={brand}>
-                      {models.map((inv) => (
-                        <option key={inv.id} value={inv.id}>
-                          {inv.model} — {inv.powerKw} kW ({inv.phases}Ф,{" "}
-                          {inv.type})
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                  <option value="custom">✎ Друг (ръчно)</option>
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Брой</label>
-                <input
-                  type="number"
-                  min={1}
-                  className={numberClass}
-                  value={state.system.inverterCount}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "SET_SYSTEM",
-                      payload: { inverterCount: Number(e.target.value) },
-                    })
-                  }
-                />
-              </div>
+            <div>
+              <label className={labelClass}>Инвертор</label>
+              <select
+                className={selectClass}
+                value={state.system.inverterId}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_SYSTEM",
+                    payload: { inverterId: e.target.value },
+                  })
+                }
+              >
+                {Object.entries(invertersByBrand).map(([brand, models]) => (
+                  <optgroup key={brand} label={brand}>
+                    {models.map((inv) => (
+                      <option key={inv.id} value={inv.id}>
+                        {inv.model} — {inv.powerKw} kW ({inv.phases}Ф,{" "}
+                        {inv.type})
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+                <option value="custom">✎ Друг (ръчно)</option>
+              </select>
             </div>
 
             {state.system.inverterId === "custom" && (
@@ -654,43 +617,26 @@ export function OfferWizard({
 
               {state.system.hasBattery && (
                 <>
-                  <div className="grid grid-cols-[1fr_auto] gap-3 items-end">
-                    <div>
-                      <label className={labelClass}>Модел</label>
-                      <select
-                        className={selectClass}
-                        value={state.system.batteryId}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "SET_SYSTEM",
-                            payload: { batteryId: e.target.value },
-                          })
-                        }
-                      >
-                        {batteries.map((b) => (
-                          <option key={b.id} value={b.id}>
-                            {b.brandName} — {b.capacityKwh.min}–
-                            {b.capacityKwh.max} kWh ({b.chemistry})
-                          </option>
-                        ))}
-                        <option value="custom">✎ Друг (ръчно)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className={labelClass}>Брой</label>
-                      <input
-                        type="number"
-                        min={1}
-                        className={numberClass}
-                        value={state.system.batteryCount}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "SET_SYSTEM",
-                            payload: { batteryCount: Number(e.target.value) },
-                          })
-                        }
-                      />
-                    </div>
+                  <div>
+                    <label className={labelClass}>Модел</label>
+                    <select
+                      className={selectClass}
+                      value={state.system.batteryId}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "SET_SYSTEM",
+                          payload: { batteryId: e.target.value },
+                        })
+                      }
+                    >
+                      {batteries.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.brandName} — {b.capacityKwh.min}–
+                          {b.capacityKwh.max} kWh ({b.chemistry})
+                        </option>
+                      ))}
+                      <option value="custom">✎ Друг (ръчно)</option>
+                    </select>
                   </div>
 
                   {state.system.batteryId === "custom" && (
@@ -786,22 +732,6 @@ export function OfferWizard({
               </div>
             </div>
 
-            <div>
-              <label className={labelClass}>Smart Meter (брой)</label>
-              <input
-                type="number"
-                min={0}
-                className={numberClass}
-                value={state.system.smartMeterCount}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SYSTEM",
-                    payload: { smartMeterCount: Number(e.target.value) },
-                  })
-                }
-              />
-            </div>
-
             <div className="rounded-xl border border-border p-4 space-y-3">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
@@ -845,136 +775,87 @@ export function OfferWizard({
           </div>
         </section>
 
-        {/* ── Step 3: Обект ── */}
+        {/* ── Step 3: Ценообразуване ── */}
         <section id="wizard-step-3">
           <h2 className="font-display text-lg font-semibold text-foreground mb-4">
-            3. Обект
-          </h2>
-
-          <div className="space-y-4">
-            <div>
-              <label className={labelClass}>Текуща месечна сметка (€/мес)</label>
-              <input
-                type="number"
-                min={0}
-                className={numberClass}
-                value={state.site.currentMonthlyBill}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SITE",
-                    payload: { currentMonthlyBill: Number(e.target.value) },
-                  })
-                }
-              />
-            </div>
-
-            <div>
-              <label className={labelClass}>Покривна площ (m²)</label>
-              <input
-                type="number"
-                min={0}
-                className={numberClass}
-                value={state.site.roofArea}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SITE",
-                    payload: { roofArea: Number(e.target.value) },
-                  })
-                }
-              />
-            </div>
-
-            <div>
-              <label className={labelClass}>Ориентация</label>
-              <select
-                className={selectClass}
-                value={state.site.orientation}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SITE",
-                    payload: { orientation: e.target.value as typeof state.site.orientation },
-                  })
-                }
-              >
-                {ORIENTATIONS.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className={labelClass}>Наклон на покрива (°)</label>
-              <input
-                type="number"
-                min={0}
-                max={90}
-                className={numberClass}
-                value={state.site.tiltDegrees}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SITE",
-                    payload: { tiltDegrees: Number(e.target.value) },
-                  })
-                }
-              />
-            </div>
-
-            <div>
-              <label className={labelClass}>Град</label>
-              <select
-                className={selectClass}
-                value={state.site.city}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SITE",
-                    payload: { city: e.target.value },
-                  })
-                }
-              >
-                {Object.keys(CITY_IRRADIANCE).map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Step 4: Ценообразуване ── */}
-        <section id="wizard-step-4">
-          <h2 className="font-display text-lg font-semibold text-foreground mb-4">
-            4. Ценообразуване
+            3. Ценообразуване
           </h2>
 
           <div className="space-y-2 mb-4">
             {state.pricing.lineItems.map((item) => (
-              <div key={item.id} className="flex items-center gap-2">
-                {item.isDefault ? (
-                  <span className="font-body text-sm text-foreground-secondary flex-1 truncate">
-                    {item.label}
+              <div key={item.id} className="rounded-lg border border-border bg-white p-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  {item.isDefault ? (
+                    <span className="font-body text-sm font-medium text-foreground flex-1 truncate">
+                      {item.label}
+                    </span>
+                  ) : (
+                    <input
+                      type="text"
+                      className={inputClass + " flex-1"}
+                      placeholder="Наименование"
+                      value={item.label}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "RENAME_LINE_ITEM",
+                          payload: { id: item.id, label: e.target.value },
+                        })
+                      }
+                    />
+                  )}
+                  <span className="font-body text-sm font-semibold text-foreground whitespace-nowrap tabular-nums">
+                    {fmt(item.amount * item.quantity)} €
                   </span>
-                ) : (
-                  <input
-                    type="text"
-                    className={inputClass + " flex-1"}
-                    placeholder="Наименование"
-                    value={item.label}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "RENAME_LINE_ITEM",
-                        payload: { id: item.id, label: e.target.value },
-                      })
-                    }
-                  />
-                )}
-                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => dispatch({ type: "REMOVE_LINE_ITEM", payload: item.id })}
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-foreground-secondary transition-colors hover:bg-red-50 hover:text-red-500"
+                    title="Премахни"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                <div className="flex items-center gap-1.5">
                   <input
                     type="number"
                     min={0}
-                    className={numberClass}
+                    aria-label="Количество"
+                    className="w-14 rounded-lg border border-border bg-white px-2 py-1.5 font-body text-sm text-center focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "SET_LINE_ITEM_QUANTITY",
+                        payload: { id: item.id, quantity: e.target.value === "" ? 0 : Number(e.target.value) },
+                      })
+                    }
+                  />
+                  <select
+                    aria-label="Мерна единица"
+                    className="w-[76px] rounded-lg border border-border bg-white px-2 py-1.5 font-body text-sm text-center appearance-none focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
+                    value={item.unit}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "SET_LINE_ITEM_UNIT",
+                        payload: { id: item.id, unit: e.target.value },
+                      })
+                    }
+                  >
+                    {(UNIT_OPTIONS.includes(item.unit)
+                      ? UNIT_OPTIONS
+                      : [item.unit, ...UNIT_OPTIONS]
+                    ).map((u) => (
+                      <option key={u} value={u}>
+                        {u}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="font-body text-xs text-foreground-secondary">×</span>
+                  <input
+                    type="number"
+                    min={0}
+                    aria-label="Единична цена"
+                    placeholder="Ед. цена"
+                    className="flex-1 rounded-lg border border-border bg-white px-3 py-1.5 font-body text-sm text-right focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
                     value={item.amount || ""}
                     onChange={(e) =>
                       dispatch({
@@ -985,14 +866,6 @@ export function OfferWizard({
                   />
                   <span className="font-body text-xs text-foreground-secondary">€</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => dispatch({ type: "REMOVE_LINE_ITEM", payload: item.id })}
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-foreground-secondary transition-colors hover:bg-red-50 hover:text-red-500"
-                  title="Премахни"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
               </div>
             ))}
           </div>
@@ -1058,10 +931,10 @@ export function OfferWizard({
           </div>
         </section>
 
-        {/* ── Step 5: Слайдове ── */}
-        <section id="wizard-step-5">
+        {/* ── Step 4: Слайдове ── */}
+        <section id="wizard-step-4">
           <h2 className="font-display text-lg font-semibold text-foreground mb-4">
-            5. Слайдове
+            4. Слайдове
           </h2>
 
           <div className="space-y-1">
