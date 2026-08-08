@@ -157,6 +157,12 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:10px 0 4px;cursor
 }
 .field input:focus{border-color:var(--accent);outline:none}
 .consent{font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+.formerr{
+  display:none;margin-top:14px;border:1.5px solid #e0bdb2;border-left-width:4px;border-radius:10px;
+  background:#fdf6f3;padding:12px 14px;font-size:14px;line-height:1.55;color:#7c3320;
+}
+.formerr.on{display:block}
+.formerr a{color:#7c3320;font-weight:700;white-space:nowrap}
 .thanks{text-align:center;padding:12px 0 6px}
 .thanks .tk{width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:var(--accent-light);display:grid;place-items:center;color:var(--accent);font-size:24px;font-weight:700}
 .next-opts{display:grid;gap:10px;margin-top:18px;text-align:left}
@@ -410,7 +416,9 @@ footer a:hover{color:#2ecc71}
             <div class="field"><label for="f-name">Име *</label><input id="f-name" autocomplete="name" placeholder="Вашето име" required></div>
             <div class="field"><label for="f-phone">Телефон *</label><input id="f-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+359 88 000 0000" required></div>
             <div class="field"><label for="f-email">Имейл *</label><input id="f-email" type="email" inputmode="email" autocomplete="email" placeholder="ime@primer.bg" required></div>
+            <div class="field"><label for="f-city">Населено място *</label><input id="f-city" autocomplete="address-level2" placeholder="Напр. Пловдив" required></div>
             <button class="cbtn" id="submitLead">Заявете безплатен енергиен одит</button>
+            <p class="formerr" id="leadErr" role="alert">Заявката не стигна до нас — още не е записана. Натиснете бутона отново след момент, или ни се обадете на <a href="tel:+359899639726">+359 899 639726</a> и я приемаме по телефона.</p>
             <p class="consent">Ще ви позвъним, за да уговорим безплатен енергиен одит на обекта. Никакъв спам, никакво предаване на данните ви на трети страни.</p>
             <button class="cbtn ghost" data-go="2">← Назад</button>
           </div>
@@ -778,9 +786,11 @@ footer a:hover{color:#2ecc71}
   }
 
   $('#submitLead').addEventListener('click', function(){
-    var name = $('#f-name').value.trim(), phone = $('#f-phone').value.trim(), email = $('#f-email').value.trim();
-    if(!name || !phone || !email || email.indexOf('@') < 1){ alert('Моля, попълнете име, телефон и валиден имейл.'); return; }
-    var btn = this; btn.disabled = true; btn.textContent = 'Изпращане…';
+    var name = $('#f-name').value.trim(), phone = $('#f-phone').value.trim(), email = $('#f-email').value.trim(), city = $('#f-city').value.trim();
+    if(!name || !phone || !city || !email || email.indexOf('@') < 1){ alert('Моля, попълнете име, телефон, населено място и валиден имейл.'); return; }
+    var errBox = $('#leadErr'); if(errBox){ errBox.classList.remove('on'); }
+    var btn = this, btnLabel = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Изпращане…';
     var payload = {
       segment: 'business-roof-bg',
       funnelSlug: 'solar-za-biznesa',
@@ -788,7 +798,7 @@ footer a:hover{color:#2ecc71}
       elementId: 'biz-calc-lead',
       utm: parseUtm(),
       fields: {
-        name:name, phone:phone, email:email,
+        name:name, phone:phone, email:email, location:city,
         bill_eur_mo:state.bill, profile:state.profile,
         kwp:state.kwp, est_savings_eur_yr:state.savings,
         est_payback_yr:state.payback
@@ -809,10 +819,15 @@ footer a:hover{color:#2ecc71}
         finish();
       })
       .catch(function(err){
-        /* Заявката не бива да се губи заради бекенда: показваме следващите
-           стъпки (cal.com/WhatsApp носят контакта), а грешката отива в лога. */
+        /* Никакво „благодарим“, ако заявката не е записана: човекът вижда
+           честно съобщение и път напред, бутонът се отключва за нов опит,
+           а грешката се логва (сървърният лог е в /api/lead). */
         try{ console.error(err); }catch(e){}
-        finish();
+        btn.disabled = false; btn.textContent = btnLabel;
+        if(errBox){
+          errBox.classList.add('on');
+          try{ errBox.scrollIntoView({block:'nearest', behavior:'smooth'}); }catch(e){}
+        }
       });
   });
 

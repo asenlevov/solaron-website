@@ -92,6 +92,7 @@ export async function POST(request: NextRequest) {
     if (!upstreamResponse.ok || !upstreamBody?.ok) {
       console.error(
         "[api/lead] Sellinger capture rejected the lead:",
+        body.funnelSlug,
         upstreamResponse.status,
         upstreamBody?.error,
       );
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("[api/lead] Failed to reach Sellinger capture endpoint", error);
+    console.error("[api/lead] Failed to reach Sellinger capture endpoint", body.funnelSlug, error);
     return NextResponse.json({ ok: false, error: "Lead capture is temporarily unavailable" }, { status: 502 });
   }
 }
