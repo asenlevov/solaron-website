@@ -1,21 +1,67 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
+import { OG_IMAGE_SIZE } from "@/lib/og";
 
 const ACCENT = "#3B7A2A";
+const FOREGROUND = "#171717";
+const FOREGROUND_SECONDARY = "#525252";
+const FOREGROUND_TERTIARY = "#a3a3a3";
+
+const MAX_TITLE_LEN = 110;
+const MAX_DESC_LEN = 180;
+const MAX_EYEBROW_LEN = 40;
+
+type Assets = {
+  regular: Buffer;
+  bold: Buffer;
+  logo: string;
+};
+
+let assets: Promise<Assets> | undefined;
+
+function loadAssets(): Promise<Assets> {
+  assets ??= (async () => {
+    const root = process.cwd();
+    const [regular, bold, logo] = await Promise.all([
+      readFile(join(root, "public", "fonts", "Inter-Regular.ttf")),
+      readFile(join(root, "public", "fonts", "Inter-Bold.ttf")),
+      readFile(join(root, "public", "logo-solaron.png")),
+    ]);
+    return {
+      regular,
+      bold,
+      logo: `data:image/png;base64,${logo.toString("base64")}`,
+    };
+  })();
+  return assets;
+}
+
+function clamp(value: string | null, max: number): string {
+  const trimmed = value?.trim() ?? "";
+  if (!trimmed) return "";
+  return trimmed.length > max ? `${trimmed.slice(0, max - 1)}…` : trimmed;
+}
+
+/** Long Cyrillic headlines need a smaller size to stay on three lines. */
+function titleFontSize(title: string): number {
+  if (title.length > 80) return 46;
+  if (title.length > 55) return 54;
+  if (title.length > 32) return 64;
+  return 72;
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const title = searchParams.get("title")?.trim() || "Solaron";
-  const description =
-    searchParams.get("description")?.trim() ||
-    "Соларни решения за дома и бизнеса в България.";
 
-  const maxTitleLen = 120;
-  const maxDescLen = 220;
-  const safeTitle = title.length > maxTitleLen ? `${title.slice(0, maxTitleLen - 1)}…` : title;
-  const safeDesc =
-    description.length > maxDescLen ? `${description.slice(0, maxDescLen - 1)}…` : description;
+  const title = clamp(searchParams.get("title"), MAX_TITLE_LEN) || "Solaron";
+  const description =
+    clamp(searchParams.get("description"), MAX_DESC_LEN) ||
+    "Соларни решения за дома и бизнеса в България.";
+  const eyebrow = clamp(searchParams.get("eyebrow"), MAX_EYEBROW_LEN);
+
+  const { regular, bold, logo } = await loadAssets();
 
   return new ImageResponse(
     (
@@ -26,15 +72,15 @@ export async function GET(request: Request) {
           display: "flex",
           flexDirection: "column",
           background: "#ffffff",
-          position: "relative",
+          fontFamily: "Inter",
         }}
       >
         <div
           style={{
             width: "100%",
-            height: 12,
-            background: ACCENT,
+            height: 14,
             flexShrink: 0,
+            background: `linear-gradient(90deg, ${ACCENT}, #2ecc71)`,
           }}
         />
         <div
@@ -42,76 +88,99 @@ export async function GET(request: Request) {
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            padding: 48,
-            paddingTop: 56,
+            justifyContent: "space-between",
+            padding: "56px 72px 48px 72px",
+            position: "relative",
           }}
         >
+          {/* Soft brand glow behind the lower-right corner */}
           <div
             style={{
-              fontSize: 28,
-              fontWeight: 800,
-              letterSpacing: "0.08em",
-              color: "#171717",
-              fontFamily: "system-ui, sans-serif",
+              position: "absolute",
+              right: -160,
+              bottom: -220,
+              width: 620,
+              height: 620,
+              borderRadius: 620,
+              background:
+                "radial-gradient(circle, rgba(59, 122, 42, 0.16) 0%, rgba(59, 122, 42, 0) 70%)",
             }}
-          >
-            SOLARON
-          </div>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingLeft: 24,
-              paddingRight: 24,
-              gap: 20,
-            }}
-          >
+          />
+
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logo} alt="Solaron" width={280} height={48} />
+
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {eyebrow ? (
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: ACCENT,
+                  marginBottom: 18,
+                }}
+              >
+                {eyebrow}
+              </div>
+            ) : null}
             <div
               style={{
-                fontSize: 52,
+                fontSize: titleFontSize(title),
                 fontWeight: 700,
-                lineHeight: 1.15,
-                textAlign: "center",
-                color: "#171717",
-                fontFamily: "system-ui, sans-serif",
+                lineHeight: 1.14,
+                letterSpacing: "-0.02em",
+                color: FOREGROUND,
+                maxWidth: 1000,
               }}
             >
-              {safeTitle}
+              {title}
             </div>
             <div
               style={{
-                fontSize: 26,
-                lineHeight: 1.4,
-                textAlign: "center",
-                color: "#525252",
+                marginTop: 22,
+                fontSize: 27,
+                lineHeight: 1.42,
+                color: FOREGROUND_SECONDARY,
                 maxWidth: 900,
-                fontFamily: "system-ui, sans-serif",
               }}
             >
-              {safeDesc}
+              {description}
             </div>
           </div>
+
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
-              fontSize: 22,
-              fontWeight: 600,
-              color: "#a3a3a3",
-              fontFamily: "system-ui, sans-serif",
+              alignItems: "center",
+              gap: 16,
             }}
           >
-            solaron.io
+            <div
+              style={{
+                width: 44,
+                height: 5,
+                borderRadius: 5,
+                background: ACCENT,
+              }}
+            />
+            <div style={{ fontSize: 24, color: FOREGROUND_TERTIARY }}>
+              solaron.io
+            </div>
           </div>
         </div>
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      ...OG_IMAGE_SIZE,
+      fonts: [
+        { name: "Inter", data: regular, weight: 400, style: "normal" },
+        { name: "Inter", data: bold, weight: 700, style: "normal" },
+      ],
+      headers: {
+        "cache-control": "public, max-age=31536000, immutable, no-transform",
+      },
     },
   );
 }

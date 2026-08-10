@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { SolarniPaneliContent } from "./solarni-paneli-content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -19,11 +20,12 @@ export async function generateMetadata({
       "Tier-1 панели",
       "Solaron",
     ],
-    openGraph: {
+    alternates: { canonical: "/produkti/solarni-paneli" },
+    ...socialMetadata({
       title: t("solarniPaneli.title"),
       description: t("solarniPaneli.description"),
-    },
-    alternates: { canonical: "/produkti/solarni-paneli" },
+      locale,
+    }),
   };
 }
 

@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -8,10 +9,16 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Legal" });
+  const description =
+    "Политика за поверителност на Solaron: какви лични данни обработваме, на какво основание, за колко време и какви са вашите права по GDPR.";
   return {
     title: t("privacy.title"),
-    description:
-      "Политика за поверителност на Solaron: какви лични данни обработваме, на какво основание, за колко време и какви са вашите права по GDPR.",
+    description,
+    ...socialMetadata({
+      title: t("privacy.title"),
+      description,
+      locale,
+    }),
   };
 }
 

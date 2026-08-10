@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import ZaZemedelietoContent from "./content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -9,6 +10,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t("title"),
     description: t("description"),
     alternates: { canonical: "/resheniya/za-zemedelieto" },
+    ...socialMetadata({
+      title: t("title"),
+      description: t("description"),
+      locale,
+    }),
   };
 }
 

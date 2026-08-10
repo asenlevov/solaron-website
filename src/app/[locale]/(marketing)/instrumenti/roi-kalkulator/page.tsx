@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { RoiKalkulatorClient } from "@/components/instrumenti/roi-kalkulator-client";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -12,6 +13,11 @@ export async function generateMetadata({
   return {
     title: t("roiKalkulator.title"),
     description: t("roiKalkulator.description"),
+    ...socialMetadata({
+      title: t("roiKalkulator.title"),
+      description: t("roiKalkulator.description"),
+      locale,
+    }),
   };
 }
 

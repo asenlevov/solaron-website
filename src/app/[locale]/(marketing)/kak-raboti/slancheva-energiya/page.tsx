@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { socialMetadata } from "@/lib/og";
 
 const SlanchevaEnergiyaContent = dynamic(
   () => import("./content").then((m) => m.SlanchevaEnergiyaContent),
@@ -16,6 +17,11 @@ export async function generateMetadata({
   return {
     title: t("slanchevaEnergiya.title"),
     description: t("slanchevaEnergiya.description"),
+    ...socialMetadata({
+      title: t("slanchevaEnergiya.title"),
+      description: t("slanchevaEnergiya.description"),
+      locale,
+    }),
   };
 }
 

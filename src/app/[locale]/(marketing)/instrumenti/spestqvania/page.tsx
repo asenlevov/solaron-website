@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { SpestqvaniaClient } from "@/components/instrumenti/spestqvania-client";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -12,6 +13,11 @@ export async function generateMetadata({
   return {
     title: t("spestqvania.title"),
     description: t("spestqvania.description"),
+    ...socialMetadata({
+      title: t("spestqvania.title"),
+      description: t("spestqvania.description"),
+      locale,
+    }),
   };
 }
 

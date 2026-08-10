@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { MonitoringContent } from "./monitoring-content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -20,11 +21,12 @@ export async function generateMetadata({
       "фотоволтаична система наблюдение",
       "Solaron",
     ],
-    openGraph: {
+    alternates: { canonical: "/produkti/monitoring" },
+    ...socialMetadata({
       title: t("monitoring.title"),
       description: t("monitoring.description"),
-    },
-    alternates: { canonical: "/produkti/monitoring" },
+      locale,
+    }),
   };
 }
 

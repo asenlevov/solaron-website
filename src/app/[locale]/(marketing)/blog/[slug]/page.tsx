@@ -10,6 +10,7 @@ import {
   type BlogPost,
 } from "@/data/blog-posts";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { socialMetadata } from "@/lib/og";
 import { cn } from "@/lib/utils";
 
 function formatDate(iso: string): string {
@@ -78,12 +79,23 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return { title: "Блог" };
+  const description = post.excerpt.slice(0, 160);
   return {
     title: `${post.title} | Solaron`,
-    description: post.excerpt.slice(0, 160),
+    description,
+    ...socialMetadata({
+      title: post.title,
+      description,
+      locale,
+      eyebrow: post.category,
+      // The post cover is a real photo — better social preview than a text card.
+      image: post.coverImage || undefined,
+      imageAlt: post.title,
+      type: "article",
+    }),
   };
 }
 

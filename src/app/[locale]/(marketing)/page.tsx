@@ -16,6 +16,7 @@ import { EnvironmentalImpact } from "@/components/marketing/environmental-impact
 import { CTASplit } from "@/components/marketing/cta-split";
 import { FAQSection } from "@/components/marketing/faq-section";
 import { REAL_IMAGES } from "@/data/images";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -23,6 +24,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t("title"),
     description: t("description"),
+    ...socialMetadata({
+      title: t("title"),
+      description: t("description"),
+      locale,
+    }),
   };
 }
 
