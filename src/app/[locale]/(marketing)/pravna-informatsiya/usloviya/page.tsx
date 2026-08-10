@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -8,10 +9,16 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Legal" });
+  const description =
+    "Общи условия за ползване на уебсайта и възлагане на услуги към Solaron: обхват, ценообразуване, гаранции, отговорност и приложимо право.";
   return {
     title: t("terms.title"),
-    description:
-      "Общи условия за ползване на уебсайта и възлагане на услуги към Solaron: обхват, ценообразуване, гаранции, отговорност и приложимо право.",
+    description,
+    ...socialMetadata({
+      title: t("terms.title"),
+      description,
+      locale,
+    }),
   };
 }
 

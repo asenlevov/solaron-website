@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
 import { cn } from "@/lib/utils";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -20,6 +21,11 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("heroSubtitle"),
+    ...socialMetadata({
+      title: t("title"),
+      description: t("heroSubtitle"),
+      locale,
+    }),
   };
 }
 

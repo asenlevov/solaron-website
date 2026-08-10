@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { BateriiContent } from "./baterii-content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -19,11 +20,12 @@ export async function generateMetadata({
       "LiFePO4 батерия",
       "Solaron",
     ],
-    openGraph: {
+    alternates: { canonical: "/produkti/baterii" },
+    ...socialMetadata({
       title: t("baterii.title"),
       description: t("baterii.description"),
-    },
-    alternates: { canonical: "/produkti/baterii" },
+      locale,
+    }),
   };
 }
 

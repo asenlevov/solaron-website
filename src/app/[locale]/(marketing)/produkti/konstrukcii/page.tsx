@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { KonstrukciiContent } from "./konstrukcii-content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -19,11 +20,12 @@ export async function generateMetadata({
       "наземна конструкция фотоволтаик",
       "Solaron",
     ],
-    openGraph: {
+    alternates: { canonical: "/produkti/konstrukcii" },
+    ...socialMetadata({
       title: t("konstrukcii.title"),
       description: t("konstrukcii.description"),
-    },
-    alternates: { canonical: "/produkti/konstrukcii" },
+      locale,
+    }),
   };
 }
 

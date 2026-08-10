@@ -1,4 +1,5 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -7,10 +8,16 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Legal" });
+  const description =
+    "Информация за бисквитките, които solaron.io използва, и как да управлявате предпочитанията си.";
   return {
     title: t("cookies.title"),
-    description:
-      "Информация за бисквитките, които solaron.io използва, и как да управлявате предпочитанията си.",
+    description,
+    ...socialMetadata({
+      title: t("cookies.title"),
+      description,
+      locale,
+    }),
   };
 }
 

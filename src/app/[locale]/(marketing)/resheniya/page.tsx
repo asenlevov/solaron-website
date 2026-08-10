@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { Home, Building2, Factory, Tractor, Car, BatteryCharging, ArrowRight } from "lucide-react";
+import { socialMetadata } from "@/lib/og";
+
+const title = "Решения | Solaron";
+const description = "Соларни решения за дома, бизнеса, индустрията, земеделието, карпорт и автономни системи. Намерете перфектното решение за вашите нужди.";
 
 export const metadata: Metadata = {
-  title: "Решения | Solaron",
-  description: "Соларни решения за дома, бизнеса, индустрията, земеделието, карпорт и автономни системи. Намерете перфектното решение за вашите нужди.",
+  title,
+  description,
+  ...socialMetadata({ title, description }),
 };
 
 const solutions = [
