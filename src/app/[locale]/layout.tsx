@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { OG_IMAGE_SIZE, ogCardUrl } from "@/lib/og";
 import { JsonLd } from "@/components/seo/json-ld";
 import { FacebookPixel } from "@/components/seo/facebook-pixel";
 
@@ -45,6 +46,11 @@ export async function generateMetadata({
   const ogLocale =
     locale === "bg" ? "bg_BG" : locale === "nl" ? "nl_NL" : "en_US";
 
+  const fallbackOgCard = ogCardUrl({
+    title: t("title"),
+    description: t("ogDescription"),
+  });
+
   return {
     title: {
       default: t("title"),
@@ -64,9 +70,8 @@ export async function generateMetadata({
       description: t("ogDescription"),
       images: [
         {
-          url: "/og-image.png",
-          width: 2684,
-          height: 1548,
+          url: fallbackOgCard,
+          ...OG_IMAGE_SIZE,
           alt: "Solaron",
         },
       ],
@@ -75,7 +80,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: t("title"),
       description: t("ogDescription"),
-      images: ["/og-image.png"],
+      images: [fallbackOgCard],
     },
     robots: { index: true, follow: true },
     alternates: {

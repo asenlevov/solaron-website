@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { SravnenieClient } from "@/components/instrumenti/sravnenie-client";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -12,6 +13,11 @@ export async function generateMetadata({
   return {
     title: t("sravnenie.title"),
     description: t("sravnenie.description"),
+    ...socialMetadata({
+      title: t("sravnenie.title"),
+      description: t("sravnenie.description"),
+      locale,
+    }),
   };
 }
 

@@ -11,6 +11,7 @@ import {
   type Project,
 } from "@/data/projects";
 import { REAL_IMAGES } from "@/data/images";
+import { socialMetadata } from "@/lib/og";
 import { cn } from "@/lib/utils";
 
 /* ── Gallery images per project slug ── */
@@ -137,12 +138,23 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return { title: "Проект — Solaron" };
+  const description = project.description.slice(0, 160);
   return {
     title: `${project.title} — Solaron`,
-    description: project.description.slice(0, 160),
+    description,
+    ...socialMetadata({
+      title: project.title,
+      description,
+      locale,
+      eyebrow: categoryLabels[project.category],
+      // Real installation photo beats a generated text card.
+      image: project.image || undefined,
+      imageAlt: project.title,
+      type: "article",
+    }),
   };
 }
 

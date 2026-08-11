@@ -6,6 +6,7 @@ import { ImageEditorial } from "@/components/ui/image-editorial";
 import { projects, categoryLabels, type Project } from "@/data/projects";
 import { REAL_IMAGES } from "@/data/images";
 import { cn } from "@/lib/utils";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -13,6 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t("title"),
     description: t("description"),
+    ...socialMetadata({
+      title: t("title"),
+      description: t("description"),
+      locale,
+    }),
   };
 }
 

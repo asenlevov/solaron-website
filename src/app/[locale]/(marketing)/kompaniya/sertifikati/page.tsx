@@ -3,6 +3,7 @@ import Image from "next/image";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { TiltCard } from "@/components/ui/tilt-card";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -10,6 +11,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t("title"),
     description: t("description"),
+    ...socialMetadata({
+      title: t("title"),
+      description: t("description"),
+      locale,
+    }),
   };
 }
 

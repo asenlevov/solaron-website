@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { Sun, Wrench, PlugZap, Gauge, Landmark, LineChart, ArrowRight } from "lucide-react";
+import { socialMetadata } from "@/lib/og";
+
+const title = "Как Работи | Solaron";
+const description = "Научете как работи соларната енергия, процеса на монтаж, свързването към мрежата, нетното отчитане, финансирането и възвръщаемостта на инвестицията.";
 
 export const metadata: Metadata = {
-  title: "Как Работи | Solaron",
-  description: "Научете как работи соларната енергия, процеса на монтаж, свързването към мрежата, нетното отчитане, финансирането и възвръщаемостта на инвестицията.",
+  title,
+  description,
+  ...socialMetadata({ title, description }),
 };
 
 const topics = [

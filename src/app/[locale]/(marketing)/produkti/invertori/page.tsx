@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { InvertoriContent } from "./invertori-content";
+import { socialMetadata } from "@/lib/og";
 
 export async function generateMetadata({
   params,
@@ -19,11 +20,12 @@ export async function generateMetadata({
       "Kstar инвертор",
       "Solaron",
     ],
-    openGraph: {
+    alternates: { canonical: "/produkti/invertori" },
+    ...socialMetadata({
       title: t("invertori.title"),
       description: t("invertori.description"),
-    },
-    alternates: { canonical: "/produkti/invertori" },
+      locale,
+    }),
   };
 }
 
