@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "check:messages": "node scripts/check-messages.mjs",
+    "prebuild": "npm run check:messages",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
