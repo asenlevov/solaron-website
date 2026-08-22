@@ -13,6 +13,7 @@ import { TiltCard } from "@/components/ui/tilt-card";
 import { BadgeChip } from "@/components/ui/badge-chip";
 import { GlowCard } from "@/components/ui/glow-card";
 import { QuickEstimator } from "@/components/marketing/quick-estimator";
+import { PHONE_HREF } from "@/lib/contact";
 import {
   SolutionPageProjects,
   RelatedSolutions,
@@ -46,7 +47,6 @@ import {
   Wrench,
   Sparkles,
   Check,
-  MessageCircle,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -211,7 +211,6 @@ const faqs = [
 
 export default function ZaDomaContent() {
   const tc = useTranslations("Common");
-  const waUrl = `https://wa.me/359899639726?text=${encodeURIComponent(tc("waMessage"))}`;
   const heroRef = useRef<HTMLElement>(null);
   const heroInView = useInView(heroRef, { once: true });
   const billRef = useRef<HTMLElement>(null);
@@ -291,12 +290,12 @@ export default function ZaDomaContent() {
             className="mt-8 md:mt-10 flex flex-wrap gap-4"
           >
             <MagneticButton
-              href={waUrl}
+              href={PHONE_HREF}
               variant="primary"
               size="xl"
             >
-              <MessageCircle className="mr-2 size-5" />
-              Безплатна Консултация
+              <Phone className="mr-2 size-5" aria-hidden />
+              {tc("callUs")}
             </MagneticButton>
             <MagneticButton
               href="/konfigurator"
@@ -654,11 +653,12 @@ export default function ZaDomaContent() {
           </div>
           <div className="mt-16 text-center">
             <MagneticButton
-              href={waUrl}
+              href={PHONE_HREF}
               variant="primary"
               size="lg"
             >
-              Заявете безплатна консултация
+              <Phone className="mr-2 size-5" aria-hidden />
+              {tc("callUs")}
             </MagneticButton>
           </div>
         </div>

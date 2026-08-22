@@ -7,15 +7,17 @@ import { trackConversion } from "@/lib/tracking/events";
 /*
  * Conversion listeners, attached once at the document level.
  *
- * Delegation rather than per-element handlers: the WhatsApp and phone CTAs
- * appear in the navbar, the footer, the floating CTA, the contact page and
- * several landing sections. Wiring each one would mean touching a dozen
- * components and would silently miss the next one somebody adds.
+ * Delegation rather than per-element handlers: the phone CTAs appear in the
+ * navbar, the footer, the floating CTA, the contact page and several landing
+ * sections. Wiring each one would mean touching a dozen components and would
+ * silently miss the next one somebody adds.
  */
 
 /** Lead forms opt in with data-track-lead="<source label>". */
 const LEAD_FORM_SELECTOR = "form[data-track-lead]";
-const CONTACT_LINK_SELECTOR = 'a[href^="tel:"], a[href*="wa.me/"]';
+/* tel: only. The wa.me CTAs are gone — the number behind them was disconnected,
+   so every Lead they reported was a person who reached nobody. */
+const CONTACT_LINK_SELECTOR = 'a[href^="tel:"]';
 
 function fieldValue(form: HTMLFormElement, name: string): string | undefined {
   const data = new FormData(form);
@@ -59,13 +61,12 @@ export function TrackingListeners() {
       ) as HTMLAnchorElement | null;
       if (!link) return;
 
-      const isWhatsApp = link.href.includes("wa.me/");
       trackConversion({
         eventName: "Lead",
         params: {
-          content_name: isWhatsApp ? "WhatsApp click" : "Phone click",
+          content_name: "Phone click",
           /* Which surface the click came from, for creative-level reporting. */
-          content_category: isWhatsApp ? "whatsapp" : "phone",
+          content_category: "phone",
         },
       });
     }
