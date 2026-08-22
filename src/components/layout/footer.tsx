@@ -195,7 +195,7 @@ export function Footer({ className }: { className?: string }) {
                 </span>
               </a>
               <a
-                href="tel:+35988432156"
+                href="tel:+359884321560"
                 className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
               >
                 <Phone className="size-4 shrink-0 text-accent" />

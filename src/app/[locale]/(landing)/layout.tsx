@@ -32,7 +32,7 @@ export default async function LandingLayout({
             />
           </Link>
           <Button variant="primary" size="md" asChild>
-            <a href="tel:+359888000000">{t("callUs")}</a>
+            <a href="tel:+359884321560">{t("callUs")}</a>
           </Button>
         </div>
       </header>
