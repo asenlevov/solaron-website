@@ -57,7 +57,7 @@ export function trackConversion({
   trackFbEvent(eventName, params, eventId);
 
   /*
-   * keepalive matters: Lead fires on WhatsApp and phone clicks, which navigate
+   * keepalive matters: Lead fires on phone clicks, which navigate
    * away immediately. A normal fetch would be cancelled mid-flight and the
    * server half of those conversions would simply never arrive.
    */

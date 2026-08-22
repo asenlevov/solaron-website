@@ -94,6 +94,9 @@ export function MagneticButton({
     </motion.div>
   );
 
+  /* tel:/mailto: are not routes — next/link would try to navigate them. */
+  if (href && !href.startsWith("/"))
+    return <a href={href} className="inline-block">{content}</a>;
   if (href) return <Link href={href} className="inline-block">{content}</Link>;
   return <button type="button" className="inline-block" onClick={onClick}>{content}</button>;
 }

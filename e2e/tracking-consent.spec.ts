@@ -160,7 +160,7 @@ test.describe("cookie consent gates the Meta pixel", () => {
     expect(pageViews).toHaveLength(1);
   });
 
-  test("Lead fires on a WhatsApp click with a shared event id", async ({ page }) => {
+  test("Lead fires exactly once on a phone click, with a shared event id", async ({ page }) => {
     test.skip(!PIXEL_CONFIGURED, "NEXT_PUBLIC_FB_PIXEL_ID is not set in this environment");
     const trackPosts: Array<Record<string, unknown>> = [];
     page.on("request", (r) => {
@@ -189,21 +189,53 @@ test.describe("cookie consent gates the Meta pixel", () => {
     await page.goto("/bg/kontakti", { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(2500);
 
-    const wa = page.locator('a[href*="wa.me/"]:visible').first();
-    await wa.evaluate((el) => el.setAttribute("target", "_blank"));
-    await wa.click();
+    /* Swallow the tel: navigation at the bubble phase. Our listener is on the
+       capture phase at document level, so it has already run by then — this
+       suppresses the external-handler prompt without hiding the click. */
+    await page.evaluate(() => {
+      document.addEventListener("click", (e) => {
+        const a = (e.target as HTMLElement | null)?.closest?.('a[href^="tel:"]');
+        if (a) e.preventDefault();
+      });
+    });
+
+    const phone = page.locator('a[href="tel:+359884321560"]:visible').first();
+    await expect(phone).toBeVisible();
+    await phone.click();
     await page.waitForTimeout(2000);
 
     const calls = await page.evaluate(
       () => (window as unknown as { __fbqCalls: unknown[][] }).__fbqCalls ?? [],
     );
-    const lead = calls.find((c) => c[0] === "track" && c[1] === "Lead");
-    expect(lead, "no browser Lead event").toBeTruthy();
+    const leads = calls.filter((c) => c[0] === "track" && c[1] === "Lead");
+    expect(leads, "expected exactly one browser Lead").toHaveLength(1);
+    const lead = leads[0];
+    expect(lead?.[2]).toMatchObject({ content_category: "phone" });
 
     const browserEventId = (lead?.[3] as { eventID?: string } | undefined)?.eventID;
     const serverPost = trackPosts.find((p) => p.eventName === "Lead");
     expect(browserEventId).toBeTruthy();
     /* The dedup contract, asserted rather than assumed. */
     expect(serverPost?.eventId).toBe(browserEventId);
+    expect(trackPosts.filter((p) => p.eventName === "Lead")).toHaveLength(1);
+  });
+
+  /*
+   * The wa.me CTAs pointed at a number disconnected since 2026-06-29, so every
+   * click reached nothing. They are gone; this is the guard that keeps them gone.
+   */
+  test("no wa.me link survives anywhere ad traffic lands", async ({ page }) => {
+    for (const route of [
+      "/bg",
+      "/bg/kontakti",
+      "/bg/konfigurator",
+      "/bg/resheniya/za-doma",
+      "/bg/lp/bezplatna-konsultatsiya",
+    ]) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator('a[href*="wa.me"]'), route).toHaveCount(0);
+      const html = await page.content();
+      expect(html, route).not.toContain("wa.me/");
+    }
   });
 });
