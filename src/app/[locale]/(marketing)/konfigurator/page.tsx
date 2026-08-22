@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { SceneLoadingFallback } from "@/components/3d/scene-container";
+import { TrackViewContent } from "@/components/seo/track-view-content";
 import {
   ControlPanel,
   type SolarConfiguratorConfig,
@@ -147,6 +148,7 @@ export default function KonfiguratorPage() {
         mounted ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       }`}
     >
+      <TrackViewContent contentName="Конфигуратор" contentCategory="configurator" />
       <div className="mx-auto max-w-[1600px] px-4 pt-22 pb-10 md:px-6 md:pt-22 lg:px-8">
         <header className="mb-8 max-w-3xl">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-accent">

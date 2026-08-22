@@ -185,7 +185,7 @@ export default async function FinansiraneSolarPage({
             subtitle="Опишете имота и очаквания бюджет — ще върнем обратно с варианти и следващи стъпки."
           />
           <Card>
-            <form action={submitFinancingLandingForm} className="space-y-4">
+            <form action={submitFinancingLandingForm} className="space-y-4" data-track-lead="LP: Финансиране">
               <div>
                 <label
                   htmlFor="fin-name"

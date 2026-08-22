@@ -15,6 +15,11 @@ export const STUB_TOKEN = "e2e-site-token";
 export default defineConfig({
   testDir: "./e2e",
   testMatch: "**/*.spec.ts",
+  /* The consent/pixel specs need a production build — they click the banner and
+     then assert on what the browser did, and this config's dev server reloads
+     over HMR mid-interaction. They run under playwright.tracking.config.ts:
+     `npm run test:e2e:tracking`. */
+  testIgnore: "**/tracking-consent.spec.ts",
   outputDir: "./e2e/.artifacts",
   // One dev server, one stub: serialize so the two specs can't fight over the
   // stub's failure mode.

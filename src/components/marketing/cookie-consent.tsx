@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-
-const STORAGE_KEY = "cookie-consent";
-
-type ConsentValue = "all" | "essential";
+import {
+  CONSENT_STORAGE_KEY as STORAGE_KEY,
+  persistConsent,
+  type ConsentValue,
+} from "@/lib/tracking/consent";
 
 /*
  * The banner is server-rendered and shown via a synchronous inline script that
@@ -19,7 +20,10 @@ export function CookieConsent() {
   const t = useTranslations("Common");
 
   function accept(value: ConsentValue) {
-    localStorage.setItem(STORAGE_KEY, value);
+    /* Writes localStorage exactly as before, and additionally mirrors the
+       choice into a cookie so the server can honour it, then tells the pixel
+       to mount or stay away without a reload. */
+    persistConsent(value);
     setDismissed(true);
   }
 
