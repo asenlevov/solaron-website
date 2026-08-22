@@ -2,6 +2,8 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
+import { CookieConsent } from "@/components/marketing/cookie-consent";
+import { TrackingListeners } from "@/components/seo/tracking-listeners";
 
 export default async function LandingLayout({
   children,
@@ -50,6 +52,12 @@ export default async function LandingLayout({
           </Link>
         </div>
       </footer>
+
+      {/* Ad traffic lands here, not on the marketing pages. The same banner the
+          rest of the site uses has to be reachable from these routes too, or
+          consent can never be given where it actually matters. */}
+      <CookieConsent />
+      <TrackingListeners />
     </div>
   );
 }

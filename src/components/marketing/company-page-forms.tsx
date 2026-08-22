@@ -63,7 +63,7 @@ export function ContactPageForm() {
         </p>
       ) : null}
 
-      <form className="space-y-5" action={formAction}>
+      <form className="space-y-5" action={formAction} data-track-lead="Контакти">
         <input type="hidden" name="source" value="Контакти" />
 
         <div className="grid gap-4 sm:grid-cols-2">

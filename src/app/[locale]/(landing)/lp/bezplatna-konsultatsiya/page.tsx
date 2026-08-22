@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
+import { TrackViewContent } from "@/components/seo/track-view-content";
 import { submitConsultationLandingForm } from "@/lib/actions/contact-form";
 import { socialMetadata } from "@/lib/og";
 
@@ -45,6 +46,10 @@ export default async function BezplatnaKonsultatsiyaPage({
   setRequestLocale(locale);
   return (
     <>
+      <TrackViewContent
+        contentName="LP: Безплатна консултация"
+        contentCategory="consultation"
+      />
       <section className="relative overflow-hidden border-b border-border bg-background">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(217,119,6,0.12),transparent)]" />
         <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-14 md:px-8 md:pb-24 md:pt-20 lg:pb-28 lg:pt-24">
@@ -129,7 +134,7 @@ export default async function BezplatnaKonsultatsiyaPage({
             </div>
           </div>
           <Card>
-            <form action={submitConsultationLandingForm} className="space-y-4">
+            <form action={submitConsultationLandingForm} className="space-y-4" data-track-lead="LP: Безплатна консултация">
               <div>
                 <label
                   htmlFor="bc-name"

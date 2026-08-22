@@ -204,7 +204,7 @@ export default async function SolarZaNovDomPage({
             </ul>
           </div>
           <Card>
-            <form action={submitSolarNewHomeLandingForm} className="space-y-4">
+            <form action={submitSolarNewHomeLandingForm} className="space-y-4" data-track-lead="LP: Солар за нов дом">
               <div>
                 <label
                   htmlFor="snh-name"

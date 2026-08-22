@@ -6,6 +6,7 @@ import { BackToTop } from "@/components/ui/back-to-top";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { SocialProofToast } from "@/components/marketing/social-proof-toast";
 import { CookieConsent } from "@/components/marketing/cookie-consent";
+import { TrackingListeners } from "@/components/seo/tracking-listeners";
 import { Footer } from "./footer";
 import { Navbar } from "./navbar";
 
@@ -21,6 +22,7 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
       <BackToTop />
       <SocialProofToast />
       <CookieConsent />
+      <TrackingListeners />
       <Script
         src="https://v2.sellinger.io/api/live-chat/widget/8ad59adc-ffe5-44a1-bdc2-ab8f1621deff.js"
         strategy="lazyOnload"
