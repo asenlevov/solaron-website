@@ -27,8 +27,8 @@ export async function JsonLd() {
       url: `${SITE}/logo-solaron.png`,
     },
     image: `${SITE}/og-image.png`,
-    telephone: "+359884321560",
-    email: "hello@solaron.io",
+    telephone: "+359877755526",
+    email: "office@solaron.io",
     address: {
       "@type": "PostalAddress",
       streetAddress: "бул. Черни Връх 59Б, ет. 3",

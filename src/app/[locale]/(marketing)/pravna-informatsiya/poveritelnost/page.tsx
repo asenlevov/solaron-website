@@ -239,10 +239,10 @@ export default async function PoveritelnostPage({
         <p>
           Въпроси относно обработката на лични данни:{" "}
           <a
-            href="mailto:hello@solaron.io"
+            href="mailto:office@solaron.io"
             className="text-secondary underline-offset-4 hover:underline"
           >
-            hello@solaron.io
+            office@solaron.io
           </a>
           . Общи запитвания: вижте страницата{" "}
           <Link

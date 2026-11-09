@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const DEFAULT_FROM = "Solaron Website <hello@wizia.ai>";
-const DEFAULT_TO = "hello@solaron.io";
+const DEFAULT_TO = "office@solaron.io";
 
 let client: Resend | null = null;
 

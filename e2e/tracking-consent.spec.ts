@@ -199,7 +199,7 @@ test.describe("cookie consent gates the Meta pixel", () => {
       });
     });
 
-    const phone = page.locator('a[href="tel:+359884321560"]:visible').first();
+    const phone = page.locator('a[href="tel:+359877755526"]:visible').first();
     await expect(phone).toBeVisible();
     await phone.click();
     await page.waitForTimeout(2000);

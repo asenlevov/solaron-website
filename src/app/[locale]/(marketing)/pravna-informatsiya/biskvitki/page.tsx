@@ -152,10 +152,10 @@ export default async function CookiesPage({
             Ако имате въпроси относно нашата политика за бисквитки, моля
             свържете се с нас на{" "}
             <a
-              href="mailto:hello@solaron.io"
+              href="mailto:office@solaron.io"
               className="text-accent underline underline-offset-4 hover:text-accent-hover"
             >
-              hello@solaron.io
+              office@solaron.io
             </a>
             .
           </p>

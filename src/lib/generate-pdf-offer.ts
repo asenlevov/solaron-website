@@ -626,7 +626,7 @@ function pageCover(doc: Doc, data: PdfOfferData, t: PdfTexts) {
 
   doc.setFontSize(7.5);
   doc.setTextColor(G4);
-  doc.text("solaron.io  |  +359 896 699 009  |  hello@solaron.io", PW / 2, PH - 9, {
+  doc.text("solaron.io  |  +359 87 775 5526  |  office@solaron.io", PW / 2, PH - 9, {
     align: "center",
   });
 }
@@ -1209,7 +1209,7 @@ function pageWarranty(doc: Doc, t: PdfTexts) {
   doc.setFont("Inter", "normal");
   doc.setFontSize(10);
   doc.setTextColor(GL);
-  doc.text("solaron.io  |  +359 896 699 009  |  hello@solaron.io", MX + CW / 2, y + 30, {
+  doc.text("solaron.io  |  +359 87 775 5526  |  office@solaron.io", MX + CW / 2, y + 30, {
     align: "center",
   });
 
