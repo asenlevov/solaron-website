@@ -161,10 +161,10 @@ export default async function GarantsiyaPage({
           <li>
             Подайте сигнал на{" "}
             <a
-              href="mailto:hello@solaron.io"
+              href="mailto:office@solaron.io"
               className="text-secondary underline-offset-4 hover:underline"
             >
-              hello@solaron.io
+              office@solaron.io
             </a>{" "}
             или чрез{" "}
             <Link

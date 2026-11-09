@@ -94,10 +94,10 @@ export default async function KontaktiPage({ params }: { params: Promise<{ local
                         Имейл
                       </p>
                       <a
-                        href="mailto:hello@solaron.io"
+                        href="mailto:office@solaron.io"
                         className="text-base font-medium text-foreground underline-offset-4 hover:underline"
                       >
-                        hello@solaron.io
+                        office@solaron.io
                       </a>
                     </li>
                     <li>

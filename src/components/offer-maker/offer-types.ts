@@ -218,7 +218,7 @@ export function createInitialState(offerType: OfferType = "home"): OfferState {
   return {
     type: offerType,
     client: { name: "", address: "", phone: "", email: "" },
-    consultant: { name: "Емил Солаков", phone: "+359 899 639 726", email: "emil@solaron.io", initials: "ЕС", signatureUrl: "" },
+    consultant: { name: "Емил Солаков", phone: "+359 87 775 5526", email: "office@solaron.io", initials: "ЕС", signatureUrl: "" },
     offer: {
       number: generateOfferNumber(),
       date: formatDate(now),

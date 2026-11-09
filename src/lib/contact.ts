@@ -9,6 +9,6 @@
  * end wearing a different coat. Add the button back only once a
  * WhatsApp-enabled line is confirmed.
  */
-export const PHONE_E164 = "+359884321560";
+export const PHONE_E164 = "+359877755526";
 export const PHONE_HREF = `tel:${PHONE_E164}`;
-export const PHONE_DISPLAY = "+359 88 432 1560";
+export const PHONE_DISPLAY = "+359 87 775 5526";

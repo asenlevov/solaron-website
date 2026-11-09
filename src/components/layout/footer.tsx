@@ -193,11 +193,11 @@ export function Footer({ className }: { className?: string }) {
                 {PHONE_DISPLAY}
               </a>
               <a
-                href="mailto:hello@solaron.io"
+                href="mailto:office@solaron.io"
                 className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground transition-colors"
               >
                 <Mail className="size-4 shrink-0 text-accent" />
-                hello@solaron.io
+                office@solaron.io
               </a>
             </div>
 

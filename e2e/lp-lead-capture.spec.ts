@@ -11,7 +11,7 @@ import { expect, test, type APIRequestContext, type Page } from "@playwright/tes
  */
 
 const STUB = `http://127.0.0.1:${process.env.E2E_STUB_PORT || 4599}`;
-const HELP_PHONE = "+359 899 639726";
+const HELP_PHONE = "+359 87 775 5526";
 
 const FUNNELS = [
   { path: "/bg/lp/oferta", slug: "solar-oferta" },
